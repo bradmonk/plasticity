@@ -37,13 +37,10 @@ class Point(object):
 
   def classify(self):
     if self.z >= self.SPHERE_CHANGE_POINT:
-      self.point_type = PointType.SPHERE
       self.verify_sphere()
     elif self.z >= self.DENDRITE_CHANGE_TOP:
-      self.point_type = PointType.VERT_DENDRITE
       self.verify_vert_dendrite()
     elif self.z <= self.DENDRITE_CHANGE_BOTTOM:
-      self.point_type = PointType.HORIZ_DENDRITE
       self.verify_horiz_dendrite()
     else:
       self.classify_between_dendrites()
@@ -58,6 +55,8 @@ class Point(object):
     if not np.allclose(self.SPHERE_RADIUS_SQUARED,
                        effective_radius_squared):
       raise ValueError('Not on sphere.')
+
+    self.point_type = PointType.SPHERE
 
     first_two_coords_norm = np.sqrt(self.x**2 + self.y**2)
     self.first_two_coords_norm = first_two_coords_norm
@@ -92,6 +91,7 @@ class Point(object):
                        effective_radius_squared):
       raise ValueError('Not on vertical dendrite.')
 
+    self.point_type = PointType.VERT_DENDRITE
     self.theta = np.arctan2(self.y, self.x)
 
   def verify_horiz_dendrite(self):
@@ -104,6 +104,7 @@ class Point(object):
                        effective_radius_squared):
       raise ValueError('Not on horizontal dendrite.')
 
+    self.point_type = PointType.HORIZ_DENDRITE
     self.theta = np.arctan2(self.z, self.y)
 
   def classify_between_dendrites(self):
@@ -149,34 +150,63 @@ class Point(object):
     L = np.linalg.norm([x_rand, y_rand])
     theta = np.arctan2(y_rand, x_rand)
 
-    # TOP HALF or moving upwards
-    if self.z > self.SPHERE_Z_CENTER or theta >= 0:
-      theta_prime = L / self.SPHERE_RADIUS
-      centered_point = np.array([self.x, self.y,
-                                 self.z - self.SPHERE_Z_CENTER])
-      new_centered_point = (
-          np.cos(theta_prime) * centered_point +
-          np.sin(theta_prime) * (
-              np.cos(theta) * self.centered_right +
-              np.sin(theta) * self.centered_top
-          )
-      )
-      self.x = new_centered_point[0]
-      self.y = new_centered_point[1]
-      self.z = new_centered_point[2] + self.SPHERE_Z_CENTER
+    # BOTTOM HALF and moving downwards
+    if self.z < self.SPHERE_Z_CENTER and theta <= 0:
+      x_y_contrib = ((self.VERT_DENDRITE_RADIUS /
+                      self.SPHERE_RADIUS_SQUARED) *
+                     self.first_two_coords_norm)
+      z_contrib = (self.SPHERE_Z_CENTER - self.z) * (
+          (self.SPHERE_Z_CENTER - self.SPHERE_CHANGE_POINT) /
+          self.SPHERE_RADIUS_SQUARED)
+      d = self.SPHERE_RADIUS * np.arccos(x_y_contrib + z_contrib)
 
-      self.verify_sphere()
-      return
+      theta1 = theta + np.pi/2
+      H = d / np.cos(theta1)
+      x_rot = H * np.sin(theta1)
 
-    print 'Moving under the sphere'
-    x_y_contrib = ((self.VERT_DENDRITE_RADIUS / self.SPHERE_RADIUS_SQUARED) *
-                   self.first_two_coords_norm)
-    z_contrib = (self.SPHERE_Z_CENTER - self.z) * (
-        (self.SPHERE_Z_CENTER - self.SPHERE_CHANGE_POINT) /
-        self.SPHERE_RADIUS_SQUARED)
+      if L > H:
+        self.move_from_sphere_to_vert_dendrite(H, x_rot, L, theta1)
+        return
 
-    d = self.SPHERE_RADIUS * np.arccos(x_y_contrib + z_contrib)
+    # If we didn't return in the conditional above
+    # then we are safe to move within the sphere.
+    theta_prime = L / self.SPHERE_RADIUS
+    if np.abs(theta_prime) > np.pi:
+      raise ValueError('Extremely large rotation. Consider adjusting k.')
+    centered_point = np.array([self.x, self.y,
+                               self.z - self.SPHERE_Z_CENTER])
+    new_centered_point = (
+        np.cos(theta_prime) * centered_point +
+        np.sin(theta_prime) * (
+            np.cos(theta) * self.centered_right +
+            np.sin(theta) * self.centered_top
+        )
+    )
+    self.x = new_centered_point[0]
+    self.y = new_centered_point[1]
+    self.z = new_centered_point[2] + self.SPHERE_Z_CENTER
+    self.verify_sphere()
 
+  def move_from_sphere_to_vert_dendrite(self, H, x_rot, L, theta1):
+    x_lip_cyl = (self.VERT_DENDRITE_RADIUS * self.x /
+                 self.first_two_coords_norm)
+    y_lip_cyl = (self.VERT_DENDRITE_RADIUS * self.y /
+                 self.first_two_coords_norm)
+    # The z is always SPHERE_CHANGE_POINT on the lip of the cylinder.
+    theta_cyl = np.arctan2(y_lip_cyl, x_lip_cyl)
+
+    # Update the z value down from the lip of the cylinder/sphere boundary.
+    self.z = self.SPHERE_CHANGE_POINT - (L - H) * np.cos(theta1)
+
+    x_displace = (L - H) * np.sin(theta1) + x_rot
+    theta_delta = x_displace / self.VERT_DENDRITE_RADIUS
+    if np.abs(theta_delta) > np.pi:
+      raise ValueError('Extremely large rotation. Consider adjusting k.')
+
+    self.theta = theta_cyl + theta_delta
+    self.x = self.VERT_DENDRITE_RADIUS * np.cos(self.theta)
+    self.y = self.VERT_DENDRITE_RADIUS * np.sin(self.theta)
+    self.verify_vert_dendrite()
 
   def move_on_vert_dendrite(self, x_rand=None, y_rand=None):
     x_rand = x_rand or self.k * np.random.randn()
