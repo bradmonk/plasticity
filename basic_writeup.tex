@@ -317,7 +317,8 @@ We consider ourselves to be standing in front of the point \(p_0 = (x_0,
 y_0, z_0)\) looking at it and have our feet on ``the ground'' so that
 \(z > 0\) still corresponds to up. If \(p_0 = (0, 0, 1)\) is the north pole,
 we can't stand in front and have our feet on the ground so we consider that
-later as a special case.
+later as a special case. This is also true for the south pole but in our
+geometry the bottom of the sphere is cut off so we ignore the south pole.
 
 Given \(p_0\), we want to think of our scene as we would if we were
 standing at \(p_0 = (0, -1, 0)\). Using
@@ -372,63 +373,70 @@ b = soln[[1, 2, 2]]
 c = soln[[1, 3, 2]]
 Subscript[p, 0] = {Subscript[x, 0], Subscript[y, 0], Subscript[z, 0]}
 Subscript[p, 1] = {a, b, c}
-Subscript[p, 2] = Cross[Subscript[p, 1], Subscript[p, 0]]
-M = {Subscript[p, 0], Subscript[p, 1], Subscript[p, 2]}
-MatrixForm[M]
-MatrixForm[Simplify[M.Transpose[M],
-                    Subscript[x, 0]^2 + Subscript[y, 0]^2 + Subscript[z, 0]^2 == 1]]
-
-% http://math.stackexchange.com/questions/214187
-SampleAmat = {0, -1, 0}
-SampleBmat = {0, 1, 0}
-SampleCmat = {0, 0, 1}
-SampleXmat = {1, 0, 0}
-
-SampleBprime = SampleBmat - SampleAmat
-SampleCprime = SampleCmat - SampleAmat
-SampleXprime = SampleXmat - SampleAmat
-Det[{SampleBprime, SampleCprime, SampleXprime}]
-
-Amat = Subscript[p, 0]
-Bmat = - Subscript[p, 0]
-Cmat = Subscript[p, 1]
-Xmat = Subscript[p, 2]
-
-Bprime = Bmat - Amat
-Cprime = Cmat - Amat
-Xprime = Xmat - Amat
-Simplify[Det[{Bprime, Cprime, Xprime}],
-         Subscript[x, 0]^2 + Subscript[y, 0]^2 + Subscript[z, 0]^2 == 1]
 \end{verbatim}
+It turns out the two solutions of the system are \((a, b, c)\) and \((-a,
+-b, -c)\) but since we are standing on the ground and we want the ``up''
+point (the green point) we pick the solution with positive \(z\)-coordinate.
+This corresponds to
+\[p_1 = \left(-\frac{x_0 z_0}{\sqrt{1 - z_0^2}},
+-\frac{y_0 z_0}{\sqrt{1 - z_0^2}}, \sqrt{1 - z_0^2}\right).\]
+To find the ``right'' point (the blue point) we use the cross product
+\(p_2 = p_1 \times p_0\) since by the
+\href{http://en.wikipedia.org/wiki/Right-hand_rule}{right-hand rule} we
+want the ``index finger'' to point at us, which is the direction of
+\(p_0\), hence it is the second element. Actually computing this we have
+\begin{verbatim}
+Subscript[p, 2] = Cross[Subscript[p, 1], Subscript[p, 0]]
+\end{verbatim}
+which gives
+\[p_2 = \left(-\frac{y_0}{\sqrt{1 - z_0^2}}, \frac{x_0}{\sqrt{1 - z_0^2}},
+0\right).\]
 
-If \(p\)
+Moving a distance \(L > 0\) at an angle of \(\theta\) from the positive
+\(x\)-axis, we know we have a displacement of \((L \cos \theta, L
+\sin \theta)\). This is really
+\[L \cos \theta \cdot e_{\text{right}} + L \sin \theta \cdot
+e_{\text{up}}.\]
+where \(e_{\text{right}}, e_{\text{up}}\) are vectors in the right and up
+direction. The same sort of thing happens for our points, which move in
+a flattend out version of the sphere except we have
+\(e_{\text{right}} = p_2\) and \(e_{\text{up}} = p_1\).
 
-we need to both move within our distinct
-regions and across a change in region. To handle the move on the sphere
-we use spherical coordinates with a change of basis. Typically we use
-\[r, \theta, \varphi \in \left[0, \infty\right) \times \left[0, 2\pi\right)
-\times \left[0, \pi\right]\]
-but we will use an augmented system which forces a given point on a diameter
-so that we have great circles of the full circumference in both the
-\(\theta\) and \(\varphi\) direction. Using the standard spherical
-coordinate  system, only points with \(\varphi = \frac{\pi}{2}\) are on
-a diameter in the \(\theta\) direction. Using
-\begin{align*}
-x &= r \cos \left(\theta + \alpha\right) \sin \left(\varphi + \beta\right) \\
-y &= r \sin \left(\theta + \alpha\right) \sin \left(\varphi + \beta\right) \\
-z &= r \cos \left(\varphi + \beta\right)
-\end{align*}
-and consider
-\[r, \theta, \varphi \in \left[0, \infty\right) \times \left[0, 2\pi\right)
-\times \left[-\beta - \frac{\pi}{2}, -\beta + \frac{\pi}{2}\right]\]
-XXX THIS IS WRONG AND PROBABLY GOING NOWHERE XXX
+The distance along the sphere from \(p_0\) to \(p_1\) (or any other pair)
+is a quarter of the circumference since \(p_1\) lies half way between
+\(p_0\) and \(-p_0\) along an equator. Thus, cutting the sphere at the
+equator containing \(p_1\) and \(p_2\) we get a circle with center at
+\(p_0\) and a radius of \(\frac{2 \pi R}{4} = \frac{\pi}{2}\) (since we
+have \(R = 1\) on the unit sphere). If we move in a direction of \(\theta\),
+we could cross the point
+\[p_{\theta} = \left(\cos \theta\right) p_2 + \left(\sin \theta\right) p_1\]
+along the equator through \(p_1\) and \(p_2\). (This is true independent
+of \(R\).) To travel a distance of
+\(L\) along the equator from \(p_0\) to \(p_{\theta}\), we'd be moving
+along the sphere, so would need to determine how much rotation that would
+involve. Thus we solve \(\frac{\theta'}{2 \pi} = \frac{L}{2 \pi R}\) (partial
+angle should be the same as partial circumference) which
+in this case gives a rotation of \(\theta' = \frac{L}{R} = L\). As with
+rotating from
+\(e_{\text{right}}\) towards \(e_{\text{up}}\) gives the cosine term
+to \(e_{\text{right}}\), since we are rotating from \(p_0\) towards
+\(p_{\theta}\) this would have us arrive at the point
+\[p_{0, \text{new}} = \left(\cos \theta'\right) p_0 +
+\left(\sin \theta'\right) p_{\theta}.\]
+Expanding, this becomes
+\[p_{0, \text{new}} = \left(\cos \frac{L}{R}\right) p_0 +
+\left(\sin \frac{L}{R}\right) \left[\left(\cos \theta\right) p_2 +
+\left(\sin \theta\right) p_1\right].\]
+We have already accounted for an arbitrary radius \(R\) but not an
+arbitrary center \(c\). However, by shifting the global coordinates by
+\(-c\), we would have a sphere centered at the origin, hence we can change
+the above to
+\[\left(p_{0, \text{new}} - c\right) = \left(\cos \frac{L}{R}\right)
+\left(p_0 - c\right) +
+\left(\sin \frac{L}{R}\right) \left[\left(\cos \theta\right) \left(p_2
+ - c\right) + \left(\sin \theta\right) \left(p_1 - c\right)\right].\]
 
-\[\left[ \begin{array}{c c}
-1 & 0 \\
-0 & 1
-\end{array}\right]\]
-
-
-A
+\textbf{NOTE}: Most mathematicians use the term ``great circle'' instead
+of equator.
 
 \end{document}
