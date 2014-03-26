@@ -304,7 +304,106 @@ axis equal;
 \end{verbatim}
 we are able to bring this all together as in Figure~\ref{fig:1e}.
 
-\textbf{Moving Particles} To move we need to both move within our distinct
+%% http://timmurphy.org/2009/08/15/drawing-horizontal-lines-in-latex/
+\begin{center}
+\line(1,0){400}
+\end{center}
+
+\textbf{Moving Particles} To move on the sphere we need to flatten out the
+surface \textbf{around} our current point \(p_0\).
+
+To cover this we first consider the unit sphere centered at the origin.
+We consider ourselves to be standing in front of the point \(p_0 = (x_0,
+y_0, z_0)\) looking at it and have our feet on ``the ground'' so that
+\(z > 0\) still corresponds to up. If \(p_0 = (0, 0, 1)\) is the north pole,
+we can't stand in front and have our feet on the ground so we consider that
+later as a special case.
+
+Given \(p_0\), we want to think of our scene as we would if we were
+standing at \(p_0 = (0, -1, 0)\). Using
+\begin{verbatim}
+points = [
+  0, 0, 0, 1;
+  1, -1, 0, 0;
+  0, 0, 1, 0
+]
+colors = [
+   1, 0, 0;
+   1, 1, 0;
+   0, 1, 0;
+   0, 0, 1;
+]
+scatter3(points(1, :), points(2, :), points(3, :), [], colors);
+axis([-1, 1, -1, 1, -1, 1]);
+xlabel('x'); ylabel('y'); zlabel('z');
+\end{verbatim}
+\begin{figure}
+  \centering
+    \includegraphics[scale=0.5]{standard_orientation.png}
+  \caption{Standard Orientation}
+  \label{fig:1f}
+\end{figure}
+we create Figure~\ref{fig:1f}. In it, we see \((0, -1, 0)\) as our red
+viewpoint and \((0, 1, 0)\) as the yellow opposite. Given this, the green
+\((0, 0, 1)\) is the ``up'' point and the blue \((1, 0, 0)\) is the right
+point. We seek to find equivalent points for any given \(p_0\) (except for
+the north pole).
+
+To find the up point, we want to find a point in the same vertical plane
+that \(p_0\) is in. Since a vertical plane is independent of \(z\), this
+plane is simply determined by the line \(y_0 x - x_0 y = 0\) in \(3\)-space.
+Given such a point \(p_1 = (a, b, c)\) we also it to be perpendicular to
+\(p_0\) and of course want it to lie on the sphere. All together this
+gives three conditions:
+\begin{align*}
+y_0 a - x_0 b &= 0 \\
+a x_0 + b y_0 + c z_0 &= 0 \\
+a^2 + b^2 + c^2 &= 1
+\end{align*}
+Solving this in Mathematica
+\begin{verbatim}
+soln = Simplify[Solve[a Subscript[x, 0] + b Subscript[y, 0] + c Subscript[z, 0] == 0 &&
+                      a^2 + b^2 + c^2 == 1 &&
+                      a Subscript[y, 0] == b Subscript[x, 0],
+                      {a, b, c}],
+                Subscript[x, 0]^2 + Subscript[y, 0]^2 + Subscript[z, 0]^2 == 1]
+a = soln[[1, 1, 2]]
+b = soln[[1, 2, 2]]
+c = soln[[1, 3, 2]]
+Subscript[p, 0] = {Subscript[x, 0], Subscript[y, 0], Subscript[z, 0]}
+Subscript[p, 1] = {a, b, c}
+Subscript[p, 2] = Cross[Subscript[p, 1], Subscript[p, 0]]
+M = {Subscript[p, 0], Subscript[p, 1], Subscript[p, 2]}
+MatrixForm[M]
+MatrixForm[Simplify[M.Transpose[M],
+                    Subscript[x, 0]^2 + Subscript[y, 0]^2 + Subscript[z, 0]^2 == 1]]
+
+% http://math.stackexchange.com/questions/214187
+SampleAmat = {0, -1, 0}
+SampleBmat = {0, 1, 0}
+SampleCmat = {0, 0, 1}
+SampleXmat = {1, 0, 0}
+
+SampleBprime = SampleBmat - SampleAmat
+SampleCprime = SampleCmat - SampleAmat
+SampleXprime = SampleXmat - SampleAmat
+Det[{SampleBprime, SampleCprime, SampleXprime}]
+
+Amat = Subscript[p, 0]
+Bmat = - Subscript[p, 0]
+Cmat = Subscript[p, 1]
+Xmat = Subscript[p, 2]
+
+Bprime = Bmat - Amat
+Cprime = Cmat - Amat
+Xprime = Xmat - Amat
+Simplify[Det[{Bprime, Cprime, Xprime}],
+         Subscript[x, 0]^2 + Subscript[y, 0]^2 + Subscript[z, 0]^2 == 1]
+\end{verbatim}
+
+If \(p\)
+
+we need to both move within our distinct
 regions and across a change in region. To handle the move on the sphere
 we use spherical coordinates with a change of basis. Typically we use
 \[r, \theta, \varphi \in \left[0, \infty\right) \times \left[0, 2\pi\right)
@@ -330,5 +429,6 @@ XXX THIS IS WRONG AND PROBABLY GOING NOWHERE XXX
 \end{array}\right]\]
 
 
+A
 
 \end{document}
