@@ -1,3 +1,6 @@
+import matplotlib.animation as animation
+import matplotlib.pyplot as plt
+import mpl_toolkits.mplot3d.axes3d as p3
 import numpy as np
 
 
@@ -56,8 +59,25 @@ class Point(object):
                        effective_radius_squared):
       raise ValueError('Not on sphere.')
 
-    # self.top_point = None
-    # self.right_point = None
+    first_two_coords_norm = np.sqrt(self.x**2 + self.y**2)
+    self.first_two_coords_norm = first_two_coords_norm
+    if not np.allclose(first_two_coords_norm, 0):
+      self.centered_top = np.array([
+          self.x * (self.SPHERE_Z_CENTER - self.z) / first_two_coords_norm,
+          self.y * (self.SPHERE_Z_CENTER - self.z) / first_two_coords_norm,
+          first_two_coords_norm,
+      ])
+      self.centered_right = np.array([
+          - self.SPHERE_RADIUS * self.y / first_two_coords_norm,
+          self.SPHERE_RADIUS * self.x / first_two_coords_norm,
+          0,
+      ])
+    else:
+      # This is the north pole. We pick an arbitrary direction -- (1, 0, 0)
+      # -- for the "top" and then use the right hand rule to get the other
+      # direction: (1, 0, 0) x (0, 0, 1) = (0, -1, 0).
+      self.centered_top = np.array([self.SPHERE_RADIUS, 0, 0])
+      self.centered_right = np.array([0, -self.SPHERE_RADIUS, 0])
 
   def verify_vert_dendrite(self):
     """Verifies that a point is on the vertical dendrite.
@@ -125,6 +145,38 @@ class Point(object):
   def move_on_sphere(self, x_rand=None, y_rand=None):
     x_rand = x_rand or self.k * np.random.randn()
     y_rand = y_rand or self.k * np.random.randn()
+
+    L = np.linalg.norm([x_rand, y_rand])
+    theta = np.arctan2(y_rand, x_rand)
+
+    # TOP HALF or moving upwards
+    if self.z > self.SPHERE_Z_CENTER or theta >= 0:
+      theta_prime = L / self.SPHERE_RADIUS
+      centered_point = np.array([self.x, self.y,
+                                 self.z - self.SPHERE_Z_CENTER])
+      new_centered_point = (
+          np.cos(theta_prime) * centered_point +
+          np.sin(theta_prime) * (
+              np.cos(theta) * self.centered_right +
+              np.sin(theta) * self.centered_top
+          )
+      )
+      self.x = new_centered_point[0]
+      self.y = new_centered_point[1]
+      self.z = new_centered_point[2] + self.SPHERE_Z_CENTER
+
+      self.verify_sphere()
+      return
+
+    print 'Moving under the sphere'
+    x_y_contrib = ((self.VERT_DENDRITE_RADIUS / self.SPHERE_RADIUS_SQUARED) *
+                   self.first_two_coords_norm)
+    z_contrib = (self.SPHERE_Z_CENTER - self.z) * (
+        (self.SPHERE_Z_CENTER - self.SPHERE_CHANGE_POINT) /
+        self.SPHERE_RADIUS_SQUARED)
+
+    d = self.SPHERE_RADIUS * np.arccos(x_y_contrib + z_contrib)
+
 
   def move_on_vert_dendrite(self, x_rand=None, y_rand=None):
     x_rand = x_rand or self.k * np.random.randn()
@@ -216,26 +268,44 @@ def test_init():
              Point.DENDRITE_CHANGE_TOP, dummy_k)
   assert p7.point_type == PointType.VERT_DENDRITE, 'p7'
 
-p_v = Point(Point.VERT_DENDRITE_RADIUS, 0,
-            Point.DENDRITE_CHANGE_TOP, 0.01)
-p_h = Point(0, Point.HORIZ_DENDRITE_RADIUS, 0, 0.01)
+
+def plot_simultation(num_points):
+  points = [Point(0, 0, Point.SPHERE_Z_CENTER + Point.SPHERE_RADIUS, 0.01)
+            for i in xrange(num_points)]
+
+  # Attaching 3D axis to the figure
+  fig = plt.figure()
+  ax = p3.Axes3D(fig)
+
+  # Create lines with a single point as a scatter.
+  all_points = [ax.plot([pt.x], [pt.y], [pt.z], c='b', marker='o')[0]
+                for pt in points]
+
+  def update_plot(step_num):
+    print 'Step Number:', step_num
+
+    for pt, point_container in zip(points, all_points):
+      pt.move()
+      point_container.set_data([pt.x], [pt.y])
+      point_container.set_3d_properties([pt.z])
+
+    return all_points
+
+  # Setting the axes properties
+  ax.set_xlim3d([-Point.SPHERE_RADIUS, Point.SPHERE_RADIUS])
+  ax.set_xlabel('X')
+
+  ax.set_ylim3d([-Point.SPHERE_RADIUS, Point.SPHERE_RADIUS])
+  ax.set_ylabel('Y')
+
+  ax.set_zlim3d([Point.SPHERE_Z_CENTER - Point.SPHERE_RADIUS,
+                 Point.SPHERE_Z_CENTER + Point.SPHERE_RADIUS])
+  ax.set_zlabel('Z')
+
+  anim = animation.FuncAnimation(fig, update_plot,
+                                 repeat=False, frames=200,
+                                 interval=50, blit=False)
+  plt.show()
 
 
-mid_point_z = 0.5 * (Point.SPHERE_CHANGE_POINT + Point.DENDRITE_CHANGE_TOP)
-points = [Point(Point.VERT_DENDRITE_RADIUS, 0, mid_point_z, 0.01)
-          for i in xrange(50)]
-import matplotlib.pyplot as plt
-import mpl_toolkits.mplot3d
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-xs = [pt.x for pt in points]
-ys = [pt.y for pt in points]
-zs = [pt.z for pt in points]
-ax.scatter(xs, ys, zs, c='b', marker='o')
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
-ax.set_zlabel('Z')
-plt.show()
-plt.clf()
-
-[pt.move() for pt in points]
+plot_simultation(50)
