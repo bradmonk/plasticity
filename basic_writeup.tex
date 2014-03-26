@@ -1,7 +1,7 @@
 \documentclass[a4paper,10pt]{article}
 
 \usepackage[margin=1in]{geometry}
-\usepackage{amsmath,amsthm,amssymb,hyperref}
+\usepackage{amsmath,amsthm,amssymb,hyperref,tikz}
 %% For subfigure
 \usepackage{caption,subcaption,graphicx}
 
@@ -378,8 +378,8 @@ It turns out the two solutions of the system are \((a, b, c)\) and \((-a,
 -b, -c)\) but since we are standing on the ground and we want the ``up''
 point (the green point) we pick the solution with positive \(z\)-coordinate.
 This corresponds to
-\[p_1 = \left(-\frac{x_0 z_0}{\sqrt{1 - z_0^2}},
--\frac{y_0 z_0}{\sqrt{1 - z_0^2}}, \sqrt{1 - z_0^2}\right).\]
+\[p_1 = \left(-\frac{x_0 z_0}{\sqrt{x_0^2 + y_0^2}},
+-\frac{y_0 z_0}{\sqrt{x_0^2 + y_0^2}}, \sqrt{x_0^2 + y_0^2}\right).\]
 To find the ``right'' point (the blue point) we use the cross product
 \(p_2 = p_1 \times p_0\) since by the
 \href{http://en.wikipedia.org/wiki/Right-hand_rule}{right-hand rule} we
@@ -389,8 +389,8 @@ want the ``index finger'' to point at us, which is the direction of
 Subscript[p, 2] = Cross[Subscript[p, 1], Subscript[p, 0]]
 \end{verbatim}
 which gives
-\[p_2 = \left(-\frac{y_0}{\sqrt{1 - z_0^2}}, \frac{x_0}{\sqrt{1 - z_0^2}},
-0\right).\]
+\[p_2 = \left(-\frac{y_0}{\sqrt{x_0^2 + y_0^2}},
+\frac{x_0}{\sqrt{x_0^2 + y_0^2}}, 0\right).\]
 
 Moving a distance \(L > 0\) at an angle of \(\theta\) from the positive
 \(x\)-axis, we know we have a displacement of \((L \cos \theta, L
@@ -435,8 +435,130 @@ the above to
 \left(p_0 - c\right) +
 \left(\sin \frac{L}{R}\right) \left[\left(\cos \theta\right) \left(p_2
  - c\right) + \left(\sin \theta\right) \left(p_1 - c\right)\right].\]
+This also will change the way we compute \(p_1\) and \(p_2\). Since
+our center is \(c = (0, 0, 0.7)\) we instead have
+\[p_1 = \left(\frac{x_0 (0.7 - z_0)}{\sqrt{x_0^2 + y_0^2}},
+\frac{y_0 (0.7 - z_0)}{\sqrt{x_0^2 + y_0^2}}, 0.7 +
+\sqrt{x_0^2 + y_0^2}\right)\]
+and
+\[p_2 = \left(-\frac{0.1 y_0}{\sqrt{x_0^2 + y_0^2}},
+\frac{0.1 x_0}{\sqrt{x_0^2 + y_0^2}}, 0.7\right).\]
 
 \textbf{NOTE}: Most mathematicians use the term ``great circle'' instead
 of equator.
+
+%% Subscript[p, 0] = {Subscript[x, 0], Subscript[y, 0], Subscript[z, 0]}
+%% Subscript[p, 1] = {Subscript[x,
+%%    0] (0.7 - Subscript[z, 0])/
+%%     Sqrt[Subscript[x, 0]^2 + Subscript[y, 0]^2],
+%%   Subscript[y,
+%%    0] (0.7 - Subscript[z, 0])/
+%%     Sqrt[Subscript[x, 0]^2 + Subscript[y, 0]^2],
+%%   0.7 + Sqrt[Subscript[x, 0]^2 + Subscript[y, 0]^2]}
+%% Subscript[p, 2] = {-0.1 Subscript[y, 0]/
+%%     Sqrt[Subscript[x, 0]^2 + Subscript[y, 0]^2],
+%%   0.1 Subscript[x, 0]/Sqrt[Subscript[x, 0]^2 + Subscript[y, 0]^2],
+%%   0.7}
+%% M = {Subscript[p, 0] - {0, 0, 0.7}, Subscript[p, 1] - {0, 0, 0.7},
+%%   Subscript[p, 2] - {0, 0, 0.7}}
+%% Simplify[M.Transpose[M],
+%%  Subscript[x, 0]^2 + Subscript[y, 0]^2 + (Subscript[z, 0] - 0.7)^2 ==
+%%   0.1^2]
+%% Expand[0.01 (0.1^2 - (Subscript[z, 0] - 0.7)^2)]
+
+\begin{center}
+\line(1,0){400}
+\end{center}
+
+To determine if we need to go from the sphere to the vertical dendrite, we
+need to determine the minimal distance from \(p_0\) to the intersection of
+the two surfaces, which occurs on the line \(z = 0.7 - \sqrt{0.0075}\) and
+of course \(x^2 + y^2 = 0.05^2\) on the cylinder. This minimal distance
+will occur in the vertical plane containing \(p_0\) and \(p_1\) (the ``up''
+point). This plane is given by \(y_0 x - x_0 y = 0\) so this minimal distance
+occurs at one of two points
+\[\left(\frac{0.05 x_0}{\sqrt{x_0^2 + y_0^2}},
+\frac{0.05 y_0}{\sqrt{x_0^2 + y_0^2}}, 0.7 - \sqrt{0.0075}\right),
+\left(-\frac{0.05 x_0}{\sqrt{x_0^2 + y_0^2}},
+-\frac{0.05 y_0}{\sqrt{x_0^2 + y_0^2}}, 0.7 - \sqrt{0.0075}\right).\]
+To find the distance from these to \(p_0\), we need to find the angles along
+the sphere. Clearly the one with the same signs as \(p_0 = (x_0, y_0, z_0)\)
+in the \(x, y\) components is closest hence we have angle
+\begin{align*}
+\cos \left(\theta_+\right) &= \frac{(p_0 - (0, 0, 0.7)) \cdot
+\left[\left(\frac{0.05 x_0}{\sqrt{x_0^2 + y_0^2}},
+\frac{0.05 y_0}{\sqrt{x_0^2 + y_0^2}}, 0.7 - \sqrt{0.0075}\right) -
+(0, 0, 0.7)\right]}{\|p_0 -
+(0, 0, 0.7)\|_2 \left\lVert\frac{0.05 x_0}{\sqrt{x_0^2 + y_0^2}},
+\frac{0.05 y_0}{\sqrt{x_0^2 + y_0^2}}, - \sqrt{0.0075}\right\rVert_2} \\
+&= \frac{0.05 \sqrt{x_0^2 + y_0^2} + (z_0 - 0.7)(- \sqrt{0.0075})}{0.1 \cdot 0.1}
+= 5 \sqrt{x_0^2 + y_0^2} + (0.7 - z_0)\sqrt{75}
+\end{align*}
+Can verify with Mathematica
+\begin{verbatim}
+Subscript[x, s] =
+ 0.05 Subscript[x, 0]/Sqrt[Subscript[x, 0]^2 + Subscript[y, 0]^2]
+Subscript[y, s] =
+ 0.05 Subscript[y, 0]/Sqrt[Subscript[x, 0]^2 + Subscript[y, 0]^2]
+Subscript[z, s] = 0.7 - Sqrt[0.0075]
+Simplify[Subscript[x, s]^2 + Subscript[y, s]^2 + (Subscript[z, s] - 0.7)^2]
+Subscript[\[CapitalDelta], 1] = {Subscript[x, 0], Subscript[y, 0],
+   Subscript[z, 0]} - {0, 0, 0.7}
+Subscript[\[CapitalDelta], 2] = {Subscript[x, s], Subscript[y, s],
+   Subscript[z, s]} - {0, 0, 0.7}
+Simplify[(Subscript[\[CapitalDelta], 1]).(Subscript[\[CapitalDelta], 1]),
+         Subscript[x, 0]^2 + Subscript[y, 0]^2 + (Subscript[z, 0] - 0.7)^2 == 0.1^2]
+Simplify[(Subscript[\[CapitalDelta], 2]).(Subscript[\[CapitalDelta], 2])]
+Simplify[(Subscript[\[CapitalDelta], 1]).(Subscript[\[CapitalDelta], 2])]
+\end{verbatim}
+To get the distance we multiply the angle by the radius of the sphere (since
+\(\frac{\theta_+}{2 \pi} = \frac{\text{dist}}{2 \pi R}\)). Thus \(p_0\)
+is a distance of
+\[d = 0.1 \arccos\left(5 \sqrt{x_0^2 + y_0^2} + (0.7 - z_0)\sqrt{75}
+\right)\]
+from the boundary. Given an angle \(-\pi \leq \theta \leq \pi\), if \(\theta
+\geq 0\) then (given an assumption about the maximal displacement) we know
+we stay in the sphere. If \(\theta < 0\), then we can compute the angle
+\(\theta_1 = \theta + \frac{\pi}{2} \in \left[-\frac{\pi}{2}, \frac{\pi}{2}
+\right]\) and determine how far we can travel
+within the sphere along this angle:
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+\draw (-4, -3) -- (4, -3);
+\draw (0, 0.5) -- (0, -3);
+\draw (-3, -3) -- (0, 0);
+\draw (-4, -3) -- (-4, -4.5);
+\draw (4, -3) -- (4, -4.5);
+
+\draw (-0.25, -0.5) node{\scriptsize{\(\theta_1\)}};
+\draw (0.25, -1.5) node{\scriptsize{\(d\)}};
+\draw (-2 - 0.15, -1.5 + 0.15) node{\scriptsize{\(H\)}};
+\draw[dashed] (-3, -3) -- (-15/4, -15/4);
+
+\draw (0, 0) ++( 180 : 5 ) arc ( 180:216.86:5 );
+\draw (0, 0) ++( 323.13 : 5 ) arc ( 323.13:360:5 );
+
+\draw (3, -0.5) node{\scriptsize{Sphere}};
+\draw (0, -4) node{\scriptsize{Cylinder}};
+\draw (-1.4, -3 + 0.2) node{\scriptsize{\(x_{\text{rot}}\)}};
+
+\draw[fill=black] (0, 0) circle (.05cm);
+\draw[fill=black] (0, -3) circle (.05cm);
+\draw[fill=black] (-3, -3) circle (.05cm);
+\draw[fill=black] (-15/4, -15/4) circle (.05cm);
+\draw (-27/8 + 0.5, -27/8 - 0.15) node{\scriptsize{\(L - H\)}};
+\end{tikzpicture}
+\end{center}
+Given \(\theta_1\) we have a maximum hypotenuse \(H\) given by
+\(\cos \theta_1 = \frac{d}{H} \Rightarrow H = \frac{d}{\cos \theta_1}\).
+If our displacement \(L\) exceeds \(H\) then we first rotate the point
+\[p_{\text{cyl}} = \left(\frac{0.05 x_0}{\sqrt{x_0^2 + y_0^2}},
+\frac{0.05 y_0}{\sqrt{x_0^2 + y_0^2}}, 0.7 - \sqrt{0.0075}\right)\]
+by a distance \(x_{\text{rot}} = H \sin \theta_1\) and then move within
+the dendrite by a vertical displacement of
+\[\boxed{- (L - H) \cos \theta_1}\]
+and a horizontal displacement (via rotation) of
+\[\boxed{(L - H) \sin \theta_1}\]
+(the sign of \(\sin \theta_1\) will determine if we go left or right).
 
 \end{document}
