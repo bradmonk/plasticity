@@ -4,6 +4,11 @@ import matplotlib.pyplot as plt
 import mpl_toolkits.mplot3d.axes3d as p3
 import mpmath
 import numpy as np
+# To catch operations that produce nans.
+np.seterr(invalid='raise')
+
+
+DEBUG = False
 
 
 class PointType(object):
@@ -338,10 +343,16 @@ class Point(object):
       try:
         self.verify_horiz_dendrite()
       except ValueError:
+        if DEBUG:
+          print 'Not on horizontal dendrite in exact sense.'
+          old_z = self.z
+          print 'Approximating by updating z by',
         # Failed test to be on HorizontalDendrite, so force the
         # z-value to make this occur.
         z_sq = self.HORIZ_DENDRITE_RADIUS_SQUARED - self.y**2
         self.z = np.sqrt(z_sq)
+        if DEBUG:
+          print (self.z - old_z)
         self.verify_horiz_dendrite()
 
       remaining_x_rand = x_rand - intersection_x_rand
@@ -506,10 +517,31 @@ class Point(object):
       try:
         self.verify_vert_dendrite()
       except ValueError:
-        # Failed test to be on vertical dendrite, so force the
-        # x-value to make this occur.
-        x_sq = self.VERT_DENDRITE_RADIUS_SQUARED - self.y**2
-        self.x = np.sign(self.x) * np.sqrt(x_sq)
+        if DEBUG:
+          print 'Not on vertical dendrite in exact sense.'
+        # Failed test to be on vertical dendrite.
+        if np.abs(self.y) <= self.VERT_DENDRITE_RADIUS:
+          if DEBUG:
+            old_x = self.x
+            print 'Approximating by updating x by',
+          # Force the x-value to make this occur if y is small enough.
+          x_sq = self.VERT_DENDRITE_RADIUS_SQUARED - self.y**2
+          self.x = np.sign(self.x) * np.sqrt(x_sq)
+          if DEBUG:
+            print (self.x - old_x)
+        else:
+          if DEBUG:
+            old_x, old_y, old_z = self.x, self.y, self.z
+            print 'Full reboot, setting y to the vertical radius.'
+          self.x = 0.0
+          self.y = np.sign(self.y) * self.VERT_DENDRITE_RADIUS
+          z_sq = self.HORIZ_DENDRITE_RADIUS_SQUARED - self.y**2
+          self.z = np.sign(self.z) * np.sqrt(z_sq)
+          if DEBUG:
+            print 'Total changes:', (old_x - self.x, old_y - self.y,
+                                     old_z - self.z)
+        # After putting the point on the boundary, verify it is
+        # on the vertical dendrite.
         self.verify_vert_dendrite()
 
       remaining_x_rand = x_rand - intersection_x_rand
@@ -560,8 +592,8 @@ def test_init():
   assert p7.point_type == PointType.VERT_DENDRITE, 'p7'
 
 
-def plot_simultation(num_points, num_frames=200, print_frequency=None,
-                     interval=30, k=0.01, filename=None):
+def plot_simulation(num_points, num_frames=200, print_frequency=None,
+                    interval=30, k=0.01, filename=None):
   points = [Point(0, 0, Point.SPHERE_Z_CENTER + Point.SPHERE_RADIUS, k)
             for i in xrange(num_points)]
 
@@ -607,7 +639,8 @@ def plot_simultation(num_points, num_frames=200, print_frequency=None,
 
 
 def create_gif():
-  plot_simultation(100, filename='100pts_200steps.gif')
+  plot_simulation(100, num_frames=400, print_frequency=20,
+                  filename='100pts_400steps_colored_points.gif')
 
 
-plot_simultation(50, num_frames=400)
+plot_simulation(100, num_frames=400, print_frequency=20)
