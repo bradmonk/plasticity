@@ -11,6 +11,12 @@ class PointType(object):
   VERT_DENDRITE = 2
   HORIZ_DENDRITE = 3
 
+  COLOR_MAP = {
+      SPHERE: 'b',
+      VERT_DENDRITE: 'g',
+      HORIZ_DENDRITE: 'r',
+  }
+
 
 class Point(object):
 
@@ -269,7 +275,7 @@ class Point(object):
     self.verify_sphere()
 
   def move_from_vert_dendrite_to_horiz_dendrite(self, x_rand, y_rand):
-    """Attempts to determine how to move at the boundary of dendrites.
+    """Attempts to determine move at boundary of dendrites in vertical.
 
     May not actually leave the vertical dendrite, but has been identified
     as a potential to do so.
@@ -296,6 +302,7 @@ class Point(object):
         change_regions = True
         # We assume that this is negative, but only a portion of y_rand.
         intersection_y_rand = z_intersect - self.z
+        # intersection_x_rand is already 0
     else:
       m = y_rand / x_rand
 
@@ -371,10 +378,16 @@ class Point(object):
     x_rand = x_rand or self.k * np.random.randn()
     y_rand = y_rand or self.k * np.random.randn()
 
-    new_x = self.x + x_rand
-    # If we started left and stayed left or started right and stayed
-    # right, we are safe.
-    if ((self.x <= -self.VERT_DENDRITE_RADIUS and
+    # x is the "up" direction on the horizontal dendrite, so we use y_rand
+    # to increment.
+    # NOTE: It might be worth changing x_rand, y_rand to right_rand, up_rand.
+    new_x = self.x + y_rand
+    # If we started behind the dendrite and stayed behind
+    # (x < -VERT_DENDRITE_RADIUS) or started past (x > VERT_DENDRITE_RADIUS)
+    # and stayed past, we are safe. Also if we are on the underside of the
+    # horizontal cylinder (z <= 0), we are safe.
+    if (self.z <= 0 or
+        (self.x <= -self.VERT_DENDRITE_RADIUS and
         new_x <= -self.VERT_DENDRITE_RADIUS) or
         (self.x >= self.VERT_DENDRITE_RADIUS and
          new_x >= self.VERT_DENDRITE_RADIUS)):
@@ -386,12 +399,132 @@ class Point(object):
 
     # In this case, our x-values either started in the same range as the
     # vertical dendrite or have crossed those x-values.
-    if self.x <= -self.VERT_DENDRITE_RADIUS:  # Started left
-      print 'Started left'
-    elif self.x >= self.VERT_DENDRITE_RADIUS:  # Started right
-      print 'Started right'
-    else:  # Started in range of cylinder.
-      print 'Started in range of cylinder'
+    self.move_from_horiz_dendrite_to_vert_dendrite(x_rand, y_rand)
+
+  def _get_vert_dendrite_intersection(self, x0, theta0, m,
+                                      curved_fn_squared):
+    """Finds nearest intersect of the line and bounded curve.
+
+    The line is in the x-theta plane and the curve is the boundary of the
+    vertical dendrite.
+    """
+    def line_fn(theta):
+      return x0 + m * (theta - theta0)
+
+    def line_fn_squared(theta):
+      return line_fn(theta)**2
+
+    def intersect_fn(theta):
+      return curved_fn_squared(theta) - line_fn_squared(theta)
+
+    intersection_theta = None
+    try:
+      intersection_theta = float(mpmath.findroot(intersect_fn, theta0))
+    except ValueError:
+      pass
+
+    # Get rid of false intersections due to squaring of arguments, the
+    # only valid intersections must come in the domain of the
+    # curve that defines the dendrite boundary.
+    if (intersection_theta < self.BEGIN_MIXED_HORIZ_THETA or
+        intersection_theta > self.END_MIXED_HORIZ_THETA):
+      intersection_theta = None
+
+    x_intersect = None
+    if intersection_theta is not None:
+      x_intersect = line_fn(intersection_theta)
+
+    return intersection_theta, x_intersect
+
+  def move_from_horiz_dendrite_to_vert_dendrite(self, x_rand, y_rand):
+    """Attempts to determine move at boundary of dendrites in horizontal.
+
+    May not actually leave the horizontal dendrite, but has been identified
+    as a potential to do so.
+    """
+    x0 = self.x
+    theta0 = self.theta
+    new_x = x0 + y_rand
+
+    def curved_fn_squared(theta):
+      return (self.VERT_DENDRITE_RADIUS_SQUARED -
+              self.HORIZ_DENDRITE_RADIUS_SQUARED * mpmath.cos(theta)**2)
+
+    change_regions = False
+    intersection_x_rand = x_rand
+    intersection_y_rand = y_rand
+    if x_rand == 0:
+      # We don't move in the theta direction hence the only possible
+      # intersection is if theta is already in line with the gap.
+      if (self.BEGIN_MIXED_HORIZ_THETA <= theta0 <=
+          self.END_MIXED_HORIZ_THETA):
+        # In this case, we know either x started behind the vertical dendrite
+        # (x < 0, the radius depends on theta) or past it (x > 0).
+        if x0 < 0:
+          # NOTE: We may need to use np.max(0, curved_fn_squared) here to
+          #       avoid accidental square root of negatives.
+          x_intersect = - float(np.sqrt(curved_fn_squared(theta0)))
+          if new_x > x_intersect:  # On the right.
+            change_regions = True
+            # Need to reach point of intersection:
+            # x0 + intersection_y_rand = x_intersect
+            intersection_y_rand = x_intersect - x0
+            # intersection_x_rand is already 0
+        elif x0 > 0:
+          x_intersect = float(np.sqrt(curved_fn_squared(theta0)))
+          if new_x < x_intersect:  # On the left.
+            change_regions = True
+            intersection_y_rand = x_intersect - x0
+            # intersection_x_rand is already 0
+        else:
+          raise ValueError('It is not possible for a point to reach here.')
+    else:
+      m = y_rand / x_rand
+      intersection_theta, x_intersect = self._get_vert_dendrite_intersection(
+          x0, theta0, m, curved_fn_squared)
+
+      if x_intersect is not None:
+        endpoints = sorted((x0, new_x))
+        if endpoints[0] <= x_intersect <= endpoints[1]:
+          change_regions = True
+          intersection_y_rand = x_intersect - x0
+          intersection_x_rand = intersection_theta - theta0
+          # These should be the same fraction of the whole. Since
+          # (intersection_theta, x_intersect) lies on a line through
+          # (theta0, x0) this should be gauranteed.
+
+    # We move up to the point of intersection (if it occurs) first since we
+    # are still on the horizontal dendrite.
+    self._move_on_horiz_dendrite(intersection_x_rand, intersection_y_rand)
+
+    if not change_regions:
+      # NOTE: This may cause problems due to ties.
+      self.verify_horiz_dendrite()
+    else:
+      # Verify before moving within the new region so all the correct
+      # values are set.
+      try:
+        self.verify_vert_dendrite()
+      except ValueError:
+        # Failed test to be on vertical dendrite, so force the
+        # x-value to make this occur.
+        x_sq = self.VERT_DENDRITE_RADIUS_SQUARED - self.y**2
+        self.x = np.sign(self.x) * np.sqrt(x_sq)
+        self.verify_vert_dendrite()
+
+      remaining_x_rand = x_rand - intersection_x_rand
+      remaining_y_rand = y_rand - intersection_y_rand
+      remaining_length = np.sqrt(remaining_x_rand**2 + remaining_y_rand**2)
+
+      theta_perp = np.arctan2(self.x, self.y)
+      theta_absolute = np.arctan2(y_rand, x_rand)
+
+      theta_new_dir = np.pi / 2 + theta_absolute - theta_perp
+      new_x_rand = remaining_length * math.cos(theta_new_dir)
+      new_y_rand = remaining_length * math.sin(theta_new_dir)
+
+      self._move_on_vert_dendrite(new_x_rand, new_y_rand)
+      self.verify_vert_dendrite()
 
 
 def test_init():
@@ -427,7 +560,7 @@ def test_init():
   assert p7.point_type == PointType.VERT_DENDRITE, 'p7'
 
 
-def plot_simultation(num_points, num_frames=200,
+def plot_simultation(num_points, num_frames=200, print_frequency=None,
                      interval=30, k=0.01, filename=None):
   points = [Point(0, 0, Point.SPHERE_Z_CENTER + Point.SPHERE_RADIUS, k)
             for i in xrange(num_points)]
@@ -441,10 +574,13 @@ def plot_simultation(num_points, num_frames=200,
                 for pt in points]
 
   def update_plot(step_num):
-    print 'Step Number:', step_num
+    if print_frequency is not None and step_num % print_frequency == 0:
+      print 'Step Number:', step_num
 
     for pt, point_container in zip(points, all_points):
       pt.move()
+      color = PointType.COLOR_MAP[pt.point_type]
+      point_container.set_color(color)
       point_container.set_data([pt.x], [pt.y])
       point_container.set_3d_properties([pt.z])
 
@@ -457,7 +593,7 @@ def plot_simultation(num_points, num_frames=200,
   ax.set_ylim3d([-Point.SPHERE_RADIUS, Point.SPHERE_RADIUS])
   ax.set_ylabel('Y')
 
-  ax.set_zlim3d([Point.DENDRITE_CHANGE_TOP,
+  ax.set_zlim3d([Point.DENDRITE_CHANGE_BOTTOM,
                  Point.SPHERE_Z_CENTER + Point.SPHERE_RADIUS])
   ax.set_zlabel('Z')
 
