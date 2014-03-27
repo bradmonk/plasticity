@@ -561,4 +561,95 @@ and a horizontal displacement (via rotation) of
 \[\boxed{(L - H) \sin \theta_1}\]
 (the sign of \(\sin \theta_1\) will determine if we go left or right).
 
+\begin{center}
+\line(1,0){400}
+\end{center}
+
+To deal with the intersection of the two dendrites, we flatten out the
+top cylinder and examine the (cyclic) boundary of intersection:
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+\def\scalefactor{320}
+%% \x r is x in radians
+\draw[blue] plot[smooth, domain=-2*pi:2*pi] (\x,
+{\scalefactor * sqrt(0.25 - 0.0025 * sin(\x r) * sin(\x r))});
+\draw (-2 * pi, \scalefactor * 0.5125) -- (2 * pi, \scalefactor * 0.5125);
+\draw (2*pi, \scalefactor * 0.5125) -- (2*pi, \scalefactor * 0.5);
+\draw (-2*pi, \scalefactor * 0.5125) -- (-2*pi, \scalefactor * 0.5);
+\draw (-2 * pi - 0.9, \scalefactor * 0.5) node{\scriptsize{\(z = 0.5\)}};
+\draw (-2 * pi - 0.9, \scalefactor * 0.5125) node{\scriptsize{\(z = 0.5125\)}};
+\draw[dashed] (-2*pi, {\scalefactor * sqrt(0.2475)}) -- (2*pi, {\scalefactor * sqrt(0.2475)});
+\draw (-2 * pi - 0.9, {\scalefactor * sqrt(0.2475)}) node{\scriptsize{\(z = \sqrt{0.2475}\)}};
+
+\draw (0, \scalefactor * 0.5135) node{\scriptsize{\(\theta = 0\)}};
+\draw[dashed] (0, \scalefactor * 0.5125) -- (0, \scalefactor * 0.5);
+\draw (pi, \scalefactor * 0.5135) node{\scriptsize{\(\theta = \pi\)}};
+\draw[dashed] (pi, \scalefactor * 0.5125) -- (pi, \scalefactor * 0.5);
+\draw (-pi, \scalefactor * 0.5135) node{\scriptsize{\(\theta = -\pi\)}};
+\draw[dashed] (-pi, \scalefactor * 0.5125) -- (-pi, \scalefactor * 0.5);
+
+\draw[dashed] (pi/2, \scalefactor * 0.5125) -- (pi/2, {\scalefactor * sqrt(0.2475)});
+\draw[dashed] (-pi/2, \scalefactor * 0.5125) -- (-pi/2, {\scalefactor * sqrt(0.2475)});
+\draw[dashed] (3*pi/2, \scalefactor * 0.5125) -- (3*pi/2, {\scalefactor * sqrt(0.2475)});
+\draw[dashed] (-3*pi/2, \scalefactor * 0.5125) -- (-3*pi/2, {\scalefactor * sqrt(0.2475)});
+
+\draw[fill=black] (3*pi/4, \scalefactor * 0.505) circle (.05cm);
+\draw (3*pi/4 + 0.2, \scalefactor * 0.505 + 0.3) node{\scriptsize{\((\theta_0, z_0)\)}};
+\draw[fill=black] (pi/4, \scalefactor * 0.495) circle (.05cm);
+\draw (3*pi/4, \scalefactor * 0.505) -- (pi/4, \scalefactor * 0.495);
+
+\draw[blue] (2*pi, \scalefactor * 0.501) node{\scriptsize{\(\sqrt{0.25 - 0.0025 \sin^2 \theta}\)}};
+\end{tikzpicture}
+\end{center}
+In order to find this we can crudely intersect the line
+\[\frac{z - z_0}{\theta - \theta_0} = \frac{y_{\text{normal}}}{
+x_{\text{normal}}}\]
+with the curve
+\[z = \sqrt{0.25 - 0.0025 \sin^2 \theta}.\]
+Once we've done this, we simply account for the fraction of the curve we've
+used and scale the \(k \cdot \mathcal{N}(0, 1)\) distributed vector
+\((x_{\text{normal}}, y_{\text{normal}})\) by the remaining part.
+
+When going from the horizontal dendrite to the vertical dendrite, we are
+in a similar situation since we want to find where the cylinder
+\(x^2 + y^2 = 0.05^2\) intersects the cylinder \(y^2 + z^2 = 0.5^2\).
+Since we're writing \(y = 0.5 \cos \theta, z = 0.5 \sin \theta\) this
+becomes \(x = \pm \sqrt{0.0025 - 0.25 \cos^2 \theta}\):
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+\def\Xscalefactor{8}
+\def\Yscalefactor{80}
+%% \x r is x in radians
+\draw[blue] plot[smooth, domain=\Xscalefactor * 1.4705:\Xscalefactor * 1.6713] (\x,
+{\Yscalefactor * sqrt(0.0025 - 0.25 * cos(\x r/\Xscalefactor) * cos(\x r/\Xscalefactor))});
+\draw[blue] plot[smooth, domain=\Xscalefactor * 1.4705:\Xscalefactor * 1.6713] (\x,
+{-\Yscalefactor * sqrt(0.0025 - 0.25 * cos(\x r/\Xscalefactor) * cos(\x r/\Xscalefactor))});
+\draw[blue] (\Xscalefactor * 1.95, \Yscalefactor * 0.01) node{\scriptsize{\(x = \pm \sqrt{0.0025 - 0.25 \cos^2 \theta}\)}};
+
+
+\draw (\Xscalefactor * pi/4 - 0.7, 0) node{\scriptsize{\(x = 0\)}};
+\draw[dashed] (\Xscalefactor * pi/4, 0) -- (\Xscalefactor * 3 * pi/4, 0);
+\draw (\Xscalefactor * pi/4 - 0.7, \Yscalefactor * 0.05) node{\scriptsize{\(x = 0.05\)}};
+\draw[dashed] (\Xscalefactor * pi/4, \Yscalefactor * 0.05) -- (\Xscalefactor * 3 * pi/4, \Yscalefactor * 0.05);
+\draw (\Xscalefactor * pi/4, \Yscalefactor * 0.06) -- (\Xscalefactor * 3 * pi/4, \Yscalefactor * 0.06);
+\draw[dashed] (\Xscalefactor * pi/4, -\Yscalefactor * 0.05) -- (\Xscalefactor * 3 * pi/4, -\Yscalefactor * 0.05);
+\draw (\Xscalefactor * pi/4 - 0.7, -\Yscalefactor * 0.05) node{\scriptsize{\(x = -0.05\)}};
+\draw (\Xscalefactor * pi/4, -\Yscalefactor * 0.06) -- (\Xscalefactor * 3 * pi/4, -\Yscalefactor * 0.06);
+
+\draw (\Xscalefactor * pi/2, \Yscalefactor * 0.06 + 0.3) node{\scriptsize{\(\theta = \frac{\pi}{2}\)}};
+\draw[dashed] (\Xscalefactor * pi/2, -\Yscalefactor * 0.06) -- (\Xscalefactor * pi/2, \Yscalefactor * 0.06);
+\draw (\Xscalefactor * pi/4, \Yscalefactor * 0.06 + 0.3) node{\scriptsize{\(\theta = \frac{\pi}{4}\)}};
+\draw (\Xscalefactor * pi/4, -\Yscalefactor * 0.06) -- (\Xscalefactor * pi/4, \Yscalefactor * 0.06);
+\draw (\Xscalefactor * 3 * pi/4, -\Yscalefactor * 0.06) -- (\Xscalefactor * 3 * pi/4, \Yscalefactor * 0.06);
+\draw (\Xscalefactor * 3 * pi/4, \Yscalefactor * 0.06 + 0.3) node{\scriptsize{\(\theta = \frac{3\pi}{4}\)}};
+
+\draw[dashed] (\Xscalefactor * 1.4705, -\Yscalefactor * 0.06) -- (\Xscalefactor * 1.4705, \Yscalefactor * 0.06);
+\draw[dashed] (\Xscalefactor * 1.6713, -\Yscalefactor * 0.06 - 0.6) -- (\Xscalefactor * 1.6713, \Yscalefactor * 0.06);
+\draw (\Xscalefactor * 1.4705, -\Yscalefactor * 0.06 - 0.3) node{\scriptsize{\(\theta = \arctan\left(\frac{\sqrt{0.2475}}{0.05}\right)\)}};
+\draw (\Xscalefactor * 1.6713, -\Yscalefactor * 0.06 - 0.9) node{\scriptsize{\(\theta = \arctan\left(\frac{\sqrt{0.2475}}{-0.05}\right)\)}};
+\end{tikzpicture}
+\end{center}
+
 \end{document}
