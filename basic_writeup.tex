@@ -628,7 +628,6 @@ becomes \(x = \pm \sqrt{0.0025 - 0.25 \cos^2 \theta}\):
 {-\Yscalefactor * sqrt(0.0025 - 0.25 * cos(\x r/\Xscalefactor) * cos(\x r/\Xscalefactor))});
 \draw[blue] (\Xscalefactor * 1.95, \Yscalefactor * 0.01) node{\scriptsize{\(x = \pm \sqrt{0.0025 - 0.25 \cos^2 \theta}\)}};
 
-
 \draw (\Xscalefactor * pi/4 - 0.7, 0) node{\scriptsize{\(x = 0\)}};
 \draw[dashed] (\Xscalefactor * pi/4, 0) -- (\Xscalefactor * 3 * pi/4, 0);
 \draw (\Xscalefactor * pi/4 - 0.7, \Yscalefactor * 0.05) node{\scriptsize{\(x = 0.05\)}};
@@ -652,4 +651,22 @@ becomes \(x = \pm \sqrt{0.0025 - 0.25 \cos^2 \theta}\):
 \end{tikzpicture}
 \end{center}
 
+As before, we want to intersect the line
+\[\frac{x - x_0}{\theta - \theta_0} = \frac{y_{\text{normal}}}{
+x_{\text{normal}}}\]
+with the above and then will use the segment after there.
+
+It's also worth mentioned that we can reflect this ellipse-like figure
+across the \(x\)-axis (vertical here) since \(\cos \theta\) is an
+even function, but that would correspond to the bottom of the horizontal
+dendrite, so we have no issues there.
+
+Also, since
+\[\arctan\left(\frac{\sqrt{0.2475}}{0.05}\right) \approx 1.4706,
+\arctan\left(\frac{\sqrt{0.2475}}{-0.05}\right) \approx 1.6710, \text{ and }
+\frac{\pi}{2} \approx 1.5710\]
+we don't worry about points on the bottom of the cylinder \(z < 0\). (These
+points correspond to \(\theta < 0\) since \(z = 0.5 \sin \theta\).) This
+is because \(0\) and \(\pi\) are too far away from \(\frac{\pi}{2}\)
+to matter.
 \end{document}
