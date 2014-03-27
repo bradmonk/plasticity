@@ -32,6 +32,8 @@ class Point(object):
     self.y = y
     self.z = z
     self.k = k
+    # Consider also storing the values on the object.
+    self.move_counter = 0
 
     self.classify()
 
@@ -143,6 +145,28 @@ class Point(object):
     else:  # Assumes HORIZ_DENDRITE
       self.move_on_horiz_dendrite()
 
+    self.move_counter += 1
+
+  def _move_on_sphere(self, x_rand, y_rand):
+    L = np.linalg.norm([x_rand, y_rand])
+    theta = np.arctan2(y_rand, x_rand)
+
+    theta_prime = L / self.SPHERE_RADIUS
+    if np.abs(theta_prime) > np.pi:
+      raise ValueError('Extremely large rotation. Consider adjusting k.')
+    centered_point = np.array([self.x, self.y,
+                               self.z - self.SPHERE_Z_CENTER])
+    new_centered_point = (
+        np.cos(theta_prime) * centered_point +
+        np.sin(theta_prime) * (
+            np.cos(theta) * self.centered_right +
+            np.sin(theta) * self.centered_top
+        )
+    )
+    self.x = new_centered_point[0]
+    self.y = new_centered_point[1]
+    self.z = new_centered_point[2] + self.SPHERE_Z_CENTER
+
   def move_on_sphere(self, x_rand=None, y_rand=None):
     x_rand = x_rand or self.k * np.random.randn()
     y_rand = y_rand or self.k * np.random.randn()
@@ -168,23 +192,7 @@ class Point(object):
         self.move_from_sphere_to_vert_dendrite(H, x_rot, L, theta1)
         return
 
-    # If we didn't return in the conditional above
-    # then we are safe to move within the sphere.
-    theta_prime = L / self.SPHERE_RADIUS
-    if np.abs(theta_prime) > np.pi:
-      raise ValueError('Extremely large rotation. Consider adjusting k.')
-    centered_point = np.array([self.x, self.y,
-                               self.z - self.SPHERE_Z_CENTER])
-    new_centered_point = (
-        np.cos(theta_prime) * centered_point +
-        np.sin(theta_prime) * (
-            np.cos(theta) * self.centered_right +
-            np.sin(theta) * self.centered_top
-        )
-    )
-    self.x = new_centered_point[0]
-    self.y = new_centered_point[1]
-    self.z = new_centered_point[2] + self.SPHERE_Z_CENTER
+    self._move_on_sphere(x_rand, y_rand)
     self.verify_sphere()
 
   def move_from_sphere_to_vert_dendrite(self, H, x_rot, L, theta1):
@@ -208,22 +216,8 @@ class Point(object):
     self.y = self.VERT_DENDRITE_RADIUS * np.sin(self.theta)
     self.verify_vert_dendrite()
 
-  def move_on_vert_dendrite(self, x_rand=None, y_rand=None):
-    x_rand = x_rand or self.k * np.random.randn()
-    y_rand = y_rand or self.k * np.random.randn()
-
-    new_z = self.z + y_rand
-    if new_z > self.SPHERE_CHANGE_POINT:
-      # self.move_from_vert_dendrite_to_sphere(x_rand, y_rand)
-      print 'move_from_vert_dendrite_to_sphere'
-      return
-    elif new_z < self.DENDRITE_CHANGE_TOP:
-      # self.move_from_vert_dendrite_to_horiz_dendrite(x_rand, y_rand)
-      print 'move_from_vert_dendrite_to_horiz_dendrite'
-      return
-
-    # If our z-value doesn't exceed the boundaries, we can do simply math.
-    self.z = new_z
+  def _move_on_vert_dendrite(self, x_rand, y_rand):
+    self.z = self.z + y_rand
     # (L / (2 pi R)) * (2 pi)
     theta_delta = x_rand / self.VERT_DENDRITE_RADIUS
     if np.abs(theta_delta) > np.pi:
@@ -231,6 +225,56 @@ class Point(object):
     self.theta += theta_delta
     self.x = self.VERT_DENDRITE_RADIUS * np.cos(self.theta)
     self.y = self.VERT_DENDRITE_RADIUS * np.sin(self.theta)
+
+  def move_on_vert_dendrite(self, x_rand=None, y_rand=None):
+    x_rand = x_rand or self.k * np.random.randn()
+    y_rand = y_rand or self.k * np.random.randn()
+
+    new_z = self.z + y_rand
+    if new_z > self.SPHERE_CHANGE_POINT:
+      self.move_from_vert_dendrite_to_sphere(x_rand, y_rand)
+      return
+    elif new_z < self.DENDRITE_CHANGE_TOP:
+      # self.move_from_vert_dendrite_to_horiz_dendrite(x_rand, y_rand)
+      print 'move_from_vert_dendrite_to_horiz_dendrite'
+      return
+
+    # If our z-value doesn't exceed the boundaries, we can do simply math.
+    self._move_on_vert_dendrite(x_rand, y_rand)
+    # Since new_z stayed on the vertical dendrite, we don't need to change
+    # the point_type.
+    self.verify_vert_dendrite()
+
+  def move_from_vert_dendrite_to_sphere(self, x_rand, y_rand):
+    """Moves a point from the vertical dendrite to the sphere.
+
+    Assumes new_z > SPHERE_CHANGE_POINT, this forces y_rand to be
+    positive.
+    """
+    height_change_in_dendrite = self.SPHERE_CHANGE_POINT - self.z
+    rot_displ_in_dendrite = (x_rand / y_rand) * height_change_in_dendrite
+    self._move_on_vert_dendrite(rot_displ_in_dendrite,
+                                height_change_in_dendrite)
+    # We need to make sure the point is now on the sphere and set the
+    # sphere-relevant data (e.g. the top and right points).
+    self.verify_sphere()
+
+    height_change_in_sphere = y_rand - height_change_in_dendrite
+    rot_displ_in_sphere = x_rand - rot_displ_in_dendrite
+    self._move_on_sphere(rot_displ_in_sphere,
+                         height_change_in_sphere)
+    self.verify_sphere()
+
+  def _move_on_horiz_dendrite(self, x_rand, y_rand):
+    self.x = self.x + x_rand
+
+    # (L / (2 pi R)) * (2 pi)
+    theta_delta = y_rand / self.HORIZ_DENDRITE_RADIUS
+    if np.abs(theta_delta) > np.pi:
+      raise ValueError('Extremely large rotation. Consider adjusting k.')
+    self.theta += theta_delta
+    self.y = self.HORIZ_DENDRITE_RADIUS * np.cos(self.theta)
+    self.z = self.HORIZ_DENDRITE_RADIUS * np.sin(self.theta)
 
   def move_on_horiz_dendrite(self, x_rand=None, y_rand=None):
     x_rand = x_rand or self.k * np.random.randn()
@@ -243,17 +287,10 @@ class Point(object):
         new_x <= -self.VERT_DENDRITE_RADIUS) or
         (self.x >= self.VERT_DENDRITE_RADIUS and
          new_x >= self.VERT_DENDRITE_RADIUS)):
-      self.x = new_x
-
-      # (L / (2 pi R)) * (2 pi)
-      theta_delta = y_rand / self.HORIZ_DENDRITE_RADIUS
-      if np.abs(theta_delta) > np.pi:
-        raise ValueError('Extremely large rotation. Consider adjusting k.')
-      self.theta += theta_delta
-      self.y = self.HORIZ_DENDRITE_RADIUS * np.cos(self.theta)
-      self.z = self.HORIZ_DENDRITE_RADIUS * np.sin(self.theta)
-
-      # We are finished updating, so we return.
+      self._move_on_horiz_dendrite(x_rand, y_rand)
+      # Since new_x stayed away from the vertical dendrite, we don't need
+      # to change the point_type.
+      self.verify_horiz_dendrite()
       return
 
     # In this case, our x-values either started in the same range as the
@@ -328,7 +365,7 @@ def plot_simultation(num_points):
   ax.set_ylim3d([-Point.SPHERE_RADIUS, Point.SPHERE_RADIUS])
   ax.set_ylabel('Y')
 
-  ax.set_zlim3d([Point.SPHERE_Z_CENTER - Point.SPHERE_RADIUS,
+  ax.set_zlim3d([Point.DENDRITE_CHANGE_TOP,
                  Point.SPHERE_Z_CENTER + Point.SPHERE_RADIUS])
   ax.set_zlabel('Z')
 
