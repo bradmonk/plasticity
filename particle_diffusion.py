@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('TKAgg')
 import math
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
@@ -592,6 +594,53 @@ def test_init():
   assert p7.point_type == PointType.VERT_DENDRITE, 'p7'
 
 
+def add_sphere_surface(ax):
+  radius = Point.SPHERE_RADIUS
+  center_x = 0.0
+  center_y = 0.0
+  center_z = Point.SPHERE_Z_CENTER
+  z_cutoff = Point.SPHERE_CHANGE_POINT
+
+  theta = np.linspace(0, 2 * np.pi, 100)
+  # Need Z_CUTOFF = RADIUS cos(phi) + CENTER_Z
+  phi_max = np.arccos((z_cutoff - center_z) / radius)
+  phi = np.linspace(0, phi_max, 100)
+
+  x = radius * np.outer(np.cos(theta), np.sin(phi)) + center_x
+  y = radius * np.outer(np.sin(theta), np.sin(phi)) + center_y
+  z = radius * np.outer(np.ones(np.size(theta)), np.cos(phi)) + center_z
+
+  return ax.plot_surface(x, y, z, rstride=4, cstride=4, color='w')
+
+
+def add_vert_dendrite_surface(ax):
+  radius = Point.VERT_DENDRITE_RADIUS
+  z_top = Point.SPHERE_CHANGE_POINT
+  z_bottom = Point.DENDRITE_CHANGE_BOTTOM
+
+  theta = np.linspace(0, 2 * np.pi, 100)
+  z_mesh = np.linspace(z_bottom, z_top, 100)
+  x = radius * np.outer(np.cos(theta), np.ones(np.size(z_mesh)))
+  y = radius * np.outer(np.sin(theta), np.ones(np.size(z_mesh)))
+  z = np.outer(np.ones(np.size(theta)), z_mesh)
+
+  return ax.plot_surface(x, y, z, rstride=4, cstride=4, color='w')
+
+
+def add_horiz_dendrite_surface(ax):
+  radius = Point.HORIZ_DENDRITE_RADIUS
+  x_max = Point.VERT_DENDRITE_RADIUS * 1.75
+  x_min = - x_max
+
+  theta = np.linspace(np.pi * 0.4, np.pi * 0.6, 100)
+  x_mesh = np.linspace(x_min, x_max, 100)
+  x = np.outer(np.ones(np.size(theta)), x_mesh)
+  y = radius * np.outer(np.cos(theta), np.ones(np.size(x_mesh)))
+  z = radius * np.outer(np.sin(theta), np.ones(np.size(x_mesh)))
+
+  return ax.plot_surface(x, y, z, rstride=4, cstride=4, color='w')
+
+
 def plot_simulation(num_points, num_frames=200, print_frequency=None,
                     interval=30, k=0.01, filename=None):
   points = [Point(0, 0, Point.SPHERE_Z_CENTER + Point.SPHERE_RADIUS, k)
@@ -604,6 +653,9 @@ def plot_simulation(num_points, num_frames=200, print_frequency=None,
   # Create lines with a single point as a scatter.
   all_points = [ax.plot([pt.x], [pt.y], [pt.z], c='b', marker='o')[0]
                 for pt in points]
+  add_sphere_surface(ax)
+  add_vert_dendrite_surface(ax)
+  add_horiz_dendrite_surface(ax)
 
   def update_plot(step_num):
     if print_frequency is not None and step_num % print_frequency == 0:
@@ -631,11 +683,13 @@ def plot_simulation(num_points, num_frames=200, print_frequency=None,
 
   anim = animation.FuncAnimation(fig, update_plot,
                                  repeat=False, frames=num_frames,
-                                 interval=interval, blit=False)
+                                 interval=interval, blit=True)
   if filename is not None:
     anim.save(filename, writer='imagemagick_file')
   else:
     plt.show()
+
+  return points
 
 
 def create_gif():
@@ -643,4 +697,4 @@ def create_gif():
                   filename='100pts_400steps_colored_points.gif')
 
 
-plot_simulation(100, num_frames=400, print_frequency=20)
+points = plot_simulation(50, num_frames=200, print_frequency=20)
