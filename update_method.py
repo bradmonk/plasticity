@@ -336,7 +336,7 @@ def test_init():
   assert p7.point_type == PointType.VERT_DENDRITE, 'p7'
 
 
-def plot_simultation(num_points):
+def plot_simultation(num_points, filename=None):
   points = [Point(0, 0, Point.SPHERE_Z_CENTER + Point.SPHERE_RADIUS, 0.01)
             for i in xrange(num_points)]
 
@@ -371,8 +371,15 @@ def plot_simultation(num_points):
 
   anim = animation.FuncAnimation(fig, update_plot,
                                  repeat=False, frames=200,
-                                 interval=50, blit=False)
-  plt.show()
+                                 interval=30, blit=False)
+  if filename is not None:
+    anim.save(filename, writer='imagemagick_file')
+  else:
+    plt.show()
+
+
+def create_gif():
+  plot_simultation(100, filename='100pts_200steps.gif')
 
 
 plot_simultation(50)
