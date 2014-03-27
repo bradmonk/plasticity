@@ -648,6 +648,11 @@ becomes \(x = \pm \sqrt{0.0025 - 0.25 \cos^2 \theta}\):
 \draw[dashed] (\Xscalefactor * 1.6713, -\Yscalefactor * 0.06 - 0.6) -- (\Xscalefactor * 1.6713, \Yscalefactor * 0.06);
 \draw (\Xscalefactor * 1.4705, -\Yscalefactor * 0.06 - 0.3) node{\scriptsize{\(\theta = \arctan\left(\frac{\sqrt{0.2475}}{0.05}\right)\)}};
 \draw (\Xscalefactor * 1.6713, -\Yscalefactor * 0.06 - 0.9) node{\scriptsize{\(\theta = \arctan\left(\frac{\sqrt{0.2475}}{-0.05}\right)\)}};
+
+\draw[fill=black] (\Xscalefactor * 1.62, \Yscalefactor * 0.01) circle (.05cm);
+\draw[fill=black] (\Xscalefactor * 1.4, -\Yscalefactor * 0.005) circle (.05cm);
+\draw (\Xscalefactor * 1.62, \Yscalefactor * 0.01) -- (\Xscalefactor * 1.4, -\Yscalefactor * 0.005);
+\draw (\Xscalefactor * 1.4, -\Yscalefactor * 0.005 - 0.3) node{\scriptsize{\((\theta_0, x_0)\)}};
 \end{tikzpicture}
 \end{center}
 

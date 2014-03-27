@@ -1,6 +1,8 @@
+import math
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import mpl_toolkits.mplot3d.axes3d as p3
+import mpmath
 import numpy as np
 
 
@@ -157,10 +159,10 @@ class Point(object):
     centered_point = np.array([self.x, self.y,
                                self.z - self.SPHERE_Z_CENTER])
     new_centered_point = (
-        np.cos(theta_prime) * centered_point +
-        np.sin(theta_prime) * (
-            np.cos(theta) * self.centered_right +
-            np.sin(theta) * self.centered_top
+        math.cos(theta_prime) * centered_point +
+        math.sin(theta_prime) * (
+            math.cos(theta) * self.centered_right +
+            math.sin(theta) * self.centered_top
         )
     )
     self.x = new_centered_point[0]
@@ -185,8 +187,8 @@ class Point(object):
       d = self.SPHERE_RADIUS * np.arccos(x_y_contrib + z_contrib)
 
       theta1 = theta + np.pi/2
-      H = d / np.cos(theta1)
-      x_rot = H * np.sin(theta1)
+      H = d / math.cos(theta1)
+      x_rot = H * math.sin(theta1)
 
       if L > H:
         self.move_from_sphere_to_vert_dendrite(H, x_rot, L, theta1)
@@ -204,16 +206,16 @@ class Point(object):
     theta_cyl = np.arctan2(y_lip_cyl, x_lip_cyl)
 
     # Update the z value down from the lip of the cylinder/sphere boundary.
-    self.z = self.SPHERE_CHANGE_POINT - (L - H) * np.cos(theta1)
+    self.z = self.SPHERE_CHANGE_POINT - (L - H) * math.cos(theta1)
 
-    x_displace = (L - H) * np.sin(theta1) + x_rot
+    x_displace = (L - H) * math.sin(theta1) + x_rot
     theta_delta = x_displace / self.VERT_DENDRITE_RADIUS
     if np.abs(theta_delta) > np.pi:
       raise ValueError('Extremely large rotation. Consider adjusting k.')
 
     self.theta = theta_cyl + theta_delta
-    self.x = self.VERT_DENDRITE_RADIUS * np.cos(self.theta)
-    self.y = self.VERT_DENDRITE_RADIUS * np.sin(self.theta)
+    self.x = self.VERT_DENDRITE_RADIUS * math.cos(self.theta)
+    self.y = self.VERT_DENDRITE_RADIUS * math.sin(self.theta)
     self.verify_vert_dendrite()
 
   def _move_on_vert_dendrite(self, x_rand, y_rand):
@@ -223,20 +225,21 @@ class Point(object):
     if np.abs(theta_delta) > np.pi:
       raise ValueError('Extremely large rotation. Consider adjusting k.')
     self.theta += theta_delta
-    self.x = self.VERT_DENDRITE_RADIUS * np.cos(self.theta)
-    self.y = self.VERT_DENDRITE_RADIUS * np.sin(self.theta)
+    self.x = self.VERT_DENDRITE_RADIUS * math.cos(self.theta)
+    self.y = self.VERT_DENDRITE_RADIUS * math.sin(self.theta)
 
   def move_on_vert_dendrite(self, x_rand=None, y_rand=None):
     x_rand = x_rand or self.k * np.random.randn()
     y_rand = y_rand or self.k * np.random.randn()
 
     new_z = self.z + y_rand
-    if new_z > self.SPHERE_CHANGE_POINT:
+    if new_z > self.SPHERE_CHANGE_POINT and y_rand > 0:
+      # y_rand > 0 is redundant here since self.z <= SPHERE_CHANGE_POINT.
       self.move_from_vert_dendrite_to_sphere(x_rand, y_rand)
       return
-    elif new_z < self.DENDRITE_CHANGE_TOP:
-      # self.move_from_vert_dendrite_to_horiz_dendrite(x_rand, y_rand)
-      print 'move_from_vert_dendrite_to_horiz_dendrite'
+    elif new_z < self.DENDRITE_CHANGE_TOP and y_rand < 0:
+      # This is only a problem if we are moving down.
+      self.move_from_vert_dendrite_to_horiz_dendrite(x_rand, y_rand)
       return
 
     # If our z-value doesn't exceed the boundaries, we can do simply math.
@@ -265,16 +268,104 @@ class Point(object):
                          height_change_in_sphere)
     self.verify_sphere()
 
+  def move_from_vert_dendrite_to_horiz_dendrite(self, x_rand, y_rand):
+    """Attempts to determine how to move at the boundary of dendrites.
+
+    May not actually leave the vertical dendrite, but has been identified
+    as a potential to do so.
+
+    Since we are moving down, we assume that y_rand < 0.
+    """
+    z0 = self.z
+    theta0 = self.theta
+
+    def curved_fn(theta):
+      return mpmath.sqrt(
+          self.HORIZ_DENDRITE_RADIUS_SQUARED -
+          self.VERT_DENDRITE_RADIUS_SQUARED * mpmath.sin(theta)**2)
+
+    change_regions = False
+    intersection_x_rand = x_rand
+    intersection_y_rand = y_rand
+    m = None
+    if x_rand == 0:
+      z_intersect = float(curved_fn(theta0))
+      # If the intersection point is above the new z, then we must change
+      # regions.
+      if z_intersect > self.z + y_rand:
+        change_regions = True
+        # We assume that this is negative, but only a portion of y_rand.
+        intersection_y_rand = z_intersect - self.z
+    else:
+      m = y_rand / x_rand
+
+      def line_fn(theta):
+        return z0 + m * (theta - theta0)
+
+      def intersect_fn(theta):
+        return curved_fn(theta) - line_fn(theta)
+
+      intersection_theta = float(mpmath.findroot(intersect_fn, theta0))
+
+      endpoints = sorted((theta0, theta0 + x_rand))
+      if endpoints[0] <= intersection_theta <= endpoints[1]:
+        change_regions = True
+        z_intersect = float(curved_fn(intersection_theta))
+        intersection_y_rand = z_intersect - self.z
+        # We assume y_rand < 0, hence != 0
+        intersection_fraction = intersection_y_rand / y_rand
+        # This should be equal in absolute value to the distance from
+        # theta0 and intersection_theta.
+        intersection_x_rand = x_rand * intersection_fraction
+
+    # We move up to the point of intersection (if it occurs) first since we
+    # are still on the vertical dendrite.
+    self._move_on_vert_dendrite(intersection_x_rand, intersection_y_rand)
+
+    if not change_regions:
+      # NOTE: This may cause problems due to ties.
+      self.verify_vert_dendrite()
+    else:
+      # Verify before moving within the new region so all the correct
+      # values are set.
+      try:
+        self.verify_horiz_dendrite()
+      except ValueError:
+        # Failed test to be on HorizontalDendrite, so force the
+        # z-value to make this occur.
+        z_sq = self.HORIZ_DENDRITE_RADIUS_SQUARED - self.y**2
+        self.z = np.sqrt(z_sq)
+        self.verify_horiz_dendrite()
+
+      remaining_x_rand = x_rand - intersection_x_rand
+      remaining_y_rand = y_rand - intersection_y_rand
+      remaining_length = np.sqrt(remaining_x_rand**2 + remaining_y_rand**2)
+
+      theta_perp = np.arctan2(self.x, self.y)
+      if m is None:
+        theta_s = np.arctan2(1.0, 0.0)
+      else:
+        theta_s = np.arctan2(np.abs(m), np.sign(m))
+
+      theta_new_dir = theta_perp + theta_s - np.pi / 2
+
+      new_x_rand = remaining_length * math.cos(theta_new_dir)
+      new_y_rand = remaining_length * math.sin(theta_new_dir)
+
+      self._move_on_horiz_dendrite(new_x_rand, new_y_rand)
+      self.verify_horiz_dendrite()
+
   def _move_on_horiz_dendrite(self, x_rand, y_rand):
-    self.x = self.x + x_rand
+    # x is the "up" direction on the horizontal dendrite.
+    self.x = self.x + y_rand
 
     # (L / (2 pi R)) * (2 pi)
-    theta_delta = y_rand / self.HORIZ_DENDRITE_RADIUS
+    theta_delta = x_rand / self.HORIZ_DENDRITE_RADIUS
     if np.abs(theta_delta) > np.pi:
       raise ValueError('Extremely large rotation. Consider adjusting k.')
     self.theta += theta_delta
-    self.y = self.HORIZ_DENDRITE_RADIUS * np.cos(self.theta)
-    self.z = self.HORIZ_DENDRITE_RADIUS * np.sin(self.theta)
+    self.y = self.HORIZ_DENDRITE_RADIUS * math.cos(self.theta)
+    self.z = self.HORIZ_DENDRITE_RADIUS * math.sin(self.theta)
 
   def move_on_horiz_dendrite(self, x_rand=None, y_rand=None):
     x_rand = x_rand or self.k * np.random.randn()
@@ -336,8 +427,9 @@ def test_init():
   assert p7.point_type == PointType.VERT_DENDRITE, 'p7'
 
 
-def plot_simultation(num_points, filename=None):
-  points = [Point(0, 0, Point.SPHERE_Z_CENTER + Point.SPHERE_RADIUS, 0.01)
+def plot_simultation(num_points, num_frames=200,
+                     interval=30, k=0.01, filename=None):
+  points = [Point(0, 0, Point.SPHERE_Z_CENTER + Point.SPHERE_RADIUS, k)
             for i in xrange(num_points)]
 
   # Attaching 3D axis to the figure
@@ -370,8 +462,8 @@ def plot_simultation(num_points, filename=None):
   ax.set_zlabel('Z')
 
   anim = animation.FuncAnimation(fig, update_plot,
-                                 repeat=False, frames=200,
-                                 interval=30, blit=False)
+                                 repeat=False, frames=num_frames,
+                                 interval=interval, blit=False)
   if filename is not None:
     anim.save(filename, writer='imagemagick_file')
   else:
@@ -382,4 +474,4 @@ def create_gif():
   plot_simultation(100, filename='100pts_200steps.gif')
 
 
-plot_simultation(50)
+plot_simultation(50, num_frames=400)
