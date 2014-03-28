@@ -649,6 +649,9 @@ def plot_simulation(num_points, num_frames=200, print_frequency=None,
   # Attaching 3D axis to the figure
   fig = plt.figure()
   ax = p3.Axes3D(fig)
+  
+  # Brad Edit
+  ax.view_init(elev=-12, azim=55)
 
   # Create lines with a single point as a scatter.
   all_points = [ax.plot([pt.x], [pt.y], [pt.z], c='b', marker='o')[0]
