@@ -49,6 +49,8 @@ class Point(object):
     self.k = k
     # Consider also storing the values on the object.
     self.move_counter = 0
+    self.values = [(x, y, z)]
+    self.brownian_components = []
 
     self.classify()
 
@@ -161,6 +163,7 @@ class Point(object):
       self.move_on_horiz_dendrite()
 
     self.move_counter += 1
+    self.values.append((self.x, self.y, self.z))
 
   def _move_on_sphere(self, x_rand, y_rand):
     L = np.linalg.norm([x_rand, y_rand])
@@ -185,6 +188,7 @@ class Point(object):
   def move_on_sphere(self, x_rand=None, y_rand=None):
     x_rand = x_rand or self.k * np.random.randn()
     y_rand = y_rand or self.k * np.random.randn()
+    self.brownian_components.append((x_rand, y_rand))
 
     L = np.linalg.norm([x_rand, y_rand])
     theta = np.arctan2(y_rand, x_rand)
@@ -244,6 +248,7 @@ class Point(object):
   def move_on_vert_dendrite(self, x_rand=None, y_rand=None):
     x_rand = x_rand or self.k * np.random.randn()
     y_rand = y_rand or self.k * np.random.randn()
+    self.brownian_components.append((x_rand, y_rand))
 
     new_z = self.z + y_rand
     if new_z > self.SPHERE_CHANGE_POINT and y_rand > 0:
@@ -390,6 +395,7 @@ class Point(object):
   def move_on_horiz_dendrite(self, x_rand=None, y_rand=None):
     x_rand = x_rand or self.k * np.random.randn()
     y_rand = y_rand or self.k * np.random.randn()
+    self.brownian_components.append((x_rand, y_rand))
 
     # x is the "up" direction on the horizontal dendrite, so we use y_rand
     # to increment.
@@ -701,3 +707,4 @@ def create_gif():
 
 
 points = plot_simulation(50, num_frames=200, print_frequency=20)
+# [(point.values, point.brownian_components) for point in points]
