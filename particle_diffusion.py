@@ -655,8 +655,7 @@ def plot_simulation(num_points, num_frames=200, print_frequency=None,
   # Attaching 3D axis to the figure
   fig = plt.figure()
   ax = p3.Axes3D(fig)
-  
-  # Brad Edit
+
   ax.view_init(elev=-12, azim=55)
 
   # Create lines with a single point as a scatter.
@@ -696,7 +695,8 @@ def plot_simulation(num_points, num_frames=200, print_frequency=None,
   if filename is not None:
     anim.save(filename, writer='imagemagick_file')
   else:
-    plt.show()
+    # Could also use plt.draw() for interactive work, not for 3D though.
+    plt.show(block=False)
 
   return points
 
