@@ -62,13 +62,12 @@ geometry_3d = (geometry_first_shaft + geometry_second_shaft +
                geometry_third_shaft + geometry_fourth_shaft +
                dendrite_cone)
 dolfin.info(geometry_3d, True)
-resolution = 32
+resolution = 96  # 32 * 3
 print '=' * 50
 print 'Creating mesh'
 print '=' * 50
 mesh_3d = dolfin.Mesh(geometry_3d, resolution)
-dolfin.plot(mesh_3d, '3D mesh')
 print '=' * 50
-print 'Done plotting, entering interactive mode'
+print 'Plotting in interactive mode'
 print '=' * 50
-dolfin.interactive()
+dolfin.plot(mesh_3d, '3D mesh', interactive=True)
