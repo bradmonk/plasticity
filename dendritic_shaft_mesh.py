@@ -10,25 +10,32 @@ else:
 
 
 SCALE_FACTOR = 50  # dolfin.Mesh has issues below a certain scale
-SPHERE_Z = SCALE_FACTOR * 1 - np.sqrt(0.05 * SCALE_FACTOR**2)
-SPHERE_RADIUS = SCALE_FACTOR * 0.3
-CYLINDER_BOTTOM = 0.0
-CYLINDER_TOP = SPHERE_Z - np.sqrt(0.08 * SCALE_FACTOR**2)
+# Top cone data for synapse
+TOP_CONE_TOP_Z = SCALE_FACTOR * 1.0
+TOP_CONE_TOP_RADIUS = SCALE_FACTOR * 0.2
+# Cone boundary data for synapse
+CONE_BOUNDARY_Z = SCALE_FACTOR * (1.0 - 0.16)
+CONE_BOUNDARY_RADIUS = SCALE_FACTOR * 0.3
+# Bottom cone data for synapse
+BOTTOM_CONE_BOTTOM_Z = SCALE_FACTOR * (1.0 - 3 * 0.16)
+BOTTOM_CONE_BOTTOM_RADIUS = SCALE_FACTOR * 0.1
+# Cylinder data for dendritic shaft
+CYLINDER_BOTTOM = SCALE_FACTOR * 0.0
+CYLINDER_TOP = BOTTOM_CONE_BOTTOM_Z
 CYLINDER_RADIUS = SCALE_FACTOR * 0.1
-BOX_WIDTH = SCALE_FACTOR * 2.0
-BOX_BOTTOM = SCALE_FACTOR * 1.0
+
+top_cone = dolfin.Cone(dolfin.Point(0, 0, CONE_BOUNDARY_Z),
+                       dolfin.Point(0, 0, TOP_CONE_TOP_Z),
+                       CONE_BOUNDARY_RADIUS, TOP_CONE_TOP_RADIUS)
+bottom_cone = dolfin.Cone(dolfin.Point(0, 0, BOTTOM_CONE_BOTTOM_Z),
+                          dolfin.Point(0, 0, CONE_BOUNDARY_Z),
+                          BOTTOM_CONE_BOTTOM_RADIUS, CONE_BOUNDARY_RADIUS)
+cylinder = dolfin.Cone(dolfin.Point(0, 0, CYLINDER_BOTTOM),
+                       dolfin.Point(0, 0, CYLINDER_TOP),
+                       CYLINDER_RADIUS, CYLINDER_RADIUS)
 
 
-sphere = dolfin.Sphere(dolfin.Point(0, 0, SPHERE_Z),
-                       SPHERE_RADIUS)
-cone = dolfin.Cone(dolfin.Point(0, 0, CYLINDER_BOTTOM),
-                   dolfin.Point(0, 0, CYLINDER_TOP),
-                   CYLINDER_RADIUS, CYLINDER_RADIUS)
-box = dolfin.Box(-BOX_WIDTH / 2, -BOX_WIDTH / 2, BOX_BOTTOM,
-                 BOX_WIDTH / 2, BOX_WIDTH / 2, BOX_BOTTOM + BOX_WIDTH)
-
-
-geometry_3d = sphere + cone - box
+geometry_3d = top_cone + bottom_cone + cylinder
 dolfin.info(geometry_3d, True)
 resolution = 32
 print '=' * 50
