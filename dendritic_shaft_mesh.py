@@ -42,8 +42,7 @@ print '=' * 50
 print 'Creating mesh'
 print '=' * 50
 mesh_3d = dolfin.Mesh(geometry_3d, resolution)
-dolfin.plot(mesh_3d, '3D mesh')
 print '=' * 50
-print 'Done plotting, entering interactive mode'
+print 'Plotting in interactive mode'
 print '=' * 50
-dolfin.interactive()
+dolfin.plot(mesh_3d, '3D mesh', interactive=True)
