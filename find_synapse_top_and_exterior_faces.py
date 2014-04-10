@@ -52,9 +52,11 @@ def main():
       all_top_coords_faces.append(face)
 
   # First save the exterior face indices.
-  # NOTE: We are not 100% sure the indices will be computed in a
-  #       deterministic fashion, and only the vertices and tetrahedral cells
-  #       are stored in the XML file for the full mesh.
+  # NOTE: We are 100% sure indices are computed the same upon reloading data
+  #       from XML file. This is relevant for face indices, since they are
+  #       not stored in the XML file. See
+  #           http://fenicsproject.org/qa/3233
+  #       for details.
   exterior_face_filename = 'exterior_faces_res_%d_full.npy' % resolution
   print '=' * 60
   print 'Saving to file:', exterior_face_filename
@@ -66,9 +68,7 @@ def main():
   if vertical_normal_faces != all_top_coords_faces:
     raise ValueError('Top face classifications disagree.')
 
-  # Vertex indices are deterministic (since stored in file) and so is the
-  # geometry (via the cells), hence the indices for the faces will be the
-  # same if the data was loaded again.
+  # Indices for the faces will be the same if data loaded again. See above.
   face_index_matrix = np.vstack(
       [face.entities(0) for face in vertical_normal_faces])
 

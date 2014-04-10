@@ -29,4 +29,8 @@ pip install networkx
 * [Shouval cluster model article](http://www.pnas.org/content/102/40/14440.full)
 * [Computational Geometry Algorithm Library](http://www.cgal.org/)
 * [Kinetic Monte Carlo Simulations](http://www.roentzsch.org/SurfDiff/index.html)
+* [Unified Form-assembly Code (UFC) User Manual][1]
+* [Q&A about deterministic face indices][2]
 
+[1]: http://fenicsproject.org/pub/documents/ufc/ufc-user-manual/ufc-user-manual.pdf
+[2]: http://fenicsproject.org/qa/3233/are-face-and-other-indexes-deterministic
