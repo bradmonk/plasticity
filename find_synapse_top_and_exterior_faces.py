@@ -51,6 +51,18 @@ def main():
     if set(face.entities(0)) <= top_coords_set:
       all_top_coords_faces.append(face)
 
+  # First save the exterior face indices.
+  # NOTE: We are not 100% sure the indices will be computed in a
+  #       deterministic fashion, and only the vertices and tetrahedral cells
+  #       are stored in the XML file for the full mesh.
+  exterior_face_filename = 'exterior_faces_res_%d_full.npy' % resolution
+  print '=' * 60
+  print 'Saving to file:', exterior_face_filename
+  print '%d exterior faces out of %d total faces.' % (
+      len(exterior_face_indices), num_faces)
+  print '=' * 60
+  np.save(exterior_face_filename, np.array(exterior_face_indices))
+
   if vertical_normal_faces != all_top_coords_faces:
     raise ValueError('Top face classifications disagree.')
 
@@ -60,19 +72,19 @@ def main():
   face_index_matrix = np.vstack(
       [face.entities(0) for face in vertical_normal_faces])
 
-  exterior_face_filename = 'exterior_faces_res_%d_full.npy' % resolution
-  print '=' * 60
-  print 'Saving to file:', exterior_face_filename
-  print '%d exterior faces out of %d total faces.' % (
-      len(exterior_face_indices), num_faces)
-  print '=' * 60
-  np.save(exterior_face_filename, np.array(exterior_face_indices))
-
   faces_full_filename = 'faces_top_res_%d_full.npy' % resolution
   print '=' * 60
   print 'Saving to file:', faces_full_filename
   print '=' * 60
   np.save(faces_full_filename, face_index_matrix)
+
+  # Save the indices of the facets on the top.
+  top_indices_filename = 'faces_top_indices_res_%d_full.npy' % resolution
+  print '=' * 60
+  print 'Saving to file:', top_indices_filename
+  print '=' * 60
+  top_indices = [facet.index() for facet in vertical_normal_faces]
+  np.save(top_indices_filename, np.array(top_indices))
 
 
 if __name__ == '__main__':
