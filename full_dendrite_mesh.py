@@ -1,5 +1,6 @@
 import dolfin
 import numpy as np
+import os
 
 
 if not dolfin.has_cgal():
@@ -69,13 +70,34 @@ def get_geometry():
 
 
 def main():
-  geometry_3d = get_geometry()
-  dolfin.info(geometry_3d, True)
   resolution = 96  # 32 * 3
-  print '=' * 50
-  print 'Creating mesh'
-  print '=' * 50
-  mesh_3d = dolfin.Mesh(geometry_3d, resolution)
+  filename = 'mesh_res_%d.xml' % resolution
+
+  if os.path.exists(filename):
+    print '=' * 50
+    print 'Mesh file exists, loading from file'
+    print '=' * 50
+    mesh_3d = dolfin.Mesh(filename)
+  else:
+    geometry_3d = get_geometry()
+    dolfin.info(geometry_3d, True)
+    print '=' * 50
+    print 'Creating mesh'
+    print '=' * 50
+    mesh_3d = dolfin.Mesh(geometry_3d, resolution)
+
+    print '=' * 50
+    print 'Calling mesh.init() to compute edges/faces'
+    print '=' * 50
+    mesh_3d.init()
+
+    print '=' * 50
+    print 'Saving to file:', filename
+    print '=' * 50
+    data_file = dolfin.File(filename)
+    data_file << mesh_3d
+
+  # Plot in either case.
   print '=' * 50
   print 'Plotting in interactive mode'
   print '=' * 50
