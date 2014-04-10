@@ -50,15 +50,6 @@ def get_connected_components(facets, edges, vertices):
   return facets_by_index, networkx.connected_components(facet_index_graph)
 
 
-def check_top_facets(top_facets):
-  for facet in top_facets:
-    if not facet.exterior():
-      raise ValueError('Not exterior where expected.')
-    theta = np.arccos(facet.normal().z())
-    if not np.allclose(theta, 0):
-      raise ValueError('Not vertical normal where expected.')
-
-
 def get_data(resolution):
   mesh_full_filename = 'mesh_res_%d_full.xml' % resolution
   mesh_3d_full = dolfin.Mesh(mesh_full_filename)
@@ -122,11 +113,6 @@ def main():
   # For some reason, this fails if mesh_3d_full is not in the
   # same scope as the values inherited from it.
   unused_mesh_3d_full, top_facets, edges, vertices = get_data(resolution)
-
-  # First do a data check since we aren't sure if face indexing
-  # is deterministic given vertices / tetrahedral shells stored in
-  # the XML file.
-  check_top_facets(top_facets)
 
   print 'Computing connected components'
   print '=' * 60
