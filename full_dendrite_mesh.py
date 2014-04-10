@@ -47,27 +47,40 @@ def get_shaft(shaft_index):
   return top_cone + bottom_cone + cylinder
 
 
-dendrite_cone = dolfin.Cone(
-    dolfin.Point(DENDRITE_LEFT, 0, -DENDRITE_RADIUS),
-    dolfin.Point(DENDRITE_RIGHT, 0, -DENDRITE_RADIUS),
-    DENDRITE_RADIUS, DENDRITE_RADIUS)
+def get_dendrite():
+  return dolfin.Cone(
+      dolfin.Point(DENDRITE_LEFT, 0, -DENDRITE_RADIUS),
+      dolfin.Point(DENDRITE_RIGHT, 0, -DENDRITE_RADIUS),
+      DENDRITE_RADIUS, DENDRITE_RADIUS)
 
-geometry_first_shaft = get_shaft(1)
-geometry_second_shaft = get_shaft(2)
-geometry_third_shaft = get_shaft(3)
-geometry_fourth_shaft = get_shaft(4)
 
-# Combine all geometries
-geometry_3d = (geometry_first_shaft + geometry_second_shaft +
-               geometry_third_shaft + geometry_fourth_shaft +
-               dendrite_cone)
-dolfin.info(geometry_3d, True)
-resolution = 96  # 32 * 3
-print '=' * 50
-print 'Creating mesh'
-print '=' * 50
-mesh_3d = dolfin.Mesh(geometry_3d, resolution)
-print '=' * 50
-print 'Plotting in interactive mode'
-print '=' * 50
-dolfin.plot(mesh_3d, '3D mesh', interactive=True)
+def get_geometry():
+  dendrite_cone = get_dendrite()
+
+  geometry_first_shaft = get_shaft(1)
+  geometry_second_shaft = get_shaft(2)
+  geometry_third_shaft = get_shaft(3)
+  geometry_fourth_shaft = get_shaft(4)
+
+  # Combine all geometries
+  return (geometry_first_shaft + geometry_second_shaft +
+          geometry_third_shaft + geometry_fourth_shaft +
+          dendrite_cone)
+
+
+def main():
+  geometry_3d = get_geometry()
+  dolfin.info(geometry_3d, True)
+  resolution = 96  # 32 * 3
+  print '=' * 50
+  print 'Creating mesh'
+  print '=' * 50
+  mesh_3d = dolfin.Mesh(geometry_3d, resolution)
+  print '=' * 50
+  print 'Plotting in interactive mode'
+  print '=' * 50
+  dolfin.plot(mesh_3d, '3D mesh', interactive=True)
+
+
+if __name__ == '__main__':
+  main()
