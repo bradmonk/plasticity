@@ -3,7 +3,7 @@ import dolfin
 
 def main():
   resolution = 96  # 32 * 3
-  filename = 'mesh_res_%d.xml' % resolution
+  filename = 'mesh_res_%d_boundary.xml' % resolution
 
   mesh_3d = dolfin.Mesh(filename)
   mesh_3d = dolfin.mesh.refine(mesh_3d)
