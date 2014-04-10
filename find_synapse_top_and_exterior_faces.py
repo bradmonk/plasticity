@@ -6,49 +6,50 @@ import full_dendrite_mesh
 
 def main():
   resolution = 96  # 32 * 3
-  mesh_filename = 'mesh_res_%d.xml' % resolution
-  mesh_3d = dolfin.Mesh(mesh_filename)
+  mesh_full_filename = 'mesh_res_%d_full.xml' % resolution
+  mesh_3d_full = dolfin.Mesh(mesh_full_filename)
   print 'Calling mesh.init() to compute faces / edges / etc.'
   print '=' * 60
-  mesh_3d.init()
+  mesh_3d_full.init()
 
-  coords = mesh_3d.coordinates()
+  coords = mesh_3d_full.coordinates()
   top_coords = np.nonzero(
       coords[:, 2] >= full_dendrite_mesh.TOP_CONE_TOP_Z - 0.001)[0]
   top_coords_set = set(top_coords)
 
-  num_faces = mesh_3d.num_faces()
-  num_cells = mesh_3d.num_cells()
-  if num_faces != num_cells:
-    raise ValueError('Expected boundary mesh.')
+  num_faces = mesh_3d_full.num_faces()
+  num_facets = mesh_3d_full.num_facets()
+  if num_faces != num_facets:
+    raise ValueError('Expected tetrahedral mesh.')
 
-  # Face.normal() is not defined on boundary meshes, so we need to use
-  # Cell.cell_normal(); unfortunately, the cell_normal() is not actually
-  # oriented with the surface.
-  faces_as_cells = dolfin.cells(mesh_3d)
+  faces_as_facets = dolfin.facets(mesh_3d_full)
+  exterior_face_indices = []
   vertical_normal_faces = []
   all_top_coords_faces = []
   face_count = 0
 
   print 'Looping through faces to find faces on tops of synapses'
   print '=' * 60
-  for face in faces_as_cells:
+  for face in faces_as_facets:
+    face_count += 1
+    if face_count % 20000 == 0:
+      print face_count, '/', num_faces
+
+    # Only use exterior facets / faces.
+    if not face.exterior():
+      continue
+    else:
+      exterior_face_indices.append(face.index())
+
     # The vertical normal is (0, 0, 1) and we check the angle between
     # the normal and this vector v . (0, 0, 1) = v_z (dot product).
-    theta = np.arccos(face.cell_normal().z())
-    # cell_normal() is not oriented with surface, so can be straight up
-    # OR straight down.
-    if np.allclose(theta, 0) or np.allclose(theta, np.pi):
+    theta = np.arccos(face.normal().z())
+    if np.allclose(theta, 0):
       vertical_normal_faces.append(face)
 
     # If every single index is one of the "top coordinate" indices.
     if set(face.entities(0)) <= top_coords_set:
       all_top_coords_faces.append(face)
-
-    if face_count % 1000 == 0:
-      print face_count, '/', num_faces
-
-    face_count += 1
 
   if vertical_normal_faces != all_top_coords_faces:
     raise ValueError('Top face classifications disagree.')
@@ -59,11 +60,19 @@ def main():
   face_index_matrix = np.vstack(
       [face.entities(0) for face in vertical_normal_faces])
 
-  faces_filename = 'faces_res_%d.npy' % resolution
+  exterior_face_filename = 'exterior_faces_res_%d_full.npy' % resolution
   print '=' * 60
-  print 'Saving to file:', faces_filename
+  print 'Saving to file:', exterior_face_filename
+  print '%d exterior faces out of %d total faces.' % (
+      len(exterior_face_indices), num_faces)
   print '=' * 60
-  np.save(faces_filename, face_index_matrix)
+  np.save(exterior_face_filename, np.array(exterior_face_indices))
+
+  faces_full_filename = 'faces_top_res_%d_full.npy' % resolution
+  print '=' * 60
+  print 'Saving to file:', faces_full_filename
+  print '=' * 60
+  np.save(faces_full_filename, face_index_matrix)
 
 
 if __name__ == '__main__':

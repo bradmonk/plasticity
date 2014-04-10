@@ -71,7 +71,7 @@ def get_geometry():
 
 def main():
   resolution = 96  # 32 * 3
-  filename = 'mesh_res_%d.xml' % resolution
+  filename = 'mesh_res_%d_boundary.xml' % resolution
 
   if os.path.exists(filename):
     print '=' * 60
