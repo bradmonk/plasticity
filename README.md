@@ -17,7 +17,5 @@ $ source /Applications/FEniCS.app/Contents/Resources/share/fenics/fenics.conf
 
 
 == Web Resources ==
-
 http://www.neuroml.org/tool_support.php
-
 http://www.mcell.psc.edu/tutorials/ficks_laws.html
