@@ -57,19 +57,22 @@ def get_data(resolution):
   print '=' * 60
   mesh_3d_full.init()
 
+  print 'Reading facet, edge and vertex iterators into lists'
+  print '=' * 60
+  facets = list(dolfin.facets(mesh_3d_full))
+  edges = list(dolfin.edges(mesh_3d_full))
+  vertices = list(dolfin.vertices(mesh_3d_full))
+
+  return mesh_3d_full, facets, edges, vertices
+
+
+def get_top_facets(facets, resolution):
   top_indices_filename = 'faces_top_indices_res_%d_full.npy' % resolution
   top_indices = np.load(top_indices_filename)
   top_indices = set(top_indices)
 
-  print 'Reading facet, edge and vertex iterators into lists'
-  print '=' * 60
-  facets = list(dolfin.facets(mesh_3d_full))
-  top_facets = [facet for i, facet in enumerate(facets)
-                if i in top_indices]
-  edges = list(dolfin.edges(mesh_3d_full))
-  vertices = list(dolfin.vertices(mesh_3d_full))
-
-  return mesh_3d_full, top_facets, edges, vertices
+  return [facet for i, facet in enumerate(facets)
+          if i in top_indices]
 
 
 def get_point_in_3d(index, vertices):
@@ -112,7 +115,8 @@ def main():
   resolution = 96  # 32 * 3
   # For some reason, this fails if mesh_3d_full is not in the
   # same scope as the values inherited from it.
-  unused_mesh_3d_full, top_facets, edges, vertices = get_data(resolution)
+  unused_mesh_3d_full, facets, edges, vertices = get_data(resolution)
+  top_facets = get_top_facets(facets, resolution)
 
   print 'Computing connected components'
   print '=' * 60
