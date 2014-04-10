@@ -13,11 +13,13 @@ http://fenicsproject.org/download/
 Need to:
 $ source /Applications/FEniCS.app/Contents/Resources/share/fenics/fenics.conf
 
-
+```
+pip install networkx
+```
 
 
 ## Web Resources
-* [neuroml.org - neuron model/mesh library](http://www.neuroml.org/tool_support.php) 
+* [neuroml.org - neuron model/mesh library](http://www.neuroml.org/tool_support.php)
 * [mcell.psc.edu - mcell diffusion software](http://www.mcell.psc.edu/tutorials/ficks_laws.html)
 * [mcell on github](https://github.com/mcellteam/cellblender_tutorials)
 * [mmbios.org - National Center for Multiscale Modeling of Biological Systems](http://mmbios.org/index.php/software)
