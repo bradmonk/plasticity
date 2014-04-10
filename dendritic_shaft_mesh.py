@@ -6,7 +6,7 @@ if not dolfin.has_cgal():
   raise ImportError('Does not have CGAL.')
 else:
   print 'Done importing'
-  print '=' * 50
+  print '=' * 60
 
 
 SCALE_FACTOR = 50  # dolfin.Mesh has issues below a certain scale
@@ -54,13 +54,13 @@ def main():
   geometry_3d = get_geometry()
   dolfin.info(geometry_3d, True)
   resolution = 32
-  print '=' * 50
+  print '=' * 60
   print 'Creating mesh'
-  print '=' * 50
+  print '=' * 60
   mesh_3d = dolfin.Mesh(geometry_3d, resolution)
-  print '=' * 50
+  print '=' * 60
   print 'Plotting in interactive mode'
-  print '=' * 50
+  print '=' * 60
   dolfin.plot(mesh_3d, '3D mesh', interactive=True)
 
 
