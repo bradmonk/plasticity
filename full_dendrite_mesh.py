@@ -7,7 +7,7 @@ if not dolfin.has_cgal():
   raise ImportError('Does not have CGAL.')
 else:
   print 'Done importing'
-  print '=' * 50
+  print '=' * 60
 
 
 SCALE_FACTOR = 50  # dolfin.Mesh has issues below a certain scale
@@ -74,33 +74,36 @@ def main():
   filename = 'mesh_res_%d.xml' % resolution
 
   if os.path.exists(filename):
-    print '=' * 50
+    print '=' * 60
     print 'Mesh file exists, loading from file'
-    print '=' * 50
+    print '=' * 60
     mesh_3d = dolfin.Mesh(filename)
   else:
     geometry_3d = get_geometry()
     dolfin.info(geometry_3d, True)
-    print '=' * 50
+    print '=' * 60
     print 'Creating mesh'
-    print '=' * 50
+    print '=' * 60
     mesh_3d = dolfin.Mesh(geometry_3d, resolution)
 
-    print '=' * 50
-    print 'Calling mesh.init() to compute edges/faces'
-    print '=' * 50
-    mesh_3d.init()
+    print '=' * 60
+    print 'Converting to a boundary mesh'
+    print '=' * 60
+    mesh_3d = dolfin.BoundaryMesh(mesh_3d, 'exterior')
+    # Since much smaller, it's much easier to refine the boundary mesh
+    # as well. It may be worth doing this via:
+    #     mesh_3d = dolfin.mesh.refine(mesh_3d)
 
-    print '=' * 50
+    print '=' * 60
     print 'Saving to file:', filename
-    print '=' * 50
+    print '=' * 60
     data_file = dolfin.File(filename)
     data_file << mesh_3d
 
   # Plot in either case.
-  print '=' * 50
+  print '=' * 60
   print 'Plotting in interactive mode'
-  print '=' * 50
+  print '=' * 60
   dolfin.plot(mesh_3d, '3D mesh', interactive=True)
 
 
