@@ -24,25 +24,45 @@ CYLINDER_TOP = BOTTOM_CONE_BOTTOM_Z
 CYLINDER_BOTTOM = SCALE_FACTOR * 0.0
 CYLINDER_RADIUS = SCALE_FACTOR * 0.1
 
-top_cone = dolfin.Cone(dolfin.Point(0, 0, CONE_BOUNDARY_Z),
-                       dolfin.Point(0, 0, TOP_CONE_TOP_Z),
-                       CONE_BOUNDARY_RADIUS, TOP_CONE_TOP_RADIUS)
-bottom_cone = dolfin.Cone(dolfin.Point(0, 0, BOTTOM_CONE_BOTTOM_Z),
-                          dolfin.Point(0, 0, CONE_BOUNDARY_Z),
-                          BOTTOM_CONE_BOTTOM_RADIUS, CONE_BOUNDARY_RADIUS)
-cylinder = dolfin.Cone(dolfin.Point(0, 0, CYLINDER_BOTTOM),
-                       dolfin.Point(0, 0, CYLINDER_TOP),
-                       CYLINDER_RADIUS, CYLINDER_RADIUS)
+
+def get_top_cone():
+  return dolfin.Cone(dolfin.Point(0, 0, CONE_BOUNDARY_Z),
+                     dolfin.Point(0, 0, TOP_CONE_TOP_Z),
+                     CONE_BOUNDARY_RADIUS, TOP_CONE_TOP_RADIUS)
 
 
-geometry_3d = top_cone + bottom_cone + cylinder
-dolfin.info(geometry_3d, True)
-resolution = 32
-print '=' * 50
-print 'Creating mesh'
-print '=' * 50
-mesh_3d = dolfin.Mesh(geometry_3d, resolution)
-print '=' * 50
-print 'Plotting in interactive mode'
-print '=' * 50
-dolfin.plot(mesh_3d, '3D mesh', interactive=True)
+def get_bottom_cone():
+  return dolfin.Cone(dolfin.Point(0, 0, BOTTOM_CONE_BOTTOM_Z),
+                     dolfin.Point(0, 0, CONE_BOUNDARY_Z),
+                     BOTTOM_CONE_BOTTOM_RADIUS, CONE_BOUNDARY_RADIUS)
+
+
+def get_cylinder():
+  return dolfin.Cone(dolfin.Point(0, 0, CYLINDER_BOTTOM),
+                     dolfin.Point(0, 0, CYLINDER_TOP),
+                     CYLINDER_RADIUS, CYLINDER_RADIUS)
+
+
+def get_geometry():
+  top_cone = get_top_cone()
+  bottom_cone = get_bottom_cone()
+  cylinder = get_cylinder()
+  return top_cone + bottom_cone + cylinder
+
+
+def main():
+  geometry_3d = get_geometry()
+  dolfin.info(geometry_3d, True)
+  resolution = 32
+  print '=' * 50
+  print 'Creating mesh'
+  print '=' * 50
+  mesh_3d = dolfin.Mesh(geometry_3d, resolution)
+  print '=' * 50
+  print 'Plotting in interactive mode'
+  print '=' * 50
+  dolfin.plot(mesh_3d, '3D mesh', interactive=True)
+
+
+if __name__ == '__main__':
+  main()
