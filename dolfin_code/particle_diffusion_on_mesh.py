@@ -6,15 +6,12 @@ def convert_point_to_array(point_object):
   return np.array([point_object.x(), point_object.y(), point_object.z()])
 
 
-def get_neighbor(facet, edge, facets_list):
-  """Gets neighbor for a facet across a given edge."""
+def get_neighbor(face, edge, faces_list):
+  """Gets neighbor for a face across a given edge."""
   neighbor_faces = []
   for index in edge.entities(2):
-    # Skip current facet.
-    if index == facet.index():
-      continue
-    # Skip non-exterior facets.
-    if not facets_list[index].exterior():
+    # Skip current face.
+    if index == face.index():
       continue
     neighbor_faces.append(index)
 
@@ -26,9 +23,9 @@ def get_neighbor(facet, edge, facets_list):
 
 class FaceWrapper(object):
 
-  def __init__(self, facet, parent_mesh_wrapper):
-    self.facet = facet
-    self.check_facet_type()
+  def __init__(self, face, parent_mesh_wrapper):
+    self.face = face
+    self.check_face_type()
 
     self.parent_mesh_wrapper = parent_mesh_wrapper
 
@@ -36,13 +33,13 @@ class FaceWrapper(object):
     self.set_neighbors()
     self.compute_gram_schmidt_directions()
 
-  def check_facet_type(self):
-    if self.facet.dim() != 2:
-      raise ValueError('Expected triangular facet.')
+  def check_face_type(self):
+    if self.face.dim() != 2:
+      raise ValueError('Expected triangular face.')
 
   def set_vertices(self):
     # This will fail if not exactly 3 vertices.
-    self.a_index, self.b_index, self.c_index = self.facet.entities(0)
+    self.a_index, self.b_index, self.c_index = self.face.entities(0)
 
     vertex_list = self.parent_mesh_wrapper.vertex_list
     self.a = convert_point_to_array(vertex_list[self.a_index].point())
@@ -64,7 +61,7 @@ class FaceWrapper(object):
     return return_values[0]
 
   def set_neighbors(self):
-    """Sets neighbor facet indices.
+    """Sets neighbor face indices.
 
     NOTE: This behavior is subject to change.
 
@@ -73,11 +70,11 @@ class FaceWrapper(object):
 
     This ignores the neighbors which go through a vertex.
     """
-    facet_edge_indices = self.facet.entities(1)
+    face_edge_indices = self.face.entities(1)
 
     edge_vertex_pairing = []
     # NOTE: We don't check that there are 3 edges, but could / should.
-    for edge_index in facet_edge_indices:
+    for edge_index in face_edge_indices:
       curr_edge = self.parent_mesh_wrapper.edge_list[edge_index]
       index_list = curr_edge.entities(0)
       vertex_str = self.find_missing_vertex(index_list)
@@ -93,18 +90,18 @@ class FaceWrapper(object):
     sorted_edges = [pair[1] for pair in edge_vertex_pairing]
 
     # Find indices of faces opposite our vertices.
-    facets_list = self.parent_mesh_wrapper.facets_list
-    self.face_opposite_a = get_neighbor(self.facet, sorted_edges[0],
-                                        facets_list)
-    self.face_opposite_b = get_neighbor(self.facet, sorted_edges[1],
-                                        facets_list)
-    self.face_opposite_c = get_neighbor(self.facet, sorted_edges[2],
-                                        facets_list)
+    faces_list = self.parent_mesh_wrapper.faces_list
+    self.face_opposite_a = get_neighbor(self.face, sorted_edges[0],
+                                        faces_list)
+    self.face_opposite_b = get_neighbor(self.face, sorted_edges[1],
+                                        faces_list)
+    self.face_opposite_c = get_neighbor(self.face, sorted_edges[2],
+                                        faces_list)
 
   def compute_gram_schmidt_directions(self):
     v1 = self.b - self.a
     v2 = self.c - self.a
-    n = convert_point_to_array(self.facet.normal())
+    n = convert_point_to_array(self.face.cell_normal())
 
     vec_as_cols = np.array([v1, v2, n]).T
     Q, _ = np.linalg.qr(vec_as_cols)
@@ -140,14 +137,15 @@ class MeshWrapper(object):
     # Compute extra data not stored on the object.
     self.vertex_list = list(dolfin.vertices(self.mesh))
     self.edge_list = list(dolfin.edges(self.mesh))
-    self.facets_list = list(dolfin.facets(self.mesh))
+    # In a triangular 3D mesh, the cells are faces.
+    self.faces_list = list(dolfin.cells(self.mesh))
     self.add_faces()
 
   def check_mesh_type(self):
     if self.mesh.geometry().dim() != 3:
       raise ValueError('Expecting 3D mesh.')
-    if self.mesh.cells().shape[1] != 4:
-      raise ValueError('Expecting tetrahedral mesh.')
+    if self.mesh.cells().shape[1] != 3:
+      raise ValueError('Expecting triangular / boundary mesh.')
 
   def add_faces(self):
     """Adds faces from mesh to stored list on object.
@@ -157,12 +155,9 @@ class MeshWrapper(object):
     if self._faces_added:
       return
 
-    self.faces = {}
-    # Use facets since they have facet.exterior() set.
-    for facet in self.facets_list:
-      if not facet.exterior():
-        continue
-      self.faces[facet.index()] = FaceWrapper(facet, self)
+    self.faces = []
+    for face in self.faces_list:
+      self.faces.append(FaceWrapper(face, self))
 
     self._faces_added = True
 
@@ -175,6 +170,6 @@ class Point(object):
 
 def sample_code():
   resolution = 96
-  mesh_full_filename = 'mesh_res_%d_full.xml' % resolution
+  mesh_full_filename = 'mesh_res_%d_boundary.xml' % resolution
   mesh_3d = dolfin.Mesh(mesh_full_filename)
   return MeshWrapper(mesh_3d)
