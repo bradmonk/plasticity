@@ -1,14 +1,12 @@
-function [varargout] = clustersim(LBR,TIME,SIZE,MODS,DOES,SVALS,GLU,GT,GTab)
-% clc, close all; scsz = get(0,'ScreenSize');
+function [varargout] = clustersim(LBR,TIME,SIZE,DOES,GLU,GT,GTab)
+clc, close all; scsz = get(0,'ScreenSize');
 % If function receives no inputs (run as stand-alone)
 if nargin < 1 
 
 LBR = [2     2    10     1    15     4];
 TIME = [3600 .0014 10 10 0 20];
 SIZE = [10 4];
-MODS = [0 0 1];
 DOES = [1 1 0 100];
-REVA = [1 10];
 GLU = [0 10 1 10 -5];
 GT = [10 -5 0];
 GTab = [0 1 0;1 1 1;0 1 0];
@@ -30,14 +28,64 @@ SN0 = PSDsz^2;
 SYNsz = PSDsz+(PSAsz*2);
 
 doPlot = DOES(1);
+doGaussianMask = DOES(2);
 doFluorPlot=DOES(3);
 FluorTime=DOES(4);
+
+
+
+
+%-------------------------------------------------%
+%				Mask Setup
+%-------------------------------------------------%
+hkMask=[0 1 0; 1 0 1; 0 1 0];
+%----------------------------------------%
+if doGaussianMask
+%----------------------------------------%
+A = .76;	x0=0; y0=0;	sx = .2; sy = .2; rx=sx; ry=sy;	sxy=3;
+
+t = 0;
+a = cos(t)^2/2/sx^2 + sin(t)^2/2/sy^2;
+b = -sin(2*t)/4/sx^2 + sin(2*t)/4/sy^2 ;
+c = sin(t)^2/2/sx^2 + cos(t)^2/2/sy^2;
+
+[X, Y] = meshgrid((-sx*sxy):(rx):(sx*sxy), (-sy*sxy):(ry):(sy*sxy));
+Z = A*exp( - (a*(X-x0).^2 + 2*b*(X-x0).*(Y-y0) + c*(Y-y0).^2)) ;
+
+hkMask=Z;
+
+%----------------------------------------%
+% 3D Gaussian Distribution
+fh5 = figure(5); set(fh5,'OuterPosition',(scsz./[2e-3 2e-3 2 2]))
+%----------------------------------------%
+figure(fh5)
+subplot('Position',[.05 .05 .40 .90]); ph5 = imagesc(hkMask); % ph5 = surf(X,Y,Z);
+view(0,90); axis equal; drawnow;
+xlabel('x-axis');ylabel('y-axis');zlabel('z-axis')
+subplot('Position',[.55 .05 .40 .90]); ph6 = surf(X,Y,Z);
+view(-13,22); shading interp; 
+xlabel('x-axis');ylabel('y-axis');zlabel('z-axis')
+%----------------------
+for t = 0:pi/100:pi
+	a = cos(t)^2/2/sx^2 + sin(t)^2/2/sy^2;
+	b = -sin(2*t)/4/sx^2 + sin(2*t)/4/sy^2 ;
+	c = sin(t)^2/2/sx^2 + cos(t)^2/2/sy^2;
+
+	[X, Y] = meshgrid((-sx*3):(rx):(sx*3), (-sy*3):(ry):(sy*3));
+	Z = A*exp( - (a*(X-x0).^2 + 2*b*(X-x0).*(Y-y0) + c*(Y-y0).^2)) ;
+
+	set(ph5,'CData',hkMask);
+	drawnow;
+	set(ph6,'XData',X,'YData',Y,'ZData',Z);
+	drawnow;
+end
+%-------------------------------------------------%
+end % doGaussianMask
+%-------------------------------------------------%
 
 %-------------------------------%
 % Presets
 %-------------------------------%
-hkMask=[0 1 0; 1 0 1; 0 1 0];
-
 S=padarray(ones(PSDsz),[PSAsz PSAsz], 0);
 S0=S;
 
