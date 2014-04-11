@@ -22,6 +22,8 @@ def main():
   if num_faces != num_facets:
     raise ValueError('Expected tetrahedral mesh.')
 
+  # Use facets instead of faces (though identical) because the
+  # facet objects have .exterior() set.
   faces_as_facets = dolfin.facets(mesh_3d_full)
   exterior_face_indices = []
   vertical_normal_faces = []
