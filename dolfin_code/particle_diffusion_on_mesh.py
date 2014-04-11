@@ -2,6 +2,14 @@ import dolfin
 import numpy as np
 
 
+# NOTE: This is temporary. These are parameters of the mesh (when it was
+#       created in full_dendrite_mesh.py) and we should package them in a
+#       different way.
+STARTING_X = 0.0
+STARTING_Y = 0.0
+STARTING_Z = 50.0
+
+
 def convert_point_to_array(point_object):
   return np.array([point_object.x(), point_object.y(), point_object.z()])
 
@@ -32,6 +40,8 @@ class FaceWrapper(object):
     self.set_vertices()
     self.set_neighbors()
     self.compute_gram_schmidt_directions()
+
+    self.points = []
 
   def check_face_type(self):
     if self.face.dim() != 2:
@@ -162,14 +172,37 @@ class MeshWrapper(object):
     self._faces_added = True
 
 
+def get_face(mesh_wrapper, point):
+  face_intersection = dolfin.cpp.mesh.intersect(mesh_wrapper.mesh, point)
+  # Require a unique intersection. This is not actually necessary as some
+  # points may lie on an edge or a vertex or may not be on the mesh at all.
+  if face_intersection.intersected_cells().size != 1:
+    raise ValueError('Point does not intersect the mesh on a unique face.')
+  cell_index = face_intersection.intersected_cells()[0]
+  return mesh_wrapper.faces[cell_index]
+
+
 class Point(object):
 
   def __init__(self, x, y, z, mesh_wrapper):
-    pass
+    point = dolfin.Point(x, y, z)
+    self.change_face(get_face(mesh_wrapper, point))
+
+  def change_face(self, face):
+    """Updates the face on current object and adds point to face.
+
+    Args:
+      face: A FaceWrapper object.
+    """
+    self.face = face
+    face.points.append(self)
 
 
 def sample_code():
   resolution = 96
   mesh_full_filename = 'mesh_res_%d_boundary.xml' % resolution
   mesh_3d = dolfin.Mesh(mesh_full_filename)
-  return MeshWrapper(mesh_3d)
+  mesh_wrapper = MeshWrapper(mesh_3d)
+  points = [Point(STARTING_X, STARTING_Y, STARTING_Z, mesh_wrapper)
+            for _ in xrange(10)]
+  return mesh_wrapper
