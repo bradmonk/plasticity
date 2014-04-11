@@ -19,6 +19,7 @@ pip install networkx
 
 
 ## Web Resources
+* [djhbrm github.io site](http://subroutines.github.io/djhbrm/)
 * [neuroml.org - neuron model/mesh library](http://www.neuroml.org/tool_support.php)
 * [mcell.psc.edu - mcell diffusion software](http://www.mcell.psc.edu/tutorials/ficks_laws.html)
 * [mcell on github](https://github.com/mcellteam/cellblender_tutorials)
