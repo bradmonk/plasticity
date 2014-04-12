@@ -1,13 +1,16 @@
 import dolfin
 import numpy as np
+import random
 
 
 # NOTE: This is temporary. These are parameters of the mesh (when it was
 #       created in full_dendrite_mesh.py) and we should package them in a
 #       different way.
-STARTING_X = 0.0
-STARTING_Y = 0.0
-STARTING_Z = 50.0
+SCALE_FACTOR = 50.0
+STARTING_X = SCALE_FACTOR * 0.0
+STARTING_Y = SCALE_FACTOR * 0.0
+STARTING_Z = SCALE_FACTOR * 1.0
+STARTING_K = SCALE_FACTOR * 0.01
 
 
 def convert_point_to_array(point_object):
@@ -29,6 +32,56 @@ def get_neighbor(face, edge, faces_list):
   return neighbor_faces[0]
 
 
+def find_intersection(center0, direction0, center1, direction1):
+  """Finds the intersection of two lines in R^3.
+
+  Solves
+      c0 + d0 t = c1 + d1 s
+  and returns (t, s). If the lines do not cross then returns (None, None).
+
+  Args:
+    center0: 1D NumPy are with 3 elements.
+    direction0: 1D NumPy are with 3 elements.
+    center1: 1D NumPy are with 3 elements.
+    direction1: 1D NumPy are with 3 elements.
+
+  Returns:
+    Two real values s and t.
+  """
+  # c0 + d0 t = c1 + d1 s
+  # (-d0) t + (d1) s = c0 - c1
+  # [-d0, d1] [t,s]^T = delta
+  A = np.array([-direction0, direction1]).T
+  delta = center0 - center1
+  (t, s), residue, rank, _ = np.linalg.lstsq(A, delta)
+  if not (rank == 2 and np.allclose(residue, 0)):
+    raise ValueError('Solution not unique')
+
+  return t, s
+
+
+def test_find_intersection():
+  p = np.array([0, 0, 0.5])
+  a = np.array([1, 0, 0])
+  b = np.array([0, 1, 0])
+  center1 = a
+  direction1 = b - a
+  intersection_pt = center1 + (1.0 / 3) * direction1
+  center0 = p
+  non_normal_dir0 = intersection_pt - p
+  direction0 = non_normal_dir0 / np.linalg.norm(non_normal_dir0)
+  t, s = find_intersection(center0, direction0, center1, direction1)
+  print np.allclose(center0 + t * direction0,
+                    center1 + s * direction1)
+
+  intersection_pt = center1 - (1.0 / 3) * direction1
+  non_normal_dir0 = intersection_pt - p
+  direction0 = non_normal_dir0 / np.linalg.norm(non_normal_dir0)
+  t, s = find_intersection(center0, direction0, center1, direction1)
+  print np.allclose(center0 + t * direction0,
+                    center1 + s * direction1)
+
+
 class FaceWrapper(object):
 
   def __init__(self, face, parent_mesh_wrapper):
@@ -41,11 +94,23 @@ class FaceWrapper(object):
     self.set_neighbors()
     self.compute_gram_schmidt_directions()
 
-    self.points = []
+    self.points = {}
+
+  def __str__(self):
+    return 'Face(%d)' % self.face.index()
+
+  def __repr__(self):
+    return str(self)
 
   def check_face_type(self):
     if self.face.dim() != 2:
       raise ValueError('Expected triangular face.')
+
+  def add_point(self, point):
+    self.points[point.point_index] = point
+
+  def remove_point(self, point):
+    self.points.pop(point.point_index)
 
   def set_vertices(self):
     # This will fail if not exactly 3 vertices.
@@ -122,16 +187,101 @@ class FaceWrapper(object):
     self.w1 = Q[:, 0]
     self.w2 = Q[:, 1]
 
-  def compute_vertex_angle(self, delta):
-    component1 = self.w1.dot(delta)
-    component2 = self.w2.dot(delta)
-    return np.arctan2(component2, component1)
+  @staticmethod
+  def check_intersection(t, s):
+    """Check that intersection is on the right line.
 
-  def compute_vertex_angles(self, point):
-    a_theta = self.compute_vertex_angle(point - self.a)
-    b_theta = self.compute_vertex_angle(point - self.b)
-    c_theta = self.compute_vertex_angle(point - self.c)
-    return a_theta, b_theta, c_theta
+    t and s come from solving
+        p + t * d = a + (b - a) * s
+    where p is the point we are moving from, d is the normal direction
+    we are moving and a and b are vertices of a side of a triangle.
+
+    Check that (t >= 0), i.e. we are actually moving in the direction
+    given by `d`. Also checks that (0 <= s <= 1), i.e. that the intersection
+    is between `a` and `b`.
+    """
+    # Allow wiggle room nearby 0.
+    if not (np.allclose(t, 0) or 0 <= t):
+      return False
+
+    # Allow wiggle room nearby 0.
+    if not (np.allclose(s, 0) or 0 <= s):
+      return False
+
+    # Allow wiggle room nearby 1.
+    if not (np.allclose(s, 1) or s <= 1):
+      return False
+
+    return True
+
+  def move_toward_side(self, particle_center, particle_direction,
+                       side_first_vertex, side_second_vertex,
+                       move_length, next_face_index):
+    center_side_line = side_first_vertex
+    direction_side_line = side_second_vertex - side_first_vertex
+
+    t, s = find_intersection(particle_center, particle_direction,
+                             center_side_line, direction_side_line)
+
+    if not self.check_intersection(t, s):
+      return False, None, None, None
+
+    # If we haven't returned, this side is a valid choice.
+    actual_move_length = move_length
+    remaining_length = 0
+    next_face = self.face.index()
+    # If the move takes us past the intersection, we need to change to
+    # a different face and can't use the full length of the move.
+    if move_length > t:
+      actual_move_length = t
+      remaining_length = move_length - t
+      next_face = next_face_index
+
+    next_point = particle_center + actual_move_length * particle_direction
+
+    return True, next_face, next_point, remaining_length
+
+  def move(self, point, L, theta):
+    particle_center = point
+    particle_direction = np.cos(theta) * self.w1 + np.sin(theta) * self.w2
+
+    # In case the point lies on a vertex, we may have more than on possible
+    # move.
+    move_choices = []
+
+    # Side opposite A is B-->C.
+    moved, next_face, next_point, L_new = self.move_toward_side(
+        particle_center, particle_direction,
+        self.b, self.c, L, self.face_opposite_a)
+    if moved:
+      move_choices.append((next_face, next_point, L_new))
+
+    # Side opposite B is C-->A.
+    moved, next_face, next_point, L_new = self.move_toward_side(
+        particle_center, particle_direction,
+        self.c, self.a, L, self.face_opposite_b)
+    if moved:
+      move_choices.append((next_face, next_point, L_new))
+
+    # Side opposite C is A-->B.
+    moved, next_face, next_point, L_new = self.move_toward_side(
+        particle_center, particle_direction,
+        self.a, self.b, L, self.face_opposite_c)
+    if moved:
+      move_choices.append((next_face, next_point, L_new))
+
+    # We expect to travel in the direction of either 1 or 2 sides (if
+    # we are moving in the direction of a vertex).
+    if len(move_choices) not in (1, 2):
+      raise ValueError('Unexpected number of possible moves on face.')
+    # The goal in the case of a tie is to correctly determine which face
+    # to go into *through* the vertex. We can do this by taking each triangle
+    # and determining the angle contributed at the vertex.
+
+    # NOTE: In the case of multiple moves, we expect that `next_point` and
+    #       `L_new` should be identical, but don't check this below.
+    next_face, next_point, L_new = random.choice(move_choices)
+    return next_face, next_point, L_new
 
 
 class MeshWrapper(object):
@@ -150,6 +300,12 @@ class MeshWrapper(object):
     # In a triangular 3D mesh, the cells are faces.
     self.faces_list = list(dolfin.cells(self.mesh))
     self.add_faces()
+
+  def __str__(self):
+    return 'Mesh(num_faces=%d)' % len(self.faces)
+
+  def __repr__(self):
+    return str(self)
 
   def check_mesh_type(self):
     if self.mesh.geometry().dim() != 3:
@@ -182,11 +338,37 @@ def get_face(mesh_wrapper, point):
   return mesh_wrapper.faces[cell_index]
 
 
+def get_random_components(k):
+  x_rand = k * np.random.randn()
+  y_rand = k * np.random.randn()
+  L = np.linalg.norm([x_rand, y_rand])
+  theta = np.arctan2(y_rand, x_rand)
+  return L, theta
+
+
 class Point(object):
 
-  def __init__(self, x, y, z, mesh_wrapper):
-    point = dolfin.Point(x, y, z)
-    self.change_face(get_face(mesh_wrapper, point))
+  def __init__(self, point_index, x, y, z, k, mesh_wrapper):
+    self.point_index = point_index
+    # NOTE: We don't need to store this since `self.face.parent_mesh_wrapper`
+    #       will also hold this value.
+    self.mesh_wrapper = mesh_wrapper
+
+    # Start with Null face.
+    self.face = None
+
+    dolfin_point = dolfin.Point(x, y, z)
+    self.change_face(get_face(mesh_wrapper, dolfin_point))
+    self.point = np.array([x, y, z])
+
+    self.k = k
+
+  def __str__(self):
+    return 'Point(%d, face=%d)' % (self.point_index,
+                                   self.face.face.index())
+
+  def __repr__(self):
+    return str(self)
 
   def change_face(self, face):
     """Updates the face on current object and adds point to face.
@@ -194,8 +376,21 @@ class Point(object):
     Args:
       face: A FaceWrapper object.
     """
+    if self.face is not None:
+      self.face.remove_point(self)
+
     self.face = face
-    face.points.append(self)
+    self.face.add_point(self)
+
+  def move(self):
+    L, theta = get_random_components(self.k)
+    next_face, next_point, L_new = self.face.move(self.point, L, theta)
+    # Currently we ignore `L_new`, simply change the face and move on.
+    # We intend to use `L_new` to move in the other face, but currently
+    # hold off since it requires computing a new theta.
+    self.point = next_point
+    if next_face != self.face.face.index():
+      self.change_face(self.mesh_wrapper.faces[next_face])
 
 
 def sample_code():
@@ -203,6 +398,7 @@ def sample_code():
   mesh_full_filename = 'mesh_res_%d_boundary.xml' % resolution
   mesh_3d = dolfin.Mesh(mesh_full_filename)
   mesh_wrapper = MeshWrapper(mesh_3d)
-  points = [Point(STARTING_X, STARTING_Y, STARTING_Z, mesh_wrapper)
-            for _ in xrange(10)]
-  return mesh_wrapper
+  points = [Point(i, STARTING_X, STARTING_Y, STARTING_Z,
+                  STARTING_K, mesh_wrapper)
+            for i in xrange(10)]
+  return points
