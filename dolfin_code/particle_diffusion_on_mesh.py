@@ -3,16 +3,6 @@ import numpy as np
 import random
 
 
-# NOTE: This is temporary. These are parameters of the mesh (when it was
-#       created in full_dendrite_mesh.py) and we should package them in a
-#       different way.
-SCALE_FACTOR = 50.0
-STARTING_X = SCALE_FACTOR * 0.0
-STARTING_Y = SCALE_FACTOR * 0.0
-STARTING_Z = SCALE_FACTOR * 1.0
-STARTING_K = SCALE_FACTOR * 0.01
-
-
 def convert_point_to_array(point_object):
   return np.array([point_object.x(), point_object.y(), point_object.z()])
 
@@ -398,6 +388,16 @@ def sample_code():
   mesh_full_filename = 'mesh_res_%d_boundary.xml' % resolution
   mesh_3d = dolfin.Mesh(mesh_full_filename)
   mesh_wrapper = MeshWrapper(mesh_3d)
+
+  # NOTE: This is temporary. These are parameters of the mesh (when it was
+  #       created in full_dendrite_mesh.py) and we should package them in a
+  #       different way.
+  SCALE_FACTOR = 50.0
+  STARTING_X = SCALE_FACTOR * 0.0
+  STARTING_Y = SCALE_FACTOR * 0.0
+  STARTING_Z = SCALE_FACTOR * 1.0
+  STARTING_K = SCALE_FACTOR * 0.01
+
   points = [Point(i, STARTING_X, STARTING_Y, STARTING_Z,
                   STARTING_K, mesh_wrapper)
             for i in xrange(10)]
