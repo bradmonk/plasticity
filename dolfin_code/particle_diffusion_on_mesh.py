@@ -50,28 +50,6 @@ def find_intersection(center0, direction0, center1, direction1):
   return t, s
 
 
-def test_find_intersection():
-  p = np.array([0, 0, 0.5])
-  a = np.array([1, 0, 0])
-  b = np.array([0, 1, 0])
-  center1 = a
-  direction1 = b - a
-  intersection_pt = center1 + (1.0 / 3) * direction1
-  center0 = p
-  non_normal_dir0 = intersection_pt - p
-  direction0 = non_normal_dir0 / np.linalg.norm(non_normal_dir0)
-  t, s = find_intersection(center0, direction0, center1, direction1)
-  print np.allclose(center0 + t * direction0,
-                    center1 + s * direction1)
-
-  intersection_pt = center1 - (1.0 / 3) * direction1
-  non_normal_dir0 = intersection_pt - p
-  direction0 = non_normal_dir0 / np.linalg.norm(non_normal_dir0)
-  t, s = find_intersection(center0, direction0, center1, direction1)
-  print np.allclose(center0 + t * direction0,
-                    center1 + s * direction1)
-
-
 class FaceWrapper(object):
 
   def __init__(self, face, parent_mesh_wrapper):
