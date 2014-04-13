@@ -155,6 +155,20 @@ class FaceWrapper(object):
     self.w1 = Q[:, 0]
     self.w2 = Q[:, 1]
 
+  def compute_angle(self, direction):
+    """Computes angle of `direction` in current orthogonal coordinates.
+
+    Assumes `direction` lies in plane spanned by w1 and w2. If this
+    is not true, we'll still get a number, but it won't make sense.
+
+    NOTE: We could check the validity of this by computing
+              ||direction|| cos(theta) w1 + ||direction|| sin(theta) w2
+          and comparing it to `direction`.
+    """
+    scaled_cosine = self.w1.dot(direction)  # ||direction|| cos(theta)
+    scaled_sine = self.w2.dot(direction)  # ||direction|| sin(theta)
+    return np.arctan2(scaled_sine, scaled_cosine)
+
   @staticmethod
   def check_intersection(t, s):
     """Check that intersection is on the right line.
@@ -182,6 +196,21 @@ class FaceWrapper(object):
 
     return True
 
+  def compute_new_direction_theta(self, fixed_direction,
+                                  direction_to_change, new_face_index):
+    """Computes the angle of direction of motion in new face.
+
+    Assumes `fixed_direction` is the vector along an edge of the triangle
+    and `direction_to_change` should maintain the same angle between that
+    vector on the current and next face. Also assumes `new_face_index`
+    describes the other face with `fixed_direction` as an edge.
+    """
+    angle_change = (self.compute_angle(direction_to_change) -
+                    self.compute_angle(fixed_direction))
+
+    new_face = self.parent_mesh_wrapper.faces[new_face_index]
+    return angle_change + new_face.compute_angle(fixed_direction)
+
   def move_toward_side(self, list_of_moves,
                        particle_center, particle_direction,
                        side_first_vertex, side_second_vertex,
@@ -198,22 +227,25 @@ class FaceWrapper(object):
 
     # If we haven't returned, this side is a valid choice.
     actual_move_length = move_length
-    remaining_length = 0
     next_face = self.face.index()
+    # We don't need these attributes if the move stays on the same face.
+    remaining_length = theta_new = None
     # If the move takes us past the intersection, we need to change to
     # a different face and can't use the full length of the move.
     if move_length > t:
       actual_move_length = t
       remaining_length = move_length - t
       next_face = next_face_index
+      theta_new = self.compute_new_direction_theta(direction_side_line,
+                                                   particle_direction,
+                                                   next_face)
 
     next_point = particle_center + actual_move_length * particle_direction
-
-    direction_new = None  # To be computed.
     list_of_moves.append((next_face, next_point,
-                          remaining_length, direction_new))
+                          remaining_length, theta_new))
 
-  def move(self, point, L, particle_direction):
+  def move(self, point, L, theta):
+    particle_direction = np.cos(theta) * self.w1 + np.sin(theta) * self.w2
     # In case the point lies on a vertex, we may have more than
     # one possible move.
     move_choices = []
@@ -237,7 +269,8 @@ class FaceWrapper(object):
     # and determining the angle contributed at the vertex.
 
     # NOTE: In the case of multiple moves, we expect that `next_point` and
-    #       `L_new` should be identical, but don't check this below.
+    #       `L_new` should be identical for all tuples in `move_choices`, but
+    #       don't check this below.
     next_face, next_point, L_new, direction_new = random.choice(move_choices)
     return next_face, next_point, L_new, direction_new
 
@@ -340,17 +373,28 @@ class Point(object):
     self.face = face
     self.face.add_point(self)
 
-  def move(self):
-    L, theta = get_random_components(self.k)
-    direction = np.cos(theta) * self.face.w1 + np.sin(theta) * self.face.w2
-    next_face, next_point, L_new, direction_new = self.face.move(
-        self.point, L, direction)
-    # Currently we ignore `L_new`, simply change the face and move on.
-    # We intend to use `L_new` to move in the other face, but currently
-    # hold off since it requires computing a new theta.
+  def _move(self, L, theta):
+    next_face, next_point, L_new, theta_new = self.face.move(
+        self.point, L, theta)
     self.point = next_point
+    # BEGIN: Temporary statements to showcase issues with `random.choice`.
+    L_new = L_new or 0.0
+    theta_new = theta_new or 0.0
+    print ('_move computed next_face is %d, distance %2.5f and theta_new '
+           'is %2.5f' % (next_face, L_new, theta_new))
+
+    # END: Temporary statements to showcase issues with `random.choice`.
     if next_face != self.face.face.index():
       self.change_face(self.mesh_wrapper.faces[next_face])
+      # Continue to move until we stay on the same face.
+      self._move(L_new, theta_new)
+
+  def move(self):
+    # BEGIN: Temporary statements to showcase issues with `random.choice`.
+    print 'move starting on face', self.face.face.index()
+    # END: Temporary statements to showcase issues with `random.choice`.
+    L, theta = get_random_components(self.k)
+    self._move(L, theta)
 
 
 def sample_code():
@@ -371,4 +415,8 @@ def sample_code():
   points = [Point(i, STARTING_X, STARTING_Y, STARTING_Z,
                   STARTING_K, mesh_wrapper)
             for i in xrange(10)]
+
+  for i in xrange(5):
+    points[0].move()
+
   return points
