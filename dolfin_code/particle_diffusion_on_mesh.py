@@ -204,7 +204,8 @@ class FaceWrapper(object):
 
     return True
 
-  def move_toward_side(self, particle_center, particle_direction,
+  def move_toward_side(self, list_of_moves,
+                       particle_center, particle_direction,
                        side_first_vertex, side_second_vertex,
                        move_length, next_face_index):
     center_side_line = side_first_vertex
@@ -214,7 +215,8 @@ class FaceWrapper(object):
                              center_side_line, direction_side_line)
 
     if not self.check_intersection(t, s):
-      return False, None, None, None
+      # Do nothing; i.e. don't augment `list_of_moves`.
+      return
 
     # If we haven't returned, this side is a valid choice.
     actual_move_length = move_length
@@ -229,36 +231,24 @@ class FaceWrapper(object):
 
     next_point = particle_center + actual_move_length * particle_direction
 
-    return True, next_face, next_point, remaining_length
+    direction_new = None  # To be computed.
+    list_of_moves.append((next_face, next_point,
+                          remaining_length, direction_new))
 
-  def move(self, point, L, theta):
-    particle_center = point
-    particle_direction = np.cos(theta) * self.w1 + np.sin(theta) * self.w2
-
-    # In case the point lies on a vertex, we may have more than on possible
-    # move.
+  def move(self, point, L, particle_direction):
+    # In case the point lies on a vertex, we may have more than
+    # one possible move.
     move_choices = []
 
     # Side opposite A is B-->C.
-    moved, next_face, next_point, L_new = self.move_toward_side(
-        particle_center, particle_direction,
-        self.b, self.c, L, self.face_opposite_a)
-    if moved:
-      move_choices.append((next_face, next_point, L_new))
-
+    self.move_toward_side(move_choices, point, particle_direction,
+                          self.b, self.c, L, self.face_opposite_a)
     # Side opposite B is C-->A.
-    moved, next_face, next_point, L_new = self.move_toward_side(
-        particle_center, particle_direction,
-        self.c, self.a, L, self.face_opposite_b)
-    if moved:
-      move_choices.append((next_face, next_point, L_new))
-
+    self.move_toward_side(move_choices, point, particle_direction,
+                          self.c, self.a, L, self.face_opposite_b)
     # Side opposite C is A-->B.
-    moved, next_face, next_point, L_new = self.move_toward_side(
-        particle_center, particle_direction,
-        self.a, self.b, L, self.face_opposite_c)
-    if moved:
-      move_choices.append((next_face, next_point, L_new))
+    self.move_toward_side(move_choices, point, particle_direction,
+                          self.a, self.b, L, self.face_opposite_c)
 
     # We expect to travel in the direction of either 1 or 2 sides (if
     # we are moving in the direction of a vertex).
@@ -270,8 +260,8 @@ class FaceWrapper(object):
 
     # NOTE: In the case of multiple moves, we expect that `next_point` and
     #       `L_new` should be identical, but don't check this below.
-    next_face, next_point, L_new = random.choice(move_choices)
-    return next_face, next_point, L_new
+    next_face, next_point, L_new, direction_new = random.choice(move_choices)
+    return next_face, next_point, L_new, direction_new
 
 
 class MeshWrapper(object):
@@ -374,7 +364,9 @@ class Point(object):
 
   def move(self):
     L, theta = get_random_components(self.k)
-    next_face, next_point, L_new = self.face.move(self.point, L, theta)
+    direction = np.cos(theta) * self.face.w1 + np.sin(theta) * self.face.w2
+    next_face, next_point, L_new, direction_new = self.face.move(
+        self.point, L, direction)
     # Currently we ignore `L_new`, simply change the face and move on.
     # We intend to use `L_new` to move in the other face, but currently
     # hold off since it requires computing a new theta.
