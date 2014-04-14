@@ -7,12 +7,15 @@ def convert_point_to_array(point_object):
   return np.array([point_object.x(), point_object.y(), point_object.z()])
 
 
-def get_neighbor(face, edge, faces_list):
-  """Gets neighbor for a face across a given edge."""
+def get_neighbor(facet, edge, facets_list):
+  """Gets neighbor for a facet across a given edge."""
   neighbor_faces = []
   for index in edge.entities(2):
-    # Skip current face.
-    if index == face.index():
+    # Skip current facet.
+    if index == facet.index():
+      continue
+    # Skip non-exterior facets.
+    if not facets_list[index].exterior():
       continue
     neighbor_faces.append(index)
 
@@ -52,9 +55,9 @@ def find_intersection(center0, direction0, center1, direction1):
 
 class FaceWrapper(object):
 
-  def __init__(self, face, parent_mesh_wrapper):
-    self.face = face
-    self.check_face_type()
+  def __init__(self, facet, parent_mesh_wrapper):
+    self.facet = facet
+    self.check_facet_type()
 
     self.parent_mesh_wrapper = parent_mesh_wrapper
 
@@ -65,14 +68,14 @@ class FaceWrapper(object):
     self.points = {}
 
   def __str__(self):
-    return 'Face(%d)' % self.face.index()
+    return 'Face(%d)' % self.facet.index()
 
   def __repr__(self):
     return str(self)
 
-  def check_face_type(self):
-    if self.face.dim() != 2:
-      raise ValueError('Expected triangular face.')
+  def check_facet_type(self):
+    if self.facet.dim() != 2:
+      raise ValueError('Expected triangular facet.')
 
   def add_point(self, point):
     self.points[point.point_index] = point
@@ -82,7 +85,7 @@ class FaceWrapper(object):
 
   def set_vertices(self):
     # This will fail if not exactly 3 vertices.
-    self.a_index, self.b_index, self.c_index = self.face.entities(0)
+    self.a_index, self.b_index, self.c_index = self.facet.entities(0)
 
     vertex_list = self.parent_mesh_wrapper.vertex_list
     self.a = convert_point_to_array(vertex_list[self.a_index].point())
@@ -104,7 +107,7 @@ class FaceWrapper(object):
     return return_values[0]
 
   def set_neighbors(self):
-    """Sets neighbor face indices.
+    """Sets neighbor facet indices.
 
     NOTE: This behavior is subject to change.
 
@@ -113,11 +116,10 @@ class FaceWrapper(object):
 
     This ignores the neighbors which go through a vertex.
     """
-    face_edge_indices = self.face.entities(1)
+    facet_edge_indices = self.facet.entities(1)
 
     edge_vertex_pairing = []
-    # NOTE: We don't check that there are 3 edges, but could / should.
-    for edge_index in face_edge_indices:
+    for edge_index in facet_edge_indices:
       curr_edge = self.parent_mesh_wrapper.edge_list[edge_index]
       index_list = curr_edge.entities(0)
       vertex_str = self.find_missing_vertex(index_list)
@@ -133,18 +135,18 @@ class FaceWrapper(object):
     sorted_edges = [pair[1] for pair in edge_vertex_pairing]
 
     # Find indices of faces opposite our vertices.
-    faces_list = self.parent_mesh_wrapper.faces_list
-    self.face_opposite_a = get_neighbor(self.face, sorted_edges[0],
-                                        faces_list)
-    self.face_opposite_b = get_neighbor(self.face, sorted_edges[1],
-                                        faces_list)
-    self.face_opposite_c = get_neighbor(self.face, sorted_edges[2],
-                                        faces_list)
+    facets_list = self.parent_mesh_wrapper.facets_list
+    self.face_opposite_a = get_neighbor(self.facet, sorted_edges[0],
+                                        facets_list)
+    self.face_opposite_b = get_neighbor(self.facet, sorted_edges[1],
+                                        facets_list)
+    self.face_opposite_c = get_neighbor(self.facet, sorted_edges[2],
+                                        facets_list)
 
   def compute_gram_schmidt_directions(self):
     v1 = self.b - self.a
     v2 = self.c - self.a
-    n = convert_point_to_array(self.face.cell_normal())
+    n = convert_point_to_array(self.facet.normal())
 
     vec_as_cols = np.array([v1, v2, n]).T
     Q, _ = np.linalg.qr(vec_as_cols)
@@ -227,7 +229,7 @@ class FaceWrapper(object):
 
     # If we haven't returned, this side is a valid choice.
     actual_move_length = move_length
-    next_face = self.face.index()
+    next_face = self.facet.index()
     # We don't need these attributes if the move stays on the same face.
     remaining_length = theta_new = None
     # If the move takes us past the intersection, we need to change to
@@ -288,8 +290,8 @@ class MeshWrapper(object):
     # Compute extra data not stored on the object.
     self.vertex_list = list(dolfin.vertices(self.mesh))
     self.edge_list = list(dolfin.edges(self.mesh))
-    # In a triangular 3D mesh, the cells are faces.
-    self.faces_list = list(dolfin.cells(self.mesh))
+    self.facets_list = list(dolfin.facets(self.mesh))
+    self.cell_list = list(dolfin.cells(self.mesh))
     self.add_faces()
 
   def __str__(self):
@@ -301,8 +303,8 @@ class MeshWrapper(object):
   def check_mesh_type(self):
     if self.mesh.geometry().dim() != 3:
       raise ValueError('Expecting 3D mesh.')
-    if self.mesh.cells().shape[1] != 3:
-      raise ValueError('Expecting triangular / boundary mesh.')
+    if self.mesh.cells().shape[1] != 4:
+      raise ValueError('Expecting tetrahedral mesh.')
 
   def add_faces(self):
     """Adds faces from mesh to stored list on object.
@@ -312,21 +314,31 @@ class MeshWrapper(object):
     if self._faces_added:
       return
 
-    self.faces = []
-    for face in self.faces_list:
-      self.faces.append(FaceWrapper(face, self))
+    self.faces = {}
+    # Use facets since they have facet.exterior() set.
+    for facet in self.facets_list:
+      if not facet.exterior():
+        continue
+      self.faces[facet.index()] = FaceWrapper(facet, self)
 
     self._faces_added = True
 
+  def get_face(self, point):
+    face_intersection = dolfin.cpp.mesh.intersect(self.mesh, point)
+    # Require a unique intersection. This is not actually necessary as some
+    # points may lie on an edge / vertex or may not be on the mesh at all.
+    if face_intersection.intersected_cells().size != 1:
+      raise ValueError('Point does not intersect mesh in a unique cell.')
+    cell_index = face_intersection.intersected_cells()[0]
 
-def get_face(mesh_wrapper, point):
-  face_intersection = dolfin.cpp.mesh.intersect(mesh_wrapper.mesh, point)
-  # Require a unique intersection. This is not actually necessary as some
-  # points may lie on an edge or a vertex or may not be on the mesh at all.
-  if face_intersection.intersected_cells().size != 1:
-    raise ValueError('Point does not intersect the mesh on a unique face.')
-  cell_index = face_intersection.intersected_cells()[0]
-  return mesh_wrapper.faces[cell_index]
+    matched_cell = self.cell_list[cell_index]
+    exterior_facets = [facet for facet in dolfin.facets(matched_cell)
+                       if facet.exterior()]
+    if len(exterior_facets) != 1:
+      raise ValueError('Multiple facets on cell marked exterior.')
+
+    exterior_facet_index = exterior_facets[0].index()
+    return self.faces[exterior_facet_index]
 
 
 def get_random_components(k):
@@ -345,18 +357,18 @@ class Point(object):
     #       will also hold this value.
     self.mesh_wrapper = mesh_wrapper
 
-    # Start with Null face.
+    # Start with Null `Face` object.
     self.face = None
 
     dolfin_point = dolfin.Point(x, y, z)
-    self.change_face(get_face(mesh_wrapper, dolfin_point))
+    self.change_face(mesh_wrapper.get_face(dolfin_point))
     self.point = np.array([x, y, z])
 
     self.k = k
 
   def __str__(self):
     return 'Point(%d, face=%d)' % (self.point_index,
-                                   self.face.face.index())
+                                   self.face.facet.index())
 
   def __repr__(self):
     return str(self)
@@ -384,14 +396,14 @@ class Point(object):
            'is %2.5f' % (next_face, L_new, theta_new))
 
     # END: Temporary statements to showcase issues with `random.choice`.
-    if next_face != self.face.face.index():
+    if next_face != self.face.facet.index():
       self.change_face(self.mesh_wrapper.faces[next_face])
       # Continue to move until we stay on the same face.
       self._move(L_new, theta_new)
 
   def move(self):
     # BEGIN: Temporary statements to showcase issues with `random.choice`.
-    print 'move starting on face', self.face.face.index()
+    print 'move starting on face', self.face.facet.index()
     # END: Temporary statements to showcase issues with `random.choice`.
     L, theta = get_random_components(self.k)
     self._move(L, theta)
@@ -399,7 +411,7 @@ class Point(object):
 
 def sample_code():
   resolution = 96
-  mesh_full_filename = 'mesh_res_%d_boundary.xml' % resolution
+  mesh_full_filename = 'mesh_res_%d_full.xml' % resolution
   mesh_3d = dolfin.Mesh(mesh_full_filename)
   mesh_wrapper = MeshWrapper(mesh_3d)
 
