@@ -1,4 +1,9 @@
+import matplotlib
+matplotlib.use('TKAgg')
 import dolfin
+import matplotlib.animation as animation
+import matplotlib.pyplot as plt
+import mpl_toolkits.mplot3d.axes3d as p3
 import numpy as np
 import random
 
@@ -429,6 +434,62 @@ class Point(object):
 
     self.move_counter += 1
     self.values.append(self.point)
+
+
+# Mostly borrowed from particle_diffusion.py (without using dolfin).
+def plot_simulation(num_points, mesh_wrapper,
+                    num_frames=200, print_frequency=None,
+                    interval=30, filename=None):
+  # NOTE: This is temporary. These are parameters of the mesh (when it was
+  #       created in full_dendrite_mesh.py) and we should package them in a
+  #       different way.
+  SCALE_FACTOR = 50.0
+  STARTING_X = SCALE_FACTOR * 0.0
+  STARTING_Y = SCALE_FACTOR * 0.0
+  STARTING_Z = SCALE_FACTOR * 1.0
+  STARTING_K = SCALE_FACTOR * 0.03
+  points = [Point(i, STARTING_X, STARTING_Y, STARTING_Z,
+                  STARTING_K, mesh_wrapper)
+            for i in xrange(num_points)]
+
+  # Attaching 3D axis to the figure
+  fig = plt.figure()
+  ax = p3.Axes3D(fig)
+
+  # Create lines with a single point as a scatter.
+  all_points = [ax.plot([pt.point[0]], [pt.point[1]], [pt.point[2]],
+                        c='b', marker='o')[0]
+                for pt in points]
+
+  def update_plot(step_num):
+    if print_frequency is not None and step_num % print_frequency == 0:
+      print 'Step Number:', step_num
+
+    for pt, point_container in zip(points, all_points):
+      pt.move()
+      # point_container.set_color(color)
+      point_container.set_data([pt.point[0]], [pt.point[1]])
+      point_container.set_3d_properties([pt.point[2]])
+
+    return all_points
+
+  # Setting the axes properties
+  ax.set_xlim3d([-17.0, 17.0])  # Just slightly bigger than 15
+  ax.set_xlabel('X')
+
+  ax.set_ylim3d([-17.0, 17.0])
+  ax.set_ylabel('Y')
+
+  ax.set_zlim3d([0.0, 50.0])
+  ax.set_zlabel('Z')
+
+  anim = animation.FuncAnimation(fig, update_plot,
+                                 repeat=False, frames=num_frames,
+                                 interval=interval, blit=False)
+                                 # interval=interval, blit=True)
+
+  # Could also use plt.draw() for interactive work, not for 3D though.
+  plt.show(block=False)
 
 
 def sample_code():
