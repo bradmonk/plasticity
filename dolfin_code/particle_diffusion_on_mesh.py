@@ -157,6 +157,14 @@ class FaceWrapper(object):
     self.w1 = Q[:, 0]
     self.w2 = Q[:, 1]
 
+    # Need to preserve the relationship e1 x e2 == e3 for
+    # local right-hand rule.
+    cross_product = np.cross(self.w1, self.w2)
+    if np.allclose(-n, cross_product):
+      self.w2 = - self.w2
+    elif not np.allclose(n, cross_product):
+      raise ValueError('System given by w1, w2, n is degenerate.')
+
   def compute_angle(self, direction):
     """Computes angle of `direction` in current orthogonal coordinates.
 
@@ -246,6 +254,36 @@ class FaceWrapper(object):
     list_of_moves.append((next_face, next_point,
                           remaining_length, theta_new))
 
+  def choose_move(self, point, move_choices):
+    num_choices = len(move_choices)
+    if num_choices == 1:
+      return move_choices[0]
+
+    # We expect to travel in the direction of either 1 or 2 sides (if
+    # we are moving in the direction of a vertex).
+    if num_choices != 2:
+      raise ValueError('Unexpected number of possible moves on face.')
+
+    first_choice, second_choice = move_choices
+    no_move_first = np.allclose(first_choice[1], point)
+    no_move_second = np.allclose(second_choice[1], point)
+
+    if no_move_first and not no_move_second:
+      return second_choice
+    elif not no_move_first and no_move_second:
+      return first_choice
+    else:
+      # NOTE: In the case of multiple moves, we expect that `next_point` and
+      #       `L_new` should be identical for all tuples in `move_choices`,
+      #       but don't check this here.
+      # BEGIN: Temporary statements to showcase issues with `random.choice`.
+      print 'Used random.choice'
+      # END: Temporary statements to showcase issues with `random.choice`.
+      # The goal in the case of a tie is to correctly determine which face
+      # to go into *through* the vertex. We can do this by taking each
+      # triangle and determining the angle contributed at the vertex.
+      return random.choice(move_choices)
+
   def move(self, point, L, theta):
     particle_direction = np.cos(theta) * self.w1 + np.sin(theta) * self.w2
     # In case the point lies on a vertex, we may have more than
@@ -262,19 +300,7 @@ class FaceWrapper(object):
     self.move_toward_side(move_choices, point, particle_direction,
                           self.a, self.b, L, self.face_opposite_c)
 
-    # We expect to travel in the direction of either 1 or 2 sides (if
-    # we are moving in the direction of a vertex).
-    if len(move_choices) not in (1, 2):
-      raise ValueError('Unexpected number of possible moves on face.')
-    # The goal in the case of a tie is to correctly determine which face
-    # to go into *through* the vertex. We can do this by taking each triangle
-    # and determining the angle contributed at the vertex.
-
-    # NOTE: In the case of multiple moves, we expect that `next_point` and
-    #       `L_new` should be identical for all tuples in `move_choices`, but
-    #       don't check this below.
-    next_face, next_point, L_new, direction_new = random.choice(move_choices)
-    return next_face, next_point, L_new, direction_new
+    return self.choose_move(point, move_choices)
 
 
 class MeshWrapper(object):
@@ -366,6 +392,9 @@ class Point(object):
 
     self.k = k
 
+    self.move_counter = 0
+    self.values = [self.point]
+
   def __str__(self):
     return 'Point(%d, face=%d)' % (self.point_index,
                                    self.face.facet.index())
@@ -389,24 +418,17 @@ class Point(object):
     next_face, next_point, L_new, theta_new = self.face.move(
         self.point, L, theta)
     self.point = next_point
-    # BEGIN: Temporary statements to showcase issues with `random.choice`.
-    L_new = L_new or 0.0
-    theta_new = theta_new or 0.0
-    print ('_move computed next_face is %d, distance %2.5f and theta_new '
-           'is %2.5f' % (next_face, L_new, theta_new))
-
-    # END: Temporary statements to showcase issues with `random.choice`.
     if next_face != self.face.facet.index():
       self.change_face(self.mesh_wrapper.faces[next_face])
       # Continue to move until we stay on the same face.
       self._move(L_new, theta_new)
 
   def move(self):
-    # BEGIN: Temporary statements to showcase issues with `random.choice`.
-    print 'move starting on face', self.face.facet.index()
-    # END: Temporary statements to showcase issues with `random.choice`.
     L, theta = get_random_components(self.k)
     self._move(L, theta)
+
+    self.move_counter += 1
+    self.values.append(self.point)
 
 
 def sample_code():
