@@ -35,3 +35,12 @@ pip install networkx
 
 [1]: http://fenicsproject.org/pub/documents/ufc/ufc-user-manual/ufc-user-manual.pdf
 [2]: http://fenicsproject.org/qa/3233/are-face-and-other-indexes-deterministic
+
+
+## Media
+#### Diffusion to steadystate
+<a href="http://bradleymonk.com/media/vid6/steadystate.mov
+" target="_blank"><img src="http://bradleymonk.com/media/vid6/steadystate.png" 
+alt="Video on diffusion to steadystate" width="400" border="10" /></a>
+
+
