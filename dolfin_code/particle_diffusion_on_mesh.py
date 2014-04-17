@@ -150,25 +150,10 @@ class FaceWrapper(object):
 
   def compute_gram_schmidt_directions(self):
     v1 = self.b - self.a
-    v2 = self.c - self.a
+    self.w1 = v1 / np.linalg.norm(v1)
     n = convert_point_to_array(self.facet.normal())
-
-    vec_as_cols = np.array([v1, v2, n]).T
-    Q, _ = np.linalg.qr(vec_as_cols)
-    # NOTE: We don't do this, but we could / should check that
-    #       w3 = Q[2, :] is either n or -n (same direction, unit length).
-    #       For example, we could do this by checking:
-    #           np.allclose(w3.dot(n), 1) or np.allclose(w3.dot(n), -1)
-    self.w1 = Q[:, 0]
-    self.w2 = Q[:, 1]
-
-    # Need to preserve the relationship e1 x e2 == e3 for
-    # local right-hand rule.
-    cross_product = np.cross(self.w1, self.w2)
-    if np.allclose(-n, cross_product):
-      self.w2 = - self.w2
-    elif not np.allclose(n, cross_product):
-      raise ValueError('System given by w1, w2, n is degenerate.')
+    # n acts as z == e3, w1 acts as x == e1, hence y == e2 (== e3 x e1):
+    self.w2 = np.cross(n, self.w1)
 
   def compute_angle(self, direction):
     """Computes angle of `direction` in current orthogonal coordinates.
