@@ -43,3 +43,6 @@ pip install networkx
 alt="Video on diffusion to steadystate" width="400" border="10" /></a>
 
 
+#### Example animation rendered from "particle_diffusion_on_mesh.py"
+<a href="http://bradleymonk.com/media/vid6/3dDiffusion.html" target="_blank"><img src="http://bradleymonk.com/media/vid6/3dDiffusion.png" 
+alt="3d Diffusion Animation in dolfin" width="400" border="10" /></a>
