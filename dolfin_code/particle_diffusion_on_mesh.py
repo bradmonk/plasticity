@@ -58,6 +58,22 @@ def find_intersection(center0, direction0, center1, direction1):
   return t, s
 
 
+def get_face_vertices(face_wrapper_object):
+  # This will fail if not exactly 3 vertices.
+  (face_wrapper_object.a_index, face_wrapper_object.b_index,
+   face_wrapper_object.c_index) = face_wrapper_object.facet.entities(0)
+
+  vertex_list = face_wrapper_object.parent_mesh_wrapper.vertex_list
+  a = convert_point_to_array(
+      vertex_list[face_wrapper_object.a_index].point())
+  b = convert_point_to_array(
+      vertex_list[face_wrapper_object.b_index].point())
+  c = convert_point_to_array(
+      vertex_list[face_wrapper_object.c_index].point())
+
+  return a, b, c
+
+
 class FaceWrapper(object):
 
   def __init__(self, facet, parent_mesh_wrapper):
@@ -66,7 +82,7 @@ class FaceWrapper(object):
 
     self.parent_mesh_wrapper = parent_mesh_wrapper
 
-    self.set_vertices()
+    self.a, self.b, self.c = get_face_vertices(self)
     self.set_neighbors()
     self.compute_gram_schmidt_directions()
 
@@ -87,15 +103,6 @@ class FaceWrapper(object):
 
   def remove_point(self, point):
     self.points.pop(point.point_index)
-
-  def set_vertices(self):
-    # This will fail if not exactly 3 vertices.
-    self.a_index, self.b_index, self.c_index = self.facet.entities(0)
-
-    vertex_list = self.parent_mesh_wrapper.vertex_list
-    self.a = convert_point_to_array(vertex_list[self.a_index].point())
-    self.b = convert_point_to_array(vertex_list[self.b_index].point())
-    self.c = convert_point_to_array(vertex_list[self.c_index].point())
 
   def find_missing_vertex(self, index_list):
     return_values = []
