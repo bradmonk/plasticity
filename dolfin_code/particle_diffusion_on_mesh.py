@@ -383,7 +383,7 @@ class Point(object):
     self.k = k
 
     self.move_counter = 0
-    self.values = [self.point]
+    self.values = [(self.face.facet.index(), self.point)]
 
   def __str__(self):
     return 'Point(%d, face=%d)' % (self.point_index,
@@ -418,7 +418,7 @@ class Point(object):
     self._move(L, theta)
 
     self.move_counter += 1
-    self.values.append(self.point)
+    self.values.append((self.face.facet.index(), self.point))
 
 
 # Mostly borrowed from particle_diffusion.py (without using dolfin).
@@ -500,3 +500,34 @@ def sample_code():
     points[0].move()
 
   return points
+
+
+def error_off_plane(face_id, point, mesh_wrapper):
+  facet = mesh_wrapper.faces[face_id].facet
+  n = convert_point_to_array(facet.normal())
+  midpoint = convert_point_to_array(facet.midpoint())
+  return np.dot(point - midpoint, n)
+
+
+def test_accurary_on_face(mesh_wrapper=None, num_steps=1000):
+  if mesh_wrapper is None:
+    resolution = 96
+    mesh_full_filename = 'mesh_res_%d_full.xml' % resolution
+    mesh_3d = dolfin.Mesh(mesh_full_filename)
+    mesh_wrapper = MeshWrapper(mesh_3d)
+
+  SCALE_FACTOR = 50.0
+  STARTING_X = SCALE_FACTOR * 0.0
+  STARTING_Y = SCALE_FACTOR * 0.0
+  STARTING_Z = SCALE_FACTOR * 1.0
+  STARTING_K = SCALE_FACTOR * 0.01
+  point = Point(0, STARTING_X, STARTING_Y, STARTING_Z,
+                STARTING_K, mesh_wrapper)
+
+  for i in xrange(num_steps):
+    point.move()
+
+  errors = [error_off_plane(face_id, pt, mesh_wrapper)
+            for face_id, pt in point.values]
+  print 'Max Error after %d steps' % num_steps
+  print np.max(np.abs(errors))
