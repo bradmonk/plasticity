@@ -85,6 +85,45 @@ def find_missing_vertex(a_index, b_index, c_index, index_list):
   return return_values[0]
 
 
+def get_neighbor_faces(face_wrapper_object, a_index, b_index, c_index):
+  """Sets neighbor facet indices.
+
+  NOTE: This behavior is subject to change.
+
+  Determines the face across an edge from each vertex a, b, c and
+  labels accordingly.
+
+  This ignores the neighbors which go through a vertex.
+  """
+  facet_edge_indices = face_wrapper_object.facet.entities(1)
+
+  edge_vertex_pairing = []
+  for edge_index in facet_edge_indices:
+    curr_edge = face_wrapper_object.parent_mesh_wrapper.edge_list[edge_index]
+    index_list = curr_edge.entities(0)
+    vertex_str = find_missing_vertex(a_index, b_index, c_index, index_list)
+    edge_vertex_pairing.append((vertex_str, curr_edge))
+
+  # Sort pairs and check they are correct.
+  edge_vertex_pairing.sort(key=lambda pair: pair[0])
+  vertex_strs = tuple(pair[0] for pair in edge_vertex_pairing)
+  if vertex_strs != ('a', 'b', 'c'):
+    raise ValueError('Edges are not opposite the expected vertices.')
+
+  # Get the edges, sorted now by the sides they are opposite to.
+  sorted_edges = [pair[1] for pair in edge_vertex_pairing]
+
+  # Find indices of faces opposite our vertices.
+  facets_list = face_wrapper_object.parent_mesh_wrapper.facets_list
+  face_opposite_a = get_neighbor(face_wrapper_object.facet,
+                                 sorted_edges[0], facets_list)
+  face_opposite_b = get_neighbor(face_wrapper_object.facet,
+                                 sorted_edges[1], facets_list)
+  face_opposite_c = get_neighbor(face_wrapper_object.facet,
+                                 sorted_edges[2], facets_list)
+  return face_opposite_a, face_opposite_b, face_opposite_c
+
+
 class FaceWrapper(object):
 
   def __init__(self, facet, parent_mesh_wrapper):
@@ -95,7 +134,9 @@ class FaceWrapper(object):
 
     (self.a, self.b, self.c,
      a_index, b_index, c_index) = get_face_vertices(self)
-    self.set_neighbors(a_index, b_index, c_index)
+    (self.face_opposite_a, self.face_opposite_b,
+     self.face_opposite_c) = get_neighbor_faces(self, a_index,
+                                                b_index, c_index)
     self.compute_gram_schmidt_directions()
 
     self.points = {}
@@ -115,43 +156,6 @@ class FaceWrapper(object):
 
   def remove_point(self, point):
     self.points.pop(point.point_index)
-
-  def set_neighbors(self, a_index, b_index, c_index):
-    """Sets neighbor facet indices.
-
-    NOTE: This behavior is subject to change.
-
-    Determines the face across an edge from each vertex a, b, c and
-    labels accordingly.
-
-    This ignores the neighbors which go through a vertex.
-    """
-    facet_edge_indices = self.facet.entities(1)
-
-    edge_vertex_pairing = []
-    for edge_index in facet_edge_indices:
-      curr_edge = self.parent_mesh_wrapper.edge_list[edge_index]
-      index_list = curr_edge.entities(0)
-      vertex_str = find_missing_vertex(a_index, b_index, c_index, index_list)
-      edge_vertex_pairing.append((vertex_str, curr_edge))
-
-    # Sort pairs and check they are correct.
-    edge_vertex_pairing.sort(key=lambda pair: pair[0])
-    vertex_strs = tuple(pair[0] for pair in edge_vertex_pairing)
-    if vertex_strs != ('a', 'b', 'c'):
-      raise ValueError('Edges are not opposite the expected vertices.')
-
-    # Get the edges, sorted now by the sides they are opposite to.
-    sorted_edges = [pair[1] for pair in edge_vertex_pairing]
-
-    # Find indices of faces opposite our vertices.
-    facets_list = self.parent_mesh_wrapper.facets_list
-    self.face_opposite_a = get_neighbor(self.facet, sorted_edges[0],
-                                        facets_list)
-    self.face_opposite_b = get_neighbor(self.facet, sorted_edges[1],
-                                        facets_list)
-    self.face_opposite_c = get_neighbor(self.facet, sorted_edges[2],
-                                        facets_list)
 
   def compute_gram_schmidt_directions(self):
     v1 = self.b - self.a
