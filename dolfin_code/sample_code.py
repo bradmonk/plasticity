@@ -92,5 +92,7 @@ def plot_custom():
 
   plot_boundary = PlotBoundary(-17.0, 17.0, -17.0, 17.0, 0.0, 50.0)
 
-  plot_simulation(50, mesh_wrapper, plot_boundary,
-                  color_function=custom_color_function)
+  plot_simulation(200, mesh_wrapper, plot_boundary,
+                  color_function=custom_color_function,
+                  print_frequency=20,
+                  filename='200points_200steps_colored_points.gif')

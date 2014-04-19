@@ -591,6 +591,8 @@ def plot_simulation(num_points, mesh_wrapper, plot_boundary,
   # Attaching 3D axis to the figure
   fig = plt.figure()
   ax = p3.Axes3D(fig)
+  # Set default view.
+  ax.view_init(elev=12, azim=-37)
 
   # Create lines with a single point as a scatter.
   all_points = [ax.plot([pt.x], [pt.y], [pt.z], c='b', marker='o')[0]
@@ -618,10 +620,13 @@ def plot_simulation(num_points, mesh_wrapper, plot_boundary,
   ax.set_zlim3d([plot_boundary.min_z, plot_boundary.max_z])
   ax.set_zlabel('Z')
 
+  create_gif = filename is not None
   anim = animation.FuncAnimation(fig, update_plot,
                                  repeat=False, frames=num_frames,
-                                 interval=interval, blit=False)
-                                 # interval=interval, blit=True)
+                                 interval=interval, blit=create_gif)
 
-  # Could also use plt.draw() for interactive work, not for 3D though.
-  plt.show(block=False)
+  if create_gif:
+    anim.save(filename, writer='imagemagick_file')
+  else:
+    # Could also use plt.draw() for interactive work, not for 3D though.
+    plt.show(block=False)
