@@ -519,6 +519,18 @@ class Point(object):
   def __repr__(self):
     return str(self)
 
+  @property
+  def x(self):
+    return self.point[0]
+
+  @property
+  def y(self):
+    return self.point[1]
+
+  @property
+  def z(self):
+    return self.point[2]
+
   def change_face(self, face):
     """Updates the face on current object and adds point to face.
 
@@ -548,8 +560,30 @@ class Point(object):
     self.values.append((self.face.facet_index, self.point))
 
 
+class PlotBoundary(object):
+  """Container object to define a plot area for an animation.
+
+  Example:
+    >>> # 17.0 is just slightly bigger than 15
+    >>> plot_boundary = PlotBoundary(-17.0, 17.0, -17.0, 17.0, 0.0, 50.0)
+  """
+
+  def __init__(self, min_x, max_x, min_y, max_y, min_z, max_z):
+    self.min_x = min_x
+    self.max_x = max_x
+    self.min_y = min_y
+    self.max_y = max_y
+    self.min_z = min_z
+    self.max_z = max_z
+
+
+def default_color_function(point):
+  return 'b'
+
+
 # Mostly borrowed from particle_diffusion.py (without using dolfin).
-def plot_simulation(num_points, mesh_wrapper,
+def plot_simulation(num_points, mesh_wrapper, plot_boundary,
+                    color_function=default_color_function,
                     num_frames=200, print_frequency=None,
                     interval=30, filename=None):
   points = [Point(mesh_wrapper) for _ in xrange(num_points)]
@@ -559,8 +593,7 @@ def plot_simulation(num_points, mesh_wrapper,
   ax = p3.Axes3D(fig)
 
   # Create lines with a single point as a scatter.
-  all_points = [ax.plot([pt.point[0]], [pt.point[1]], [pt.point[2]],
-                        c='b', marker='o')[0]
+  all_points = [ax.plot([pt.x], [pt.y], [pt.z], c='b', marker='o')[0]
                 for pt in points]
 
   def update_plot(step_num):
@@ -569,20 +602,20 @@ def plot_simulation(num_points, mesh_wrapper,
 
     for pt, point_container in zip(points, all_points):
       pt.move()
-      # point_container.set_color(color)
-      point_container.set_data([pt.point[0]], [pt.point[1]])
-      point_container.set_3d_properties([pt.point[2]])
+      point_container.set_color(color_function(pt))
+      point_container.set_data([pt.x], [pt.y])
+      point_container.set_3d_properties([pt.z])
 
     return all_points
 
   # Setting the axes properties
-  ax.set_xlim3d([-17.0, 17.0])  # Just slightly bigger than 15
+  ax.set_xlim3d([plot_boundary.min_x, plot_boundary.max_x])
   ax.set_xlabel('X')
 
-  ax.set_ylim3d([-17.0, 17.0])
+  ax.set_ylim3d([plot_boundary.min_y, plot_boundary.max_y])
   ax.set_ylabel('Y')
 
-  ax.set_zlim3d([0.0, 50.0])
+  ax.set_zlim3d([plot_boundary.min_z, plot_boundary.max_z])
   ax.set_zlabel('Z')
 
   anim = animation.FuncAnimation(fig, update_plot,

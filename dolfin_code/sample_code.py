@@ -2,8 +2,10 @@ import dolfin
 import numpy as np
 
 from particle_diffusion_on_mesh import MeshWrapper
+from particle_diffusion_on_mesh import PlotBoundary
 from particle_diffusion_on_mesh import Point
 from particle_diffusion_on_mesh import convert_point_to_array
+from particle_diffusion_on_mesh import plot_simulation
 
 
 def save_serialized_mesh():
@@ -75,3 +77,20 @@ def test_accurary_on_face(mesh_wrapper=None, facet_info_list=None,
             for face_id, pt in point.values]
   print 'Max Error after %d steps' % num_steps
   print np.max(np.abs(errors))
+
+
+def plot_custom():
+  def custom_color_function(point):
+    if np.allclose(point.z, 50.0):
+      return 'b'
+    else:
+      return 'r'
+
+  resolution = 96
+  serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
+  mesh_wrapper = MeshWrapper.from_file(serialized_mesh_filename)
+
+  plot_boundary = PlotBoundary(-17.0, 17.0, -17.0, 17.0, 0.0, 50.0)
+
+  plot_simulation(50, mesh_wrapper, plot_boundary,
+                  color_function=custom_color_function)
