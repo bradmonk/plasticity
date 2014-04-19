@@ -120,11 +120,19 @@ def get_neighbor_faces(facet, edge_list, facets_list,
   return face_opposite_a, face_opposite_b, face_opposite_c
 
 
+def compute_gram_schmidt_directions(facet, directed_side):
+  w1 = directed_side / np.linalg.norm(directed_side)
+  n = convert_point_to_array(facet.normal())
+  # n acts as z == e3, w1 acts as x == e1, hence y == e2 (== e3 x e1):
+  w2 = np.cross(n, w1)
+  return w1, w2
+
+
 class FaceWrapper(object):
 
   def __init__(self, facet, parent_mesh_wrapper):
     self.facet = facet
-    self.index = facet.index()
+    self.facet_index = facet.index()
     self.check_facet_type(facet)
 
     self.parent_mesh_wrapper = parent_mesh_wrapper
@@ -136,12 +144,14 @@ class FaceWrapper(object):
      self.face_opposite_c) = get_neighbor_faces(
         facet, parent_mesh_wrapper.edge_list, parent_mesh_wrapper.facets_list,
         a_index, b_index, c_index)
-    self.compute_gram_schmidt_directions()
+
+    self.w1, self.w2 = compute_gram_schmidt_directions(facet,
+                                                       self.b - self.a)
 
     self.points = {}
 
   def __str__(self):
-    return 'Face(%d)' % self.facet.index()
+    return 'Face(%d)' % self.facet_index
 
   def __repr__(self):
     return str(self)
@@ -155,13 +165,6 @@ class FaceWrapper(object):
 
   def remove_point(self, point):
     self.points.pop(point.point_index)
-
-  def compute_gram_schmidt_directions(self):
-    v1 = self.b - self.a
-    self.w1 = v1 / np.linalg.norm(v1)
-    n = convert_point_to_array(self.facet.normal())
-    # n acts as z == e3, w1 acts as x == e1, hence y == e2 (== e3 x e1):
-    self.w2 = np.cross(n, self.w1)
 
   def compute_angle(self, direction):
     """Computes angle of `direction` in current orthogonal coordinates.
