@@ -415,17 +415,25 @@ class MeshWrapper(object):
 
   @classmethod
   def from_mesh(cls, mesh, initial_point, k, return_facets=False):
+    print 'Creating MeshWrapper from mesh data.'
+
     # Make sure it is the right kind of mesh.
+    print 'Initializing mesh attributes (edges, faces, etc.)'
     mesh.init()  # This will do nothing if already called.
     check_mesh_type(mesh)
 
     # Compute extra data not stored on the object.
+    print 'Reading vertex list from the mesh object'
     vertex_list = list(dolfin.vertices(mesh))
+    print 'Reading edge list from the mesh object'
     edge_list = list(dolfin.edges(mesh))
+    print 'Reading facets list from the mesh object'
     facets_list = list(dolfin.facets(mesh))
+    print 'Parsing exterior faces and creating FaceWrapper objects'
     faces = get_faces(vertex_list, edge_list, facets_list)
 
     # Set values specific to motion on the mesh.
+    print 'Reading cell list from the mesh object'
     cell_list = list(dolfin.cells(mesh))
     initial_face = get_face(dolfin.Point(*initial_point), mesh,
                             cell_list, faces)
