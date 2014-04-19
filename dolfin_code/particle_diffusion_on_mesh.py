@@ -120,13 +120,11 @@ def get_neighbor_faces(facet, edge_list, facets_list,
   return face_opposite_a, face_opposite_b, face_opposite_c
 
 
-def get_face_properties(facet, mesh_wrapper):
-  a, b, c, a_index, b_index, c_index = get_face_vertices(
-      facet, mesh_wrapper.vertex_list)
+def get_face_properties(facet, vertex_list, edge_list, facets_list):
+  a, b, c, a_index, b_index, c_index = get_face_vertices(facet, vertex_list)
 
   face_opposite_a, face_opposite_b, face_opposite_c = get_neighbor_faces(
-      facet, mesh_wrapper.edge_list, mesh_wrapper.facets_list,
-      a_index, b_index, c_index)
+      facet, edge_list, facets_list, a_index, b_index, c_index)
 
   return [
       (a, face_opposite_a),
@@ -150,17 +148,15 @@ def check_facet_type(facet):
 
 class FaceWrapper(object):
 
-  def __init__(self, facet, parent_mesh_wrapper):
+  def __init__(self, facet, vertex_list, edge_list, facets_list):
     self.facet_index = facet.index()
     check_facet_type(facet)
-
-    self.parent_mesh_wrapper = parent_mesh_wrapper
 
     [
         (self.a, self.face_opposite_a),
         (self.b, self.face_opposite_b),
         (self.c, self.face_opposite_c),
-    ] = get_face_properties(facet, parent_mesh_wrapper)
+    ] = get_face_properties(facet, vertex_list, edge_list, facets_list)
 
     self.w1, self.w2 = compute_gram_schmidt_directions(facet,
                                                        self.b - self.a)
@@ -178,6 +174,9 @@ class FaceWrapper(object):
 
   def remove_point(self, point):
     self.points.pop(point.point_index)
+
+  def add_mesh_wrapper(self, mesh_wrapper):
+    self.parent_mesh_wrapper = mesh_wrapper
 
   def compute_angle(self, direction):
     """Computes angle of `direction` in current orthogonal coordinates.
@@ -342,43 +341,60 @@ def get_face(point, mesh, cell_list, face_dictionary):
   return face_dictionary[exterior_facet_index]
 
 
+def get_faces(vertex_list, edge_list, facets_list):
+  """Gets faces from mesh and turns them into FaceWrapper objects.
+
+  Only adds exterior faces.
+  """
+  faces = {}
+  # Use facets since they have facet.exterior() set.
+  for facet in facets_list:
+    if not facet.exterior():
+      continue
+    faces[facet.index()] = FaceWrapper(facet, vertex_list,
+                                       edge_list, facets_list)
+
+  return faces
+
+
 class MeshWrapper(object):
 
-  def __init__(self, mesh, initial_point, k):
+  def __init__(self, k, initial_point, initial_face, faces):
+    self.k = k
+    self.initial_point = initial_point
+    self.initial_face = initial_face
+
+    self.faces = faces
+    for face in faces.values():
+      face.add_mesh_wrapper(self)
+
+  @classmethod
+  def from_mesh(cls, mesh, initial_point, k, return_facets=False):
     # Make sure it is the right kind of mesh.
     mesh.init()  # This will do nothing if already called.
     check_mesh_type(mesh)
 
     # Compute extra data not stored on the object.
-    self.vertex_list = list(dolfin.vertices(mesh))
-    self.edge_list = list(dolfin.edges(mesh))
-    self.facets_list = list(dolfin.facets(mesh))
-    self.add_faces()
+    vertex_list = list(dolfin.vertices(mesh))
+    edge_list = list(dolfin.edges(mesh))
+    facets_list = list(dolfin.facets(mesh))
+    faces = get_faces(vertex_list, edge_list, facets_list)
 
     # Set values specific to motion on the mesh.
-    self.k = k
-    self.initial_point = initial_point
     cell_list = list(dolfin.cells(mesh))
-    self.initial_face = get_face(dolfin.Point(*initial_point), mesh,
-                                 cell_list, self.faces)
+    initial_face = get_face(dolfin.Point(*initial_point), mesh,
+                            cell_list, faces)
+
+    if return_facets:
+      return cls(k, initial_point, initial_face, faces), facets_list
+    else:
+      return cls(k, initial_point, initial_face, faces)
 
   def __str__(self):
     return 'Mesh(num_faces=%d)' % len(self.faces)
 
   def __repr__(self):
     return str(self)
-
-  def add_faces(self):
-    """Adds faces from mesh to stored list on object.
-
-    Only adds exterior faces.
-    """
-    self.faces = {}
-    # Use facets since they have facet.exterior() set.
-    for facet in self.facets_list:
-      if not facet.exterior():
-        continue
-      self.faces[facet.index()] = FaceWrapper(facet, self)
 
 
 def get_random_components(k):
@@ -505,7 +521,7 @@ def sample_code():
   STARTING_K = SCALE_FACTOR * 0.01
 
   initial_point = np.array((STARTING_X, STARTING_Y, STARTING_Z))
-  mesh_wrapper = MeshWrapper(mesh_3d, initial_point, STARTING_K)
+  mesh_wrapper = MeshWrapper.from_mesh(mesh_3d, initial_point, STARTING_K)
 
   points = [Point(i, mesh_wrapper) for i in xrange(10)]
 
@@ -515,33 +531,34 @@ def sample_code():
   return points
 
 
-def error_off_plane(face_id, point, mesh_wrapper):
-  facet = mesh_wrapper.facets_list[face_id]
+def error_off_plane(face_id, point, facets_list):
+  facet = facets_list[face_id]
   n = convert_point_to_array(facet.normal())
   midpoint = convert_point_to_array(facet.midpoint())
   return np.dot(point - midpoint, n)
 
 
-def test_accurary_on_face(mesh_wrapper=None, num_steps=1000):
+def test_accurary_on_face(mesh_wrapper=None, facets_list=None, num_steps=1000):
   SCALE_FACTOR = 50.0
   STARTING_X = SCALE_FACTOR * 0.0
   STARTING_Y = SCALE_FACTOR * 0.0
   STARTING_Z = SCALE_FACTOR * 1.0
   STARTING_K = SCALE_FACTOR * 0.01
 
-  if mesh_wrapper is None:
+  if mesh_wrapper is None or facets_list is None:
     resolution = 96
     mesh_full_filename = 'mesh_res_%d_full.xml' % resolution
     mesh_3d = dolfin.Mesh(mesh_full_filename)
     initial_point = np.array((STARTING_X, STARTING_Y, STARTING_Z))
-    mesh_wrapper = MeshWrapper(mesh_3d, initial_point, STARTING_K)
+    mesh_wrapper, facets_list = MeshWrapper.from_mesh(
+        mesh_3d, initial_point, STARTING_K, return_facets=True)
 
   point = Point(0, mesh_wrapper)
 
   for i in xrange(num_steps):
     point.move()
 
-  errors = [error_off_plane(face_id, pt, mesh_wrapper)
+  errors = [error_off_plane(face_id, pt, facets_list)
             for face_id, pt in point.values]
   print 'Max Error after %d steps' % num_steps
   print np.max(np.abs(errors))
