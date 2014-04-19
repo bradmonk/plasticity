@@ -345,25 +345,22 @@ def get_face(point, mesh, cell_list, face_dictionary):
 class MeshWrapper(object):
 
   def __init__(self, mesh, initial_point, k):
-    self._faces_added = False
-
-    # Add the mesh and make sure it is the right kind of mesh.
-    self.mesh = mesh
-    self.mesh.init()  # This will do nothing if already called.
+    # Make sure it is the right kind of mesh.
+    mesh.init()  # This will do nothing if already called.
     check_mesh_type(mesh)
 
     # Compute extra data not stored on the object.
-    self.vertex_list = list(dolfin.vertices(self.mesh))
-    self.edge_list = list(dolfin.edges(self.mesh))
-    self.facets_list = list(dolfin.facets(self.mesh))
-    self.cell_list = list(dolfin.cells(self.mesh))
+    self.vertex_list = list(dolfin.vertices(mesh))
+    self.edge_list = list(dolfin.edges(mesh))
+    self.facets_list = list(dolfin.facets(mesh))
     self.add_faces()
 
     # Set values specific to motion on the mesh.
     self.k = k
     self.initial_point = initial_point
+    cell_list = list(dolfin.cells(mesh))
     self.initial_face = get_face(dolfin.Point(*initial_point), mesh,
-                                 self.cell_list, self.faces)
+                                 cell_list, self.faces)
 
   def __str__(self):
     return 'Mesh(num_faces=%d)' % len(self.faces)
@@ -376,17 +373,12 @@ class MeshWrapper(object):
 
     Only adds exterior faces.
     """
-    if self._faces_added:
-      return
-
     self.faces = {}
     # Use facets since they have facet.exterior() set.
     for facet in self.facets_list:
       if not facet.exterior():
         continue
       self.faces[facet.index()] = FaceWrapper(facet, self)
-
-    self._faces_added = True
 
 
 def get_random_components(k):
