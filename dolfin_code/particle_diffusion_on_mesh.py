@@ -143,11 +143,16 @@ def compute_gram_schmidt_directions(facet, directed_side):
   return w1, w2
 
 
+def check_facet_type(facet):
+  if facet.dim() != 2:
+    raise ValueError('Expected triangular facet.')
+
+
 class FaceWrapper(object):
 
   def __init__(self, facet, parent_mesh_wrapper):
     self.facet_index = facet.index()
-    self.check_facet_type(facet)
+    check_facet_type(facet)
 
     self.parent_mesh_wrapper = parent_mesh_wrapper
 
@@ -167,10 +172,6 @@ class FaceWrapper(object):
 
   def __repr__(self):
     return str(self)
-
-  def check_facet_type(self, facet):
-    if facet.dim() != 2:
-      raise ValueError('Expected triangular facet.')
 
   def add_point(self, point):
     self.points[point.point_index] = point
@@ -316,6 +317,13 @@ class FaceWrapper(object):
     return self.choose_move(point, move_choices)
 
 
+def check_mesh_type(mesh):
+  if mesh.geometry().dim() != 3:
+    raise ValueError('Expecting 3D mesh.')
+  if mesh.cells().shape[1] != 4:
+    raise ValueError('Expecting tetrahedral mesh.')
+
+
 class MeshWrapper(object):
 
   def __init__(self, mesh, initial_point, k):
@@ -324,7 +332,7 @@ class MeshWrapper(object):
     # Add the mesh and make sure it is the right kind of mesh.
     self.mesh = mesh
     self.mesh.init()  # This will do nothing if already called.
-    self.check_mesh_type()
+    check_mesh_type(mesh)
 
     # Compute extra data not stored on the object.
     self.vertex_list = list(dolfin.vertices(self.mesh))
@@ -343,12 +351,6 @@ class MeshWrapper(object):
 
   def __repr__(self):
     return str(self)
-
-  def check_mesh_type(self):
-    if self.mesh.geometry().dim() != 3:
-      raise ValueError('Expecting 3D mesh.')
-    if self.mesh.cells().shape[1] != 4:
-      raise ValueError('Expecting tetrahedral mesh.')
 
   def add_faces(self):
     """Adds faces from mesh to stored list on object.
