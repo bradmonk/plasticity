@@ -120,6 +120,21 @@ def get_neighbor_faces(facet, edge_list, facets_list,
   return face_opposite_a, face_opposite_b, face_opposite_c
 
 
+def get_face_properties(facet, mesh_wrapper):
+  a, b, c, a_index, b_index, c_index = get_face_vertices(
+      facet, mesh_wrapper.vertex_list)
+
+  face_opposite_a, face_opposite_b, face_opposite_c = get_neighbor_faces(
+      facet, mesh_wrapper.edge_list, mesh_wrapper.facets_list,
+      a_index, b_index, c_index)
+
+  return [
+      (a, face_opposite_a),
+      (b, face_opposite_b),
+      (c, face_opposite_c),
+  ]
+
+
 def compute_gram_schmidt_directions(facet, directed_side):
   w1 = directed_side / np.linalg.norm(directed_side)
   n = convert_point_to_array(facet.normal())
@@ -136,13 +151,11 @@ class FaceWrapper(object):
 
     self.parent_mesh_wrapper = parent_mesh_wrapper
 
-    vertex_list = parent_mesh_wrapper.vertex_list
-    (self.a, self.b, self.c,
-     a_index, b_index, c_index) = get_face_vertices(facet, vertex_list)
-    (self.face_opposite_a, self.face_opposite_b,
-     self.face_opposite_c) = get_neighbor_faces(
-        facet, parent_mesh_wrapper.edge_list, parent_mesh_wrapper.facets_list,
-        a_index, b_index, c_index)
+    [
+        (self.a, self.face_opposite_a),
+        (self.b, self.face_opposite_b),
+        (self.c, self.face_opposite_c),
+    ] = get_face_properties(facet, parent_mesh_wrapper)
 
     self.w1, self.w2 = compute_gram_schmidt_directions(facet,
                                                        self.b - self.a)
