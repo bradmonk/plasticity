@@ -148,20 +148,38 @@ def check_facet_type(facet):
 
 class FaceWrapper(object):
 
-  def __init__(self, facet, vertex_list, edge_list, facets_list):
-    self.facet_index = facet.index()
+  def __init__(self, facet_index, a, b, c,
+               face_opposite_a, face_opposite_b, face_opposite_c,
+               w1, w2):
+    self.facet_index = facet_index
+
+    self.a = a
+    self.b = b
+    self.c = c
+
+    self.face_opposite_a = face_opposite_a
+    self.face_opposite_b = face_opposite_b
+    self.face_opposite_c = face_opposite_c
+
+    self.w1 = w1
+    self.w2 = w2
+
+    self.points = {}
+
+  @classmethod
+  def from_mesh_data(cls, facet, vertex_list, edge_list, facets_list):
     check_facet_type(facet)
 
     [
-        (self.a, self.face_opposite_a),
-        (self.b, self.face_opposite_b),
-        (self.c, self.face_opposite_c),
+        (a, face_opposite_a),
+        (b, face_opposite_b),
+        (c, face_opposite_c),
     ] = get_face_properties(facet, vertex_list, edge_list, facets_list)
 
-    self.w1, self.w2 = compute_gram_schmidt_directions(facet,
-                                                       self.b - self.a)
-
-    self.points = {}
+    w1, w2 = compute_gram_schmidt_directions(facet, b - a)
+    return cls(facet.index(), a, b, c,
+               face_opposite_a, face_opposite_b, face_opposite_c,
+               w1, w2)
 
   def __str__(self):
     return 'Face(%d)' % self.facet_index
@@ -177,6 +195,30 @@ class FaceWrapper(object):
 
   def add_mesh_wrapper(self, mesh_wrapper):
     self.parent_mesh_wrapper = mesh_wrapper
+
+  def flatten_data(self):
+    return np.hstack([self.a, self.b, self.c, self.w1, self.w2,
+                      self.facet_index, self.face_opposite_a,
+                      self.face_opposite_b, self.face_opposite_c])
+
+  @classmethod
+  def from_flattened_data(cls, flattened_data):
+    a = flattened_data[:3]
+    b = flattened_data[3:6]
+    c = flattened_data[6:9]
+
+    w1 = flattened_data[9:12]
+    w2 = flattened_data[12:15]
+
+    facet_index = int(flattened_data[15])
+
+    face_opposite_a = int(flattened_data[16])
+    face_opposite_b = int(flattened_data[17])
+    face_opposite_c = int(flattened_data[18])
+
+    return cls(facet_index, a, b, c,
+               face_opposite_a, face_opposite_b, face_opposite_c,
+               w1, w2)
 
   def compute_angle(self, direction):
     """Computes angle of `direction` in current orthogonal coordinates.
@@ -351,8 +393,8 @@ def get_faces(vertex_list, edge_list, facets_list):
   for facet in facets_list:
     if not facet.exterior():
       continue
-    faces[facet.index()] = FaceWrapper(facet, vertex_list,
-                                       edge_list, facets_list)
+    faces[facet.index()] = FaceWrapper.from_mesh_data(facet, vertex_list,
+                                                      edge_list, facets_list)
 
   return faces
 
