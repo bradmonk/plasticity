@@ -131,7 +131,6 @@ def compute_gram_schmidt_directions(facet, directed_side):
 class FaceWrapper(object):
 
   def __init__(self, facet, parent_mesh_wrapper):
-    self.facet = facet
     self.facet_index = facet.index()
     self.check_facet_type(facet)
 
@@ -238,7 +237,7 @@ class FaceWrapper(object):
 
     # If we haven't returned, this side is a valid choice.
     actual_move_length = move_length
-    next_face = self.facet.index()
+    next_face = self.facet_index
     # We don't need these attributes if the move stays on the same face.
     remaining_length = theta_new = None
     # If the move takes us past the intersection, we need to change to
@@ -394,11 +393,11 @@ class Point(object):
     self.k = k
 
     self.move_counter = 0
-    self.values = [(self.face.facet.index(), self.point)]
+    self.values = [(self.face.facet_index, self.point)]
 
   def __str__(self):
     return 'Point(%d, face=%d)' % (self.point_index,
-                                   self.face.facet.index())
+                                   self.face.facet_index)
 
   def __repr__(self):
     return str(self)
@@ -419,7 +418,7 @@ class Point(object):
     next_face, next_point, L_new, theta_new = self.face.move(
         self.point, L, theta)
     self.point = next_point
-    if next_face != self.face.facet.index():
+    if next_face != self.face.facet_index:
       self.change_face(self.mesh_wrapper.faces[next_face])
       # Continue to move until we stay on the same face.
       self._move(L_new, theta_new)
@@ -429,7 +428,7 @@ class Point(object):
     self._move(L, theta)
 
     self.move_counter += 1
-    self.values.append((self.face.facet.index(), self.point))
+    self.values.append((self.face.facet_index, self.point))
 
 
 # Mostly borrowed from particle_diffusion.py (without using dolfin).
@@ -514,7 +513,7 @@ def sample_code():
 
 
 def error_off_plane(face_id, point, mesh_wrapper):
-  facet = mesh_wrapper.faces[face_id].facet
+  facet = mesh_wrapper.facets_list[face_id]
   n = convert_point_to_array(facet.normal())
   midpoint = convert_point_to_array(facet.midpoint())
   return np.dot(point - midpoint, n)
