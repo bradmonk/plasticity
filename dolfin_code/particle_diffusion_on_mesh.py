@@ -60,18 +60,29 @@ def find_intersection(center0, direction0, center1, direction1):
 
 def get_face_vertices(face_wrapper_object):
   # This will fail if not exactly 3 vertices.
-  (face_wrapper_object.a_index, face_wrapper_object.b_index,
-   face_wrapper_object.c_index) = face_wrapper_object.facet.entities(0)
+  a_index, b_index, c_index = face_wrapper_object.facet.entities(0)
 
   vertex_list = face_wrapper_object.parent_mesh_wrapper.vertex_list
-  a = convert_point_to_array(
-      vertex_list[face_wrapper_object.a_index].point())
-  b = convert_point_to_array(
-      vertex_list[face_wrapper_object.b_index].point())
-  c = convert_point_to_array(
-      vertex_list[face_wrapper_object.c_index].point())
+  a = convert_point_to_array(vertex_list[a_index].point())
+  b = convert_point_to_array(vertex_list[b_index].point())
+  c = convert_point_to_array(vertex_list[c_index].point())
 
-  return a, b, c
+  return a, b, c, a_index, b_index, c_index
+
+
+def find_missing_vertex(a_index, b_index, c_index, index_list):
+  return_values = []
+  if a_index not in index_list:
+    return_values.append('a')
+  if b_index not in index_list:
+    return_values.append('b')
+  if c_index not in index_list:
+    return_values.append('c')
+
+  if len(return_values) != 1:
+    raise ValueError('Edge did not contain exactly two of three vertices.')
+
+  return return_values[0]
 
 
 class FaceWrapper(object):
@@ -82,8 +93,9 @@ class FaceWrapper(object):
 
     self.parent_mesh_wrapper = parent_mesh_wrapper
 
-    self.a, self.b, self.c = get_face_vertices(self)
-    self.set_neighbors()
+    (self.a, self.b, self.c,
+     a_index, b_index, c_index) = get_face_vertices(self)
+    self.set_neighbors(a_index, b_index, c_index)
     self.compute_gram_schmidt_directions()
 
     self.points = {}
@@ -104,21 +116,7 @@ class FaceWrapper(object):
   def remove_point(self, point):
     self.points.pop(point.point_index)
 
-  def find_missing_vertex(self, index_list):
-    return_values = []
-    if self.a_index not in index_list:
-      return_values.append('a')
-    if self.b_index not in index_list:
-      return_values.append('b')
-    if self.c_index not in index_list:
-      return_values.append('c')
-
-    if len(return_values) != 1:
-      raise ValueError('Edge did not contain exactly two of three vertices.')
-
-    return return_values[0]
-
-  def set_neighbors(self):
+  def set_neighbors(self, a_index, b_index, c_index):
     """Sets neighbor facet indices.
 
     NOTE: This behavior is subject to change.
@@ -134,7 +132,7 @@ class FaceWrapper(object):
     for edge_index in facet_edge_indices:
       curr_edge = self.parent_mesh_wrapper.edge_list[edge_index]
       index_list = curr_edge.entities(0)
-      vertex_str = self.find_missing_vertex(index_list)
+      vertex_str = find_missing_vertex(a_index, b_index, c_index, index_list)
       edge_vertex_pairing.append((vertex_str, curr_edge))
 
     # Sort pairs and check they are correct.
