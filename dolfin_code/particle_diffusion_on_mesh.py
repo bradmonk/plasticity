@@ -324,6 +324,24 @@ def check_mesh_type(mesh):
     raise ValueError('Expecting tetrahedral mesh.')
 
 
+def get_face(point, mesh, cell_list, face_dictionary):
+  face_intersection = dolfin.cpp.mesh.intersect(mesh, point)
+  # Require a unique intersection. This is not actually necessary as some
+  # points may lie on an edge / vertex or may not be on the mesh at all.
+  if face_intersection.intersected_cells().size != 1:
+    raise ValueError('Point does not intersect mesh in a unique cell.')
+  cell_index = face_intersection.intersected_cells()[0]
+
+  matched_cell = cell_list[cell_index]
+  exterior_facets = [facet for facet in dolfin.facets(matched_cell)
+                     if facet.exterior()]
+  if len(exterior_facets) != 1:
+    raise ValueError('Multiple facets on cell marked exterior.')
+
+  exterior_facet_index = exterior_facets[0].index()
+  return face_dictionary[exterior_facet_index]
+
+
 class MeshWrapper(object):
 
   def __init__(self, mesh, initial_point, k):
@@ -344,7 +362,8 @@ class MeshWrapper(object):
     # Set values specific to motion on the mesh.
     self.k = k
     self.initial_point = initial_point
-    self.initial_face = self.get_face(dolfin.Point(*initial_point))
+    self.initial_face = get_face(dolfin.Point(*initial_point), mesh,
+                                 self.cell_list, self.faces)
 
   def __str__(self):
     return 'Mesh(num_faces=%d)' % len(self.faces)
@@ -368,23 +387,6 @@ class MeshWrapper(object):
       self.faces[facet.index()] = FaceWrapper(facet, self)
 
     self._faces_added = True
-
-  def get_face(self, point):
-    face_intersection = dolfin.cpp.mesh.intersect(self.mesh, point)
-    # Require a unique intersection. This is not actually necessary as some
-    # points may lie on an edge / vertex or may not be on the mesh at all.
-    if face_intersection.intersected_cells().size != 1:
-      raise ValueError('Point does not intersect mesh in a unique cell.')
-    cell_index = face_intersection.intersected_cells()[0]
-
-    matched_cell = self.cell_list[cell_index]
-    exterior_facets = [facet for facet in dolfin.facets(matched_cell)
-                       if facet.exterior()]
-    if len(exterior_facets) != 1:
-      raise ValueError('Multiple facets on cell marked exterior.')
-
-    exterior_facet_index = exterior_facets[0].index()
-    return self.faces[exterior_facet_index]
 
 
 def get_random_components(k):
