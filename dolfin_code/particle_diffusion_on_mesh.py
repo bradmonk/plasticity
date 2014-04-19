@@ -305,7 +305,7 @@ class FaceWrapper(object):
 
 class MeshWrapper(object):
 
-  def __init__(self, mesh):
+  def __init__(self, mesh, initial_point, k):
     self._faces_added = False
 
     # Add the mesh and make sure it is the right kind of mesh.
@@ -319,6 +319,11 @@ class MeshWrapper(object):
     self.facets_list = list(dolfin.facets(self.mesh))
     self.cell_list = list(dolfin.cells(self.mesh))
     self.add_faces()
+
+    # Set values specific to motion on the mesh.
+    self.k = k
+    self.initial_point = initial_point
+    self.initial_face = self.get_face(dolfin.Point(*initial_point))
 
   def __str__(self):
     return 'Mesh(num_faces=%d)' % len(self.faces)
@@ -377,7 +382,7 @@ def get_random_components(k):
 
 class Point(object):
 
-  def __init__(self, point_index, x, y, z, k, mesh_wrapper):
+  def __init__(self, point_index, mesh_wrapper):
     self.point_index = point_index
     # NOTE: We don't need to store this since `self.face.parent_mesh_wrapper`
     #       will also hold this value.
@@ -386,11 +391,10 @@ class Point(object):
     # Start with Null `Face` object.
     self.face = None
 
-    dolfin_point = dolfin.Point(x, y, z)
-    self.change_face(mesh_wrapper.get_face(dolfin_point))
-    self.point = np.array([x, y, z])
+    self.change_face(mesh_wrapper.initial_face)
+    self.point = np.array(mesh_wrapper.initial_point)
 
-    self.k = k
+    self.k = mesh_wrapper.k
 
     self.move_counter = 0
     self.values = [(self.face.facet_index, self.point)]
@@ -435,17 +439,7 @@ class Point(object):
 def plot_simulation(num_points, mesh_wrapper,
                     num_frames=200, print_frequency=None,
                     interval=30, filename=None):
-  # NOTE: This is temporary. These are parameters of the mesh (when it was
-  #       created in full_dendrite_mesh.py) and we should package them in a
-  #       different way.
-  SCALE_FACTOR = 50.0
-  STARTING_X = SCALE_FACTOR * 0.0
-  STARTING_Y = SCALE_FACTOR * 0.0
-  STARTING_Z = SCALE_FACTOR * 1.0
-  STARTING_K = SCALE_FACTOR * 0.03
-  points = [Point(i, STARTING_X, STARTING_Y, STARTING_Z,
-                  STARTING_K, mesh_wrapper)
-            for i in xrange(num_points)]
+  points = [Point(i, mesh_wrapper) for i in xrange(num_points)]
 
   # Attaching 3D axis to the figure
   fig = plt.figure()
@@ -491,7 +485,6 @@ def sample_code():
   resolution = 96
   mesh_full_filename = 'mesh_res_%d_full.xml' % resolution
   mesh_3d = dolfin.Mesh(mesh_full_filename)
-  mesh_wrapper = MeshWrapper(mesh_3d)
 
   # NOTE: This is temporary. These are parameters of the mesh (when it was
   #       created in full_dendrite_mesh.py) and we should package them in a
@@ -502,9 +495,10 @@ def sample_code():
   STARTING_Z = SCALE_FACTOR * 1.0
   STARTING_K = SCALE_FACTOR * 0.01
 
-  points = [Point(i, STARTING_X, STARTING_Y, STARTING_Z,
-                  STARTING_K, mesh_wrapper)
-            for i in xrange(10)]
+  initial_point = np.array((STARTING_X, STARTING_Y, STARTING_Z))
+  mesh_wrapper = MeshWrapper(mesh_3d, initial_point, STARTING_K)
+
+  points = [Point(i, mesh_wrapper) for i in xrange(10)]
 
   for i in xrange(5):
     points[0].move()
@@ -520,19 +514,20 @@ def error_off_plane(face_id, point, mesh_wrapper):
 
 
 def test_accurary_on_face(mesh_wrapper=None, num_steps=1000):
-  if mesh_wrapper is None:
-    resolution = 96
-    mesh_full_filename = 'mesh_res_%d_full.xml' % resolution
-    mesh_3d = dolfin.Mesh(mesh_full_filename)
-    mesh_wrapper = MeshWrapper(mesh_3d)
-
   SCALE_FACTOR = 50.0
   STARTING_X = SCALE_FACTOR * 0.0
   STARTING_Y = SCALE_FACTOR * 0.0
   STARTING_Z = SCALE_FACTOR * 1.0
   STARTING_K = SCALE_FACTOR * 0.01
-  point = Point(0, STARTING_X, STARTING_Y, STARTING_Z,
-                STARTING_K, mesh_wrapper)
+
+  if mesh_wrapper is None:
+    resolution = 96
+    mesh_full_filename = 'mesh_res_%d_full.xml' % resolution
+    mesh_3d = dolfin.Mesh(mesh_full_filename)
+    initial_point = np.array((STARTING_X, STARTING_Y, STARTING_Z))
+    mesh_wrapper = MeshWrapper(mesh_3d, initial_point, STARTING_K)
+
+  point = Point(0, mesh_wrapper)
 
   for i in xrange(num_steps):
     point.move()
