@@ -447,6 +447,37 @@ class MeshWrapper(object):
     self.current_point_index += 1
     return self.current_point_index
 
+  def serialize_mesh(self, filename):
+    print 'Saving mesh to', filename
+    if self.current_point_index != -1:
+      print 'Points on mesh will not be serialized.'
+
+    flattened_faces = np.vstack([face.flatten_data()
+                                 for face in self.faces.values()])
+    np.savez(filename, k=self.k, initial_point=self.initial_point,
+             initial_face_index=self.initial_face.facet_index,
+             flattened_faces=flattened_faces)
+
+  @classmethod
+  def from_file(cls, filename):
+    print 'Loading mesh data from NPZ file', filename
+    npzfile = np.load(filename)
+
+    k = npzfile['k'].item()
+    initial_point = npzfile['initial_point']
+
+    # Read the faces in FaceWrapper objects.
+    flattened_faces = npzfile['flattened_faces']
+    faces_list = [FaceWrapper.from_flattened_data(flattened_face)
+                  for flattened_face in flattened_faces]
+    faces = {face.facet_index: face for face in faces_list}
+
+    # Get the initial face from the list.
+    initial_face_index = npzfile['initial_face_index'].item()
+    initial_face = faces[initial_face_index]
+
+    return cls(k, initial_point, initial_face, faces)
+
   def __str__(self):
     return 'Mesh(num_faces=%d)' % len(self.faces)
 
@@ -563,7 +594,7 @@ def plot_simulation(num_points, mesh_wrapper,
   plt.show(block=False)
 
 
-def sample_code():
+def save_serialized_mesh():
   resolution = 96
   mesh_full_filename = 'mesh_res_%d_full.xml' % resolution
   mesh_3d = dolfin.Mesh(mesh_full_filename)
@@ -578,7 +609,24 @@ def sample_code():
   STARTING_K = SCALE_FACTOR * 0.01
 
   initial_point = np.array((STARTING_X, STARTING_Y, STARTING_Z))
-  mesh_wrapper = MeshWrapper.from_mesh(mesh_3d, initial_point, STARTING_K)
+  mesh_wrapper, facets_list = MeshWrapper.from_mesh(
+      mesh_3d, initial_point, STARTING_K, return_facets=True)
+
+  serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
+  mesh_wrapper.serialize_mesh(serialized_mesh_filename)
+
+  facet_info_list = [np.hstack([convert_point_to_array(facet.normal()),
+                                convert_point_to_array(facet.midpoint())])
+                     for facet in facets_list]
+  facet_info_filename = 'facet_info_list_res_%d.npy' % resolution
+  print 'Saving list of facet normals to', facet_info_filename
+  np.save(facet_info_filename, facet_info_list)
+
+
+def sample_code():
+  resolution = 96
+  serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
+  mesh_wrapper = MeshWrapper.from_file(serialized_mesh_filename)
 
   points = [Point(mesh_wrapper) for _ in xrange(10)]
 
@@ -588,34 +636,30 @@ def sample_code():
   return points
 
 
-def error_off_plane(face_id, point, facets_list):
-  facet = facets_list[face_id]
-  n = convert_point_to_array(facet.normal())
-  midpoint = convert_point_to_array(facet.midpoint())
+def error_off_plane(face_id, point, facet_info_list):
+  facet_info = facet_info_list[face_id]
+  n = facet_info[:3]
+  midpoint = facet_info[3:]
   return np.dot(point - midpoint, n)
 
 
-def test_accurary_on_face(mesh_wrapper=None, facets_list=None, num_steps=1000):
-  SCALE_FACTOR = 50.0
-  STARTING_X = SCALE_FACTOR * 0.0
-  STARTING_Y = SCALE_FACTOR * 0.0
-  STARTING_Z = SCALE_FACTOR * 1.0
-  STARTING_K = SCALE_FACTOR * 0.01
-
-  if mesh_wrapper is None or facets_list is None:
+def test_accurary_on_face(mesh_wrapper=None, facet_info_list=None,
+                          num_steps=1000):
+  if mesh_wrapper is None or facet_info_list is None:
     resolution = 96
-    mesh_full_filename = 'mesh_res_%d_full.xml' % resolution
-    mesh_3d = dolfin.Mesh(mesh_full_filename)
-    initial_point = np.array((STARTING_X, STARTING_Y, STARTING_Z))
-    mesh_wrapper, facets_list = MeshWrapper.from_mesh(
-        mesh_3d, initial_point, STARTING_K, return_facets=True)
+
+    serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
+    mesh_wrapper = MeshWrapper.from_file(serialized_mesh_filename)
+
+    facet_info_filename = 'facet_info_list_res_%d.npy' % resolution
+    facet_info_list = [normal for normal in np.load(facet_info_filename)]
 
   point = Point(mesh_wrapper)
 
   for i in xrange(num_steps):
     point.move()
 
-  errors = [error_off_plane(face_id, pt, facets_list)
+  errors = [error_off_plane(face_id, pt, facet_info_list)
             for face_id, pt in point.values]
   print 'Max Error after %d steps' % num_steps
   print np.max(np.abs(errors))
