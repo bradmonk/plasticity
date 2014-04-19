@@ -58,11 +58,10 @@ def find_intersection(center0, direction0, center1, direction1):
   return t, s
 
 
-def get_face_vertices(face_wrapper_object):
+def get_face_vertices(facet, vertex_list):
   # This will fail if not exactly 3 vertices.
-  a_index, b_index, c_index = face_wrapper_object.facet.entities(0)
+  a_index, b_index, c_index = facet.entities(0)
 
-  vertex_list = face_wrapper_object.parent_mesh_wrapper.vertex_list
   a = convert_point_to_array(vertex_list[a_index].point())
   b = convert_point_to_array(vertex_list[b_index].point())
   c = convert_point_to_array(vertex_list[c_index].point())
@@ -85,7 +84,8 @@ def find_missing_vertex(a_index, b_index, c_index, index_list):
   return return_values[0]
 
 
-def get_neighbor_faces(face_wrapper_object, a_index, b_index, c_index):
+def get_neighbor_faces(facet, edge_list, facets_list,
+                       a_index, b_index, c_index):
   """Sets neighbor facet indices.
 
   NOTE: This behavior is subject to change.
@@ -95,11 +95,11 @@ def get_neighbor_faces(face_wrapper_object, a_index, b_index, c_index):
 
   This ignores the neighbors which go through a vertex.
   """
-  facet_edge_indices = face_wrapper_object.facet.entities(1)
+  facet_edge_indices = facet.entities(1)
 
   edge_vertex_pairing = []
   for edge_index in facet_edge_indices:
-    curr_edge = face_wrapper_object.parent_mesh_wrapper.edge_list[edge_index]
+    curr_edge = edge_list[edge_index]
     index_list = curr_edge.entities(0)
     vertex_str = find_missing_vertex(a_index, b_index, c_index, index_list)
     edge_vertex_pairing.append((vertex_str, curr_edge))
@@ -114,13 +114,9 @@ def get_neighbor_faces(face_wrapper_object, a_index, b_index, c_index):
   sorted_edges = [pair[1] for pair in edge_vertex_pairing]
 
   # Find indices of faces opposite our vertices.
-  facets_list = face_wrapper_object.parent_mesh_wrapper.facets_list
-  face_opposite_a = get_neighbor(face_wrapper_object.facet,
-                                 sorted_edges[0], facets_list)
-  face_opposite_b = get_neighbor(face_wrapper_object.facet,
-                                 sorted_edges[1], facets_list)
-  face_opposite_c = get_neighbor(face_wrapper_object.facet,
-                                 sorted_edges[2], facets_list)
+  face_opposite_a = get_neighbor(facet, sorted_edges[0], facets_list)
+  face_opposite_b = get_neighbor(facet, sorted_edges[1], facets_list)
+  face_opposite_c = get_neighbor(facet, sorted_edges[2], facets_list)
   return face_opposite_a, face_opposite_b, face_opposite_c
 
 
@@ -128,15 +124,18 @@ class FaceWrapper(object):
 
   def __init__(self, facet, parent_mesh_wrapper):
     self.facet = facet
-    self.check_facet_type()
+    self.index = facet.index()
+    self.check_facet_type(facet)
 
     self.parent_mesh_wrapper = parent_mesh_wrapper
 
+    vertex_list = parent_mesh_wrapper.vertex_list
     (self.a, self.b, self.c,
-     a_index, b_index, c_index) = get_face_vertices(self)
+     a_index, b_index, c_index) = get_face_vertices(facet, vertex_list)
     (self.face_opposite_a, self.face_opposite_b,
-     self.face_opposite_c) = get_neighbor_faces(self, a_index,
-                                                b_index, c_index)
+     self.face_opposite_c) = get_neighbor_faces(
+        facet, parent_mesh_wrapper.edge_list, parent_mesh_wrapper.facets_list,
+        a_index, b_index, c_index)
     self.compute_gram_schmidt_directions()
 
     self.points = {}
@@ -147,8 +146,8 @@ class FaceWrapper(object):
   def __repr__(self):
     return str(self)
 
-  def check_facet_type(self):
-    if self.facet.dim() != 2:
+  def check_facet_type(self, facet):
+    if facet.dim() != 2:
       raise ValueError('Expected triangular facet.')
 
   def add_point(self, point):
