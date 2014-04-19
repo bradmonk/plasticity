@@ -410,6 +410,9 @@ class MeshWrapper(object):
     for face in faces.values():
       face.add_mesh_wrapper(self)
 
+    # Counter to keep track of points on the mesh.
+    self.current_point_index = -1
+
   @classmethod
   def from_mesh(cls, mesh, initial_point, k, return_facets=False):
     # Make sure it is the right kind of mesh.
@@ -432,6 +435,10 @@ class MeshWrapper(object):
     else:
       return cls(k, initial_point, initial_face, faces)
 
+  def next_index(self):
+    self.current_point_index += 1
+    return self.current_point_index
+
   def __str__(self):
     return 'Mesh(num_faces=%d)' % len(self.faces)
 
@@ -449,8 +456,8 @@ def get_random_components(k):
 
 class Point(object):
 
-  def __init__(self, point_index, mesh_wrapper):
-    self.point_index = point_index
+  def __init__(self, mesh_wrapper):
+    self.point_index = mesh_wrapper.next_index()
     # NOTE: We don't need to store this since `self.face.parent_mesh_wrapper`
     #       will also hold this value.
     self.mesh_wrapper = mesh_wrapper
@@ -506,7 +513,7 @@ class Point(object):
 def plot_simulation(num_points, mesh_wrapper,
                     num_frames=200, print_frequency=None,
                     interval=30, filename=None):
-  points = [Point(i, mesh_wrapper) for i in xrange(num_points)]
+  points = [Point(mesh_wrapper) for _ in xrange(num_points)]
 
   # Attaching 3D axis to the figure
   fig = plt.figure()
@@ -565,7 +572,7 @@ def sample_code():
   initial_point = np.array((STARTING_X, STARTING_Y, STARTING_Z))
   mesh_wrapper = MeshWrapper.from_mesh(mesh_3d, initial_point, STARTING_K)
 
-  points = [Point(i, mesh_wrapper) for i in xrange(10)]
+  points = [Point(mesh_wrapper) for _ in xrange(10)]
 
   for i in xrange(5):
     points[0].move()
@@ -595,7 +602,7 @@ def test_accurary_on_face(mesh_wrapper=None, facets_list=None, num_steps=1000):
     mesh_wrapper, facets_list = MeshWrapper.from_mesh(
         mesh_3d, initial_point, STARTING_K, return_facets=True)
 
-  point = Point(0, mesh_wrapper)
+  point = Point(mesh_wrapper)
 
   for i in xrange(num_steps):
     point.move()
