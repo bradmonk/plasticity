@@ -127,9 +127,9 @@ def get_face_properties(facet, vertex_list, edge_list, facets_list):
       facet, edge_list, facets_list, a_index, b_index, c_index)
 
   return [
-      (a, face_opposite_a),
-      (b, face_opposite_b),
-      (c, face_opposite_c),
+      (a, a_index, face_opposite_a),
+      (b, b_index, face_opposite_b),
+      (c, c_index, face_opposite_c),
   ]
 
 
@@ -149,6 +149,7 @@ def check_facet_type(facet):
 class FaceWrapper(object):
 
   def __init__(self, facet_index, a, b, c,
+               a_index, b_index, c_index,
                face_opposite_a, face_opposite_b, face_opposite_c,
                w1, w2):
     self.facet_index = facet_index
@@ -156,6 +157,10 @@ class FaceWrapper(object):
     self.a = a
     self.b = b
     self.c = c
+
+    self.a_index = a_index
+    self.b_index = b_index
+    self.c_index = c_index
 
     self.face_opposite_a = face_opposite_a
     self.face_opposite_b = face_opposite_b
@@ -171,13 +176,14 @@ class FaceWrapper(object):
     check_facet_type(facet)
 
     [
-        (a, face_opposite_a),
-        (b, face_opposite_b),
-        (c, face_opposite_c),
+        (a, a_index, face_opposite_a),
+        (b, b_index, face_opposite_b),
+        (c, c_index, face_opposite_c),
     ] = get_face_properties(facet, vertex_list, edge_list, facets_list)
 
     w1, w2 = compute_gram_schmidt_directions(facet, b - a)
     return cls(facet.index(), a, b, c,
+               a_index, b_index, c_index,
                face_opposite_a, face_opposite_b, face_opposite_c,
                w1, w2)
 
@@ -198,7 +204,9 @@ class FaceWrapper(object):
 
   def flatten_data(self):
     return np.hstack([self.a, self.b, self.c, self.w1, self.w2,
-                      self.facet_index, self.face_opposite_a,
+                      self.facet_index,
+                      self.a_index, self.b_index, self.c_index,
+                      self.face_opposite_a,
                       self.face_opposite_b, self.face_opposite_c])
 
   @classmethod
@@ -212,11 +220,16 @@ class FaceWrapper(object):
 
     facet_index = int(flattened_data[15])
 
-    face_opposite_a = int(flattened_data[16])
-    face_opposite_b = int(flattened_data[17])
-    face_opposite_c = int(flattened_data[18])
+    a_index = int(flattened_data[16])
+    b_index = int(flattened_data[17])
+    c_index = int(flattened_data[18])
+
+    face_opposite_a = int(flattened_data[19])
+    face_opposite_b = int(flattened_data[20])
+    face_opposite_c = int(flattened_data[21])
 
     return cls(facet_index, a, b, c,
+               a_index, b_index, c_index,
                face_opposite_a, face_opposite_b, face_opposite_c,
                w1, w2)
 
