@@ -18,7 +18,7 @@ fig = plt.figure()
 ax = fig.gca(projection='3d')
 
 ax.plot_trisurf(x, y, z, triangles=mesh_wrapper.triangles,
-                color='w', linewidth=0.05)
+                color=(0, 0, 0, 0), edgecolor='Gray', linewidth=0.05)
 
 plt.show()
 
