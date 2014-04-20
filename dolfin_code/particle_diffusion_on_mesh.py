@@ -146,49 +146,83 @@ def check_facet_type(facet):
     raise ValueError('Expected triangular facet.')
 
 
+def overwrite_numpy_value(key, value, curr_dict):
+  if key in curr_dict:
+    if not np.allclose(value, curr_dict[key]):
+      raise ValueError('Values do not match.')
+  else:
+    curr_dict[key] = value
+
+
+class RawFaceData(object):
+
+  def __init__(self, facet, vertex_list, edge_list, facets_list):
+    check_facet_type(facet)
+    self.face_index = facet.index()
+
+    [
+        (self.a, self.a_index, self.face_opposite_a),
+        (self.b, self.b_index, self.face_opposite_b),
+        (self.c, self.c_index, self.face_opposite_c),
+    ] = get_face_properties(facet, vertex_list, edge_list, facets_list)
+
+    self.w1, self.w2 = compute_gram_schmidt_directions(facet,
+                                                       self.b - self.a)
+
+  def add_vertices(self, vertices_dict):
+    overwrite_numpy_value(self.a_index, self.a, vertices_dict)
+    overwrite_numpy_value(self.b_index, self.b, vertices_dict)
+    overwrite_numpy_value(self.c_index, self.c, vertices_dict)
+
+  def add_triangle(self, triangles):
+    triangles.append((self.a_index, self.b_index, self.c_index))
+
+
 class FaceWrapper(object):
 
-  def __init__(self, facet_index, a, b, c,
-               a_index, b_index, c_index,
-               face_opposite_a, face_opposite_b, face_opposite_c,
-               w1, w2):
-    self.facet_index = facet_index
-
-    self.a = a
-    self.b = b
-    self.c = c
-
-    self.a_index = a_index
-    self.b_index = b_index
-    self.c_index = c_index
-
-    self.face_opposite_a = face_opposite_a
-    self.face_opposite_b = face_opposite_b
-    self.face_opposite_c = face_opposite_c
-
-    self.w1 = w1
-    self.w2 = w2
+  def __init__(self, face_index, mesh_wrapper):
+    self.face_index = face_index
+    self.mesh_wrapper = mesh_wrapper
 
     self.points = {}
 
-  @classmethod
-  def from_mesh_data(cls, facet, vertex_list, edge_list, facets_list):
-    check_facet_type(facet)
+  @property
+  def a(self):
+    vertex_index = self.mesh_wrapper.triangles[self.face_index, 0]
+    return self.mesh_wrapper.all_vertices[vertex_index, :]
 
-    [
-        (a, a_index, face_opposite_a),
-        (b, b_index, face_opposite_b),
-        (c, c_index, face_opposite_c),
-    ] = get_face_properties(facet, vertex_list, edge_list, facets_list)
+  @property
+  def b(self):
+    vertex_index = self.mesh_wrapper.triangles[self.face_index, 1]
+    return self.mesh_wrapper.all_vertices[vertex_index, :]
 
-    w1, w2 = compute_gram_schmidt_directions(facet, b - a)
-    return cls(facet.index(), a, b, c,
-               a_index, b_index, c_index,
-               face_opposite_a, face_opposite_b, face_opposite_c,
-               w1, w2)
+  @property
+  def c(self):
+    vertex_index = self.mesh_wrapper.triangles[self.face_index, 2]
+    return self.mesh_wrapper.all_vertices[vertex_index, :]
+
+  @property
+  def face_opposite_a(self):
+    return self.mesh_wrapper.neighbor_faces[self.face_index, 0]
+
+  @property
+  def face_opposite_b(self):
+    return self.mesh_wrapper.neighbor_faces[self.face_index, 1]
+
+  @property
+  def face_opposite_c(self):
+    return self.mesh_wrapper.neighbor_faces[self.face_index, 2]
+
+  @property
+  def w1(self):
+    return self.mesh_wrapper.face_local_bases[self.face_index, :3]
+
+  @property
+  def w2(self):
+    return self.mesh_wrapper.face_local_bases[self.face_index, 3:]
 
   def __str__(self):
-    return 'Face(%d)' % self.facet_index
+    return 'Face(%d)' % self.face_index
 
   def __repr__(self):
     return str(self)
@@ -198,40 +232,6 @@ class FaceWrapper(object):
 
   def remove_point(self, point):
     self.points.pop(point.point_index)
-
-  def add_mesh_wrapper(self, mesh_wrapper):
-    self.parent_mesh_wrapper = mesh_wrapper
-
-  def flatten_data(self):
-    return np.hstack([self.a, self.b, self.c, self.w1, self.w2,
-                      self.facet_index,
-                      self.a_index, self.b_index, self.c_index,
-                      self.face_opposite_a,
-                      self.face_opposite_b, self.face_opposite_c])
-
-  @classmethod
-  def from_flattened_data(cls, flattened_data):
-    a = flattened_data[:3]
-    b = flattened_data[3:6]
-    c = flattened_data[6:9]
-
-    w1 = flattened_data[9:12]
-    w2 = flattened_data[12:15]
-
-    facet_index = int(flattened_data[15])
-
-    a_index = int(flattened_data[16])
-    b_index = int(flattened_data[17])
-    c_index = int(flattened_data[18])
-
-    face_opposite_a = int(flattened_data[19])
-    face_opposite_b = int(flattened_data[20])
-    face_opposite_c = int(flattened_data[21])
-
-    return cls(facet_index, a, b, c,
-               a_index, b_index, c_index,
-               face_opposite_a, face_opposite_b, face_opposite_c,
-               w1, w2)
 
   def compute_angle(self, direction):
     """Computes angle of `direction` in current orthogonal coordinates.
@@ -286,7 +286,7 @@ class FaceWrapper(object):
     angle_change = (self.compute_angle(direction_to_change) -
                     self.compute_angle(fixed_direction))
 
-    new_face = self.parent_mesh_wrapper.faces[new_face_index]
+    new_face = self.mesh_wrapper.faces[new_face_index]
     return angle_change + new_face.compute_angle(fixed_direction)
 
   def move_toward_side(self, list_of_moves,
@@ -305,7 +305,7 @@ class FaceWrapper(object):
 
     # If we haven't returned, this side is a valid choice.
     actual_move_length = move_length
-    next_face = self.facet_index
+    next_face = self.face_index
     # We don't need these attributes if the move stays on the same face.
     remaining_length = theta_new = None
     # If the move takes us past the intersection, we need to change to
@@ -378,7 +378,7 @@ def check_mesh_type(mesh):
     raise ValueError('Expecting tetrahedral mesh.')
 
 
-def get_face(point, mesh, cell_list, face_dictionary):
+def get_face(point, mesh, cell_list):
   face_intersection = dolfin.cpp.mesh.intersect(mesh, point)
   # Require a unique intersection. This is not actually necessary as some
   # points may lie on an edge / vertex or may not be on the mesh at all.
@@ -393,41 +393,109 @@ def get_face(point, mesh, cell_list, face_dictionary):
     raise ValueError('Multiple facets on cell marked exterior.')
 
   exterior_facet_index = exterior_facets[0].index()
-  return face_dictionary[exterior_facet_index]
+  return exterior_facet_index
 
 
-def get_faces(vertex_list, edge_list, facets_list):
+def get_vertex_array(vertices_dict):
+  # We re-number the vertices as well.
+  renumber_vertex_dict = {key: i
+                          for i, key in enumerate(vertices_dict.keys())}
+
+  # Use mapping in reverse so we can create a (N x 3) array.
+  renumbered_vertices = {}
+  for key, value in vertices_dict.iteritems():
+    new_key = renumber_vertex_dict[key]
+    renumbered_vertices[new_key] = value
+
+  num_vertices = len(vertices_dict)
+  all_vertices = np.vstack([renumbered_vertices[i]
+                            for i in xrange(num_vertices)])
+
+  return renumber_vertex_dict, all_vertices
+
+
+def get_face_data(vertex_list, edge_list, facets_list, initial_face_index):
   """Gets faces from mesh and turns them into FaceWrapper objects.
 
   Only adds exterior faces.
   """
-  faces = {}
-  # Use facets since they have facet.exterior() set.
+  vertices_dict = {}
+  triangles = []
+  face_local_bases = []
+  neighbor_faces = []
+
+  renumber_face_dict = {}
+  new_face_index = 0
   for facet in facets_list:
     if not facet.exterior():
       continue
-    faces[facet.index()] = FaceWrapper.from_mesh_data(facet, vertex_list,
-                                                      edge_list, facets_list)
+    raw_face_data = RawFaceData(facet, vertex_list, edge_list, facets_list)
+    renumber_face_dict[raw_face_data.face_index] = new_face_index
+    new_face_index += 1  # Increment to prepare for next one.
 
-  return faces
+    raw_face_data.add_vertices(vertices_dict)
+    raw_face_data.add_triangle(triangles)
+
+    # Add the local orthogonal basis for the face as a 1D vector in R^6.
+    face_local_bases.append(np.hstack([raw_face_data.w1, raw_face_data.w2]))
+    # Add neighbor faces (before re-numbering).
+    neighbor_faces.append([raw_face_data.face_opposite_a,
+                           raw_face_data.face_opposite_b,
+                           raw_face_data.face_opposite_c])
+
+  # Re-number the vertices
+  renumber_vertex_dict, all_vertices = get_vertex_array(vertices_dict)
+
+  # Convert `triangles` to a numpy array and re-number based on vertex
+  # re-numbering.
+  triangles = np.array(triangles, dtype=np.int32)
+  def renumber_triangles(vertex_index):
+    return renumber_vertex_dict[vertex_index]
+  renumber_triangles = np.vectorize(renumber_triangles)
+  triangles = renumber_triangles(triangles)
+
+  # Turn `face_local_bases` into a numpy array.
+  face_local_bases = np.vstack(face_local_bases)
+
+  # Convert `neighbor_faces` to a numpy array and re-number based on face
+  # re-numbering.
+  neighbor_faces = np.array(neighbor_faces, dtype=np.int32)
+  def renumber_faces(face_index):
+    return renumber_face_dict[face_index]
+  renumber_faces = np.vectorize(renumber_faces)
+  neighbor_faces = renumber_faces(neighbor_faces)
+
+  # Update the index based on re-numbering.
+  initial_face_index = renumber_face_dict[initial_face_index]
+
+  return (all_vertices, triangles, face_local_bases,
+          neighbor_faces, initial_face_index)
 
 
 class MeshWrapper(object):
 
-  def __init__(self, k, initial_point, initial_face, faces):
+  def __init__(self, k, initial_point, initial_face_index,
+               all_vertices, triangles, face_local_bases, neighbor_faces):
     self.k = k
     self.initial_point = initial_point
-    self.initial_face = initial_face
+    self.initial_face_index = initial_face_index
 
-    self.faces = faces
-    for face in faces.values():
-      face.add_mesh_wrapper(self)
+    self.all_vertices = all_vertices
+    self.triangles = triangles
+    self.face_local_bases = face_local_bases
+    self.neighbor_faces = neighbor_faces
 
+    self.faces = {}
+    for face_index in xrange(triangles.shape[0]):
+      self.faces[face_index] = FaceWrapper(face_index, self)
+
+    # Set initial_face object based on newly created faces.
+    self.initial_face = self.faces[self.initial_face_index]
     # Counter to keep track of points on the mesh.
     self.current_point_index = -1
 
   @classmethod
-  def from_mesh(cls, mesh, initial_point, k, return_facets=False):
+  def from_mesh(cls, mesh, initial_point, k):
     print 'Creating MeshWrapper from mesh data.'
 
     # Make sure it is the right kind of mesh.
@@ -441,20 +509,21 @@ class MeshWrapper(object):
     print 'Reading edge list from the mesh object'
     edge_list = list(dolfin.edges(mesh))
     print 'Reading facets list from the mesh object'
+    # Use facets since they have facet.exterior() set.
     facets_list = list(dolfin.facets(mesh))
-    print 'Parsing exterior faces and creating FaceWrapper objects'
-    faces = get_faces(vertex_list, edge_list, facets_list)
-
-    # Set values specific to motion on the mesh.
+    # Get values specific to motion on the mesh.
     print 'Reading cell list from the mesh object'
     cell_list = list(dolfin.cells(mesh))
-    initial_face = get_face(dolfin.Point(*initial_point), mesh,
-                            cell_list, faces)
+    initial_face_index = get_face(dolfin.Point(*initial_point),
+                                  mesh, cell_list)
 
-    if return_facets:
-      return cls(k, initial_point, initial_face, faces), facets_list
-    else:
-      return cls(k, initial_point, initial_face, faces)
+    print 'Parsing exterior faces and creating FaceWrapper objects'
+    (all_vertices, triangles, face_local_bases, neighbor_faces,
+     initial_face_index) = get_face_data(vertex_list, edge_list,
+                                         facets_list, initial_face_index)
+
+    return cls(k, initial_point, initial_face_index,
+               all_vertices, triangles, face_local_bases, neighbor_faces)
 
   def next_index(self):
     self.current_point_index += 1
@@ -465,11 +534,11 @@ class MeshWrapper(object):
     if self.current_point_index != -1:
       print 'Points on mesh will not be serialized.'
 
-    flattened_faces = np.vstack([face.flatten_data()
-                                 for face in self.faces.values()])
     np.savez(filename, k=self.k, initial_point=self.initial_point,
-             initial_face_index=self.initial_face.facet_index,
-             flattened_faces=flattened_faces)
+             initial_face_index=self.initial_face_index,
+             all_vertices=self.all_vertices, triangles=self.triangles,
+             face_local_bases=self.face_local_bases,
+             neighbor_faces=self.neighbor_faces)
 
   @classmethod
   def from_file(cls, filename):
@@ -478,18 +547,15 @@ class MeshWrapper(object):
 
     k = npzfile['k'].item()
     initial_point = npzfile['initial_point']
-
-    # Read the faces in FaceWrapper objects.
-    flattened_faces = npzfile['flattened_faces']
-    faces_list = [FaceWrapper.from_flattened_data(flattened_face)
-                  for flattened_face in flattened_faces]
-    faces = {face.facet_index: face for face in faces_list}
-
-    # Get the initial face from the list.
     initial_face_index = npzfile['initial_face_index'].item()
-    initial_face = faces[initial_face_index]
 
-    return cls(k, initial_point, initial_face, faces)
+    all_vertices = npzfile['all_vertices']
+    triangles = npzfile['triangles']
+    face_local_bases = npzfile['face_local_bases']
+    neighbor_faces = npzfile['neighbor_faces']
+
+    return cls(k, initial_point, initial_face_index,
+               all_vertices, triangles, face_local_bases, neighbor_faces)
 
   def __str__(self):
     return 'Mesh(num_faces=%d)' % len(self.faces)
@@ -510,7 +576,7 @@ class Point(object):
 
   def __init__(self, mesh_wrapper):
     self.point_index = mesh_wrapper.next_index()
-    # NOTE: We don't need to store this since `self.face.parent_mesh_wrapper`
+    # NOTE: We don't need to store this since `self.face.mesh_wrapper`
     #       will also hold this value.
     self.mesh_wrapper = mesh_wrapper
 
@@ -523,11 +589,11 @@ class Point(object):
     self.k = mesh_wrapper.k
 
     self.move_counter = 0
-    self.values = [(self.face.facet_index, self.point)]
+    self.values = [(self.face.face_index, self.point)]
 
   def __str__(self):
     return 'Point(%d, face=%d)' % (self.point_index,
-                                   self.face.facet_index)
+                                   self.face.face_index)
 
   def __repr__(self):
     return str(self)
@@ -560,7 +626,7 @@ class Point(object):
     next_face, next_point, L_new, theta_new = self.face.move(
         self.point, L, theta)
     self.point = next_point
-    if next_face != self.face.facet_index:
+    if next_face != self.face.face_index:
       self.change_face(self.mesh_wrapper.faces[next_face])
       # Continue to move until we stay on the same face.
       self._move(L_new, theta_new)
@@ -570,7 +636,7 @@ class Point(object):
     self._move(L, theta)
 
     self.move_counter += 1
-    self.values.append((self.face.facet_index, self.point))
+    self.values.append((self.face.face_index, self.point))
 
 
 class PlotBoundary(object):
