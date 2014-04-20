@@ -662,7 +662,7 @@ def default_color_function(point):
 
 # Mostly borrowed from particle_diffusion.py (without using dolfin).
 def plot_simulation(num_points, mesh_wrapper, plot_boundary,
-                    color_function=default_color_function,
+                    color_function=default_color_function, show_mesh=False,
                     num_frames=200, print_frequency=None,
                     interval=30, filename=None):
   points = [Point(mesh_wrapper) for _ in xrange(num_points)]
@@ -676,6 +676,13 @@ def plot_simulation(num_points, mesh_wrapper, plot_boundary,
   # Create lines with a single point as a scatter.
   all_points = [ax.plot([pt.x], [pt.y], [pt.z], c='b', marker='o')[0]
                 for pt in points]
+  if show_mesh:
+    # Add permanent (unchanged) features to plot.
+    x = mesh_wrapper.all_vertices[:, 0]
+    y = mesh_wrapper.all_vertices[:, 1]
+    z = mesh_wrapper.all_vertices[:, 2]
+    ax.plot_trisurf(x, y, z, triangles=mesh_wrapper.triangles,
+                    color='w', linewidth=0.05)
 
   def update_plot(step_num):
     if print_frequency is not None and step_num % print_frequency == 0:
