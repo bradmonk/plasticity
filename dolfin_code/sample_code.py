@@ -1,14 +1,16 @@
-import dolfin
 import numpy as np
 
 from particle_diffusion_on_mesh import Mesh
 from particle_diffusion_on_mesh import PlotBoundary
 from particle_diffusion_on_mesh import Point
-from particle_diffusion_on_mesh import convert_point_to_array
 from particle_diffusion_on_mesh import plot_simulation
 
 
 def save_serialized_mesh():
+  print 'Importing dolfin, takes a bit of time...'
+  import dolfin
+  print 'Done importing dolfin.'
+
   resolution = 96
   mesh_full_filename = 'mesh_res_%d_full.xml' % resolution
   mesh_3d = dolfin.Mesh(mesh_full_filename)
@@ -43,8 +45,8 @@ def sample_code():
 
 
 def error_off_plane(face, point):
-  n = np.cross(face.c - face.a, face.b - face.a)
-  n = n / np.linalg.norm(n)
+  # Built so that cross(x, y) == z
+  n = np.cross(face.w1, face.w2)
   return np.dot(point - face.a, n)
 
 
