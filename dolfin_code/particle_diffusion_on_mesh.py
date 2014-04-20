@@ -178,7 +178,7 @@ class RawFaceData(object):
     triangles.append((self.a_index, self.b_index, self.c_index))
 
 
-class FaceWrapper(object):
+class Face(object):
 
   def __init__(self, face_index, mesh_wrapper):
     self.face_index = face_index
@@ -415,7 +415,7 @@ def get_vertex_array(vertices_dict):
 
 
 def get_face_data(vertex_list, edge_list, facets_list, initial_face_index):
-  """Gets faces from mesh and turns them into FaceWrapper objects.
+  """Gets faces from mesh and turns them into Face objects.
 
   Only adds exterior faces.
   """
@@ -472,7 +472,7 @@ def get_face_data(vertex_list, edge_list, facets_list, initial_face_index):
           neighbor_faces, initial_face_index)
 
 
-class MeshWrapper(object):
+class Mesh(object):
 
   def __init__(self, k, initial_point, initial_face_index,
                all_vertices, triangles, face_local_bases, neighbor_faces):
@@ -487,7 +487,7 @@ class MeshWrapper(object):
 
     self.faces = {}
     for face_index in xrange(triangles.shape[0]):
-      self.faces[face_index] = FaceWrapper(face_index, self)
+      self.faces[face_index] = Face(face_index, self)
 
     # Set initial_face object based on newly created faces.
     self.initial_face = self.faces[self.initial_face_index]
@@ -496,7 +496,7 @@ class MeshWrapper(object):
 
   @classmethod
   def from_mesh(cls, mesh, initial_point, k):
-    print 'Creating MeshWrapper from mesh data.'
+    print 'Creating Mesh from mesh data.'
 
     # Make sure it is the right kind of mesh.
     print 'Initializing mesh attributes (edges, faces, etc.)'
@@ -517,7 +517,7 @@ class MeshWrapper(object):
     initial_face_index = get_face(dolfin.Point(*initial_point),
                                   mesh, cell_list)
 
-    print 'Parsing exterior faces and creating FaceWrapper objects'
+    print 'Parsing exterior faces and creating Face objects'
     (all_vertices, triangles, face_local_bases, neighbor_faces,
      initial_face_index) = get_face_data(vertex_list, edge_list,
                                          facets_list, initial_face_index)
@@ -614,7 +614,7 @@ class Point(object):
     """Updates the face on current object and adds point to face.
 
     Args:
-      face: A FaceWrapper object.
+      face: A Face object.
     """
     if self.face is not None:
       self.face.remove_point(self)

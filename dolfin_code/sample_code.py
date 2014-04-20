@@ -1,7 +1,7 @@
 import dolfin
 import numpy as np
 
-from particle_diffusion_on_mesh import MeshWrapper
+from particle_diffusion_on_mesh import Mesh
 from particle_diffusion_on_mesh import PlotBoundary
 from particle_diffusion_on_mesh import Point
 from particle_diffusion_on_mesh import convert_point_to_array
@@ -23,7 +23,7 @@ def save_serialized_mesh():
   STARTING_K = SCALE_FACTOR * 0.01
 
   initial_point = np.array((STARTING_X, STARTING_Y, STARTING_Z))
-  mesh_wrapper = MeshWrapper.from_mesh(mesh_3d, initial_point, STARTING_K)
+  mesh_wrapper = Mesh.from_mesh(mesh_3d, initial_point, STARTING_K)
 
   serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
   mesh_wrapper.serialize_mesh(serialized_mesh_filename)
@@ -32,7 +32,7 @@ def save_serialized_mesh():
 def sample_code():
   resolution = 96
   serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
-  mesh_wrapper = MeshWrapper.from_file(serialized_mesh_filename)
+  mesh_wrapper = Mesh.from_file(serialized_mesh_filename)
 
   points = [Point(mesh_wrapper) for _ in xrange(10)]
 
@@ -53,7 +53,7 @@ def test_accurary_on_face(mesh_wrapper=None, num_steps=1000):
     resolution = 96
 
     serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
-    mesh_wrapper = MeshWrapper.from_file(serialized_mesh_filename)
+    mesh_wrapper = Mesh.from_file(serialized_mesh_filename)
 
   point = Point(mesh_wrapper)
 
@@ -75,7 +75,7 @@ def plot_custom():
 
   resolution = 96
   serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
-  mesh_wrapper = MeshWrapper.from_file(serialized_mesh_filename)
+  mesh_wrapper = Mesh.from_file(serialized_mesh_filename)
 
   plot_boundary = PlotBoundary(-17.0, 17.0, -17.0, 17.0, 0.0, 50.0)
 

@@ -3,12 +3,12 @@ from matplotlib import cm
 import matplotlib.pyplot as plt
 import numpy as np
 
-from particle_diffusion_on_mesh import MeshWrapper
+from particle_diffusion_on_mesh import Mesh
 
 
 resolution = 96
 serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
-mesh_wrapper = MeshWrapper.from_file(serialized_mesh_filename)
+mesh_wrapper = Mesh.from_file(serialized_mesh_filename)
 
 points_dict = {}
 triangles_list = []
