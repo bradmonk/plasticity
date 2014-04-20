@@ -23,18 +23,10 @@ def save_serialized_mesh():
   STARTING_K = SCALE_FACTOR * 0.01
 
   initial_point = np.array((STARTING_X, STARTING_Y, STARTING_Z))
-  mesh_wrapper, facets_list = MeshWrapper.from_mesh(
-      mesh_3d, initial_point, STARTING_K, return_facets=True)
+  mesh_wrapper = MeshWrapper.from_mesh(mesh_3d, initial_point, STARTING_K)
 
   serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
   mesh_wrapper.serialize_mesh(serialized_mesh_filename)
-
-  facet_info_list = [np.hstack([convert_point_to_array(facet.normal()),
-                                convert_point_to_array(facet.midpoint())])
-                     for facet in facets_list]
-  facet_info_filename = 'facet_info_list_res_%d.npy' % resolution
-  print 'Saving list of facet normals to', facet_info_filename
-  np.save(facet_info_filename, facet_info_list)
 
 
 def sample_code():
@@ -50,30 +42,25 @@ def sample_code():
   return points
 
 
-def error_off_plane(face_id, point, facet_info_list):
-  facet_info = facet_info_list[face_id]
-  n = facet_info[:3]
-  midpoint = facet_info[3:]
-  return np.dot(point - midpoint, n)
+def error_off_plane(face, point):
+  n = np.cross(face.c - face.a, face.b - face.a)
+  n = n / np.linalg.norm(n)
+  return np.dot(point - face.a, n)
 
 
-def test_accurary_on_face(mesh_wrapper=None, facet_info_list=None,
-                          num_steps=1000):
-  if mesh_wrapper is None or facet_info_list is None:
+def test_accurary_on_face(mesh_wrapper=None, num_steps=1000):
+  if mesh_wrapper is None:
     resolution = 96
 
     serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
     mesh_wrapper = MeshWrapper.from_file(serialized_mesh_filename)
-
-    facet_info_filename = 'facet_info_list_res_%d.npy' % resolution
-    facet_info_list = [normal for normal in np.load(facet_info_filename)]
 
   point = Point(mesh_wrapper)
 
   for i in xrange(num_steps):
     point.move()
 
-  errors = [error_off_plane(face_id, pt, facet_info_list)
+  errors = [error_off_plane(mesh_wrapper.faces[face_id], pt)
             for face_id, pt in point.values]
   print 'Max Error after %d steps' % num_steps
   print np.max(np.abs(errors))
