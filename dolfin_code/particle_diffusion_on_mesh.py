@@ -412,7 +412,7 @@ def plot_simulation(num_points, mesh_wrapper, plot_boundary,
     y = mesh_wrapper.all_vertices[:, 1]
     z = mesh_wrapper.all_vertices[:, 2]
     ax.plot_trisurf(x, y, z, triangles=mesh_wrapper.triangles,
-                    color='w', linewidth=0.05)
+                    color=(0, 0, 0, 0), edgecolor='Gray', linewidth=0.05)
 
   def update_plot(step_num):
     if print_frequency is not None and step_num % print_frequency == 0:
