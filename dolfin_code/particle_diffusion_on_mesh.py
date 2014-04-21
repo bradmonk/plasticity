@@ -401,7 +401,7 @@ def plot_simulation(num_points, mesh_wrapper, plot_boundary,
   fig = plt.figure()
   ax = p3.Axes3D(fig)
   # Set default view.
-  ax.view_init(elev=12, azim=-37)
+  ax.view_init(elev=24, azim=-144)
 
   # Create lines with a single point as a scatter.
   all_points = [ax.plot([pt.x], [pt.y], [pt.z], c='b', marker='o')[0]

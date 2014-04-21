@@ -69,19 +69,47 @@ def test_accurary_on_face(mesh_wrapper=None, num_steps=1000):
 
 
 def plot_custom():
+  X_CENTER1 = 0.0
+  X_CENTER2 = 100.0
+  X_CENTER3 = 200.0
+  X_CENTER4 = 300.0
+  MAX_RADIUS = 15.0
+  def in_box(value, center):
+    delta = value - center
+    if np.allclose(delta, MAX_RADIUS) or np.allclose(delta, - MAX_RADIUS):
+      return True
+
+    return -MAX_RADIUS <= delta <= MAX_RADIUS
+
+  def in_x_y_box(point, x_center):
+    return in_box(point.x, x_center) and in_box(point.y, 0.0)
+
   def custom_color_function(point):
     if np.allclose(point.z, 50.0):
       return 'b'
-    else:
-      return 'r'
+
+    if np.allclose(point.z, 0) or point.z >= 0:
+      if in_x_y_box(point, X_CENTER1) or in_x_y_box(point, X_CENTER3):
+        return 'r'
+      elif in_x_y_box(point, X_CENTER2) or in_x_y_box(point, X_CENTER4):
+        return 'y'
+
+    return 'g'
 
   resolution = 96
   serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
   mesh_wrapper = Mesh.from_file(serialized_mesh_filename)
+  mesh_wrapper.k = 6.0
 
-  plot_boundary = PlotBoundary(-17.0, 17.0, -17.0, 17.0, 0.0, 50.0)
+  x = mesh_wrapper.all_vertices[:, 0]
+  y = mesh_wrapper.all_vertices[:, 1]
+  z = mesh_wrapper.all_vertices[:, 2]
+  # Consider putting this into `plot_simulation`.
+  plot_boundary = PlotBoundary(np.min(x), np.max(x),
+                               np.min(y), np.max(y),
+                               np.min(z), np.max(z))
 
-  plot_simulation(200, mesh_wrapper, plot_boundary,
+  plot_simulation(10, mesh_wrapper, plot_boundary,
                   color_function=custom_color_function,
-                  print_frequency=20, show_mesh=True,
-                  filename='200points_200steps_colored_points.gif')
+                  num_frames=500, print_frequency=20, show_mesh=True,
+                  filename='10points_500steps_bigger_k.gif')
