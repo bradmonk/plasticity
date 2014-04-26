@@ -1,6 +1,19 @@
-djhbrm
+
+
+## TBD
+
+
+### Things to implement/code
+* Add scaffold cluster model at synaptic submembrane
+
 ======
 
+### Things to analyze
+* Time the mean spine escape latency for particles with a starting origin at the synapse (top of spine)
+
+
+======
+## Notes
 Make sure Matplotlib, Numpy, etc. are up to date on Mac OS X
 so we can properly do animations in 3D:
 
