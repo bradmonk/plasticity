@@ -1,6 +1,6 @@
 function [] = bradftp(fname)
 
-bradftp = ftp('ftp.bradleymonk.com','monakhos','8r4d13y!');
+bradftp = ftp('ftp.example.com','user','passe!');
 cd(bradftp);
 cd(bradftp,'bradleymonk.com/matlab')
 	
@@ -20,9 +20,9 @@ close(bradftp);
 
 
 %{
-bradftp = ftp('ftp.bradleymonk.com','monakhos','8r4d13y!');
+bradftp = ftp('ftp.example.com','user','passe!');
 cd(bradftp);
-cd(bradftp,'bradleymonk.com/matlab')
+cd(bradftp,'example.com/matlab')
 	
 	% Change path to directory with MAINBOX.m
 	w1 = what('mainfunctions');
@@ -39,7 +39,7 @@ mput(bradftp, 'MAINBOX.m');
 close(bradftp);
 %}
 %{
-bradftp = ftp('ftp.matlabs.net','monakhos','8r4d13y!');
+bradftp = ftp('ftp.example.com','user','passe!');
 cd(bradftp)
 cd(bradftp,'matlabs.net')
 	
