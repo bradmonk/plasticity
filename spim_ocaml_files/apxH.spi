@@ -1,0 +1,45 @@
+directive sample 10.0
+directive plot Af(); Ar(); Ab();
+Rf(); Rb(); Arb(); Arbb()
+directive debug
+val lam = 0.0027 (* dissoc *)
+val mu = 0.116 (* assoc *)
+new c@mu:chan(float,float,float,float,chan)
+new r@mu:chan(float, float, float, float, chan)
+let Af() =
+?c(x, y, x1, y1, lft);
+Al(x + x1, y + y1, x1,y1, lft)
+and Al(x:float, y:float,
+x1: float, y1:float, lft:chan) =
+( new rht@lam:chan
+do !c(x, y, x1, y1, rht);
+Ab(x,y,x1,y1,lft,rht)
+or !c(x, y, x1, y1, rht);
+Arb(x,y, x1, y1,lft,rht))
+and Ab(x:float, y:float,
+x1:float, y1: float, lft:chan, rht:chan) = ()
+and Arb(x:float, y:float,
+x1:float, y1:float, lft:chan, rht:chan) =
+( new e@lam:chan
+do !r(x,y,
+(x1 * 0.34) + (y1 * 0.94 ),
+(x1 * ( - 0.94)) + (y1 * 0.34), e);
+Arbb(x,y, x1, y1, e, lft, rht)
+or !r(x,y,
+(x1 * 0.34) - (y1 * 0.94 ),
+(x1 * 0.94) + (y1 * 0.34), e);
+Arbb(x,y, x1, y1, e, lft, rht) )
+and Arbb(x:float,y:float, x1:float, y1:float,
+e:chan,lft:chan,rht:chan) = ()
+let Rf() = ?r(x,y,x1,y1,er); Rl(x,y,x1,y1,er)
+and Rl(x:float,y:float, x1:float,y1:float,el:chan) =
+( new e@lam:chan
+!c(x,y,x1,y1,e); Rb(x,y,x1,y1,el,e) )
+and Rb(x:float, y:float,
+x1:float, y1:float, el:chan, e:chan) = ()
+run 1 of ( new e@1.0:chan Al(20.0,5.0, 0.0 ,1.0, e))
+run 1 of ( new e@1.0:chan Al(50.0,5.0, 0.0 ,1.0, e))
+run 1 of ( new e@1.0:chan Al(60.0,5.0, 0.0 ,1.0, e))
+run 1 of ( new e@1.0:chan Al(100.0,5.0, 0.0 ,1.0, e))
+run 1200 of Af()
+run 30 of Rf()

@@ -1,0 +1,136 @@
+directive sample 0.05
+directive plot AfT(); AfPi(); AfD();
+AlT(); AlPi(); AlD();
+ArT(); ArPi(); ArD();
+AbT(); AbPi(); AbD();
+ART(); ARPi(); ARD();
+ATC(); APC(); ADC();
+Rf(); Rl(); Rr(); Rb();
+Cf(); Cb()
+val mu1 = 0.116
+val mu2 = 0.013
+val lam1 = 0.014
+val lam2 = 0.008
+val mu3 = 0.034
+val mu4 = 0.0011
+val lam3 = 0.002
+val lam4 = 0.002
+val mu5 = 0.029
+val mu6 = 0.0014
+val lam5 = 0.054
+val lam6 = 0.0025
+val alpha = 0.03
+val beta = 0.000004
+val atp2pi = 0.003
+val pi2adp = 0.0003
+val fast = 1.0
+val faster = 1000.0
+new c@mu1:chan(chan)
+new d@mu2:chan(chan)
+new e@mu1:chan(chan)
+new c1@mu3:chan(chan)
+new d1@mu4:chan(chan)
+new e1@mu3:chan(chan)
+new c2@mu5:chan(chan)
+new d2@mu6:chan(chan)
+new e2@mu5:chan(chan)
+new p@alpha:chan(chan)
+let AfT() =
+( new rht@lam2:chan
+do ?c(lft); AlT(lft)
+or ?d(rht); ArT(rht)
+or !c(rht); ArT(rht) )
+and AlT(lft:chan) =
+( new rht@lam1:chan
+new cap@beta:chan
+do !lft; AfT()
+or !c(rht); AbT(lft,rht)
+or !p(cap); ATC(lft,cap)
+or delay@atp2pi; AlPi(lft) )
+and ATC(lft:chan,cap:chan) =
+!cap; AlT(lft)
+and ArT(rht:chan) =
+( new lft@lam2:chan
+do !d(lft); AbT(lft,rht)
+or ?rht; AfT()
+or delay@atp2pi; ArPi(rht) )
+and AbT(lft:chan, rht:chan) =
+( new mid@lam2:chan
+do !lft; ArT(rht)
+or !rht; AlT(lft)
+or !e(mid); ART(lft,rht,mid)
+or delay@atp2pi; AbPi(lft, rht) )
+and ART(lft:chan, rht:chan, mid:chan) =
+do ?mid; AbT(lft,rht)
+or delay@atp2pi; ARPi(lft,rht,mid)
+(* ###################################### *)
+and AfPi() =
+( new rht@lam4:chan
+do ?c1(lft); AlPi(lft)
+or ?d1(rht); ArPi(rht)
+or !c1(rht); ArPi(rht)
+or delay@fast; AfD() )
+and AlPi(lft:chan) =
+( new rht@lam3:chan
+new cap@beta:chan
+do !lft; AfPi()
+or !c1(rht); AbPi(lft,rht)
+or !p(cap); APC(lft,cap)
+or delay@pi2adp; AlD(lft) )
+and APC(lft:chan,cap:chan) =
+!cap; AlT(lft)
+and ArPi(rht:chan) =
+( new lft@lam4:chan
+do !d1(lft); AbPi(lft,rht)
+or ?rht; AfPi()
+or delay@pi2adp; ArD(rht) )
+and AbPi(lft:chan, rht:chan) =
+( new mid@lam4:chan
+do !lft; ArPi(rht)
+or !rht; AlPi(lft)
+or !e1(mid); ARPi(lft,rht,mid)
+or delay@pi2adp; AbD(lft, rht) )
+and ARPi(lft:chan, rht:chan, mid:chan) =
+do ?mid; AbPi(lft,rht)
+or delay@pi2adp; ARD(lft,rht,mid)
+(* ###################################### *)
+and AfD() =
+( new rht@lam6:chan
+do ?c2(lft); AlD(lft)
+or ?d2(rht); ArD(rht)
+or !c2(rht); ArD(rht)
+or delay@faster; AfT() )
+and AlD(lft:chan) =
+( new rht@lam5:chan
+new cap@beta:chan
+do !lft; AfD()
+or !c2(rht); AbD(lft,rht)
+or !p(cap); ADC(lft,cap) )
+and ADC(lft:chan,cap:chan) =
+!cap; AlD(lft)
+and ArD(rht:chan) =
+( new lft@lam5:chan
+do !d2(lft); AbD(lft,rht)
+or ?rht; AfD() )
+and AbD(lft:chan, rht:chan) =
+( new mid@lam6:chan
+do !lft; ArD(rht)
+or !rht; AlD(lft)
+or !e2(mid); ARD(lft,rht,mid))
+and ARD(lft:chan, rht:chan, mid:chan) =
+?mid; AbD(lft,rht)
+(* ###################################### *)
+let Cf() = ?p(cap); Cb(cap)
+and Cb(cap:chan) = ?cap; Cf()
+let Rf() =
+?e(lft); Rl(lft)
+and Rl(lft:chan) =
+( new rht@lam1:chan
+do !c(rht); Rb(lft,rht)
+or !c1(rht); Rb(lft,rht)
+or !c2(rht); Rb(lft,rht) )
+and Rb(mid:chan,rht:chan) = !mid; Rr(rht)
+and Rr(rht:chan) = ?rht; Rf()
+run 1200 of AfT()
+run 30 of Rf()
+run 100 of Cf()

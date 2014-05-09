@@ -1,0 +1,16 @@
+directive sample 1.0
+directive plot Af(); Al(); Ar(); Ab()
+val mu = 0.116 (* association *)
+val lam = 0.0027 (* dissociation *)
+new c@mu:chan(chan)
+let Af() =
+( new rht@lam:chan
+do ?c(lft); Al(lft)
+or !c(rht); Ar(rht) )
+and Al(lft:chan) =
+( new rht@lam:chan
+do !lft; Af() or
+!c(rht); Ab(lft,rht) )
+and Ar(rht:chan) = ?rht; Af()
+and Ab(lft:chan, rht:chan) = !lft; Ar(rht)
+run 1200 of Af()

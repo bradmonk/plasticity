@@ -1,0 +1,39 @@
+directive sample 10000.0
+directive plot Af(); Al(); Ar(); Ab(); Arb();
+Rf(); Rl(); Rr(); Rb()
+val mu1 = 0.166
+val mu2 = 0.013
+val lam1 = 0.014
+val lam2 = 0.008
+new c@mu1:chan(chan)
+new d@mu2:chan(chan)
+new e@mu1:chan(chan)
+let Af() =
+( new rht@lam2:chan
+do ?c(lft); Al(lft)
+or ?d(rht); Ar(rht)
+or !c(rht); Ar(rht) )
+and Al(lft:chan) =
+( new rht@lam1:chan
+do !lft; Af()
+or !c(rht); Ab(lft,rht) )
+and Ar(rht:chan) =
+( new lft@lam2:chan
+do !d(lft); Ab(lft,rht)
+or ?rht; Af() )
+and Ab(lft:chan, rht:chan) =
+( new mid@lam2:chan
+do !lft; Ar(rht)
+or !rht; Al(lft)
+or !e(mid); Arb(lft,rht,mid) )
+and Arb(lft:chan, rht:chan, mid:chan) =
+?mid; Ab(lft,rht)
+let Rf() =
+?e(lft); Rl(lft)
+and Rl(lft:chan) =
+( new rht@lam1:chan
+!c(rht); Rb(lft,rht) )
+and Rb(mid:chan,rht:chan) = !mid; Rr(rht)
+and Rr(rht:chan) = ?rht; Rf()
+run 1200 of Af()
+run 30 of Rf()
