@@ -61,6 +61,14 @@ alt="Video on diffusion to steadystate" width="400" border="10" /></a>
 alt="3d Diffusion Animation in dolfin" width="400" border="10" /></a>
 
 
+#### Dendritic surface diffusion (on 3D mesh) from "particle_diffusion_on_mesh.py"
+<a href="http://bradleymonk.com/media/vid9/Dendritic_Diffusion_3D.mp4" target="_blank"><img src="http://bradleymonk.com/media/vid9/Dendritic_Diffusion_3D.png" 
+alt="Dendritic surface diffusion" width="400" border="10" /></a>
+
+
 #### Example rendering dynamic actin network from "bran_actin_geo_xyz.spi"
 <a href="http://bradleymonk.com/media/vid8/RenderActin.mp4" target="_blank"><img src="http://bradleymonk.com/media/vid8/SPiMactin.png" 
 alt="3d actin network" width="400" border="10" /></a>
+
+
+
