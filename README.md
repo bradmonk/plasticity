@@ -108,6 +108,6 @@ alt="3d actin network" width="400" border="10" /></a>
 
 
 #### Fig 6. Actin network constrained to spine
-<a href="http://bradleymonk.com/media/figs/spine5.png" target="_blank">
-<img src="http://bradleymonk.com/media/figs/spine5.png" width="500" border="10" /></a>
+<a href="http://bradleymonk.com/media/figs/Actin2.png" target="_blank">
+<img src="http://bradleymonk.com/media/figs/Actin2.png" width="500" border="10" /></a>
 * Fig 6. Actin network constrained to spine surface mesh. This actin filament network was grown stochastically from the dendritic shaft into the spine. Network structure is dependent on the relative availabilities of G-actin monomers (necessary for polymerization), cofilin (promotes depolymerization and remodeling), and Arp2/3 (induces branching at 70 degree angles). It appears that a postsynaptic density forms naturally under these conditions, with scaffold note packing tightly at the center of the spine head submembrane. Actin branches near the surface will act as scaffolding for scaffold-associated proteins (SAPs) which can cluster around these nodes and tether diffusing surface receptors.
