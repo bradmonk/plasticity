@@ -184,7 +184,8 @@ doTs = [doT1 doT2 doT3 doT4 doT5 doT6 doT7 doT8 doT9 doT10];
 % handles.output = SAPORM(LBR,TIME,SIZE,MODS,DOES,REVA,GLU,GT,GTab,doTs);
 % handles.output = ORMATHFUN(LBR,TIME,SIZE,MODS,DOES,REVA,GLU,GT,GTab,doTs);
 % handles.output = clustersim(LBR,TIME,SIZE,MODS,DOES,REVA,GLU,GT,GTab,doTs);
-handles.output = ACTINFUN(LBR,TIME,SIZE,MODS,DOES,REVA,GLU,GT,GTab,doTs);
+% handles.output = ACTINFUN(LBR,TIME,SIZE,MODS,DOES,REVA,GLU,GT,GTab,doTs);
+handles.output = ActinMultiplex(LBR,TIME,SIZE,MODS,DOES,REVA,GLU,GT,GTab,doTs);
 
 %=========================================================%
 function FileMenu_Callback(hObject, eventdata, handles)

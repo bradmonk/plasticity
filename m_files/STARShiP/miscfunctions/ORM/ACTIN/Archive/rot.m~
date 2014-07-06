@@ -1,0 +1,63 @@
+function [varargout] = rot(varargin)
+
+
+if nargin >= 2
+	rot=varargin{1};
+	azel=varargin{2};
+elseif nargin == 1 
+	rot=varargin{1};
+	azel = baseazel;
+else
+	rot=baserot;
+	azel = baseazel;
+end
+
+
+RxA = [1 0 0; 0 cos(a) sin(a); 0 -sin(a) cos(a)];
+RyB = [cos(b) 0 -sin(b); 0 1 0; sin(b) 0 cos(b)];
+RzG = [cos(g) sin(g) 0; -sin(g) cos(g) 0; 0 0 1];
+
+
+RdPhi = [1 0 0; 0 cos(Phi) sin(Phi); 0 -sin(Phi) cos(Phi)];
+RcTta = [cos(Tta) 0 -sin(Tta); 0 1 0; sin(Tta) 0 cos(Tta)];
+RbPsi = [cos(Psi) sin(Psi) 0; -sin(Psi) cos(Psi) 0; 0 0 1];
+
+RaMx  = [a11 a12 a13; 
+		 a21 a22 a23; 
+		 a31 a32 a33];
+
+
+
+
+
+
+
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

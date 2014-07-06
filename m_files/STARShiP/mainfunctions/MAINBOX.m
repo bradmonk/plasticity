@@ -12,7 +12,7 @@ if doprofile
 profile on;
 end
 
-%{.
+%{
 % IF NO GUI INPUTS
 if nargin < 1 
 
@@ -78,36 +78,36 @@ um6 = um(6); % PERI2um
  
 sap1 = sap(1); % SAPdotsPSD1
 sap2 = sap(2); % SAPdotsPSD2
-sap3 = sap(3); % SAPbetaPSD1
-sap4 = sap(4); % SAPtauPSD1
-sap5 = sap(5); % SAPL1PSD1
-sap6 = sap(6); % SAPbetaPSD2
-sap7 = sap(7); % SAPtauPSD2
-sap8 = sap(8); % SAPL1PSD2
-
-sap9 = sap(9); % SAPmuPSD1
-sap10 = sap(10); % SAPmuPSD2
-sap11 = sap(11); % SAPdTPSD1
-sap12 = sap(12); % SAPdTPSD2
-sap13 = sap(13); % SAPrhoPSD1
-sap14 = sap(14); % SAPrhoPSD2
-sap15 = sap(15); % SAPrPSD1
-sap16 = sap(16); % SAPrPSD2
-sap17 = sap(17); % doDynamicLeP1
-sap18 = sap(18); % doDynamicLeP2
-
-sap21 = sap(21); % LonS1
-sap22 = sap(22); % BonS1
-sap23 = sap(23); % RonS1
-sap24 = sap(24); % LoffS1
-sap25 = sap(25); % BoffS1
-sap26 = sap(26); % RoffS1
-sap27 = sap(27); % LonS2
-sap28 = sap(28); % BonS2
-sap29 = sap(29); % RonS2
-sap30 = sap(30); % LoffS2
-sap31 = sap(31); % BoffS2
-sap32 = sap(32); % RoffS2
+% sap3 = sap(3); % SAPbetaPSD1
+% sap4 = sap(4); % SAPtauPSD1
+% sap5 = sap(5); % SAPL1PSD1
+% sap6 = sap(6); % SAPbetaPSD2
+% sap7 = sap(7); % SAPtauPSD2
+% sap8 = sap(8); % SAPL1PSD2
+% 
+% sap9 = sap(9); % SAPmuPSD1
+% sap10 = sap(10); % SAPmuPSD2
+% sap11 = sap(11); % SAPdTPSD1
+% sap12 = sap(12); % SAPdTPSD2
+% sap13 = sap(13); % SAPrhoPSD1
+% sap14 = sap(14); % SAPrhoPSD2
+% sap15 = sap(15); % SAPrPSD1
+% sap16 = sap(16); % SAPrPSD2
+% sap17 = sap(17); % doDynamicLeP1
+% sap18 = sap(18); % doDynamicLeP2
+% 
+% sap21 = sap(21); % LonS1
+% sap22 = sap(22); % BonS1
+% sap23 = sap(23); % RonS1
+% sap24 = sap(24); % LoffS1
+% sap25 = sap(25); % BoffS1
+% sap26 = sap(26); % RoffS1
+% sap27 = sap(27); % LonS2
+% sap28 = sap(28); % BonS2
+% sap29 = sap(29); % RonS2
+% sap30 = sap(30); % LoffS2
+% sap31 = sap(31); % BoffS2
+% sap32 = sap(32); % RoffS2
 
 
 slt1 = slt(1); % G1PSDslotN
@@ -115,9 +115,6 @@ slt2 = slt(2); % G1PERIslotN
 slt3 = slt(3); % G2PSDslotN
 slt4 = slt(4); % G2PERIslotN
 
-hr1 = hr(1); % HomeostaticLo
-hr2 = hr(2); % HomeostaticHi
- 
 ko1 = ko(1); % KonSpi1PSDGR2
 ko2 = ko(2); % KoffSpi1PSDGR2
 ko9 = ko(9); % KonSpi1PSDGR1
@@ -125,25 +122,25 @@ ko10 = ko(10); % KoffSpi1PSDGR1
 
 doUse1 = doUse(1); % useGluR1
 doUse2 = doUse(2); % useGluR2
-doUse3 = doUse(3); % runSAPPSD1
-doUse4 = doUse(4); % runSAPPSD2
+% doUse3 = doUse(3); % runSAPPSD1
+% doUse4 = doUse(4); % runSAPPSD2
  
 doRun1 = doRun(1); % run2Dplot
 doRun2 = doRun(2); % run3Dplot
 doRun3 = doRun(3); % runMSDtest
-doRun4 = doRun(4); % runTraceSingleDot
+% doRun4 = doRun(4); % runTraceSingleDot
 doRun5 = doRun(5); % runMSDpopup      % POPUP
 doRun6 = doRun(6); % runHomeostatic
 doRun7 = doRun(7); % runPoissonsBox
 doRun8 = doRun(8); % doFieldFig
-doRun9 = doRun(9); % doSlotColormap
+% doRun9 = doRun(9); % doSlotColormap
 
 doKo1 = doKo(1); % useGluR1slots
 doKo2 = doKo(2); % useGluR2slots
-doKo3 = doKo(3); % useSlotsPSDGR1
-doKo4 = doKo(4); % useSlotsPSDGR2
-doKo5 = doKo(5); % useSlotsPERIGR1
-doKo6 = doKo(6); % useSlotsPERIGR2
+% doKo3 = doKo(3); % useSlotsPSDGR1
+% doKo4 = doKo(4); % useSlotsPSDGR2
+% doKo5 = doKo(5); % useSlotsPERIGR1
+% doKo6 = doKo(6); % useSlotsPERIGR2
 
 box1 = box(1);	% GraphTime
 box2 = box(2);	% AllowedTime
@@ -186,20 +183,20 @@ LTP1offG1 = stky(15);
 LTP2onG1 = stky(14);
 LTP2offG1 = stky(16);
 
-LTP1onG2 = stky(17);
-LTP1offG2 = stky(19);
-LTP2onG2 = stky(18);
-LTP2offG2 = stky(20);
+% LTP1onG2 = stky(17);
+% LTP1offG2 = stky(19);
+% LTP2onG2 = stky(18);
+% LTP2offG2 = stky(20);
 
 
-GT1on = GT(1);
-GT1off = GT(2);
-GT1LTPv = GT(3);
-GT2on = GT(4);
-GT2off = GT(5);
-GT2LTPv = GT(6);
-GT1masktab = GTab{1};
-GT2masktab = GTab{2};
+% GT1on = GT(1);
+% GT1off = GT(2);
+% GT1LTPv = GT(3);
+% GT2on = GT(4);
+% GT2off = GT(5);
+% GT2LTPv = GT(6);
+% GT1masktab = GTab{1};
+% GT2masktab = GTab{2};
 
 
 
@@ -211,7 +208,7 @@ GT2masktab = GTab{2};
 %---------------------------------------------------------%
 % DO PLOTS
 doMainPlot = doRun1;
-do3DPLOT = doRun2;
+% do3DPLOT = doRun2;
 
 % PARTICLES?
 Nsteps = dot3;
@@ -228,18 +225,6 @@ if ~doGluR2
 	GluR2Ndots = 0;
 end
 
-% DO PLOT ONE DOT?
-doONEDOTPLOT = doRun4;
-if doONEDOTPLOT
-	GluR2Ndots = 1;
-	clear GluR2xyds 
-	clear GluR2xyl
-	GluR2xyds = zeros(2,GluR2Ndots);
-	GluR2xyl = ones(2,GluR2Ndots);
-	xyl2 = GluR2xyl;			% save previous location
-	% Nsteps = 300;
-	doMainPlot=0;
-end
 
 % DO TRACK MSD?
 trackMSD = doRun3;
@@ -249,101 +234,29 @@ if trackMSD
 	Nsteps = 100;
 end
 
-doHomeostatic = 0;
 
-%=========================================================%
+
+
+
+%######################################################################%
+%######################################################################%
 loops = dot6;
 for re = 1:loops
-%=========================================================%
+%======================================================================%
 
 
-
-%{
-if 1-exist('dot1','var')
-dot1 = 1;
-end
-%}
-%---------------------------------------------------------%
-%					INPUTS FROM GUI
-%=========================================================%
-
-
-
-
-%%
-%=========================================================%
-%				AMPAR DOT PARTICLE MATRIX
-%---------------------------------------------------------%
-%GLUR1
-GluR1xyds = ones(2,GluR1Ndots);
-GluR1xyl = ones(2,GluR1Ndots);
-G1Z = ones(1,GluR1Ndots);
-
-% GLUR2
-GluR2xyds = ones(2,GluR2Ndots);
-GluR2xyl = ones(2,GluR2Ndots);
-G2Z = ones(1,GluR2Ndots);
-
-TTDots = GluR2Ndots+GluR1Ndots;
-
-
-%%
-%-------------##########################------------------%
-%{
-
-If I want to generate a bunch of random steps with diffusion rate of:
-D = 0.3
-then I would first determine the stdev of the D distribution:
-k = sqrt(d*D*t)
-and then generate a bunch of random XY steps from that distribution:
-Sxy = (k * randn(2,GluR2Ndots))
-then if I wanted to increase or decrease that initial step size
-I would need to determine the scalar value:
-DSc = D/Dn   (DSc = scalar, Dn = D new)
-then I can plug this DSc scalar into a function that will provide
-a coefficient for adjusting each linear X and Y step:
-Ls = 1/sqrt(DSc)
-Now, if I multiply each original Sxy step by Ls, i will achieve Dn
-
-Scale = dot5;				% scale of model
-t = dot4/1000;				% time step
-d = 2;                      % dimensions
-D = esDGR1/Scale*t;			% Diffusion Rate (D = L² / 2d*t)
-Ds = PSDDGR1/Scale;			% Diffusion Rate PSD
-Dr = D/Ds;					% Ratio of D:Ds (1/Ls)^2;
-Dn = D/Dr;					% new D after scaling L
-k = sqrt(d*D);	            % stdev of D's step size distribution
-MSD = 2*d*D;                % mean squared displacement
-L = sqrt(2*d*D);            % average diagonal (2D) step size
-Lx = L/sqrt(2);             % average linear (1D) step size
-Ls = 1/sqrt(Dr);			% scales Lx values for Dn
-
-% PSD DIFFUSION RATES
-Dr_PSD1 = dr1/dr4;			% PSD-1 D Scalar Ratio of D:Ds
-Dr_PSD2 = dr1/dr4;			% PSD-2 D Scalar Ratio of D:Ds
-Dn_PSD1 = dr4/Scale;		% PSD-1 D value after scaling L
-Dn_PSD2 = dr4/Scale;		% PSD-2 D value after scaling L
-PSD1 = 1/sqrt(Dr_PSD1);		% PSD-1 D Scalar Function, scales Lx values for Dn
-PSD2 = 1/sqrt(Dr_PSD2);		% PSD-2 D Scalar Function, scales Lx values for Dn
-
-esDGR1=dr1;
-spineDGR1=dr2;
-PERIDGR1=dr3;
-PSDDGR1=dr4;
-esDGR2=dr5;
-spineDGR2=dr6;
-PERIDGR2=dr7;
-PSDDGR2=dr8;
-%}
 %=========================================================%
 %               STARTING PARAMETERS
 %---------------------------------------------------------%
 % BASE DIFFUSION RATES EQUATIONS
 Scale = dot5;				% scale of model
+Sc = Scale;					% scale for diffusion
+
+
 t = dot4/1000;				% time step
 d = 2;                      % dimensions
-D = esDGR1*t/Scale;			% Diffusion Rate ES (D = L² / 2d*t)
-Dp = PSDDGR1*t/Scale;		% Diffusion Rate PSD
+D = esDGR1*t/Sc;			% Diffusion Rate ES (D = L² / 2d*t)
+Dp = PSDDGR1*t/Sc;			% Diffusion Rate PSD
 Dr = D/Dp;					% Ratio of D:Ds (1/Ls)^2;
 Dn = D/Dr;					% new D after scaling L
 k = sqrt(d*D);	            % stdev of D's step size distribution
@@ -353,9 +266,9 @@ Lx = L/sqrt(2);             % average linear (1D) step size
 Ls = 1/sqrt(Dr);			% scales Lx values for Dn
 
 % GLUR DIFFUSION RATES
-Ds = esDGR1*t/Scale;		% ExtraSynaptic Model-Scaled Diffusion Rate 
-GR1Ds = PSDDGR1*t/Scale;	% GluR1 (PSD) Model-Scaled Diffusion Rate
-GR2Ds = PSDDGR2*t/Scale;	% GluR2 (PSD) Model-Scaled Diffusion Rate
+Ds = esDGR1*t/Sc;			% ExtraSynaptic Model-Scaled Diffusion Rate 
+GR1Ds = PSDDGR1*t/Sc;		% GluR1 (PSD) Model-Scaled Diffusion Rate
+GR2Ds = PSDDGR2*t/Sc;		% GluR2 (PSD) Model-Scaled Diffusion Rate
 Dr_GR1 = Ds/GR1Ds;			% GluR1 (PSD) Ratio Ds:GR1Ds
 Dr_GR2 = Ds/GR2Ds;			% GluR2 (PSD) Ratio Ds:GR2Ds
 Dn_GR1 = Ds/Dr_GR1;			% GluR1 (PSD) D value after scaling L
@@ -364,9 +277,9 @@ LsGR1 = 1/sqrt(Dr_GR1);		% GluR1 (PSD) D Lx-Scalar (Ls scales Lx so Dn_GR1 = Ds/
 LsGR2 = 1/sqrt(Dr_GR2);		% GluR2 (PSD) D Lx-Scalar (Ls scales Lx so Dn_GR2 = Ds/Dr_GR2)
 
 % PSD DIFFUSION RATES (DEFAULT: GLUR1-BASED)
-Ds = esDGR1*t/Scale;		% ExtraSynaptic Model-Scaled Diffusion Rate 
-PSD1Ds = PSDDGR1*t/Scale;	% (PSD1) Model-Scaled Diffusion Rate
-PSD2Ds = PSDDGR1*t/Scale;	% (PSD2) Model-Scaled Diffusion Rate
+Ds = esDGR1*t/Sc;			% ExtraSynaptic Model-Scaled Diffusion Rate 
+PSD1Ds = PSDDGR1*t/Sc;		% (PSD1) Model-Scaled Diffusion Rate
+PSD2Ds = PSDDGR1*t/Sc;		% (PSD2) Model-Scaled Diffusion Rate
 Dr_PSD1 = Ds/PSD1Ds;		% (PSD1) Ratio Ds:PSD1Ds
 Dr_PSD2 = Ds/PSD2Ds;		% (PSD2) Ratio Ds:PSD2Ds
 Dn_PSD1 = Ds/Dr_PSD1;		% (PSD1) D value after scaling L
@@ -376,10 +289,10 @@ PSD2 = 1/sqrt(Dr_PSD2);		% (PSD2) D Lx-Scalar (Ls scales Lx so Dn_PSD2 = Ds:PSD2
 
 
 % GLUR1 DIFFUSION RATES
-DGR1esm = esDGR1*t/Scale;		% GluR1 (ESM) Model-Scaled Diffusion Rate
-DGR1spy = spineDGR1*t/Scale;	% GluR1 (ESM) Model-Scaled Diffusion Rate
-DGR1psa = PERIDGR1*t/Scale;		% GluR1 (PSA) Model-Scaled Diffusion Rate
-DGR1psd = PSDDGR1*t/Scale;		% GluR1 (PSD) Model-Scaled Diffusion Rate
+DGR1esm = esDGR1*t/Sc;			% GluR1 (ESM) Model-Scaled Diffusion Rate
+DGR1spy = spineDGR1*t/Sc;		% GluR1 (ESM) Model-Scaled Diffusion Rate
+DGR1psa = PERIDGR1*t/Sc;		% GluR1 (PSA) Model-Scaled Diffusion Rate
+DGR1psd = PSDDGR1*t/Sc;			% GluR1 (PSD) Model-Scaled Diffusion Rate
 kGR1 = sqrt(d*DGR1esm);			% stdev of D's step size distribution
 DrGR1psa = DGR1esm/DGR1psa;		% GluR1 (PSA) Ratio DGR1esm:DGR1psa
 DrGR1psd = DGR1esm/DGR1psd;		% GluR1 (PSD) Ratio DGR1esm:DGR1psd
@@ -387,10 +300,10 @@ LsGR1psa = 1/sqrt(DrGR1psa);	% GluR1 (PSA) D Lx-Scalar
 LsGR1psd = 1/sqrt(DrGR1psd);	% GluR1 (PSA) D Lx-Scalar
 
 % GLUR2 DIFFUSION RATES
-DGR2esm = esDGR2*t/Scale;		% GluR2 (ESM) Model-Scaled Diffusion Rate
-DGR2spy = spineDGR2*t/Scale;	% GluR2 (ESM) Model-Scaled Diffusion Rate
-DGR2psa = PERIDGR2*t/Scale;		% GluR2 (PSA) Model-Scaled Diffusion Rate
-DGR2psd = PSDDGR2*t/Scale;		% GluR2 (PSD) Model-Scaled Diffusion Rate
+DGR2esm = esDGR2*t/Sc;			% GluR2 (ESM) Model-Scaled Diffusion Rate
+DGR2spy = spineDGR2*t/Sc;		% GluR2 (ESM) Model-Scaled Diffusion Rate
+DGR2psa = PERIDGR2*t/Sc;		% GluR2 (PSA) Model-Scaled Diffusion Rate
+DGR2psd = PSDDGR2*t/Sc;			% GluR2 (PSD) Model-Scaled Diffusion Rate
 kGR2 = sqrt(d*DGR2esm);			% stdev of D's step size distribution
 DrGR2psa = DGR2esm/DGR2psa;		% GluR2 (PSA) Ratio DGR2esm:DGR2psa
 DrGR2psd = DGR2esm/DGR2psd;		% GluR2 (PSD) Ratio DGR2esm:DGR2psd
@@ -398,6 +311,13 @@ LsGR2psa = 1/sqrt(DrGR2psa);	% GluR2 (PSA) D Lx-Scalar
 LsGR2psd = 1/sqrt(DrGR2psd);	% GluR2 (PSA) D Lx-Scalar
 
 
+% DIFFUSION RATE WHEN SLOTTED
+LsGR1S = LsGR1psa / 10;
+LsGR2S = LsGR2psa / 1000;
+
+
+% LsGR1S=1;
+% LsGR2S=1;
 
 %=========================================================%
 % Synaptic Dwell-Time Values
@@ -422,12 +342,11 @@ pbox = [box1 box2 box3 box4 dot5 dot4 dot1 dot2...
 	sap1 sap2 slt1 slt2 slt3 slt4];
 
 varargin = EXITBOX(pbox,um);
-GluR1exT30 = [varargin{1,1}]' 
-GluR2exT30 = [varargin{1,2}]'
+GluR1exT30 = [varargin{1,1}]';
+GluR2exT30 = [varargin{1,2}]';
 for k=1:2, varargout(k) = {eval(['GluR' int2str(k) 'exT30'])}; end
 return
 end
-
 
 
 
@@ -440,164 +359,228 @@ MSDdata = [D Dn_PSD1 Dn_PSD2 d t k L Lx];
 
 
 
+
+
 %%
 %=========================================================%
-% PSD & FIELD MATRIX SETUP
-%---------------------------------------------------------%
-% DENDRITIC FIELD
-fsizeX = round(um1/Scale);
-fsizeY = round(um2/Scale);
-PSD1size = round(um3/Scale);
-PSD2size = round(um4/Scale);
-periPSD1size = round(um5/Scale);
-periPSD2size = round(um6/Scale);
-
-PSD1CNTR = (PSD1size+(periPSD1size*2))/2;
-PSD2CNTR = (PSD2size+(periPSD2size*2))/2;
-
-
-%---##########################---%
-%		FIELD MAP FUNCTION
-%---##########################---%
-[Yrows Xcols YrPr2bot XcPr2rit YrPr2top XcPr2lft...
-YrPr1bot XcPr1rit YrPr1top XcPr1lft PSDfield...
-PSDSZE Zfield XWIDE YHIGH...
-PSD1WH PSD2WH PERI1WH PERI2WH SPYN1WH SPYN2WH...
-XYLTpr1 XYRTpr1 XYLBpr1 XYRBpr1 XYLTpr2 XYRTpr2 XYLBpr2 XYRBpr2...
-XYLTp1 XYRTp1 XYLBp1 XYRBp1 XYLTp2 XYRTp2 XYLBp2 XYRBp2...
-XYBOXpr1 XYBOXpr2 XYBOXp1 XYBOXp2...
-SPYN1xv SPYN1yv SPYN2xv SPYN2yv...
-PSD1xv PSD1yv PSD2xv PSD2yv...
-PERI1xv PERI1yv PERI2xv PERI2yv...
-fPSD1 fPSD2...
-] = FieldFun(doRun,fsizeX, fsizeY,PSD1size, PSD2size, periPSD1size, periPSD2size);
-%---##########################---%
-
-
-
-
-
-%%
-%-------------##########################------------------%
 %              CLUSTER MODEL PARAMETERS
 %=========================================================%
-%==================================%
-mask3x3 = [1 1 1; 1 1 1; 1 1 1];
-oVx = round(.5:.5:8);
-oVx = [oVx;oVx];
-rVx = [oVx;oVx+8;oVx+16;oVx+24;oVx+32;oVx+40;oVx+48;oVx+56];
-%==================================%
 % SLOTS PER 5 SAPS
 G1PSDSAP5 = slt1;	% G1PSDslotN
 G1PERISAP5 = slt2; % G1PERIslotN
 G2PSDSAP5 = slt3;	% G2PSDslotN
 G2PERISAP5 = slt4; % G2PERIslotN
-G1FSLOTS=[0 0 0 0];
-G2FSLOTS=[0 0 0 0];
-G1SAPLOC1 = zeros(1,GluR1Ndots);
-G1SAPLOC2 = zeros(1,GluR1Ndots);
-G2SAPLOC1 = zeros(1,GluR2Ndots);
-G2SAPLOC2 = zeros(1,GluR2Ndots);
 
 % SLOTS PER 5 SAPS
 SAP5 = [G1PSDSAP5 G1PERISAP5 G2PSDSAP5 G2PERISAP5];
 
-% DO SAP CLUSTERS?
-runSAPPSD1 = doUse3;	
-runSAPPSD2 = doUse4;
-if ~runSAPPSD1;sap1=0;end;
-if ~runSAPPSD2;sap2=0;end;
-S1 = sap1^2; S1sum = sum(S1(:)); S1sumOrig = sum(S1(:)); 
-S2 = sap2^2; S2sum = sum(S2(:)); S2sumOrig = sum(S2(:));
-if ~runSAPPSD1 || ~runSAPPSD2
-	doClusters = 0;
-else 
-	doClusters = 1;
-end
 
 
 
 
 
-%=============================================%
-if doClusters
-%---------------------------------------------%
-%-------------------%
-% SAPSLOTSETUP
-%-------------------%
-[Nsteps,S1,S2,S1sum,S2sum,...
-SC1beta,SC1mu,SC1r,SC1ro,SC1tau,...
-SC2beta,SC2mu,SC2r,SC2ro,SC2tau...
-] = SAPSLOTSETUP(Nsteps,...
-sap,um,dot,SAPPADPSD1,SAPPADPSD2);
-%-------------------%
-% SAPMAP
-%-------------------%
-[PSD1Sxvecs PSD1Syvecs PSD2Sxvecs PSD2Syvecs] = SAPMAP(um,dot,...
-SPYN1xv,SPYN1yv,SPYN2xv,SPYN2yv,...
-PSD1xv,PSD1yv,PSD2xv,PSD2yv,...
-PERI1xv,PERI1yv,PERI2xv,PERI2yv,SAPPADPSD1,SAPPADPSD2);
-%-------------------%
-% SAPMASKREPORT
-%-------------------%
-[SAPFmx1 SAPFmx2 SAPmx1 SAPmx2] = SAPMASKREPORT(Nsteps,...
-	S1, S2,um,dot,runSAPPSD1,runSAPPSD2);
-S1sz = numel(S1(:,1));
-S2sz = numel(S2(:,1));
-%-------------------%
-% SAPPREALLOCATE
-%-------------------%
-[sap_mask SSPSD1 SSPSD2 GluR1SdP1 GluR1SdP2...
-GluR1SLOCMXa GluR1SLOCMXb g1polyN1 g2polyN1...
-GluR2SdP1 GluR2SdP2 GluR2SLOCMXa GluR2SLOCMXb] = SAPPREALLOCATE(...
-S1,S2,um,dot,runSAPPSD1,runSAPPSD2,PSD1Sxvecs,...
-GluR1xyl,GluR2xyl);
 
-%-------------------%
-G1SP1 = zeros(4,100);
-G1SP2 = zeros(4,100);
-% G2SP1 = zeros(4,100);
-% G2SP2 = zeros(4,100);
-% G1LTParray = ones(1,numel(S1L2_array));
-% G2LTParray = ones(1,numel(S1L2_array));
-%---------------------------------------------%
-end % if runSAPPSD1 || runSAPPSD2
-%=============================================%
 
-%---##########################---%
-%		SLOT GAUSSIAN COLORMAP
-%---##########################---%
-if doRun(9)
-SLOTMAPFUN(G1STBASE,G1RTBASE,G1STLTP,G1RTLTP,G1BSMu,G1LSMu,...
-G2STBASE,G2RTBASE,G2STLTP,G2RTLTP,G2BSMu,G2LSMu,GT,GTab);
+%%
+%###################################################################%
+%						ACTIN MULTIPLEX TIP DATA
+%===================================================================%
+AMX = {1,0,'ATdata.mat',70000,1,10,500,10,20,100,500,350,150,150,25,.1,...
+		.0005,.0005,60000,10,10,.001,0,350,0.3,8};
+MSK = {2.5,0,0,.18,11,.1};
+% LBR = {2,2,5,1,16,4};
 
-stepN = 1;
-G1P1SAPM = [1:3;4:6;7:9];
-	   
-SAPRECFUN(G1STBASE,G1RTBASE,G1STLTP,G1RTLTP,G1BSMu,G1LSMu,...
-G2STBASE,G2RTBASE,G2STLTP,G2RTLTP,G2BSMu,G2LSMu,...
-S1,S1sz, sap, stepN,GT,GTab,...
-G1P1SAPM, G1SP1, LTP1onG1, LTP1offG1, LTP2onG1, LTP2offG1);
 
-G1P1SAPM = [];
-end
-%---##########################---%
+
+%-------------------------------%
+% S1 Actin Tips Setup
+%-------------------------------%
+
+savetipdir(AMX);
+% ATdat = which('ATdataArp005.mat');
+S1TipFile = which('ATdataXYZt.mat');
+load(S1TipFile);
+assignin('base', 'ATs', ATs);
+ATs = evalin('base', 'ATs');
+
+
+assignin('base', 'Ax', Ax);
+Ax1 = evalin('base', 'Ax');
+ActinS1 = Ax1{3};
+%ActinPlot(Ax1{1},Ax1{2},Ax1{3},Ax1{4},Ax1{5},Ax1{6},Ax1{7});
+
+
+%------------
+ActinTipsP1 = ATs;
+TipCellN = numel(ActinTipsP1);
+ACTn = TipCellN - AMX{7};
+NumTipCells = TipCellN - ACTn;
+%------------
+TrimActMx = size(ActinTipsP1{1},1)+1;
+ACTINp1 = ActinTipsP1{ACTn};
+ACTINp1(:,TrimActMx:end) = [];
+ACTINp1(TrimActMx:end,:) = [];
+%------------
+% Mask Setup
+%------------
+doGMask = 1;
+hkMask = MaskFun(doGMask,AMX,MSK);
+
+AMask=ones(AMX{5});
+Ahk = convn(ACTINp1,AMask,'same');
+S = (Ahk>0).*1.0;
+
+S1=S;
+
+
+
+
+%-------------------------------%
+% S2 Actin Tips Setup
+%-------------------------------%
+
+% S2TipFile = 'ATdataS2.mat';
+S2TipFile = which('ATdataArp005.mat');
+
+savetipdir(AMX)
+ATdat = which(S2TipFile);
+load(ATdat);
+assignin('base', 'ATs', ATs)
+ATs = evalin('base', 'ATs');
+
+assignin('base', 'Ax', Ax);
+Ax2 = evalin('base', 'Ax');
+ActinS2 = Ax2{3};
+% ActinPlot(Ax2{1},Ax2{2},Ax2{3},Ax2{4},Ax2{5},Ax2{6},Ax2{7})
+
+%------------
+ActinTipsP2 = ATs;
+TipCellN = numel(ActinTipsP2);
+ACTn = TipCellN - AMX{7};
+NumTipCells = TipCellN - ACTn;
+%------------
+TrimActMx = size(ActinTipsP2{1},1)+1;
+ACTINp2 = ActinTipsP2{ACTn};
+ACTINp2(:,TrimActMx:end) = [];
+ACTINp2(TrimActMx:end,:) = [];
+%------------
+% Mask Setup
+%------------
+doGMask = 1;
+hkMask = MaskFun(doGMask,AMX,MSK);
+%hkMask=ones(AMX{6});
+
+
+AMask=ones(AMX{5});
+Ahk = convn(ACTINp2,AMask,'same');
+S = (Ahk>0).*1.0;
+
+S2=S;
+%------------
+
+%-------------------------
+% DEDUCE NSteps
+%-------------------------
+ActUpdate = AMX{8};
+ANSteps = ActUpdate * NumTipCells - ActUpdate - 1;
+%-------------------------
+
+
+	[S1Ty,S1Tx] = find(ACTINp1);
+	[S2Ty,S2Tx] = find(ACTINp2);	
+
+%%
+%===================================================================%
+%						ACTIN MULTIPLEX TIP DATA
+%###################################################################%
+
+
+
+
+
+%%
+%=========================================================%
+%				PSD & FIELD MATRIX SETUP
+%---------------------------------------------------------%
+
+
+
+[DFszX,DFszY,PSD1sz,PSD2sz,PSA1sz,PSA2sz,SPY1sz,SPY2sz,...
+S1sz,S2sz,SSsz,SMx,DFum,SS,DF] = FieldFun(S1,S2,um,Scale);
+
+
 
 
 
 %=========================================================%
+%				AMPAR DOT PARTICLE MATRIX
+%---------------------------------------------------------%
+%GLUR1
+GluR1xyl = ones(2,GluR1Ndots);
+GluR1xyds = ones(2,GluR1Ndots);
+
+% GLUR2
+GluR2xyl = ones(2,GluR2Ndots);
+GluR2xyds = ones(2,GluR2Ndots);
+
+% Position Dots in the middle of DF
+GluR1xyl(1,:) = GluR1xyl(1,:) + DF.X/2;
+GluR2xyl(1,:) = GluR2xyl(1,:) + DF.X/2;
+GluR1xyl(2,:) = GluR1xyl(2,:) + DF.Y/2;
+GluR2xyl(2,:) = GluR2xyl(2,:) + DF.Y/2;
+
+% Rounded version of GluRxyl
+GR1xy = round(GluR1xyl);
+GR2xy = round(GluR2xyl);
+
+
+%=========================================================%
+%				MAKE PARTICLE MATRIX
+%---------------------------------------------------------%
+	
+GR1x = GluR1xyl(1,:);
+GR1y = GluR1xyl(2,:);
+GR1c = round(GR1x);
+GR1r = round(GR1y);
+GR1c(GR1c>DF.X) = DF.X;		% any dot somehow outside, place inside
+GR1r(GR1r>DF.Y) = DF.Y;		% any dot somehow outside, place inside
+GR1c(GR1c<1) = 1;			% any dot somehow outside, place inside
+GR1r(GR1r<1) = 1;			% any dot somehow outside, place inside
+	GR1xy(1,:) = GR1c;
+	GR1xy(2,:) = GR1r;
+
+G1xy = DF.SMxE;
+for xy = 1:numel(GR1c)
+G1xy(GR1r(xy),GR1c(xy)) = 1;
+end
+
+%--------
+GR2x = GluR2xyl(1,:);
+GR2y = GluR2xyl(2,:);
+GR2c = round(GR2x);
+GR2r = round(GR2y);
+GR2c(GR2c>DF.X) = DF.X;		% any dot somehow outside, place inside
+GR2r(GR2r>DF.Y) = DF.Y;		% any dot somehow outside, place inside
+GR2c(GR2c<1) = 1;			% any dot somehow outside, place inside
+GR2r(GR2r<1) = 1;			% any dot somehow outside, place inside
+	GR2xy(1,:) = GR2c;
+	GR2xy(2,:) = GR2r;
+
+G2xy = DF.SMxE;
+for xy = 1:numel(GR2c)
+G2xy(GR2r(xy),GR2c(xy)) = 1;
+end
+
+
+%###################################################################%
+
+
 
 
 %%
 %===========================================%
 % TIME AND PARTICLE COUNT VARIABLES
 %-------------------------------------------%
-ESNT = 0; SPY1N = 0; SPY2N = 0; SPYNT = 0;
-SPY1N = 0; SPY2N = 0; SPYNT = SPY1N+SPY2N;
-PSD1CaT = 0; PSD2CaT = 0;
-PSD1VAL = SPYNT-PSD1CaT; PSD2VAL = SPYNT-PSD2CaT;
-
-
 DATARATE = 10;
 AveOver = 10;
 SaveSteps = Nsteps/DATARATE;
@@ -605,15 +588,18 @@ dataset = zeros(SaveSteps,10);
 SAPdata = zeros(SaveSteps,2);
 Ddata = zeros(SaveSteps,2);
 AMPARdata = zeros(SaveSteps,2);
-GluRdata = zeros(SaveSteps,8);
+GluRdata = zeros(SaveSteps,11);
 G1SLOTSDATA = zeros(SaveSteps,4);
 G2SLOTSDATA = zeros(SaveSteps,4);
-
 %===========================================%
 
-%===========================================%
-% PREP GRAPHICS
-%-------------------------------------------%
+
+
+
+
+
+
+%%
 %{
 % fig1 = figure(1);
 % fig1box(fig1);
@@ -623,83 +609,356 @@ G2SLOTSDATA = zeros(SaveSteps,4);
 % set(fig1,'DoubleBuffer','off')
 % set(fig1,'WindowStyle','modal')
 %}
+%{
+% scsz = get(0,'ScreenSize'); 
+% scsx=scsz(3); scsy=scsz(4);
+% xlim = [0 DF.X];
+% ylim = [0 DF.Y];
+% 
+% Fh1 = figure(1);
+% set(gcf,'OuterPosition',[145,145,scsx/1.2,scsy/1.2])
+% set(gcf,'Color',[1,1,1])
+% 
+% %================================================%
+% %			Real-Space Scatter Plot
+% %------------------------------------------------%
+% 
+% axes('Position',[.32 .25 .28 .72]);
+% 
+% G1Ph1 = scatter(GluR1xyl(1,:),GluR1xyl(2,:),10,[.9 .08 .24],'filled');
+% axis([xlim, ylim]);
+% %set(gca,'Color',[1,1,1])
+% hold on;
+% 
+% G2Ph1 = scatter(GluR2xyl(1,:),GluR2xyl(2,:),10,[.1 .9 .1],'filled');
+% %set(gca,'YDir','reverse')
+% hold on;
+% 
+% set(gca,'xticklabel',[])
+% set(gca,'yticklabel',[])
+% %set(get(gca,'XLabel'),'String','GluR2:Blue \bullet \bullet GluR1:Red')
+% rectangle('Position',[DF.S1L,DF.S1B,DF.S1sz,DF.S1sz],'Curvature',[1,1])
+% rectangle('Position',[DF.S2L,DF.S2B,DF.S2sz,DF.S2sz],'Curvature',[1,1])
+% hold on;
+% 
+% 
+% %================================================%
+% %			Actin Network Plots
+% %------------------------------------------------%
+% % ActinMainPlot(Fh,nT,Actin,inPSD,varargin(rot,azel,dims))
+% inPSD1 = Ax1{7}(7); 
+% spos1 = [.30 -.01 .18 .25];
+% ActinMainPlot(Fh1,ActinS1,inPSD1,spos1)
+% 
+% inPSD2 = Ax2{7}(7);
+% spos2 = [.48 -.01 .18 .25];
+% ActinMainPlot(Fh1,ActinS2,inPSD2,spos2)
+% 
+% 
+% %================================================%
+% %			S Cluster Plots
+% %------------------------------------------------%
+% 
+% % clrmap = 'cool';
+% clrmap = [1 1 1; .1 .1 .5];
+% 
+% %-- S1 Cluster Plots --
+% axes('Position',[.02 .53 .27 .44]);
+% S1Ph1 = imagesc(S1);
+% colormap(clrmap);
+% title('SYNAPSE-1 CLUSTERS');
+% hold on
+% %--------
+% [PSDY,PSDX] = find(ACTINp1);
+% S1Ph2 = scatter(PSDX,PSDY,20, [.9 .08 .24],'filled');
+% hold off
+% %--------
+% 
+% 
+% %-- S2 Cluster Plots --
+% axes('Position',[.02 .04 .27 .44]);
+% S2Ph1 = imagesc(S2);
+% colormap(clrmap);
+% title('SYNAPSE-2 CLUSTERS');
+% hold on
+% %--------
+% [PSDY,PSDX] = find(ACTINp2);
+% S2Ph2 = scatter(PSDX,PSDY,20, [.9 .08 .24],'filled');
+% hold off
+% %--------
+% 
+% 
+% %================================================%
+% %			PARTICLE MATRIX PLOT
+% %------------------------------------------------%
+% axes('Position',[.65 .05 .34 .92]);
+% %--------
+% Ph301 = imagesc(G1xy);
+% set(gca,'YDir','normal')
+% %colormap('bone')
+% colormap(clrmap)
+% hold on;
+% %---
+% Ph302 = imagesc(G2xy);
+% set(gca,'YDir','normal')
+% colormap(clrmap)
+% hold on;
+% %---
+% Ph305 = imagesc(SMx);
+% set(gca,'YDir','normal')
+% colormap(clrmap)
+% hold on;
+% %---
+% Ph303 = scatter(GluR1xyl(1,:),GluR1xyl(2,:),20, [.9 .08 .24],'filled');
+% hold on
+% %---
+% Ph304 = scatter(GluR2xyl(1,:),GluR2xyl(2,:),20, [.1 .9 .1],'filled');
+% hold off
+% 
+% %------------------------------------------------%
+% rectangle('Position',[DF.S1L,DF.S1B,DF.S1sz,DF.S1sz],'Curvature',[1,1])
+% rectangle('Position',[DF.S2L,DF.S2B,DF.S2sz,DF.S2sz],'Curvature',[1,1])
+% hold on;
+% 
+% %----------------------%
+% % SAVE PLOT HANDLES
+% %----------------------%
+% SPh = struct;
+% SPh.S1Ph1 = S1Ph1;
+% SPh.S1Ph2 = S1Ph2;
+% SPh.S2Ph1 = S2Ph1;
+% SPh.S2Ph2 = S2Ph2;
+% %----------------------%
+%{
+% %-- S CLUSTER PLOTS --
+% SPLXi1=.03;
+% SPLXi2=.20;
+% SPLYi1=.192;
+% SPLYi2=.192;
+% SPLHi=.14;
+% SPLWi=.10;
+% 
+% 
+% %-- S1 Additional Cluster Plots --
+% % subplot(5,5,1),
+% axes('Position',[(SPLXi1) (1-SPLYi1*1) SPLWi SPLHi]);
+% S1Ph1 = imagesc(S1);
+% colormap('hot');
+% title('SYNAPSE-1 CLUSTERS');
+% 
+% % subplot(5,5,6),
+% axes('Position',[(SPLXi1) (1-SPLYi1*2) SPLWi SPLHi]);
+% S1Ph2 = imagesc(S1);
+% colormap('hot');
+% title('hk');
+% 
+% % subplot(5,5,11),
+% axes('Position',[(SPLXi1) (1-SPLYi1*3) SPLWi SPLHi]);
+% S1Ph3 = imagesc(S1);
+% colormap('hot');
+% title('Pkon');
+% 
+% % subplot(5,5,16),
+% axes('Position',[(SPLXi1) (1-SPLYi1*4) SPLWi SPLHi]);
+% S1Ph4 = imagesc(S1);
+% colormap('hot');
+% title('Sno');
+% 
+% % subplot(5,5,21),
+% axes('Position',[(SPLXi1) (1-SPLYi1*5) SPLWi SPLHi]);
+% S1Ph5 = imagesc(S1);
+% colormap('hot');
+% title('TETHERED G1');
+% 
+% 
+% 
+% 
+% %-- S2 Additional Cluster Plots --
+% % subplot(5,5,2); 
+% axes('Position',[(SPLXi2) (1-SPLYi2*1) SPLWi SPLHi]);
+% S2Ph1 = imagesc(S2);
+% colormap('hot');
+% title('SYNAPSE-2 CLUSTERS');
+% 
+% 
+% % subplot(5,5,7),
+% axes('Position',[(SPLXi2) (1-SPLYi2*2) SPLWi SPLHi]);
+% S2Ph2 = imagesc(S2);
+% colormap('hot');
+% title('hk');
+% 
+% 
+% % subplot(5,5,12),
+% axes('Position',[(SPLXi2) (1-SPLYi2*3) SPLWi SPLHi]);
+% S2Ph3 = imagesc(S2);
+% colormap('hot');
+% title('Pkon');
+% 
+% 
+% % subplot(5,5,17),
+% axes('Position',[(SPLXi2) (1-SPLYi2*4) SPLWi SPLHi]);
+% S2Ph4 = imagesc(S2);
+% colormap('hot');
+% title('Sno');
+% 
+% 
+% % subplot(5,5,22),
+% axes('Position',[(SPLXi2) (1-SPLYi2*5) SPLWi SPLHi]);
+% S2Ph5 = imagesc(S2);
+% colormap('hot');
+% title('TETHERED G1');
+%}
+%------------------------------------------------%
+%%
+%}
+%================================================%
+%			FIGURE SETUPS
+%------------------------------------------------%
+scsz = get(0,'ScreenSize'); 
+scsx=scsz(3); scsy=scsz(4);
+xlim = [0 DF.X];
+ylim = [0 DF.Y];
 
-figure(1)
-fig1 = figure(1);
-set(gcf,'OuterPosition',[300,100,900,800])
+Fh1 = figure(1);
+set(gcf,'OuterPosition',[145,145,scsx/1.2,scsy/1.2])
+set(gcf,'Color',[1,1,1])
+
+%================================================%
+%			Real-Space Scatter Plot
+%------------------------------------------------%
+
+% axes('Position',[.32 .25 .28 .72]);
+% 
+% G1Ph1 = scatter(GluR1xyl(1,:),GluR1xyl(2,:),10,[.9 .08 .24],'filled');
+% axis([xlim, ylim]);
+% %set(gca,'Color',[1,1,1])
+% hold on;
+% 
+% G2Ph1 = scatter(GluR2xyl(1,:),GluR2xyl(2,:),10,[.1 .9 .1],'filled');
+% %set(gca,'YDir','reverse')
+% hold on;
+% 
+% set(gca,'xticklabel',[])
+% set(gca,'yticklabel',[])
+% %set(get(gca,'XLabel'),'String','GluR2:Blue \bullet \bullet GluR1:Red')
+% rectangle('Position',[DF.S1L,DF.S1B,DF.S1sz,DF.S1sz],'Curvature',[1,1])
+% rectangle('Position',[DF.S2L,DF.S2B,DF.S2sz,DF.S2sz],'Curvature',[1,1])
+% hold on;
 
 
-xlim = [0 XWIDE];
-ylim = [-YHIGH YHIGH];
+%================================================%
+%			Actin Network Plots
+%------------------------------------------------%
+% ActinMainPlot(Fh,nT,Actin,inPSD,varargin(rot,azel,dims))
+inPSD1 = Ax1{7}(7); 
+spos1 = [.02 .50 .26 .47];
+ActinMainPlot(Fh1,ActinS1,inPSD1,spos1)
 
-subplot(5,5,[3 25]), 
-G2Ph1 = scatter(GluR2xyl(1,:),GluR2xyl(2,:),5,[0 0 1]);
-hold on;
-subplot(5,5,[3 25]), 
-G1Ph1 = scatter(GluR1xyl(1,:),GluR1xyl(2,:),5,[1 0 0]);
-axis([xlim, ylim]);
-set(gca,'xticklabel',[])
-set(gca,'yticklabel',[])
-set(get(gca,'XLabel'),'String','GluR2:Blue \bullet \bullet GluR1:Red')
-rectangle('Position',[XYBOXpr1(1),XYBOXpr1(2),XYBOXpr1(3),XYBOXpr1(4)])
-rectangle('Position',[XYBOXpr2(1),XYBOXpr2(2),XYBOXpr2(3),XYBOXpr2(4)])
-rectangle('Position',[XYBOXp1(1),XYBOXp1(2),XYBOXp1(3),XYBOXp1(4)])
-rectangle('Position',[XYBOXp2(1),XYBOXp2(2),XYBOXp2(3),XYBOXp2(4)])
-hold off;
+inPSD2 = Ax2{7}(7);
+spos2 = [.02 .02 .26 .47];
+ActinMainPlot(Fh1,ActinS2,inPSD2,spos2)
 
 
+%================================================%
+%			S Cluster Plots
+%------------------------------------------------%
 
-
+% clrmap = 'cool';
+% clrmap = [1 1 1; .1 .1 .5];
+clrmap = [1 1 1; .55 .55 .55];
 
 %-- S1 Cluster Plots --
-subplot(5,5,1); S1Ph1 = imagesc(S1);
-colormap('hot');
-title('SYNAPSE-1 CLUSTERS');
+axes('Position',[.31 .53 .27 .44]);
+S1Ph1 = imagesc(S1);
+colormap(clrmap);
+title('Synapse-A Scaffold Clusters');
+hold on
+%--------
+[PSDY,PSDX] = find(ACTINp1);
+S1Ph2 = scatter(PSDX,PSDY);
+set(S1Ph2,'Marker','s','SizeData',60,'LineWidth',.5,...
+	'MarkerFaceColor',[.95 .1 .1],'MarkerEdgeColor','none')
+hold off
+%--------
 
-subplot(5,5,6),
-S1Ph2 = imagesc(S1);
-title('hk');
-
-subplot(5,5,11),
-S1Ph3 = imagesc(S1);
-title('Pkon');
-
-subplot(5,5,16),
-S1Ph4 = imagesc(S1);
-title('Sno');
-
-subplot(5,5,21),
-S1Ph5 = imagesc(S1);
-title('TETHERED G1');
 
 %-- S2 Cluster Plots --
-subplot(5,5,2); 
+axes('Position',[.31 .04 .27 .44]);
 S2Ph1 = imagesc(S2);
-colormap('hot');
-title('SYNAPSE-2 CLUSTERS');
+colormap(clrmap);
+title('Synapse-B Scaffold Clusters');
+hold on
+%--------
+[PSDY,PSDX] = find(ACTINp2);
+S2Ph2 = scatter(PSDX,PSDY);
+set(S2Ph2,'Marker','s','SizeData',60,'LineWidth',.5,...
+	'MarkerFaceColor',[.95 .1 .1],'MarkerEdgeColor','none')
+hold off
+%--------
 
 
-subplot(5,5,7),
-S2Ph2 = imagesc(S2);
-title('hk');
+%================================================%
+%			PARTICLE MATRIX PLOT
+%------------------------------------------------%
+axes('Position',[.62 .04 .34 .93]);
+%--------
+Ph301 = imagesc(G1xy);
+set(gca,'YDir','normal')
+%colormap('bone')
+colormap(clrmap)
+hold on;
+%---
+Ph302 = imagesc(G2xy);
+set(gca,'YDir','normal')
+colormap(clrmap)
+hold on;
+%---
+Ph305 = imagesc(SMx);
+set(gca,'YDir','normal')
+colormap(clrmap)
+hold on;
+%---
+Ph303 = scatter(GluR1xyl(1,:),GluR1xyl(2,:),50, [.0 .5 .8],'filled');
+hold on
+%---
+%GluR2xyl = GluR1xyl.*rand(2,150)
+Ph304 = scatter(GluR2xyl(1,:),GluR2xyl(2,:),50, [.2 .7 .0],'filled');
+set(Ph304,'Marker','s')
+hold off
+
+%------------------------------------------------%
+rectangle('Position',[DF.S1L,DF.S1B,DF.S1sz,DF.S1sz],'Curvature',[1,1])
+rectangle('Position',[DF.S2L,DF.S2B,DF.S2sz,DF.S2sz],'Curvature',[1,1])
+rectangle('Position',[DF.PS1L,DF.PS1B,DF.PS1sz,DF.PS1sz],'Curvature',[1,1])
+rectangle('Position',[DF.PS2L,DF.PS2B,DF.PS2sz,DF.PS2sz],'Curvature',[1,1])
+hold on;
 
 
-subplot(5,5,12),
-S2Ph3 = imagesc(S2);
-title('Pkon');
+%----------------------%
+% SAVE PLOT HANDLES
+%----------------------%
+SPh = struct;
+SPh.S1Ph1 = S1Ph1;
+SPh.S1Ph2 = S1Ph2;
+SPh.S2Ph1 = S2Ph1;
+SPh.S2Ph2 = S2Ph2;
+%----------------------%
 
 
-subplot(5,5,17),
-S2Ph4 = imagesc(S2);
-title('Sno');
+
+%----------------------%
+% Plot Update Rate
+%----------------------%
+SPLOTr=100;
+MPLOTr=200;
+%----------------------%
 
 
-subplot(5,5,22),
-S2Ph5 = imagesc(S2);
-title('TETHERED G1');
+%------------------------------------------------%
+%%
 
 
-%===========================================%
+
 
 
 %=============%%%%%%%%%%%%%%%%%%%%%%%%%%%%=============%
@@ -708,11 +967,9 @@ title('TETHERED G1');
 stepN = 1;
 for Nt = 1:Nsteps 
 nn = Nt;
-% if stepN == 201; keyboard; end
 %===========================================%
-    
-  
-    %-------------------------------%
+
+	%-------------------------------%
     %   STEP DIRECTION & SIZE
     %-------------------------------%
 	if doGluR1
@@ -721,166 +978,167 @@ nn = Nt;
 	if doGluR2
     GluR2xyds = STEPxyds(GluR2Ndots, kGR2);
 	end
+    
+  
+	%~~~~~~~~~~~~~~~~~~~~~~~~~ NEW ~~~~~~~~~~~~~~~~~~~~~~~~~%
+	
+	%----------------------------%
+    %     SAP MATRIX UPDATE
+    %----------------------------%
+	
+ 	
+	% THIS SHIT SEEMS BACKWARDS BUT IT WORKS
+	SMx(SS.S1B:SS.S1T,SS.S1L:SS.S1R) = S2;
+	SMx(SS.S2B:SS.S2T,SS.S2L:SS.S2R) = S1;
+
+	SS.SMx = SMx;
+	
+	%----------------------------%
+    %	MAKE PARTICLE MATRIX
+	%----------------------------%
+	GR1x = GluR1xyl(1,:);
+	GR1y = GluR1xyl(2,:);
+	GR1c = round(GR1x);
+	GR1r = round(GR1y);
+	GR1c(GR1c>DF.X) = DF.X;		% any dot somehow outside, place inside
+	GR1r(GR1r>DF.Y) = DF.Y;		% any dot somehow outside, place inside
+	GR1c(GR1c<1) = 1;			% any dot somehow outside, place inside
+	GR1r(GR1r<1) = 1;			% any dot somehow outside, place inside
+	GR1xy(1,:) = GR1c;
+	GR1xy(2,:) = GR1r;
+	
+	G1xy = DF.SMxE;
+	for xy = 1:numel(GR1c)
+	G1xy(GR1r(xy),GR1c(xy)) = 1;
+	end
+
+	%--------
+	GR2x = GluR2xyl(1,:);
+	GR2y = GluR2xyl(2,:);
+	GR2c = round(GR2x);
+	GR2r = round(GR2y);
+	GR2c(GR2c>DF.X) = DF.X;		% any dot somehow outside, place inside
+	GR2r(GR2r>DF.Y) = DF.Y;		% any dot somehow outside, place inside
+	GR2c(GR2c<1) = 1;			% any dot somehow outside, place inside
+	GR2r(GR2r<1) = 1;			% any dot somehow outside, place inside
+	GR2xy(1,:) = GR2c;
+	GR2xy(2,:) = GR2r;
+	
+	G2xy = DF.SMxE;
+	for xy = 1:numel(GR2c)
+	G2xy(GR2r(xy),GR2c(xy)) = 1;
+	end
+	
 
 	
-	%-------------------------------%
-    %     Homeostatic Functions
-    %-------------------------------%
-	if doHomeostatic
-	if mod(stepN, 5) == 0
-	[S1beta S2beta S1mu_array S2mu_array S1L1_array S2L1_array]...
-	= HOMEOSTATIC(stepN,HShi,HSlow,TTDots,doCalcium,SPYNT,PSD1CaT,...
-	S1num_epochs,S2num_epochs,S1mu,S2mu);
-	end
-	end % end doHomeostatic
 	
 	
-	%-------------------------------%
-    %     FRAP Functions
-    %-------------------------------%
-	%{
-	doFRAP = 1;
-	if doFRAP
-	if stepN == 1
-		GluR2xyl = ones(2,GluR2Ndots).*rand(2,GluR2Ndots); 
-		GluR2xyl(1,:) = XYLBp1(1)+GluR2xyl(1,:);
-		GluR2xyl(2,:) = XYLBp1(2)+GluR2xyl(2,:);
-	end
-	if stepN < 200
-		LsGR2psd = .2;
-		GluR1xyds = GluR1xyds.*.0001;
-	end
-	% if stepN == 5; keyboard; end
-	end
-	%}
 	
 	
-	%-------------------------------%
+	%~~~~~~~~~~~~~~~~~~~~~~ End New ~~~~~~~~~~~~~~~~~~~~~~%
+	
+
+	%===================================%
     %     SUPERSLOT FUNCTION
-    %-------------------------------%
-	if doClusters
+    %-----------------------------------%
 	[GluR1xyl GluR2xyl GluR1xyds GluR2xyds...
-	SAPFmx1 SAPFmx2 G1FSLOTS G2FSLOTS...
+	G1FSLOTS G2FSLOTS...
 	GluR1_TdwellSPYN GluR1_TdwellPSD GluR1_TdwellPERI...
 	GluR2_TdwellSPYN GluR2_TdwellPSD GluR2_TdwellPERI...
 	G1INSPYN1 G1INSPYN2 G1INPSD1 G1INPSD2 G1INPERI1 G1INPERI2...
 	G2INSPYN1 G2INSPYN2 G2INPSD1 G2INPSD2 G2INPERI1 G2INPERI2...
-	G1P1SAPM G1P2SAPM G2P1SAPM G2P2SAPM]...
+	G1INSPA G2INSPA...
+	SMx G1v G2v]...
 	= SUPERSLOT(stepN,t,GluR1xyl,GluR2xyl,GluR1xyds,GluR2xyds,...
-	GluR1_TdwellPSD,GluR1_TdwellPERI,GluR1_TdwellSPYN,LsGR1psa,LsGR1psd,...
-	GluR2_TdwellPSD,GluR2_TdwellPERI,GluR2_TdwellSPYN,LsGR2psa,LsGR2psd,...	
-	S1,S2,runSAPPSD1,runSAPPSD2,...
-	PSD1Sxvecs,PSD1Syvecs,PSD2Sxvecs,PSD2Syvecs,...
-	SAPFmx1,SAPFmx2,...
-	mask3x3,rVx,SSPSD1,SSPSD2,GluR1SdP1,GluR1SdP2,...
-	GluR1SLOCMXa,GluR1SLOCMXb,g1polyN1,g2polyN1,...
-	GluR2SdP1,GluR2SdP2,GluR2SLOCMXa,GluR2SLOCMXb,...
-	LTP1onG1,LTP1offG1,LTP2onG1,LTP2offG1,...
-	LTP1onG2,LTP1offG2,LTP2onG2,LTP2offG2,...
-	XYLBp1,XYRTp1,XYLBp2,XYRTp2,...
-	G1STBASE,G1STLTP,G1BSMu,G1LSMu,...
-	G2STBASE,G2STLTP,G2BSMu,G2LSMu);
-	end
-	%===================================%
-	% if stepN == 401; keyboard; end
+	GluR1_TdwellPSD,GluR1_TdwellPERI,GluR1_TdwellSPYN,LsGR1psa,LsGR1psd,LsGR1S,...
+	GluR2_TdwellPSD,GluR2_TdwellPERI,GluR2_TdwellSPYN,LsGR2psa,LsGR2psd,LsGR2S,...	
+	SSsz,G1xy,G2xy,SMx,SS,DF,GR1xy,GR2xy);
+
 	
 
     %===================================%
     %     SAP CLUSTERS
     %-----------------------------------%
-	if doClusters	% ?? doClusters ??
-	%-----------------------------------%
 	
+	%~~~~~~~~~~~~ NEW ~~~~~~~~~~~%
+	if mod(stepN,ActUpdate) == 0
+	
+	ACTINp1 = ActinTipsP1{ACTn};
+	ACTINp1 = convn(ACTINp1,AMask,'same');
+	[S1Ty,S1Tx] = find(ACTINp1);
+	
+	ACTINp2 = ActinTipsP2{ACTn};
+	ACTINp2 = convn(ACTINp2,AMask,'same');
+	[S2Ty,S2Tx] = find(ACTINp2);
+	
+	ACTn = ACTn+1;
+	
+	end
+	%----------------------------%
+	
+
 	%----S1_MainClusterFun----%
-	if runSAPPSD1
-	[S1 G1SP1] = S1_MainClusterFun(S1Ph1, S1Ph2, S1Ph3, S1Ph4, S1Ph5,...
-	S1, S1sz, sap, stepN, G1P1SAPM, G1SP1,GT,GTab);
-	end
+	[S1 SMx] = S1_MainClusterFun(S1,SMx,sap,hkMask,ACTINp1,stepN);
 	%----S2_MainClusterFun----%
-	if runSAPPSD2
-	[S2 G1SP2] = S2_MainClusterFun(S2Ph1, S2Ph2, S2Ph3, S2Ph4, S2Ph5,...
-    S2, S2sz, sap, stepN, G1P2SAPM, G1SP2,GT,GTab);
-	end
+	[S2 SMx] = S2_MainClusterFun(S2,SMx,sap,hkMask,ACTINp2,stepN);
 		
 	%----S1sum & S2sum----%
-	S1sum = sum(S1(:)); S2sum = sum(S2(:));
-	%----PLOTS1S2----%
-	% if doMainPlot; if mod(stepN, 10) == 0;PLOTS1S2(S1, S2);end;end
-	% if ~doMainPlot; if mod(stepN, 100) == 0;PLOTS1S2(S1, S2);end;end
-	%-----------------------------------%
-	end				% ?? doClusters ??
+	S1sum = sum(S1(:))/4; S2sum = sum(S2(:))/4;
+	
+	
+	%-------------------------------%
+    %   CLUSTER PLOT
+    %-------------------------------%
+	if mod(stepN, SPLOTr) == 0
+		SPLOTS(SPh,S1,S2,S1Tx,S1Ty,S2Tx,S2Ty);
+	end
+	
 	%===================================%
-
-	% if stepN == 2000; keyboard; end
+	
 	
 	
 	%=============================================%
     %		MOVE PARTICLES MAIN FUNCTION
 	%=============================================%
 	[GluR1xyds GluR1xyl GluR2xyds GluR2xyl]...
-    = MOVEGLUR(stepN,XWIDE,YHIGH,...
+    = MOVEGLUR(stepN,DF,...
 	GluR1Ndots,GluR1xyds,GluR1xyl,...
     GluR2Ndots,GluR2xyds,GluR2xyl);
 	
-	
-	
-	%-------------------------------%
-    %   3D VISUALS
-    %-------------------------------%
-	if do3DPLOT
-	[G1Z G2Z] = ZGEN(stepN,G1Z,G2Z,...
-    GluR2Ndots, GluR2xyl,GluR1Ndots, GluR1xyl,...
-	XYLTpr1,XYRTpr1,XYLBpr1,XYRBpr1,XYLTpr2,XYRTpr2,XYLBpr2,XYRBpr2,...
-	XYLTp1,XYRTp1,XYLBp1,XYRBp1,XYLTp2,XYRTp2,XYLBp2,XYRBp2);
 
-	PLOT3DS(stepN,GluR2xyl,GluR1xyl,XWIDE,YHIGH,G1Z,G2Z,Zfield);
-	end
 	
-
     %-------------------------------%
     %   MAIN PLOT XYL SIMULATION
     %-------------------------------%
-	if doMainPlot
-	MAINPLOT(G1Ph1, G2Ph1,stepN,GluR2xyl,GluR1xyl,...
-	XWIDE,YHIGH,XYBOXpr1,XYBOXpr2,XYBOXp1,XYBOXp2);
+	if mod(stepN, MPLOTr) == 0
+	% MAINPLOT(G1Ph1,G2Ph1,GluR2xyl,GluR1xyl)
+	plotMx(Fh1,Ph301,Ph302,Ph303,Ph304,Ph305,G1xy,G2xy,GR1c,GR1r,GR2c,GR2r,SMx);
 	end
-
-	if ~doMainPlot && ~doONEDOTPLOT
-	if mod(stepN, 200) == 0
-	MAINPLOT(G1Ph1, G2Ph1,stepN,GluR2xyl,GluR1xyl,...
-	XWIDE,YHIGH,XYBOXpr1,XYBOXpr2,XYBOXp1,XYBOXp2);
-	end
-	end
-    
 	
 
-	%-------------------------------%
-    %   ONE DOT PLOT GRAPHICS
-    %-------------------------------%
-	if doONEDOTPLOT
-	doMainPlot=0;
-	xyl2(:,stepN) = GluR2xyl(:,1);
-	ONEDOTPLOT2(stepN,Nsteps,GluR2xyl,xyl2,XWIDE,YHIGH,...
-				XYBOXpr1,XYBOXpr2,XYBOXp1,XYBOXp2)
-	end
-	
-	
+
+ 	
+  % if stepN == 600; keyboard; end;
   %---------------------------------------------%
   %       START PARTICLE COUNTERS
   %---------------------------------------------%
   if mod(stepN, DATARATE) == 0
 	  
-	% if stepN == 201; keyboard; end
+	  
+	  
     %-------------------------------%
     %       PARTICLE COUNTERS
     %-------------------------------%
 	[GR1SPY1N GR1SPY2N GR1PER1N GR1PER2N GR1PSD1N GR1PSD2N...
 	GR2SPY1N GR2SPY2N GR2PER1N GR2PER2N GR2PSD1N GR2PSD2N...
 	GR1PERN GR1PSDN GR2PERN GR2PSDN GR1SPYN GR2SPYN...
-	SPY1N SPY2N SPYNT ESNT EST]...
+	SPY1N SPY2N SPYNT ESNT EST G1INSP G2INSP GINSP]...
 	= dotCount(stepN,GluR2Ndots, GluR1Ndots,...
 	G2INSPYN1,G2INSPYN2,G2INPSD1,G2INPSD2,G2INPERI1,G2INPERI2,...
-	G1INSPYN1,G1INSPYN2,G1INPSD1,G1INPSD2,G1INPERI1,G1INPERI2);
+	G1INSPYN1,G1INSPYN2,G1INPSD1,G1INPSD2,G1INPERI1,G1INPERI2,...
+	G1INSPA,G2INSPA);
+
+	
 	
 	%-------------------------------%
     %   GRAPH PARTICLE COUNTS
@@ -897,15 +1155,17 @@ nn = Nt;
        
        data = [stepN/Nsteps ESNT SPY1N SPY2N SPYNT;... 
 			   (Nsteps-stepN) D/10 Dn_PSD1/10 Dn_PSD2/10 k];
-       % data1(stepN/DATARATE,:) = data(1,:);
-       % data2(stepN/DATARATE,:) = data(2,:);
-	   % dataset = cat(2, data1, data2);
        dataset(stepN/DATARATE,:) = [data(1,:) data(2,:)];
 	   SAPdata(stepN/DATARATE,:) = [S1sum S2sum];
 	   Ddata(stepN/DATARATE,:) = [Dn_PSD1/10 Dn_PSD2/10];
 	   AMPARdata(stepN/DATARATE,:) = [GR1SPYN GR2SPYN];
+	   
+	   
 	   GluRdata(stepN/DATARATE,:) = [GR1PSDN GR1PERN GR2PSDN GR2PERN...
-								GR1SPY1N GR1SPY2N GR2SPY1N GR2SPY2N];
+								GR1SPY1N GR1SPY2N GR2SPY1N GR2SPY2N...
+								G1INSP G2INSP GINSP];
+							
+							
 	   G1SLOTSDATA(stepN/DATARATE,:) = G1FSLOTS;
 	   G2SLOTSDATA(stepN/DATARATE,:) = G2FSLOTS; 
 	   
@@ -915,6 +1175,8 @@ nn = Nt;
 	   disp([data(1,1) data(2,1)])
 	   end
        
+	   
+	   
        %snapnow;
 	end
  %---------------------------------------------%
@@ -965,6 +1227,11 @@ DATAGluRdata(:,5) = mean(reshape(GluRdata(:,5), [AveOver, length(GluRdata(:,5))/
 DATAGluRdata(:,6) = mean(reshape(GluRdata(:,6), [AveOver, length(GluRdata(:,6))/AveOver])); 
 DATAGluRdata(:,7) = mean(reshape(GluRdata(:,7), [AveOver, length(GluRdata(:,7))/AveOver])); 
 DATAGluRdata(:,8) = mean(reshape(GluRdata(:,8), [AveOver, length(GluRdata(:,8))/AveOver])); 
+DATAGluRdata(:,9) = mean(reshape(GluRdata(:,9), [AveOver, length(GluRdata(:,9))/AveOver])); 
+DATAGluRdata(:,10) = mean(reshape(GluRdata(:,10), [AveOver, length(GluRdata(:,10))/AveOver])); 
+DATAGluRdata(:,11) = mean(reshape(GluRdata(:,11), [AveOver, length(GluRdata(:,11))/AveOver])); 
+
+
 
 DATAG1SLOTSDATA(:,1) = mean(reshape(G1SLOTSDATA(:,1), [AveOver, length(G1SLOTSDATA(:,1))/AveOver])); 
 DATAG1SLOTSDATA(:,2) = mean(reshape(G1SLOTSDATA(:,2), [AveOver, length(G1SLOTSDATA(:,2))/AveOver])); 
@@ -1133,9 +1400,7 @@ end		% if ChopStart
 %======================================================================%
 %					SAVE FIGURE 1 PLOTS
 %======================================================================%
-set(gcf, 'PaperPositionMode', 'auto');
-% saveas(gcf,'STARShiP2','png');
-saveas(gcf, ['outputfigs/FIGURE1.png']);
+saveoutputfigs('STARShiP0')
 %======================================================================%
 
 
@@ -1155,8 +1420,8 @@ set(gcf,'Color',[.9,.9,.9])
 %----------------------------------------------------------------------%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
+c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6]; c5= [.01 .9 .01];
+c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7]; c55=[.01 .9 .01];
 cOLOR = [c1; c2; c3; c4];
 
 
@@ -1366,7 +1631,7 @@ haxes=axis;
 % FIG1 BOTTOM RIGHT: Synapse Particle Counts
 %===========================================================%
 sbpos = [.55 .09 .4 .38]; ptype = 4;
-cOLOR = [c1; c2; c1; c2; c3; c2; c3; c4];
+cOLOR = [c1; c2; c1; c2; c3; c2; c3; c4; c5;c5;c5;c5;c5;c5;c5;c5;];
 itemN = 3; 
 [ph1 hax1] = CIenvFun(reDATAdataset,sbpos,itemN,cOLOR,ptype);
 leg1 = legend(ph1,'Synapse 1');
@@ -1382,9 +1647,15 @@ itemN = 5;
 legend([OUTH;ph3],OUTM{:},'Synapse Total');
 [LEGH,OBJH,OUTH,OUTM] = legend;
 hold on
+
+itemN = 11;
+[ph4 hax4] = CIenvFun(reDATAGluRdata,sbpos,itemN,cOLOR,ptype);
+legend([OUTH;ph4],OUTM{:},'DFE');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
 %------------------------------------------%
 set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','Occupied Slots')
+set(get(gca,'YLabel'),'String','Particles')
 xt = (get(gca,'XTick'))*AveOver*DATARATE*(t)/(60);
 set(gca,'XTickLabel', sprintf('%.0f|',xt))
 set(legend,'Location','NorthWest');
@@ -1396,6 +1667,8 @@ set(ph2,'LineStyle','-','Color',c2,'LineWidth',1,...
 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
 set(ph3,'LineStyle','-','Color',c3,'LineWidth',1,...
 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
+set(ph4,'LineStyle','-','Color',c5,'LineWidth',1,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c5,'MarkerFaceColor',c55);
 hTitle  = title ('Synapse Particle Counts');
 hXLabel = xlabel('Time (min)');
 hYLabel = ylabel('Particles (+/- SEM)');
@@ -1413,10 +1686,7 @@ haxes=axis;
 
 
 %======================================================================%
-set(gcf, 'PaperPositionMode', 'auto');
-% saveas(gcf,'STARShiP1','png');
-saveas(gcf, ['outputfigs/STARShiP1.png']);
-% printpreview
+saveoutputfigs('STARShiP1')
 %======================================================================%
 
 %%
@@ -1649,42 +1919,8 @@ haxes=axis;
 
 
 %======================================================================%
-set(gcf, 'PaperPositionMode', 'auto');
-% saveas(gcf,'STARShiP2','png');
-saveas(gcf, ['outputfigs/STARShiP2.png']);
-
-%{
-% FName = gcf;
-% OName = 'STARShiP';
-% save(['/Users/bradleymonk/Documents/MatLab/BradsModel/outputfigs/'...
-% 	OName '.mat'],...
-% 	'BMData1', 'BMData2', 'BMData3', 'BMData4', 'BMData5', 'BMData6',...
-% 	'AveOver', 'DATARATE','t');
-% saveas(FName, ['synth1/memo/' OName '.png']);
-
-% AveOver = 10;
-% DATARATE = 100;
-% t = .1;
-% BMData1 = reDATAdataset;
-% BMData2 = reDATASAPdata;
-% BMData3 = reDATADdata;
-% BMData4 = reDATAAMPARdata;
-% BMData5 = reDATAGluRdata;
-% BMData6 = reDATAG1SLOTSDATA;
-% BMData7 = reDATAG2SLOTSDATA;
-% saveas(gcf,...
-% '/Users/bradleymonk/Documents/MatLab/BradsModel/outputfigs/STARShiP2',...
-% 'png');
-% fname = 'D:\path1\path2';
-% saveas(gca, fullfile(fname, filename), 'jpeg');
-% set(gcf, 'PaperPositionMode', 'auto');
-% print -depsc2 STARShiP3.eps
-% print('-depsc2','-tiff','-r300','STARShiP3')
-% fixPSlinestyle('STARShiP3.eps', 'STARShiP3.eps');
-% saveas(gcf,'STARShiP3.tiff', 'tiffn')
-%}
+saveoutputfigs('STARShiP2')
 %======================================================================%
-
 
 %---------------
 end % if ~doRun(3);
@@ -2801,24 +3037,25 @@ end %		  ##    END MAIN FUNCTION   ##
 
 
 
-
 %%						 SUBROUTINES
 %=================########################=================%
 %				  ##		INDEX		##
 %=================########################=================% 
 %				1. BROWNIAN MOTION FUNCTIONS
 %				2. SAPS & SLOTS
-%				3. PARTICLE COUNTERS
-%				4. DENDRITIC FIELD MAPPING TOOLS
-%				5. PLOTTING AND LIVE SIMULATION
+%				3. DENDRITIC FIELD MAPPING TOOLS
+%				4. PLOTTING AND LIVE SIMULATION
+%				5. PARTICLE COUNTERS
 %				6. MSD BROWNIAN MOTION ANALYSIS TOOLS
 %=================############################=================%
 
 
 
+
+
+
+
 %%			  BROWNIAN MOTION FUNCTIONS
-%-------------##########################------------------%
-%			 PARTICLE MOVEMENT FUNCTIONS
 %-------------##########################------------------%
 
 
@@ -2836,32 +3073,95 @@ end
 % MOVE PARTICLES MAIN FUNCTION
 %===================================%
 function [GluR1xyds GluR1xyl GluR2xyds GluR2xyl]...
-    = MOVEGLUR(stepN,XWIDE,YHIGH,...
+    = MOVEGLUR(stepN,DF,...
 	GluR1Ndots,GluR1xyds,GluR1xyl,...
     GluR2Ndots,GluR2xyds,GluR2xyl)
 
-%===================================%
+%------------------
+
+% This function will add step-sizes to the particles current location.
+% This function has been updated so particles located in a position
+% less than 1 (ie. GluR1xyl<1) are out-of-bounds (instead of particles
+% located in a position less than zero). This will make it so all particles
+% will have a rounded particle location of 1 or greater, which can be used
+% as a matrix index ID value (zero cannot be used as a Mx index number). 
+
+
+%------------------
+% add step to current location
 GluR1xyl = GluR1xyl+GluR1xyds;
- 
+GluR2xyl = GluR2xyl+GluR2xyds;
+%------------------
+
+
+
+%------------------
+% G1 & G2 Containment
+
+%LOWVAL=0;
+LOWVAL=1;
+
+G1XLO = GluR1xyl(1,:) < LOWVAL;
+G1XHI = GluR1xyl(1,:) > DF.X;
+G1YLO = GluR1xyl(2,:) < LOWVAL;
+G1YHI = GluR1xyl(2,:) > DF.Y;
+
+G2XLO = GluR2xyl(1,:) < LOWVAL;
+G2XHI = GluR2xyl(1,:) > DF.X;
+G2YLO = GluR2xyl(2,:) < LOWVAL;
+G2YHI = GluR2xyl(2,:) > DF.Y;
+
+
+GluR1xyl(1,G1XLO) = LOWVAL;
+GluR1xyl(1,G1XHI) = DF.X;
+GluR1xyl(2,G1YLO) = LOWVAL;
+GluR1xyl(2,G1YHI) = DF.Y;
+
+
+GluR2xyl(1,G2XLO) = LOWVAL;
+GluR2xyl(1,G2XHI) = DF.X;
+GluR2xyl(2,G2YLO) = LOWVAL;
+GluR2xyl(2,G2YHI) = DF.Y;
+
+
+
+%------------------
+% OLD
+%------------------
+%{
+% GluR1
+
+% add step to current location
+GluR1xyl = GluR1xyl+GluR1xyds;
+
+% containment
 for j = 1:GluR1Ndots 
-    if GluR1xyl(1,j)>(XWIDE) || GluR1xyl(1,j)<(0)
-            GluR1xyl(1,j) = uint8(sign(GluR1xyl(1,j)))*(XWIDE);
-    elseif GluR1xyl(2,j)>(YHIGH) || GluR1xyl(2,j)<(-YHIGH)
-            GluR1xyl(2,j) = sign(GluR1xyl(2,j))*(YHIGH);
+    if GluR1xyl(1,j)>(DF.X) || GluR1xyl(1,j)<LOWVAL
+            GluR1xyl(1,j) = uint16(sign(GluR1xyl(1,j)))*(DF.X);
+    elseif GluR1xyl(2,j)>(DF.Y) || GluR1xyl(2,j)<LOWVAL
+            GluR1xyl(2,j) = uint16(sign(GluR1xyl(2,j)))*(DF.Y);
     end    
         
 end
-%===================================%
+
+
+%------------------
+% GluR2
+
+% add step to current location
 GluR2xyl = GluR2xyl+GluR2xyds;
 
+% containment
 for j = 1:GluR2Ndots 
-	if GluR2xyl(1,j)>(XWIDE) || GluR2xyl(1,j)<(0)
-            GluR2xyl(1,j) = uint8(sign(GluR2xyl(1,j)))*(XWIDE);
-	elseif GluR2xyl(2,j)>(YHIGH) || GluR2xyl(2,j)<(-YHIGH)
-            GluR2xyl(2,j) = sign(GluR2xyl(2,j))*(YHIGH);
+	if GluR2xyl(1,j)>(DF.X) || GluR2xyl(1,j)<LOWVAL
+            GluR2xyl(1,j) = uint16(sign(GluR2xyl(1,j)))*(DF.X);
+	elseif GluR2xyl(2,j)>(DF.Y) || GluR2xyl(2,j)<LOWVAL
+            GluR2xyl(2,j) = uint16(sign(GluR2xyl(2,j)))*(DF.Y);
 	end	   
         
 end
+%}
+
 %===================================%
 % if stepN == 500; keyboard; end
 end
@@ -2869,1556 +3169,269 @@ end
 
 
 
+
+
 %%					 SAPS & SLOTS
 %-------------##########################------------------%
-%			SAPS SLOTS & S-CLUSTER FUNCTIONS
-%-------------##########################------------------%
 
-%-----------------------------------------%
-%			PRE-LOOP SETUP
-%-----------------------------------------%
 
-%===================================%
-% SAPSLOTSETUP
-%===================================%
-% Create initial SAP S-Clulster Matrix
-% Take PSD Size (4) and multiply by 2 (8)
-% Create a (8x8) Matrix of 1s 
-% Then pad this Mx on all sides by Os
-%-------------------%
-% Establish the initial scalars, vectors, and matrices
-% for the SAP cluster turnnover functions
-%-------------------%
-function [Nsteps,S1,S2,S1sum,S2sum,...
-SC1beta,SC1mu,SC1r,SC1ro,SC1tau,...
-SC2beta,SC2mu,SC2r,SC2ro,SC2tau...
-] = SAPSLOTSETUP(Nsteps,...
-sap,um,dot,SAPPADPSD1,SAPPADPSD2)
 
-%{
-SCdeltaT = 0.01;	% Shouval [.01]		Brad [.01]
-SCbeta = 60;		% Shouval [60]		Brad [50]
-SCtau = 1.0;		% Shouval [1.0]		Brad [1.8]
-SCmu = 1/SCtau;		% Shouval [1/tau]	Brad [1/tau]
-SCL = 1.5;			% Shouval [1.5]		Brad [1.2]
-SCL2 = 1.1;			% Shouval [0.9]		Brad [1.1]
-SCr = 10;			% Shouval [10]		Brad [15]
-SCro = 0.95;		% Shouval [.95]		Brad [.90]
-SCszi = 7;			% Shouval [8]		Brad [7]
-SCszb = 17;			% Shouval [17]		Brad [17]
-
-SCdeltaT = 0.01;	% Shouval [.01]		Brad [.01]
-SCbeta = 50;		% Shouval [60]		Brad [50]
-SCtau = 1.8;		% Shouval [1.0]		Brad [1.8]
-SCmu = 1/SCtau;		% Shouval [1/tau]	Brad [1/tau]
-SCL = 1.2;			% Shouval [1.5]		Brad [1.2]
-SCL2 = 1.1;			% Shouval [0.9]		Brad [1.1]
-SCr = 15;			% Shouval [10]		Brad [15]
-SCro = 0.90;		% Shouval [.95]		Brad [.90]
-SCszi = 7;			% Shouval [8]		Brad [7]
-SCszb = 17;			% Shouval [17]		Brad [17]
-
-%}
-
-% TIME & SCALE
-SAPSTEP = sap(11);
-SAPSTEP1 = sap(11);
-SAPSTEP2 = sap(12);
-
-Steps = dot(3);			% Steps
-TimeStep = dot(4)/1000; % TimeStep
-Scale = dot(5);			% Scale
-time=Nsteps;
-
-
-% DENDRITIC FIELD
-um1 = um(1); % denWidthX
-um2 = um(2); % denHeightY
-um3 = um(3); % PSD1um
-um4 = um(4); % PSD2um
-um5 = um(5); % PERI1um
-um6 = um(6); % PERI2um
-fsizeX = round(um1/Scale);
-fsizeY = round(um2/Scale);
-PSD1size = round(um3/Scale);
-PSD2size = round(um4/Scale);
-periPSD1size = round(um5/Scale);
-periPSD2size = round(um6/Scale);
-
-PSD1SAPF = PSD1size*2;
-PSD2SAPF = PSD2size*2;
-PSA1SAPF = periPSD1size*2;
-PSA2SAPF = periPSD2size*2;
-
-
-if ~SAPPADPSD1
-SAPMXPSD1 = ones(PSD1SAPF);
-S1=SAPMXPSD1;
-end
-
-if ~SAPPADPSD2
-SAPMXPSD2 = ones(PSD2SAPF);
-S2=SAPMXPSD2;
-end
-
-PADSAP1 = SAPPADPSD1*2;
-PADSAP2 = SAPPADPSD2*2;
-
-if SAPPADPSD1
-SAPMXPSD1=padarray(ones(PSD1SAPF),[PADSAP1 PADSAP1], 0);
-S1=SAPMXPSD1;
-end
-
-if SAPPADPSD2
-SAPMXPSD2=padarray(ones(PSD2SAPF),[PADSAP2 PADSAP2], 0);
-S2=SAPMXPSD2;
-end
-
-
-%===========================================%
-sap1 = sap(1); % SAPdotsPSD1
-sap2 = sap(2); % SAPdotsPSD2
-sap3 = sap(3); % SAPbetaPSD1
-sap4 = sap(4); % SAPtauPSD1
-sap5 = sap(5); % SAPL1PSD1
-sap6 = sap(6); % SAPbetaPSD2
-sap7 = sap(7); % SAPtauPSD2
-sap8 = sap(8); % SAPL1PSD2
-sap9 = sap(9); % SAPmuPSD1
-sap10 = sap(10); % SAPmuPSD2
-sap11 = sap(11); % SAPdTPSD1
-sap12 = sap(12); % SAPdTPSD2
-sap13 = sap(13); % SAPrhoPSD1
-sap14 = sap(14); % SAPrhoPSD2
-sap15 = sap(15); % SAPrPSD1
-sap16 = sap(16); % SAPrPSD2
-sap17 = sap(17); % doDynamicLeP1
-sap18 = sap(18); % doDynamicLeP2
-
-
-h_mask=[0 1 0; 1 0 1; 0 1 0];
-
-
-SC1szi = sap(1);		SC2szi = sap(2);
-SC1beta = sap(3);		SC2beta = sap(6);	
-SC1tau = sap(4);		SC2tau = sap(7);		
-SC1mu = sap(9);			SC2mu = sap(10);	
-SC1L = sap(5);			SC2L = sap(8);
-SC1r = sap(15);			SC2r = sap(16);			
-SC1ro = sap(13);		SC2ro = sap(14);
-
-SC1L2 = 1.1;			SC2L2 = 1.1;	
-SC1szb = 17;			SC2szb = 17;
-
-SC1deltaT = TimeStep*SAPSTEP;	SC2deltaT = TimeStep*SAPSTEP;
-
-%===========================================%
-% CLUSTER SUMS FOR PSD POTENTIATION LEVEL
-%-------------------------------------------%
-S1sum = sum(S1(:));
-S2sum = sum(S2(:));
-%===========================================%
-
-
-end
-%===================================%
-
-
-%===================================%
-% SAPMAP
-%===================================%
-% Create two Cells that contain the X and Y coordinates respectively
-% for polygon boxes distributed throughout the PSD
-% Return Cell Mx to function caller
-%-------------------%
-function [PSD1Sxvecs PSD1Syvecs PSD2Sxvecs PSD2Syvecs] = SAPMAP(...
-	um,dot,...
-	SPYN1xv,SPYN1yv,SPYN2xv,SPYN2yv,...
-	PSD1xv,PSD1yv,PSD2xv,PSD2yv,...
-	PERI1xv,PERI1yv,PERI2xv,PERI2yv,SAPPADPSD1,SAPPADPSD2)
-
-
-
-Scale = dot(5); % Scale
-% DENDRITIC FIELD
-um1 = um(1); % denWidthX
-um2 = um(2); % denHeightY
-um3 = um(3); % PSD1um
-um4 = um(4); % PSD2um
-um5 = um(5); % PERI1um
-um6 = um(6); % PERI2um
-PSD1size = round(um3/Scale);
-PSD2size = round(um4/Scale);
-periPSD1size = round(um5/Scale);
-periPSD2size = round(um6/Scale);
-
-PSD1SAPF = PSD1size*2;
-PSD2SAPF = PSD2size*2;
-PSA1SAPF = periPSD1size*2;
-PSA2SAPF = periPSD2size*2;
-
-PSD1XL = PSD1xv(1);
-PSD1YL = PSD1yv(1);
-
-PSD2XL = PSD2xv(1);
-PSD2YL = PSD2yv(1);
-
-% Get top left corner coordinates for SYN
-PSD1XL = PSD1XL-SAPPADPSD1;
-PSD1YL = PSD1YL+SAPPADPSD1;
-PSD2XL = PSD2XL-SAPPADPSD2;
-PSD2YL = PSD2YL+SAPPADPSD2;
-
-PSD1size = PSD1size + (SAPPADPSD1*2);
-PSD2size = PSD2size + (SAPPADPSD2*2);
-
-
-
-% Create two Cells that contain the X and Y coordinates respectively
-% for the small polygons that are uniformly distributed throughout the PSD
-% and return those Cells outside of the main loop
-for m = 0:(PSD1size - 1)
-for n = 0:(PSD1size - 1)
-p = 1+n+(m*PSD1size);
-PSD1Sxv = [(PSD1XL+m) (PSD1XL+(1+m)) (PSD1XL+(1+m)) (PSD1XL+m) (PSD1XL+m)]';
-PSD1Syv = [(PSD1YL-n) (PSD1YL-n) (PSD1YL-(1+n)) (PSD1YL-(1+n)) (PSD1YL-n)]';
-PSD1Sxvecs{p} = PSD1Sxv;
-PSD1Syvecs{p} = PSD1Syv;
-end
-end
-
-
-for m = 0:(PSD2size - 1)
-for n = 0:(PSD2size - 1)
-p = 1+n+(m*PSD2size);
-PSD2Sxv = [(PSD2XL+m) (PSD2XL+(1+m)) (PSD2XL+(1+m)) (PSD2XL+m) (PSD2XL+m)]';
-PSD2Syv = [(PSD2YL-n) (PSD2YL-n) (PSD2YL-(1+n)) (PSD2YL-(1+n)) (PSD2YL-n)]';
-PSD2Sxvecs{p} = PSD2Sxv;
-PSD2Syvecs{p} = PSD2Syv;
-end
-end
-
-%{
-for m = 0:(PSD1size-1)
-for n = 0:(PSD1size-1)
-p = 1+n+(m*PSD1size);
-PSD1Sxv = [(PSD1XL+m) (PSD1XL+(1+m)) (PSD1XL+(1+m)) (PSD1XL+m) (PSD1XL+m)]';
-PSD1Syv = [(PSD1YL-n) (PSD1YL-n) (PSD1YL-(1+n)) (PSD1YL-(1+n)) (PSD1YL-n)]';
-PSD1Sxvecs{p} = PSD1Sxv;
-PSD1Syvecs{p} = PSD1Syv;
-end
-end
-
-
-
-
-for m = 0:(PSD2size-1)
-for n = 0:(PSD2size-1)
-p = 1+n+(m*PSD2size);
-PSD2Sxv = [(PSD2XL+m) (PSD2XL+(1+m)) (PSD2XL+(1+m)) (PSD2XL+m) (PSD2XL+m)]';
-PSD2Syv = [(PSD2YL-n) (PSD2YL-n) (PSD2YL-(1+n)) (PSD2YL-(1+n)) (PSD2YL-n)]';
-PSD2Sxvecs{p} = PSD2Sxv;
-PSD2Syvecs{p} = PSD2Syv;
-end
-end
-%}
-
-
-
-end
-%===================================%
-
-
-%===================================%
-% SAPMASKREPORT
-%===================================%
-% Function takes SAP S-Cluster Matrix (S1)
-% uses mask to count SAPs in each 1x1 PolyBox region
-% returns condensed Field-Mx 1/4th of full S-Cluster field, 
-% holds values (0-4) of number of SAPs in each PolyBox
-%-------------------%
-function [SAPFmx1 SAPFmx2 SAPmx1 SAPmx2] = SAPMASKREPORT(Nsteps,...
-	S1, S2,um,dot,runSAPPSD1,runSAPPSD2)
-
-Scale = dot(5); % Scale
-um3 = um(3); % PSD1um
-um4 = um(4); % PSD2um
-PSD1size = round(um3/Scale);
-PSD2size = round(um4/Scale);
-sap_mask=[1 1; 1 1];
-
-[SS1PSD1 SS2PSD1] = size(S1);
-[SS1PSD2 SS2PSD2] = size(S2);
-
-SSPSD1 = round(SS1PSD1/2);
-SSPSD2 = round(SS1PSD2/2);
-
-
-% This constructs SAPFmx like: 
-% SAPFmx = [(1,1) (1,3) (1,5)... (3,1) (3,3)....]
-if runSAPPSD1
-	SAPmx1_occ=(S1>0);  
-	SAPmx1=convn(SAPmx1_occ,sap_mask,'same');
-	SAPFmx1=zeros(SSPSD1);
-	for n = 0:(SSPSD1-1)
-	for m = 0:(SSPSD1-1)
-	SAPFmx1(m+1,n+1) = SAPmx1(1+(m*2),1+(n*2));
-	end
-	end
-end
-
-if runSAPPSD2
-	SAPmx2_occ=(S2>0);  
-	SAPmx2=convn(SAPmx2_occ,sap_mask,'same');
-	SAPFmx2=zeros(SSPSD2);
-	for n = 0:(SSPSD2-1)
-	for m = 0:(SSPSD2-1)
-	SAPFmx2(m+1,n+1) = SAPmx2(1+(m*2),1+(n*2));
-	end
-	end
-end
-
-if ~runSAPPSD1
-	SAPmx1_occ=(S1>0);  
-	SAPmx1=convn(SAPmx1_occ,sap_mask,'same');
-	SAPFmx1=zeros(SSPSD1);
-	SAPFmx1 = SAPFmx1.*0;
-end
-
-if ~runSAPPSD2
-	SAPmx2_occ=(S2>0);  
-	SAPmx2=convn(SAPmx2_occ,sap_mask,'same');
-	SAPFmx2=zeros(SSPSD2);
-	SAPFmx2 = SAPFmx2.*0;
-end
-
-
-%{
-
-if runSAPPSD1
-	SAPmx1_occ=(S1>0);  
-	SAPmx1=convn(SAPmx1_occ,sap_mask,'same');
-	SAPFmx1=zeros(PSD1size);
-	for n = 0:(PSD1size-1)
-	for m = 0:(PSD1size-1)
-	SAPFmx1(m+1,n+1) = SAPmx1(1+(m*2),1+(n*2));
-	end
-	end
-end
-
-if runSAPPSD2
-	SAPmx2_occ=(S2>0);  
-	SAPmx2=convn(SAPmx2_occ,sap_mask,'same');
-	SAPFmx2=zeros(PSD2size);
-	for n = 0:(PSD2size-1)
-	for m = 0:(PSD2size-1)
-	SAPFmx2(m+1,n+1) = SAPmx2(1+(m*2),1+(n*2));
-	end
-	end
-end
-
-
-
-
-SAPSTEP = .1;
-Steps = dot(3); % Steps
-TimeStep = dot(4)/1000; % TimeStep
-
-um1 = um(1); % denWidthX
-um2 = um(2); % denHeightY
-
-um5 = um(5); % PERI1um
-um6 = um(6); % PERI2um
-fsizeX = round(um1/Scale);
-fsizeY = round(um2/Scale);
-
-periPSD1size = round(um5/Scale);
-periPSD2size = round(um6/Scale);
-
-PSD1SAPF = PSD1size*2;
-PSD2SAPF = PSD2size*2;
-PSA1SAPF = periPSD1size*2;
-PSA2SAPF = periPSD2size*2;
-
-
-%=======================================%
-%				GLUR1 PSD				%
-%=======================================%
-if doKo(1) %doKo(1); % useGluR1slots
-	
-GluR1Sd1 = ones(size(GluR1xyl));
-GluR1Sd2 = GluR1Sd1;
-[m,p,n] = size(PSD1Sxvecs);
-
-for m = 1:p
-	
-PSD1SxvNOW = PSD1Sxvecs{m};
-PSD1SyvNOW = PSD1Syvecs{m};
-PSD2SxvNOW = PSD2Sxvecs{m};
-PSD2SyvNOW = PSD1SyvNOW.*-1;
-
-G1INPSD1 = inpolygon(GluR1xyl(1,:)',GluR1xyl(2,:)',PSD1SxvNOW,PSD1SyvNOW);
-G1INPSD2 = inpolygon(GluR1xyl(1,:)',GluR1xyl(2,:)',PSD2SxvNOW,PSD2SyvNOW);
-
-GluR1Sd1(:,G1INPSD1) = GluR1Sd1(:,G1INPSD1)+(SAPFmx1(m));
-GluR1Sd2(:,G1INPSD2) = GluR1Sd2(:,G1INPSD2)+(SAPFmx2(m));
-
-end
-
-GluR1SdP1 = GluR1Sd1-1;
-GluR1SdP2 = GluR1Sd2-1;
-
-end %if %doKo(1); % useGluR1slots
-%=======================================%
-
-%=======================================%
-%				GLUR2 PSD				%
-%=======================================%
-if doKo(2) %doKo(2); % useGluR2slots
-
-GluR2Sd1 = ones(size(GluR2xyl));
-GluR2Sd2 = GluR2Sd1;
-[m,p,n] = size(PSD1Sxvecs);
-
-for m = 1:p
-	
-PSD1SxvNOW = PSD1Sxvecs{m};
-PSD1SyvNOW = PSD1Syvecs{m};
-PSD2SxvNOW = PSD2Sxvecs{m};
-PSD2SyvNOW = PSD1SyvNOW.*-1;
-
-G2INPSD1 = inpolygon(GluR2xyl(1,:)',GluR2xyl(2,:)',PSD1SxvNOW,PSD1SyvNOW);
-G2INPSD2 = inpolygon(GluR2xyl(1,:)',GluR2xyl(2,:)',PSD2SxvNOW,PSD2SyvNOW);
-
-GluR2Sd1(:,G2INPSD1) = GluR2Sd1(:,G2INPSD1)+(SAPFmx1(m));
-GluR2Sd2(:,G2INPSD2) = GluR2Sd2(:,G2INPSD2)+(SAPFmx2(m));
-
-end
-
-GluR2SdP1 = GluR2Sd1-1;
-GluR2SdP2 = GluR2Sd2-1;
-
-end %doKo(2); % useGluR2slots
-%=======================================%
-
-%}
-end
-%===================================%
-
-
-%===================================%
-%		SAPPREALLOCATE
-%===================================%
-function [sap_mask SSPSD1 SSPSD2 GluR1SdP1 GluR1SdP2...
-    GluR1SLOCMXa GluR1SLOCMXb g1polyN1 g2polyN1...
-    GluR2SdP1 GluR2SdP2 GluR2SLOCMXa GluR2SLOCMXb] = SAPPREALLOCATE(...
-    S1,S2,um,dot,runSAPPSD1,runSAPPSD2,PSD1Sxvecs,...
-    GluR1xyl,GluR2xyl)
-
-
-%-------------------
-% SAPMASKREPORT
-%-------------------
-%Scale = dot(5); % Scale
-%um3 = um(3); % PSD1um
-%um4 = um(4); % PSD2um
-%PSD1size = round(um3/Scale);
-%PSD2size = round(um4/Scale);
-
-sap_mask=[1 1; 1 1];
-% [SS1PSD1 SS2PSD1] = size(S1);
-% [SS1PSD2 SS2PSD2] = size(S2);
-[SS1PSD1, ~] = size(S1);
-[SS1PSD2, ~] = size(S2);
-SSPSD1 = round(SS1PSD1/2); %!! SSPSD1 MAY NOT NEED ROUNDING
-SSPSD2 = round(SS1PSD2/2); %!! SSPSD2 MAY NOT NEED ROUNDING
-
-
-
-%-------------------
-% G1SAPPOLYGON
-%-------------------
-GluR1SdP1 = zeros(size(GluR1xyl));
-GluR1SdP2 = GluR1SdP1;
- 
-GluR1SLOCMXa = zeros(1,size(GluR1SdP1,2));
-GluR1SLOCMXb = GluR1SLOCMXa;
-
-[m,g1polyN1,n] = size(PSD1Sxvecs);
-    % currentcell = zeros(1,size(GluR1xyl,2));
-
-
-%-------------------
-% G2SAPPOLYGON
-%-------------------
-GluR2SdP1 = zeros(size(GluR2xyl));
-GluR2SdP2 = GluR2SdP1;
- 
-GluR2SLOCMXa = zeros(1,size(GluR2SdP1,2));
-GluR2SLOCMXb = GluR2SLOCMXa;
- 
-[m,g2polyN1,n] = size(PSD1Sxvecs);
-    % currentcell = zeros(1,size(GluR2xyl,2));
-
-
-
-end
-
-
-%-----------------------------------------%
-%			LOOPED SAP FUNCTIONS
-%-----------------------------------------%
-
-%===================================%
+%----------------------------------%
 %		SUPERSLOT
-%===================================%
+%----------------------------------%
 function [GluR1xyl GluR2xyl GluR1xyds GluR2xyds...
-	SAPFmx1 SAPFmx2 G1FSLOTS G2FSLOTS...
+	G1FSLOTS G2FSLOTS...
 	GluR1_TdwellSPYN GluR1_TdwellPSD GluR1_TdwellPERI...
 	GluR2_TdwellSPYN GluR2_TdwellPSD GluR2_TdwellPERI...
 	G1INSPYN1 G1INSPYN2 G1INPSD1 G1INPSD2 G1INPERI1 G1INPERI2...
 	G2INSPYN1 G2INSPYN2 G2INPSD1 G2INPSD2 G2INPERI1 G2INPERI2...
-	G1P1SAPM G1P2SAPM G2P1SAPM G2P2SAPM]...
+	G1INSPA G2INSPA...
+	SMx G1v G2v]...
 	= SUPERSLOT(stepN,t,GluR1xyl,GluR2xyl,GluR1xyds,GluR2xyds,...
-	GluR1_TdwellPSD,GluR1_TdwellPERI,GluR1_TdwellSPYN,LsGR1psa,LsGR1psd,...
-	GluR2_TdwellPSD,GluR2_TdwellPERI,GluR2_TdwellSPYN,LsGR2psa,LsGR2psd,...	
-	S1,S2,runSAPPSD1,runSAPPSD2,...
-	PSD1Sxvecs,PSD1Syvecs,PSD2Sxvecs,PSD2Syvecs,...
-	SAPFmx1,SAPFmx2,...
-	mask3x3,rVx,SSPSD1,SSPSD2,GluR1SdP1,GluR1SdP2,...
-	GluR1SLOCMXa,GluR1SLOCMXb,g1polyN1,g2polyN1,...
-	GluR2SdP1,GluR2SdP2,GluR2SLOCMXa,GluR2SLOCMXb,...
-	LTP1onG1,LTP1offG1,LTP2onG1,LTP2offG1,...
-	LTP1onG2,LTP1offG2,LTP2onG2,LTP2offG2,...
-	XYLBp1,XYRTp1,XYLBp2,XYRTp2,...
-	G1STBASE,G1STLTP,G1BSMu,G1LSMu,...
-	G2STBASE,G2STLTP,G2BSMu,G2LSMu)
-
-% THIS WILL ONLY WORK IF THE SYNAPSE IS A TOTAL SIZE OF 8X8
-% IF THE TOTAL PSD+PSA IS NOT==8 THE ENTIRE SAP/SLOT SUBROUTINE 
-% WILL MALFUNCTION!!!!!!
-
-
-
-%-------------------
-% SAPMASKREPORT
-%-------------------
-%==================================%
-%{
-% SAPmx1 = 16x16 convolution Mx (X checks X,E,S,SE)
-% NW N NE
-%  W X E
-% SW S SE
-
-% SAPFmx1 = 8x8 condensed Mx (always 1/4 of SAPmx1)
-% takes all odd row and column values
-% keeps "odd" discards odd+1 odd+16 odd+17
-% odd   odd+16
-% odd+1 odd+17
-
-dumMx = [1:16]'
-for mx = 1:15
-nx = mx+1;
-dumMx(:,nx) = dumMx(:,mx)+16
-end
-dumMx2 = permute(dumMx,[2 1])
-dumMx3 = reshape(dumMx2,16,[])
-
-INPOLYGON REFERENCE
-ODDID = ID+(ID-1)
-ODDID+1
-ODDID+16
-ODDID+17
-% THIS WILL ONLY WORK IF THE SAP CLUSTER FIELD IS TOTAL SIZE IS 8X8
-% IF THE TOTAL PSD+PSA IS NOT==8 THE ENTIRE SAP/SLOT SUBROUTINE 
-% WILL MALFUNCTION!!!!!!
+	GluR1_TdwellPSD,GluR1_TdwellPERI,GluR1_TdwellSPYN,LsGR1psa,LsGR1psd,LsGR1S,...
+	GluR2_TdwellPSD,GluR2_TdwellPERI,GluR2_TdwellSPYN,LsGR2psa,LsGR2psd,LsGR2S,...	
+	SSsz,G1xy,G2xy,SMx,SS,DF,GR1xy,GR2xy)
+% THIS FUNCTION WILL FIND GLUR RECEPTORS THAT OVERLAP WITH
+% SAPS IN BOTH PSDs SIMULTANIOUSLY, DON'T WORRY THAT
+% THERE IS ONLY 1 ROUTINE FOR BOTH PSDs.
+% This simulation represents particles in both real-space and matrix-space.
+%   Real-space is the 2xNdot array of particle locations and step sizes, 
+%     composed of real numbers (ie. pos & neg values with decimals).
+%   Matrix-space particle locations are represented as positive integers. 
+%     These locations simultaniously refer to each particle's index ID in the
+%     matrix. These are constructed as follows: 
+% 	(1) The entire dendritic field is mapped to a space-matrix (SMx), 
+% 	so a dendritic field of (30x60)*10 has a SMx of 300x600 [cols x rows, 
+% 	SMx(1:600,1:300)]. 
+% 	(2) SMx synaptic locations are defined. This primarily means that the 
+% 	SAP/Actin matrices for S1 & S2 (100x100) are embedded into the SMx. 
+% 	As a standard, S1 & S2 are inserted at:
+% 		SMx(401:500,101:200) = S1;
+% 		SMx(101:200,101:200) = S2;
+% 	N.B. 
+% 	The Y-Dimension in matrix-space is flipped compared to real-space,
+% 	that is, by default SMx(600,300) refers to the most bottom-right cell, 
+% 	not the top-right cell. Thus after S1 & S2 are embedded into the SMx
+% 	this
 
 
-S1(2:5,2:5) = 1
-if runSAPPSD1
-	SAPmx1_occ=(S1>0);  
-	SAPmx1=convn(SAPmx1_occ,sap_mask,'same');
-	SAPFmx1=zeros(SSPSD1);
-	for n = 0:(SSPSD1-1)
-	for m = 0:(SSPSD1-1)
-	SAPFmx1(m+1,n+1) = SAPmx1(1+(m*2),1+(n*2));
+
+
+
+%---------------------------
+% EXPAND SMx to MASK
+%---------------------------
+%SMxMask = [0 0 0; 0 1 0; 0 0 0];
+%SMxMask = ones(10);
+%cSMx = convn(SMx,SMxMask,'same');
+
+cSMx = SMx;
+
+
+%---------------------------
+% GLUR1 PSD STUFF
+%---------------------------
+G1SMx = G1xy.*cSMx;
+
+[yMx xMx] = find(G1SMx);
+G1SMxy = [xMx'; yMx'];
+% ALL PARTICLES AT G1SMxy SHOULD BE SLOTTED
+
+G1v=[];
+doSLT = numel(G1SMxy);
+if doSLT
+mnm=1;
+for mm = 1:numel(GR1xy(1,:))
+	for nn = 1:numel(G1SMxy(1,:))
+	matchd = (GR1xy(:,mm) == G1SMxy(:,nn));
+	if matchd
+		G1v(mnm) = mm;
+		mnm=mnm+1;
 	end
 	end
 end
-%}
-
-%==================================%
-%{
-%==================================%
-
-Smx = padarray(ones(8),[4 4],0);
-fMxSz = size(Smx,1);
-pMxSz = fMxSz/2;
-
-mask3x3 = [1 1 1; 1 1 1; 1 1 1];
-convnSMx = convn(Smx,mask3x3,'same');
-
-rc = 0;
-convnV = [];
-for r = 1:2:fMxSz; for c = 1:2:fMxSz
-rc = rc+1;
-convnV(rc) = mean(mean(convnSMx(r:r+1,c:c+1)));
-end; end;
-
-convnRMx = round(reshape(convnV,pMxSz,[]) / 2);
-
-gaussian = fspecial('gaussian');
-
-%==================================%
-%}
-%==================================%
-if runSAPPSD1
-%------------
-S1oc=(S1>0);
-SAPmx1 = convn(S1oc,mask3x3,'same');
-convnS1Mx = accumarray(rVx(:), SAPmx1(:));
-SAPFmx1 = reshape(convnS1Mx,8,[]) ./8;
-%------------
 end
-%==================================%
-if runSAPPSD2
-%------------
-S2oc=(S2>0);
-SAPmx2 = convn(S2oc,mask3x3,'same');
-convnS2Mx = accumarray(rVx(:), SAPmx2(:));
-SAPFmx2 = reshape(convnS2Mx,8,[]) ./8;
-%------------
-end
-%==================================%
 
 
 
-%-------------------%
-% old conv
-%{
+%---------------------------
+% GLUR2 PSD STUFF
+%---------------------------
+G2SMx = G2xy.*cSMx;
 
-sap_mask2 = [1 1 1; 1 1 1; 1 1 1];
+[yMx xMx] = find(G2SMx);
+G2SMxy = [xMx'; yMx'];
+% ALL PARTICLES IN G2SMxy SHOULD BE SLOTTED
 
-if runSAPPSD1
-	SAPmx1_occ=(S1>0);							% SAPmx1_occ 16x16 sap occupied lattice
-	% SAPmx1=convn(SAPmx1_occ,sap_mask,'same');	% SAPmx1	 16x16 convolution
-	SAPmx1 = round(convn(SAPmx1_occ,sap_mask2,'same')./2);
-	SAPFmx1=zeros(SSPSD1);						% SAPFmx1	 8x8 0s preallocation
-	for n = 0:(SSPSD1-1)
-	for m = 0:(SSPSD1-1)
-	SAPFmx1(m+1,n+1) = SAPmx1(1+(m*2),1+(n*2));	% SAPFmx1	 8x8 
+G2v=[];
+doSLT = numel(G2SMxy);
+if doSLT
+mnm=1;
+for mm = 1:numel(GR2xy(1,:))
+	for nn = 1:numel(G2SMxy(1,:))
+	matchd = (GR2xy(:,mm) == G2SMxy(:,nn));
+	if matchd
+		G2v(mnm) = mm;
+		mnm=mnm+1;
 	end
 	end
 end
-
-if runSAPPSD2
-	SAPmx2_occ=(S2>0);  
-	% SAPmx2=convn(SAPmx2_occ,sap_mask,'same');
-	SAPmx2 = round(convn(SAPmx2_occ,sap_mask2,'same')./2);
-	SAPFmx2=zeros(SSPSD2);
-	for n = 0:(SSPSD2-1)
-	for m = 0:(SSPSD2-1)
-	SAPFmx2(m+1,n+1) = SAPmx2(1+(m*2),1+(n*2));
-	end
-	end
 end
 
 
+%if stepN == 1000; keyboard; end
 
-%==================================%
-mask3x3 = [1 1 1; 1 1 1; 1 1 1];
-%==================================%
-if runSAPPSD1
-%------------
-S1oc=(S1>0);
-fMxS1z = size(S1oc,1);
-pMxS1z = fMxS1z/2;
-%----------------------------------%
-convnS1Mx = convn(S1oc,mask3x3,'same');
-loc = 0;
-convnS1v = zeros(pMxS1z);
-for r = 1:2:fMxS1z; for c = 1:2:fMxS1z
-loc = loc+1;
-convnS1v(loc) = mean(mean(convnS1Mx(r:r+1,c:c+1)));
-end; end;
 
-SAPFmx1 = round(convnS1v / 2) ;
-SAPmx1 = convnS1Mx;
-%------------
-end;%if runSAPPSD1
-%==================================%
-%==================================%
-if runSAPPSD2
-%------------
-S2oc=(S2>0);
-fMxS2z = size(S2oc,1);
-pMxS2z = fMxS2z/2;
-%----------------------------------%
-convnS2Mx = convn(S2oc,mask3x3,'same');
-loc = 0;
-convnS2v = zeros(pMxS2z);
-for r = 1:2:fMxS2z; for c = 1:2:fMxS2z
-loc = loc+1;
-convnS2v(loc) = mean(mean(convnS2Mx(r:r+1,c:c+1)));
-end; end;
 
-SAPFmx2 = round(convnS2v / 2) ;
-SAPmx2 = convnS2Mx;
-%------------
-end;%if runSAPPSD2
-%==================================%
 
+% ADJUST STEP SIZE OF SLOTTED GLUR
+%-------------
+GluR1xyds(:,G1v) = GluR1xyds(:,G1v)*(LsGR1S);
+GluR2xyds(:,G2v) = GluR2xyds(:,G2v)*(LsGR2S);
 
 
 
 
-
-
-
-%==================================%
-mask2x2 = [1 1; 1 1];
-%==================================%
-if runSAPPSD1
-%------------
-S1oc=(S1>0);
-fMxS1z = size(S1oc,1);
-pMxS1z = fMxS1z/2;
-%----------------------------------%
-loc = 0;
-SAPmx1 = zeros(pMxS1z);
-for r = 1:2:fMxS1z; for c = 1:2:fMxS1z
-loc = loc+1;
-SAPmx1(loc) = convn(S1oc(r:r+1,c:c+1),mask2x2,'valid');
-end; end;
-
-%------------
-end;%if runSAPPSD1
-%==================================%
-%==================================%
-if runSAPPSD2
-%------------
-S2oc=(S2>0);
-fMxS2z = size(S2oc,1);
-pMxS2z = fMxS2z/2;
-%----------------------------------%
-loc = 0;
-SAPmx2 = zeros(pMxS2z);
-for r = 1:2:fMxS2z; for c = 1:2:fMxS2z
-loc = loc+1;
-SAPmx2(loc) = convn(S2oc(r:r+1,c:c+1),mask2x2,'valid');
-end; end;
-
-%------------
-end;%if runSAPPSD2
-%==================================%
-
-
-
-
-
-
-% if runSAPPSD1
-% 	SAPmx1_occ=(S1>0);							% SAPmx1_occ 16x16 sap occupied lattice
-% 	SAPmx1=convn(SAPmx1_occ,sap_mask,'same');	% SAPmx1	 16x16 convolution
-% 	SAPFmx1=zeros(SSPSD1);						% SAPFmx1	 8x8 0s preallocation
-% 	for n = 0:(SSPSD1-1)
-% 	for m = 0:(SSPSD1-1)
-% 	SAPFmx1(m+1,n+1) = SAPmx1(1+(m*2),1+(n*2));	% SAPFmx1	 8x8 
-% 	end
-% 	end
-% end
-
-% if runSAPPSD2
-% 	SAPmx2_occ=(S2>0);  
-% 	SAPmx2=convn(SAPmx2_occ,sap_mask,'same');
-% 	SAPFmx2=zeros(SSPSD2);
-% 	for n = 0:(SSPSD2-1)
-% 	for m = 0:(SSPSD2-1)
-% 	SAPFmx2(m+1,n+1) = SAPmx2(1+(m*2),1+(n*2));
-% 	end
-% 	end
-% end
-
-%}
-%-------------------%
-
-if ~runSAPPSD1
-	SAPmx1_occ=(S1>0);  
-	SAPmx1=round(convn(SAPmx1_occ,sap_mask2,'same')./2);
-	SAPFmx1=zeros(SSPSD1);
-	SAPFmx1 = SAPFmx1.*0;
-end
-
-if ~runSAPPSD2
-	SAPmx2_occ=(S2>0);  
-	SAPmx2=round(convn(SAPmx2_occ,sap_mask2,'same')./2);
-	SAPFmx2=zeros(SSPSD2);
-	SAPFmx2 = SAPFmx2.*0;
-end
-
-
-
-%-------------------
-% G1SAPPOLYGON
-%-------------------
-%{
-
-% SAPFmx1 & SAPFmx2 = 8x8 Mx of #SAPs in each 64 SLOTs of SPYN1 & SPYN2
-% this G1SAPPOLYGON subroutine takes a 1x64 Cell of 1x1 polygons
-% 
-% G1INPSD1 holds logic array testing if a GluR in a polygon (on each iteration)
-% 
-% GluR1SdP1 takes G1INPSD1 logic test and SAPFmx1 and stores the #SAP
-% 	each GluR is currently surrounded by. cycles down each column
-% 
-% GluR1SLOCMXa stores the ID of the polygon each GluR is located in
-% The polygon check starts with the top left and cycles down each column
-% like so...
-
-%----Test Polygon Check Order---%
-fig2 = figure(2);
-currentcell = zeros(1,g1polyN1);
-for m = 1:g1polyN1
-currentcell = currentcell+1;
-PSD1SxvNOW = PSD1Sxvecs{m}; % CURRENT 1x1 POLYGON (NOT JUST PSD)
-PSD1SyvNOW = PSD1Syvecs{m};
-PSD2SxvNOW = PSD2Sxvecs{m};
-PSD2SyvNOW = PSD2Syvecs{m};
-G1INPSD1 = inpolygon(GluR1xyl(1,:)',GluR1xyl(2,:)',PSD1SxvNOW,PSD1SyvNOW);
-G1INPSD2 = inpolygon(GluR1xyl(1,:)',GluR1xyl(2,:)',PSD2SxvNOW,PSD2SyvNOW);
-GluR1SdP1(:,G1INPSD1) = GluR1SdP1(:,G1INPSD1)+(SAPFmx1(m));
-GluR1SdP2(:,G1INPSD2) = GluR1SdP2(:,G1INPSD2)+(SAPFmx2(m));
-GluR1SLOCMXa(1,G1INPSD1) = GluR1SLOCMXa(:,G1INPSD1)+(currentcell(m));
-GluR1SLOCMXb(1,G1INPSD2) = GluR1SLOCMXb(:,G1INPSD2)+(currentcell(m));
-figure(fig2)
-axesm miller
-plotm(PSD1SyvNOW,PSD1SxvNOW,'r')
-% draw now
-hold on
-pause(.1)
-end
-%----Test Polygon Check Order---%
-
-
-
-
-%----Test Polygon Check Order---%
-fig2 = figure(2);
-currentcell = zeros(1,g1polyN1);
-for m = 1:g1polyN1
-currentcell = currentcell+1;
-PSD1SxvNOW = PSD1Sxvecs{m}; % CURRENT 1x1 POLYGON (NOT JUST PSD)
-PSD1SyvNOW = PSD1Syvecs{m};
-PSD2SxvNOW = PSD2Sxvecs{m};
-PSD2SyvNOW = PSD2Syvecs{m};
-
-XYLB1 = [PSD1SxvNOW(4) PSD1SyvNOW(4)];
-XYRT1 = [PSD1SxvNOW(2) PSD1SyvNOW(2)];
-XYLB2 = [PSD2SxvNOW(4) PSD2SyvNOW(4)];
-XYRT2 = [PSD2SxvNOW(2) PSD2SyvNOW(2)];
-
-G1INPSD1 = inboxfun(XYLB1,XYRT1,GluR1xyl);
-G1INPSD2 = inboxfun(XYLB2,XYRT2,GluR1xyl);
-
-GluR1SdP1(:,G1INPSD1) = GluR1SdP1(:,G1INPSD1)+(SAPFmx1(m));
-GluR1SdP2(:,G1INPSD2) = GluR1SdP2(:,G1INPSD2)+(SAPFmx2(m));
-GluR1SLOCMXa(1,G1INPSD1) = GluR1SLOCMXa(:,G1INPSD1)+(currentcell(m));
-GluR1SLOCMXb(1,G1INPSD2) = GluR1SLOCMXb(:,G1INPSD2)+(currentcell(m));
-figure(fig2)
-axesm miller
-plotm(PSD1SyvNOW,PSD1SxvNOW,'r')
-% draw now
-hold on
-pause(.1)
-end
-%----Test Polygon Check Order---%
-%}
-
-currentcell = zeros(1,g1polyN1);
-for m = 1:g1polyN1
-currentcell = currentcell+1;
-
-PSD1SxvNOW = PSD1Sxvecs{m}; % CURRENT 1x1 POLYGON (NOT JUST PSD)
-PSD1SyvNOW = PSD1Syvecs{m};
-PSD2SxvNOW = PSD2Sxvecs{m};
-PSD2SyvNOW = PSD2Syvecs{m};
-
-XYLB1 = [PSD1SxvNOW(4) PSD1SyvNOW(4)]; % MAKE SEPARATE LOOPS FOR PSD1/PSD2
-XYRT1 = [PSD1SxvNOW(2) PSD1SyvNOW(2)];
-XYLB2 = [PSD2SxvNOW(4) PSD2SyvNOW(4)];
-XYRT2 = [PSD2SxvNOW(2) PSD2SyvNOW(2)];
-G1IN1 = inboxfun(XYLB1,XYRT1,GluR1xyl)';
-G1IN2 = inboxfun(XYLB2,XYRT2,GluR1xyl)';
-
-% G1INPSD1 = inpolygon(GluR1xyl(1,:)',GluR1xyl(2,:)',PSD1SxvNOW,PSD1SyvNOW);
-% G1INPSD2 = inpolygon(GluR1xyl(1,:)',GluR1xyl(2,:)',PSD2SxvNOW,PSD2SyvNOW);
-
-GluR1SdP1(:,G1IN1) = GluR1SdP1(:,G1IN1)+(SAPFmx1(m));
-GluR1SdP2(:,G1IN2) = GluR1SdP2(:,G1IN2)+(SAPFmx2(m));
-GluR1SLOCMXa(1,G1IN1) = GluR1SLOCMXa(:,G1IN1)+(currentcell(m));
-GluR1SLOCMXb(1,G1IN2) = GluR1SLOCMXb(:,G1IN2)+(currentcell(m));
-end
-
-GluR1INSPYN1 = GluR1SLOCMXa>0;
-GluR1INSPYN2 = GluR1SLOCMXb>0;
-
-GluR1SP1 = GluR1SdP1(1,:); %!! GluR1SdP1 doesn't need 2 rows
-GluR1SP2 = GluR1SdP2(2,:);
-G1SAPLOC1 = GluR1SLOCMXa;
-G1SAPLOC2 = GluR1SLOCMXb;
-
-% GLUR-ID , POLY ID , SAPS NEAR GLUR , GLUR DWELL TIME
-G1P1SAPMX = [(1:numel(GluR1SP1))' G1SAPLOC1' GluR1SP1' GluR1_TdwellSPYN(1,:)'];
-G1P2SAPMX = [([1:numel(GluR1SP2)]') G1SAPLOC2' GluR1SP2' GluR1_TdwellSPYN(2,:)'];
-G1P1SAPMX = sortrows(G1P1SAPMX,-4);
-G1P2SAPMX = sortrows(G1P2SAPMX,-4);
-
-% if stepN>2000; keyboard; end;
-%-------------------
-% G2SAPPOLYGON
-%-------------------
-currentcell = zeros(1,g2polyN1);	
-for m = 1:g2polyN1
-currentcell = currentcell+1;
-    
-PSD1SxvNOW = PSD1Sxvecs{m};
-PSD1SyvNOW = PSD1Syvecs{m};
-PSD2SxvNOW = PSD2Sxvecs{m};
-PSD2SyvNOW = PSD2Syvecs{m};
-
-XYLB1 = [PSD1SxvNOW(4) PSD1SyvNOW(4)];
-XYRT1 = [PSD1SxvNOW(2) PSD1SyvNOW(2)];
-XYLB2 = [PSD2SxvNOW(4) PSD2SyvNOW(4)];
-XYRT2 = [PSD2SxvNOW(2) PSD2SyvNOW(2)];
-G2IN1 = inboxfun(XYLB1,XYRT1,GluR2xyl)';
-G2IN2 = inboxfun(XYLB2,XYRT2,GluR2xyl)';
- 
-% G2INPSD1 = inpolygon(GluR2xyl(1,:)',GluR2xyl(2,:)',PSD1SxvNOW,PSD1SyvNOW);
-% G2INPSD2 = inpolygon(GluR2xyl(1,:)',GluR2xyl(2,:)',PSD2SxvNOW,PSD2SyvNOW);
- 
-GluR2SdP1(:,G2IN1) = GluR2SdP1(:,G2IN1)+(SAPFmx1(m));
-GluR2SdP2(:,G2IN2) = GluR2SdP2(:,G2IN2)+(SAPFmx2(m));
- 
-GluR2SLOCMXa(1,G2IN1) = GluR2SLOCMXa(:,G2IN1)+(currentcell(m));
-GluR2SLOCMXb(1,G2IN2) = GluR2SLOCMXb(:,G2IN2)+(currentcell(m));
-end
-
-GluR2INSPYN1 = GluR2SLOCMXa>0;
-GluR2INSPYN2 = GluR2SLOCMXb>0;
-
-GluR2SP1 = GluR2SdP1(1,:); %!! GluR2SdP1 doesn't need to by 2 rows
-GluR2SP2 = GluR2SdP2(2,:);
-G2SAPLOC1 = GluR2SLOCMXa;
-G2SAPLOC2 = GluR2SLOCMXb;
-
-% GLUR-ID , POLY ID , SAPS NEAR GLUR , GLUR DWELL TIME
-G2P1SAPMX = [([1:numel(GluR2SP1)]') G2SAPLOC1' GluR2SP1' GluR2_TdwellSPYN(1,:)'];
-G2P2SAPMX = [([1:numel(GluR2SP2)]') G2SAPLOC2' GluR2SP2' GluR2_TdwellSPYN(2,:)'];
-G2P1SAPMX = sortrows(G2P1SAPMX,-4);
-G2P2SAPMX = sortrows(G2P2SAPMX,-4);
-
-
-%===================================%
-%-------------------%
-% GLUR SLOT TEST
-%-------------------%
-G1CDF = G1STBASE-G1BSMu;
-G2CDF = G2STBASE-G2BSMu;
-if stepN >= LTP1onG1 && stepN <= LTP1offG1; 
-		G1CDF=G1STLTP-G1LSMu;
-end
-if stepN >= LTP2onG1 && stepN <= LTP2offG1; 
-		G1CDF=G1STLTP-G1LSMu; 
-end
-if stepN >= LTP1onG2 && stepN <= LTP1offG2; 
-		G2CDF=G2STLTP-G2LSMu;
-end
-if stepN >= LTP2onG2 && stepN <= LTP2offG2; 
-		G2CDF=G2STLTP-G2LSMu; 
-end
-
-% G1P1SAPMX: GLUR-ID , POLY ID , SAPS NEAR GLUR , GLUR DWELL TIME
-[~, uniG1P1SAPMX, ~] = unique(G1P1SAPMX(:,2),'rows','first');
-[~, uniG1P2SAPMX, ~] = unique(G1P2SAPMX(:,2),'rows','first');
-[~, uniG2P1SAPMX, ~] = unique(G2P1SAPMX(:,2),'rows','first');
-[~, uniG2P2SAPMX, ~] = unique(G2P2SAPMX(:,2),'rows','first');
-G1P1SAPMx = G1P1SAPMX(uniG1P1SAPMX,:);
-G1P2SAPMx = G1P2SAPMX(uniG1P2SAPMX,:);
-G2P1SAPMx = G2P1SAPMX(uniG2P1SAPMX,:);
-G2P2SAPMx = G2P2SAPMX(uniG2P2SAPMX,:);
-
-G1P1SAPMxP = G1P1SAPMx;
-PtGR1P1 = randn(numel(G1P1SAPMx(:,1)),1)+(G1P1SAPMxP(:,3)+G1CDF);
-G1P1SAPMxP(:,5) = PtGR1P1;
-G1P1SAPMxPx = G1P1SAPMxP((G1P1SAPMxP(:,5)>0),1);
-
-G1P2SAPMxP = G1P2SAPMx;
-PtGR1P2 = randn(numel(G1P2SAPMx(:,1)),1)+(G1P2SAPMxP(:,3)+G1CDF);
-G1P2SAPMxP(:,5) = PtGR1P2;
-G1P2SAPMxPx = G1P2SAPMxP((G1P2SAPMxP(:,5)>0),1);
-
-G2P1SAPMxP = G2P1SAPMx;
-PtGR2P1 = randn(numel(G2P1SAPMx(:,1)),1)+(G2P1SAPMxP(:,3)+G2CDF);
-G2P1SAPMxP(:,5) = PtGR2P1;
-G2P1SAPMxPx = G2P1SAPMxP((G2P1SAPMxP(:,5)>0),1);
-
-G2P2SAPMxP = G2P2SAPMx;
-PtGR2P2 = randn(numel(G2P2SAPMx(:,1)),1)+(G2P2SAPMxP(:,3)+G2CDF);
-G2P2SAPMxP(:,5) = PtGR2P2;
-G2P2SAPMxPx = G2P2SAPMxP((G2P2SAPMxP(:,5)>0),1);
-
-
-G1P1SAPM = sortrows(G1P1SAPMX,1);
-G1P2SAPM = sortrows(G1P2SAPMX,1);
-G2P1SAPM = sortrows(G2P1SAPMX,1);
-G2P2SAPM = sortrows(G2P2SAPMX,1);
-
-
-%===================================%
-% if stepN == 300; keyboard; end
-% G1P1poly = G1P1SAPM(:,2);
-% [~, ~, G1P1poly] = find(G1P1poly);
-% if numel(G1P1poly)>1 && stepN>400; keyboard; end
-%===================================%
-
-
-
-%===================================%
-% FULL IN-SLOT DATA: GLUR-ID , POLY-ID , SAPS , DWELL
-G1P1SAPM = G1P1SAPM(G1P1SAPMxPx,:);
-G1P2SAPM = G1P2SAPM(G1P2SAPMxPx,:);
-G2P1SAPM = G2P1SAPM(G2P1SAPMxPx,:);
-G2P2SAPM = G2P2SAPM(G2P2SAPMxPx,:);
-%===================================%
-
-
-[G1P1dw,~,~] = find(G1P1SAPM(:,4) <= 3);
-G1P1SAPM(G1P1dw,:) = [];
-[G1P2dw,~,~] = find(G1P2SAPM(:,4) <= 3);
-G1P2SAPM(G1P2dw,:) = [];
-[G2P1dw,~,~] = find(G2P1SAPM(:,4) <= 3);
-G2P1SAPM(G2P1dw,:) = [];
-[G2P2dw,~,~] = find(G2P2SAPM(:,4) <= 3);
-G2P2SAPM(G2P2dw,:) = [];
-
-
-% GLUR-ID , POLY ID , SAPS NEAR GLUR , GLUR DWELL TIME
-G1P1xxx = [G1P1SAPM [(11+zeros(numel(G1P1SAPM(:,1)),1))]];
-G1P2xxx = [G1P2SAPM [(12+zeros(numel(G1P2SAPM(:,1)),1))]];
-G2P1xxx = [G2P1SAPM [(21+zeros(numel(G2P1SAPM(:,1)),1))]];
-G2P2xxx = [G2P2SAPM [(22+zeros(numel(G2P2SAPM(:,1)),1))]];
-
-G1G2P1 = [G1P1xxx; G2P1xxx];
-G1G2P2 = [G1P2xxx; G2P2xxx];
-
-G1G2P1xMX = sortrows(G1G2P1,-4);
-G1G2P2xMX = sortrows(G1G2P2,-4);
-[~, uniG1G2P1, ~] = unique(G1G2P1xMX(:,2),'rows','first');
-[~, uniG1G2P2, ~] = unique(G1G2P2xMX(:,2),'rows','first');
-G1G2P1xxMX = G1G2P1(uniG1G2P1,:);
-G1G2P2xxMX = G1G2P2(uniG1G2P2,:);
-
-G1P1xxID = G1G2P1xxMX((G1G2P1xxMX(:,5)<15),1);
-G2P1xxID = G1G2P1xxMX((G1G2P1xxMX(:,5)>15),1);
-G1P2xxID = G1G2P2xxMX((G1G2P2xxMX(:,5)<15),1);
-G2P2xxID = G1G2P2xxMX((G1G2P2xxMX(:,5)>15),1);
-
-
-G1P1SLOTTED = G1P1xxID;
-G1P2SLOTTED = G1P2xxID;
-G2P1SLOTTED = G2P1xxID;
-G2P2SLOTTED = G2P2xxID;
-
-
-% G1P1SLOTTED = G1P1SAPM(:,1);
-% G1P2SLOTTED = G1P2SAPM(:,1);
-% G2P1SLOTTED = G2P1SAPM(:,1);
-% G2P2SLOTTED = G2P2SAPM(:,1);
-
-
-%===================================%
-GluR1xyds(:,G1P1SLOTTED) = GluR1xyds(:,G1P1SLOTTED)*(.001);
-GluR1xyds(:,G1P2SLOTTED) = GluR1xyds(:,G1P2SLOTTED)*(.001);
-GluR2xyds(:,G2P1SLOTTED) = GluR2xyds(:,G2P1SLOTTED)*(.001);
-GluR2xyds(:,G2P2SLOTTED) = GluR2xyds(:,G2P2SLOTTED)*(.001);
-% HOW MANY SLOTS ARE NOW FILLED?
-G1PSD1FSLOTS = numel(G1P1SLOTTED);
-G1PSD2FSLOTS = numel(G1P2SLOTTED);
+% SAVE SLOT INFO
+%-------------
+% GluR1
+G1Slot = GluR1xyl(:,G1v);
+G1inS1 = G1Slot(2,:) > (DF.Y/2);
+G1inS2 = ~G1inS1;
+G1PSD1FSLOTS = sum(G1inS1);
+G1PSD2FSLOTS = sum(G1inS2);
 G1FSLOTS = [G1PSD1FSLOTS G1PSD2FSLOTS 0 0];
-G2PSD1FSLOTS = numel(G2P1SLOTTED);
-G2PSD2FSLOTS = numel(G2P2SLOTTED);
+
+% GluR2
+G2Slot = GluR2xyl(:,G2v);
+G2inS1 = G2Slot(2,:) > (DF.Y/2);
+G2inS2 = ~G2inS1;
+G2PSD1FSLOTS = sum(G2inS1);
+G2PSD2FSLOTS = sum(G2inS2);
 G2FSLOTS = [G2PSD1FSLOTS G2PSD2FSLOTS 0 0];
 
 
 
 
-%===================================%
-% DWELL TIME COUNTER
-%===================================%
-% IF INPOLYGON GETS TOO SLOW, THIS MAY REPLACE THE MOVEGLUR BELOW
-% G1P1Tdwell = zeros(1,numel(GluR1xyl(1,:)))';
-% G1P1INaPOLY = G1P1SAPMX(:,2)>0;
-% G1P1Tdwell(G1P1INaPOLY) = G1P1Tdwell(G1P1INaPOLY)+t;
-% G1P1Tdwell(1,~G1P1INaPOLY) = 0;
+%############################################################
 
 
-%-------------------
-% MOVEGLUR1
-%-------------------
-%===================%
+%----------------------------------------
+% Step Size adjustments (location based)
+%----------------------------------------
+
+
+
+% GluR1 
+%-------------
 % SPINE %
 %-------%
-% G1INSPYN1 = inboxfun(XYLBpr1,XYRTpr1,GluR1xyl);
-% G1INSPYN2 = inboxfun(XYLBpr2,XYRTpr2,GluR1xyl);
+G1INSPYN1 = inboxfun(DF.S1LB,DF.S1RT,GluR1xyl);
+G1INSPYN2 = inboxfun(DF.S2LB,DF.S2RT,GluR1xyl);
 
-G1INSPYN1 = GluR1INSPYN1;
-G1INSPYN2 = GluR1INSPYN2;
+GluR1xyds(:,G1INSPYN1) = GluR1xyds(:,G1INSPYN1)*(LsGR1psa);
+GluR1xyds(:,G1INSPYN2) = GluR1xyds(:,G1INSPYN2)*(LsGR1psa);
 
 GluR1_TdwellSPYN(1,G1INSPYN1) = GluR1_TdwellSPYN(1,G1INSPYN1)+t;
 GluR1_TdwellSPYN(1,~G1INSPYN1) = 0;
 GluR1_TdwellSPYN(2,G1INSPYN2) = GluR1_TdwellSPYN(2,G1INSPYN2)+t;
 GluR1_TdwellSPYN(2,~G1INSPYN2) = 0;
 
-%===================%
+%-------------
 % PSD   %
 %-------%
-G1INPSD1 = inboxfun(XYLBp1,XYRTp1,GluR1xyl);
-G1INPSD2 = inboxfun(XYLBp2,XYRTp2,GluR1xyl);
- 
-GluR1xyds(:,G1INPSD1) = GluR1xyds(:,G1INPSD1)*(LsGR1psd);
-GluR1xyds(:,G1INPSD2) = GluR1xyds(:,G1INPSD2)*(LsGR1psd);
- 
+G1INPSD1 = inboxfun(DF.PS1LB,DF.PS1RT,GluR1xyl);
+G1INPSD2 = inboxfun(DF.PS2LB,DF.PS2RT,GluR1xyl);
+  
 GluR1_TdwellPSD(1,G1INPSD1) = GluR1_TdwellPSD(1,G1INPSD1)+t;
 GluR1_TdwellPSD(1,~G1INPSD1) = 0;
 GluR1_TdwellPSD(2,G1INPSD2) = GluR1_TdwellPSD(2,G1INPSD2)+t;
 GluR1_TdwellPSD(2,~G1INPSD2) = 0;
 
-%===================%
+%-------------
 % PERI  %
 %-------%
-G1INPERI1 = G1INSPYN1 > G1INPSD1;
-G1INPERI2 = G1INSPYN2 > G1INPSD2;
-
-GluR1xyds(:,G1INPERI1) = GluR1xyds(:,G1INPERI1)*(LsGR1psa);
-GluR1xyds(:,G1INPERI2) = GluR1xyds(:,G1INPERI2)*(LsGR1psa);
+G1INPERI1 = G1INSPYN1 - G1INPSD1; G1INPERI1 = G1INPERI1>0;
+G1INPERI2 = G1INSPYN2 - G1INPSD2; G1INPERI2 = G1INPERI2>0;
 
 GluR1_TdwellPERI(1,G1INPERI1) = GluR1_TdwellPERI(1,G1INPERI1)+t;
 GluR1_TdwellPERI(1,~G1INPERI1) = 0;
 GluR1_TdwellPERI(2,G1INPERI2) = GluR1_TdwellPERI(2,G1INPERI2)+t;
 GluR1_TdwellPERI(2,~G1INPERI2) = 0;
-%===================%
+%-------------
 
 
 
-%-------------------
-% MOVEGLUR2
-%-------------------
-%===================%
+
+
+% GluR2
+%-------------
 % SPINE %
 %-------%
-% G2INSPYN1 = inboxfun(XYLBpr1,XYRTpr1,GluR2xyl);
-% G2INSPYN2 = inboxfun(XYLBpr2,XYRTpr2,GluR2xyl);
+G2INSPYN1 = inboxfun(DF.S1LB,DF.S1RT,GluR2xyl);
+G2INSPYN2 = inboxfun(DF.S2LB,DF.S2RT,GluR2xyl);
 
-G2INSPYN1 = GluR2INSPYN1;
-G2INSPYN2 = GluR2INSPYN2;
+GluR2xyds(:,G2INSPYN1) = GluR2xyds(:,G2INSPYN1)*(LsGR2psa);
+GluR2xyds(:,G2INSPYN2) = GluR2xyds(:,G2INSPYN2)*(LsGR2psa);
 
 GluR2_TdwellSPYN(1,G2INSPYN1) = GluR2_TdwellSPYN(1,G2INSPYN1)+t;
 GluR2_TdwellSPYN(1,~G2INSPYN1) = 0;
 GluR2_TdwellSPYN(2,G2INSPYN2) = GluR2_TdwellSPYN(2,G2INSPYN2)+t;
 GluR2_TdwellSPYN(2,~G2INSPYN2) = 0;
 
-%===================%
+%-------------
 % PSD   %
 %-------%
-G2INPSD1 = inboxfun(XYLBp1,XYRTp1,GluR2xyl);
-G2INPSD2 = inboxfun(XYLBp2,XYRTp2,GluR2xyl);
-
-GluR2xyds(:,G2INPSD1) = GluR2xyds(:,G2INPSD1)*(LsGR2psd);
-GluR2xyds(:,G2INPSD2) = GluR2xyds(:,G2INPSD2)*(LsGR2psd);
+G2INPSD1 = inboxfun(DF.PS1LB,DF.PS1RT,GluR2xyl);
+G2INPSD2 = inboxfun(DF.PS2LB,DF.PS2RT,GluR2xyl);
 
 GluR2_TdwellPSD(1,G2INPSD1) = GluR2_TdwellPSD(1,G2INPSD1)+t;
 GluR2_TdwellPSD(1,~G2INPSD1) = 0;
 GluR2_TdwellPSD(2,G2INPSD2) = GluR2_TdwellPSD(2,G2INPSD2)+t;
 GluR2_TdwellPSD(2,~G2INPSD2) = 0;
 
-%===================%
+%-------------
 % PERI  %
 %-------%
-G2INPERI1 = G2INSPYN1 > G2INPSD1;
-G2INPERI2 = G2INSPYN2 > G2INPSD2;
-
-GluR2xyds(:,G2INPERI1) = GluR2xyds(:,G2INPERI1)*(LsGR2psa);
-GluR2xyds(:,G2INPERI2) = GluR2xyds(:,G2INPERI2)*(LsGR2psa);
+G2INPERI1 = G2INSPYN1 - G2INPSD1; G2INPERI1 = G2INPERI1>0;
+G2INPERI2 = G2INSPYN2 - G2INPSD2; G2INPERI2 = G2INPERI2>0;
 
 GluR2_TdwellPERI(1,G2INPERI1) = GluR2_TdwellPERI(1,G2INPERI1)+t;
 GluR2_TdwellPERI(1,~G2INPERI1) = 0;
 GluR2_TdwellPERI(2,G2INPERI2) = GluR2_TdwellPERI(2,G2INPERI2)+t;
 GluR2_TdwellPERI(2,~G2INPERI2) = 0;
-%===================%
-%===================================%
-% DWELL TIME COUNTER
-%===================================%
+%-------------
 
 
 
-%{
-%-------------------
-% MOVEGLUR1
-%-------------------
-G1INSPYN1 = inpolygon(GluR1xyl(1,:)',GluR1xyl(2,:)',SPYN1xv,SPYN1yv);
-G1INSPYN2 = inpolygon(GluR1xyl(1,:)',GluR1xyl(2,:)',SPYN2xv,SPYN2yv);
 
-GluR1_TdwellSPYN(1,G1INSPYN1) = GluR1_TdwellSPYN(1,G1INSPYN1)+t;
-GluR1_TdwellSPYN(1,~G1INSPYN1) = 0;
-GluR1_TdwellSPYN(2,G1INSPYN2) = GluR1_TdwellSPYN(2,G1INSPYN2)+t;
-GluR1_TdwellSPYN(2,~G1INSPYN2) = 0;
-
-%===================%
-% PSD   %
-%-------%
-G1INPSD1 = inpolygon(GluR1xyl(1,:)',GluR1xyl(2,:)',PSD1xv,PSD1yv);
-G1INPSD2 = inpolygon(GluR1xyl(1,:)',GluR1xyl(2,:)',PSD2xv,PSD2yv);
- 
-GluR1xyds(:,G1INPSD1) = GluR1xyds(:,G1INPSD1)*(LsGR1psd);
-GluR1xyds(:,G1INPSD2) = GluR1xyds(:,G1INPSD2)*(LsGR1psd);
- 
-GluR1_TdwellPSD(1,G1INPSD1) = GluR1_TdwellPSD(1,G1INPSD1)+t;
-GluR1_TdwellPSD(1,~G1INPSD1) = 0;
-GluR1_TdwellPSD(2,G1INPSD2) = GluR1_TdwellPSD(2,G1INPSD2)+t;
-GluR1_TdwellPSD(2,~G1INPSD2) = 0;
-
-%===================%
-% PERI  %
-%-------%
-G1INPERI1 = inpolygon(GluR1xyl(1,:)',GluR1xyl(2,:)',PERI1xv,PERI1yv);
-G1INPERI2 = inpolygon(GluR1xyl(1,:)',GluR1xyl(2,:)',PERI2xv,PERI2yv);
- 
-GluR1xyds(:,G1INPERI1) = GluR1xyds(:,G1INPERI1)*(LsGR1psa);
-GluR1xyds(:,G1INPERI2) = GluR1xyds(:,G1INPERI2)*(LsGR1psa);
-
-GluR1_TdwellPERI(1,G1INPERI1) = GluR1_TdwellPERI(1,G1INPERI1)+t;
-GluR1_TdwellPERI(1,~G1INPERI1) = 0;
-GluR1_TdwellPERI(2,G1INPERI2) = GluR1_TdwellPERI(2,G1INPERI2)+t;
-GluR1_TdwellPERI(2,~G1INPERI2) = 0;
-%===================%
+% IN EXTRASYNAPSE THE SIZE OF SPINES
+G1INSPA = inboxfun([101 250],[201 350],GluR1xyl);
+G2INSPA = inboxfun([101 250],[201 350],GluR2xyl);
 
 
 
-%-------------------
-% MOVEGLUR2
-%-------------------
-%===================%
-% SPINE %
-%-------%
-G2INSPYN1 = inpolygon(GluR2xyl(1,:)',GluR2xyl(2,:)',SPYN1xv,SPYN1yv);
-G2INSPYN2 = inpolygon(GluR2xyl(1,:)',GluR2xyl(2,:)',SPYN2xv,SPYN2yv);
 
-GluR2_TdwellSPYN(1,G2INSPYN1) = GluR2_TdwellSPYN(1,G2INSPYN1)+t;
-GluR2_TdwellSPYN(1,~G2INSPYN1) = 0;
-GluR2_TdwellSPYN(2,G2INSPYN2) = GluR2_TdwellSPYN(2,G2INSPYN2)+t;
-GluR2_TdwellSPYN(2,~G2INSPYN2) = 0;
+%if stepN == 2000; keyboard; end
 
-%===================%
-% PSD   %
-%-------%
-G2INPSD1 = inpolygon(GluR2xyl(1,:)',GluR2xyl(2,:)',PSD1xv,PSD1yv);
-G2INPSD2 = inpolygon(GluR2xyl(1,:)',GluR2xyl(2,:)',PSD2xv,PSD2yv);
 
-GluR2xyds(:,G2INPSD1) = GluR2xyds(:,G2INPSD1)*(LsGR2psd);
-GluR2xyds(:,G2INPSD2) = GluR2xyds(:,G2INPSD2)*(LsGR2psd);
-
-GluR2_TdwellPSD(1,G2INPSD1) = GluR2_TdwellPSD(1,G2INPSD1)+t;
-GluR2_TdwellPSD(1,~G2INPSD1) = 0;
-GluR2_TdwellPSD(2,G2INPSD2) = GluR2_TdwellPSD(2,G2INPSD2)+t;
-GluR2_TdwellPSD(2,~G2INPSD2) = 0;
-
-%===================%
-% PERI  %
-%-------%
-G2INPERI1 = inpolygon(GluR2xyl(1,:)',GluR2xyl(2,:)',PERI1xv,PERI1yv);
-G2INPERI2 = inpolygon(GluR2xyl(1,:)',GluR2xyl(2,:)',PERI2xv,PERI2yv);
-
-GluR2xyds(:,G2INPERI1) = GluR2xyds(:,G2INPERI1)*(LsGR2psa);
-GluR2xyds(:,G2INPERI2) = GluR2xyds(:,G2INPERI2)*(LsGR2psa);
-
-GluR2_TdwellPERI(1,G2INPERI1) = GluR2_TdwellPERI(1,G2INPERI1)+t;
-GluR2_TdwellPERI(1,~G2INPERI1) = 0;
-GluR2_TdwellPERI(2,G2INPERI2) = GluR2_TdwellPERI(2,G2INPERI2)+t;
-GluR2_TdwellPERI(2,~G2INPERI2) = 0;
-%===================%
-%===================================%
-% DWELL TIME COUNTER
-%===================================%
-%}
-
-% if stepN == 300; keyboard; end
 end
+%----------------------------------%
 
 
 
-%===================================%
-% S_MainClusterFun
-%===================================%
-% For each PSD area independently update the current
-% S1 & S2  SAP clusters and return this S-matrix 
-% (these ioMx represent the current surface SAPs) 
-% The raw matrices will be plotted using a function further below
 
 %----------------------------------%
 % S1_MainClusterFun
 %----------------------------------%
-function [S1 G1SP1] = S1_MainClusterFun(S1Ph1, S1Ph2, S1Ph3, S1Ph4, S1Ph5,...
-	S1, S1sz, sap, stepN, G1P1SAPM, G1SP1,GT,GTab)
-
-%=========================================================%
-% INITIALIZE CONSTANTS
-%=========================================================%
-% sap1 = sap(1); % SAPdotsPSD1
-% sap2 = sap(2); % SAPdotsPSD2
-% sap3 = sap(3); % SAPbetaPSD1
-% sap4 = sap(4); % SAPtauPSD1
-% sap5 = sap(5); % SAPL1PSD1
-% sap6 = sap(6); % SAPbetaPSD2
-% sap7 = sap(7); % SAPtauPSD2
-% sap8 = sap(8); % SAPL1PSD2
-% sap9 = sap(9); % SAPmuPSD1
-% sap10 = sap(10); % SAPmuPSD2
-% sap11 = sap(11); % SAPdTPSD1
-% sap12 = sap(12); % SAPdTPSD2
-% sap13 = sap(13); % SAPrhoPSD1
-% sap14 = sap(14); % SAPrhoPSD2
-% sap15 = sap(15); % SAPrPSD1
-% sap16 = sap(16); % SAPrPSD2
-% sap17 = sap(17); % doDynamicLeP1
-% sap18 = sap(18); % doDynamicLeP2
-% sap19 = sap(19); % doLTPS1
-% sap20 = sap(20); % doLTPS2
-
-%-------------------------------%
-GhkMask=GTab{1};
-GTon = GT(1);
-GToff = GT(2);
-LTPv = GT(3);
-%-------------------------------%
-
-%=========================================================%
-% COMPUTE DYNAMIC LATTICE REPULSION FORCE FROM SAP DENSITY
-%=========================================================%
-S1Le = sap(5);
-doDynamicLe = sap(17);
-if doDynamicLe
-L1x = linspace(1.0,3.2);
-Tsz = numel(S1);			% Total matrix space
-Ssz = numel(find(S1>0));	% Filled matrix space
-Psz = round(Ssz/Tsz*100)+1;	% Percent filled space
-S1Le = L1x(Psz);
-end
+function [S1 SMx] = S1_MainClusterFun(S1,SMx,sap,hkMask,ACTINp1,stepN)
 
 %=========================================================%
 %	TEST MASK AGAINST CLUSTER - GET CONVOLUTION MX
 %=========================================================%
-% Pen = (S) * mu * dT
-% Pex = 1/(1+exp(-B*hk))
-% Pkex = (1-S) ( rho * r * dT * Pex)
-%{
-% B:	slope of Pex function						[hi = shrink]
-% mu:	internalization rate						[hi = shrink]
-% Le:	lattice energy repulsion constant			[hi = shrink]
-% rho:	probability an endo pool sap is available	[hi = grow]
-% r:	transition rate from endo to empty site		[hi = grow]
-% hk:	mask energy field (matrix convelution)
-% dT:	time-step interval
-% S:	Surface SAP matrix
-
-% S=padarray(ones(7),[4 4], 0);
-% hkMask=[0 1 0; 1 0 1; 0 1 0];
-% B = 80;			% hi = shrink
-% Le = 1.21;		% hi = shrink
-% rho = 0.9;		% hi = grow
-% r = 10;			% hi = grow
-% mu = .15;		% hi = shrink
-
-% Pmx = rand(size(S));
-% Soc = (S>0);
-% Snoc = (S<1);
-% 
-% hk = convn(Soc,hkMask,'same');
-% Lhk = hk-Le;
-% 
-% Pen = (Soc) .* mu * dT;
-% Pex = 1 ./ (1+exp((-1*B)*Lhk));
-% Pkex = (1-Soc) .* ( rho * r * dT * Pex );
-% 
-% Sen = (Pen>Pmx);
-% Sex = (Pkex>Pmx);
-% 
-% S = (Soc-Sen) + Sex;
-%}
-%---------------------------------------------%
-%{
-hkMask=[0 1 0; 1 0 1; 0 1 0];
-S = S1;
-dT = sap(11);
-
-Le = S1Le;		% hi = shrink
-B = sap(3);		% hi = shrink
-rho = sap(13);	% hi = grow
-r = sap(15);	% hi = grow
-mu = sap(9);	% hi = shrink
-%-------------------------------%
-Pmx = rand(size(S));
-Soc = (S>0);
-Snoc = (S<1);
-Sno = ~Soc;
-%---
-hk = convn(Soc,hkMask,'same');
-Lhk = hk-Le;
-%---
-Pex = 1 ./ (1+exp((-1*B)*Lhk));
-Pkex = (1-Soc) .* ( rho * r * dT * Pex );
-Pkex0 = Pkex;
-Pen = (Soc) .* mu * dT;
-%---
-S0 = S;
-Pex0 = Pex;
-Pkex0 = Pkex;
-Pen0 = Pen;
-
-%=========================================================%
-% hk:	cluster force (2D field mask:Mx convelution)
-% Le:	repulsion constant (lattice repulsion force)	[hi = shrink]
-% Lhk:	(cluster force) - (repulsion constant)
-% B:	slope of Pex(Lhk) function						[hi = shrink]
-% rho:	probability an endo pool sap is available		[hi = grow]
-% r:	transition rate from endo to empty site			[hi = grow]
-% dT:	time-step interval
-% mu:	internalization rate							[hi = shrink]
-
-% S:	Surface SAP matrix (Soc:occupied | Snoc:not occupied)
-%=========================================================%
-%-------------------------------%
-G1oc = (S>2) .* 0.0;
-SG1oc = Pkex;
-%-------------------------------%
-
-%=========================================================%
-doLTPS1 = sap(19);
-if doLTPS1
-%=========================================================%
-
-%=========================================================%
-% GluA RT SAP recruitment tails coefficent (basal and LTP)
-%=========================================================%
-G1RT = G1RTBASE;
-if stepN >= LTP1onG1 && stepN <= LTP1offG1; G1RT=G1RTLTP; end
-if stepN >= LTP2onG1 && stepN <= LTP2offG1; G1RT=G1RTLTP; end
-
-%=========================================================%
-%		Get Matrix Locations of SAPs near AMPARs
-%=========================================================%
-G1P1poly0 = G1P1SAPM(:,2);
-[~, ~, G1P1poly1] = find(G1P1poly0);
-G1P1poly2 = G1P1poly1;
-%=============================================%
-for nx = 1:(numel(G1P1poly1))
-%=============================================%
-    if G1P1poly1(nx)<=8 && G1P1poly1(nx)>0
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*0)-1;
-    end
-    if G1P1poly1(nx)<=16 && G1P1poly1(nx)>8
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*1)-1;
-    end
-    if G1P1poly1(nx)<=24 && G1P1poly1(nx)>16
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*2)-1;
-    end
-    if G1P1poly1(nx)<=32 && G1P1poly1(nx)>24
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*3)-1;
-    end
-    if G1P1poly1(nx)<=40 && G1P1poly1(nx)>32
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*4)-1;
-    end
-    if G1P1poly1(nx)<=48 && G1P1poly1(nx)>40
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*5)-1;
-    end
-    if G1P1poly1(nx)<=56 && G1P1poly1(nx)>48
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*6)-1;
-    end
-    if G1P1poly1(nx)<=64 && G1P1poly1(nx)>56
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*7)-1;
-	end
-%=============================================%
-end % for nx
-%=============================================%
-
-
-%=============================================%
-if G1RTBASE > 0
-%=============================================%
-
-%-------------------------------%
-G1oc = (S>2) .* 0.0;
-SG1oc = Pkex;
-G1P1n = numel(G1P1poly2);
-%-------------------------------%
-
-%=============================================%
-for polyid = 1:G1P1n
-%=============================================%
-G1P1IDo = G1P1poly2(polyid);
-
-G1P1IDb = G1P1IDo+1;
-G1P1IDr = G1P1IDo+16;
-G1P1IDd = G1P1IDo+17;
-
-if G1P1IDo>=16
-	G1P1IDb = G1P1IDo+1;
-	G1P1IDr = G1P1IDo+16+(round(rand)*-32); 
-	G1P1IDd = G1P1IDr+1;
-	% 50:50 WHETHER EAST OR WEST SAP
-	% ALWAYS EAST SAP IF COMMENTED
-	%G1P1IDd = G1P1IDo+17+(round(rand)*-34);
-end
-%---
-G1oc(G1P1IDo)=1;
-G1oc(G1P1IDb)=1;
-G1oc(G1P1IDr)=1;
-G1oc(G1P1IDd)=1;
-%---
-SG1oc(G1P1IDo)=1;
-SG1oc(G1P1IDb)=1;
-SG1oc(G1P1IDr)=1;
-SG1oc(G1P1IDd)=1;
-%=============================================%
-end % for polyid = 1:G1P1n
-%=============================================%
-Gex = Sno .* SG1oc .* G1RT + Pkex;
-Gp = 1 ./ (1+exp((-1*1)*hk)) + .001;
-Gpex = Gex .* Gp;
-%---
-Pkex = Gpex;
-%=============================================%
-end % if G1RTBASE > 0
-%=============================================%
-end % if doLTPS1
-%=========================================================%
-
-
-%=========================================================%
-%		FINAL CLUSTER PARAMETERS
-%---------------------------------------------------------%
-Sen = (Pen>Pmx);
-Sex = (Pkex>Pmx);
-S = (Soc-Sen) + Sex;
-S1=S;
-
-% S=padarray(ones(7),[4 4], 0);
-%=========================================================%
-%}
-
 S=S1;
 dT = sap(11);
-hkMask=[0 1 0; 1 0 1; 0 1 0];
-
+% hkMask=[0 1 0; 1 0 1; 0 1 0];
 
 Lon = sap(21);	% On Energy (lower = more on events)
 Bon = sap(22);	% On Neighbor-Independant Rate (new growth) (lower = more on)
@@ -4429,317 +3442,45 @@ Boff = sap(25);	% Off Neighbor-Inependant Rate (uniform off)  (lower = more off)
 Roff = sap(26);	% Off Neighbor-Dependant Rate (edge off) (higher = more off)
 
 
+%------------
 Pmx = rand(size(S));
 Soc = (S>0);
 Sno = ~Soc;
-hk = convn(Soc,hkMask,'same');
-
-Lhon = (hk-Lon) .* (-Bon);
-Pon = 1 ./ (1+exp(Lhon));
+%---
+hk = convn(ACTINp1,hkMask,'same');
+%------------
+Pon = 1 ./ (1+exp((hk-Lon).*(-Bon)));
 Pkon = Sno .* ( Ron * dT * Pon );
+%---
 Son = (Pkon>Pmx);
-
-Lhoff = ((-hk)+Loff) .* (-Boff);
-Poff = 1 ./ (1+exp(Lhoff));
+%------------
+Poff = 1 ./ (1+exp(((-hk)+Loff).*(-Boff)));
 Pkoff = Soc .* ( Roff * dT * Poff );
+%---
 Soff = (Pkoff>Pmx);
+%------------
 
-
-%-------------------------------%
-G1oc = zeros(S1sz);
-%-------------------------------%
-
-%=========================================================%
-doLTPS1 = sap(19);
-if doLTPS1
-%=========================================================%
-
-%=========================================================%
-%		Get Matrix Locations of SAPs near AMPARs
-%=========================================================%
-G1P1poly0 = G1P1SAPM(:,2);
-[~, ~, G1P1poly1] = find(G1P1poly0);
-G1P1poly2 = G1P1poly1;
-%=============================================%
-for nx = 1:(numel(G1P1poly1))
-%---------------------------------------------%
-    if G1P1poly1(nx)<=8 && G1P1poly1(nx)>0
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*0)-1;
-    end
-    if G1P1poly1(nx)<=16 && G1P1poly1(nx)>8
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*1)-1;
-    end
-    if G1P1poly1(nx)<=24 && G1P1poly1(nx)>16
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*2)-1;
-    end
-    if G1P1poly1(nx)<=32 && G1P1poly1(nx)>24
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*3)-1;
-    end
-    if G1P1poly1(nx)<=40 && G1P1poly1(nx)>32
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*4)-1;
-    end
-    if G1P1poly1(nx)<=48 && G1P1poly1(nx)>40
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*5)-1;
-    end
-    if G1P1poly1(nx)<=56 && G1P1poly1(nx)>48
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*6)-1;
-    end
-    if G1P1poly1(nx)<=64 && G1P1poly1(nx)>56
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*7)-1;
-	end
-	if G1P1poly1(nx)<=72 && G1P1poly1(nx)>64
-        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*8)-1;
-	end
-%---------------------------------------------%
-end % for nx
-%=============================================%
-
-
-%=============================================%
-if GTon > 0
-%---------------------------------------------%
-
-G1oc(G1P1poly2)=1;
-
-%-------------------------------%
-GRhk = convn(G1oc,GhkMask,'same');
-GRk=(GRhk.*GTon);
-GSk=(GRhk.*GToff);
-%-------------------------------%
-Gon = Pkon+(GRk.*(Pkon + LTPv));
-Goff = Pkoff+(GSk.*Pkoff);
-%-------------------------------%
-Son = (Gon>Pmx);
-Soff = (Goff>Pmx);
-%-------------------------------%
-
-
-
-%-------------------------------%
-% if stepN == 2000; keyboard; end;
-%{
-%=========================================================%
-% GluA RT SAP recruitment tails coefficent (basal and LTP)
-%=========================================================%
-% G1RT = G1RTBASE;
-% if stepN >= LTP1onG1 && stepN <= LTP1offG1; G1RT=G1RTLTP; end
-% if stepN >= LTP2onG1 && stepN <= LTP2offG1; G1RT=G1RTLTP; end
-%=========================================================%
-% hk:	cluster force (2D field mask:Mx convelution)
-% Le:	repulsion constant (lattice repulsion force)	[hi = shrink]
-% Lhk:	(cluster force) - (repulsion constant)
-% B:	slope of Pex(Lhk) function						[hi = shrink]
-% rho:	probability an endo pool sap is available		[hi = grow]
-% r:	transition rate from endo to empty site			[hi = grow]
-% dT:	time-step interval
-% mu:	internalization rate							[hi = shrink]
-
-% S:	Surface SAP matrix (Soc:occupied | Snoc:not occupied)
-%=========================================================%
-
-
-%=============================================%
-for polyid = 1:G1P1n
-%=============================================%
-G1P1IDo = G1P1poly2(polyid);
-
-% G1P1IDb = G1P1IDo+1;
-% G1P1IDr = G1P1IDo+16;
-% G1P1IDd = G1P1IDo+17;
-% 
-% if G1P1IDo>=16
-% 	G1P1IDb = G1P1IDo+1;
-% 	G1P1IDr = G1P1IDo+16+(round(rand)*-32); 
-% 	G1P1IDd = G1P1IDr+1;
-% 	% 50:50 WHETHER EAST OR WEST SAP
-% 	% ALWAYS EAST SAP IF COMMENTED
-% 	%G1P1IDd = G1P1IDo+17+(round(rand)*-34);
-% end
-%---
-G1oc(G1P1IDo)=1;
-% G1oc(G1P1IDb)=1;
-% G1oc(G1P1IDr)=1;
-% G1oc(G1P1IDd)=1;
-%---
-% SG1oc(G1P1IDo)=1;
-% SG1oc(G1P1IDb)=1;
-% SG1oc(G1P1IDr)=1;
-% SG1oc(G1P1IDd)=1;
-%=============================================%
-end % for polyid = 1:G1P1n
-%=============================================%
-% Gex = Sno .* SG1oc .* G1RT + Pkon;
-% Gp = 1 ./ (1+exp((-1*1)*hk)) + .001;
-% Gpex = Gex .* Gp;
-% %---
-% 
-% Son = (Gpex>Pmx);
-
-
-%}
-%-------------------------------%
-end % if G1RTBASE > 0
-%-------------------------------%
-end % if doLTPS1
-%=========================================================%
-
-
-%---------------------------------------------%
-%			FINAL CLUSTER PARAMETERS
-%---------------------------------------------%
 S = (Soc-Soff) + Son;
 S1=S;
-%---------------------------------------------%
 
+% S1CP = {hk,Pkon,Sno};
 
-
-%=============================================%
-%				PLOT CLUSTER
-%---------------------------------------------%
-if mod(stepN,100) == 0
-set(S1Ph1,'CData',S1);
-drawnow
 end
-%---------------------------------------------%
-%			ADDITIONAL CLUSTER PLOTS
-%---------------------------------------------%
-doS1PLOTS=1;
-if doS1PLOTS
-if mod(stepN,200) == 0
-%---------------------------------------------%
-figure(1);
-%---
-
-set(S1Ph2,'CData',hk);
-drawnow
-
-set(S1Ph3,'CData',Pkon);
-drawnow
-
-set(S1Ph4,'CData',Sno);
-drawnow
-
-set(S1Ph5,'CData',GRhk);
-drawnow
-
-%{
-%=========================================================%
-% if stepN == 2000; keyboard; end
-% cbr = colorbar('location','South');
-% set(cbr(1), 'XColor', 'r');
-% text(1,1.5,'S0','FontSize',22,'Color',[.7 1 .7]);
-% caxis(caxis);
-%=========================================================%
-
-%---
-% LEFT POS-2 (hk)
-%---
-% subplot('Position',[.02 .54 .3 .45]),...
-subplot(5,5,6),
-imagesc(hk)
-title('hk');
-
-%---
-% LEFT POS-3 (Pkon)
-%---
-% subplot('Position',[.35 .54 .3 .45]),...
-subplot(5,5,11),
-imagesc(Pkon);
-title('Pkon');
-
-%---
-% LEFT POS-4 (Sno)
-%---
-% subplot('Position',[.68 .54 .3 .45]),...
-subplot(5,5,16),
-imagesc(Sno);
-title('Sno');
+%----------------------------------%
 
 
-%---
-% LEFT POS-5 (G1oc)
-%---
-% subplot('Position',[.02 .05 .3 .45]),...
-subplot(5,5,21),
-imagesc(G1oc);
-title('TETHERED G1');
-
-%---
-% LEFT POS-6 (Sex)
-%---
-% subplot('Position',[.35 .05 .3 .45]),...
-% subplot(5,5,16),
-% imagesc(Sex);
-% title('Sex');
-
-%---
-% LEFT POS-4 (Sen)
-%---
-% subplot('Position',[.68 .54 .3 .45]),...
-% subplot(5,5,16),
-% imagesc(Sen);
-% title('Sen');
-
-%}
-%---------------------------------------------%
-end % if mod(stepN,100) == 0
-end % if doS1PLOTS
-%=========================================================%
-end
 
 %----------------------------------%
 % S2_MainClusterFun
 %----------------------------------%
-function [S2 G1SP2] = S2_MainClusterFun(S2Ph1, S2Ph2, S2Ph3, S2Ph4, S2Ph5,...
-    S2, S2sz, sap, stepN, G1P2SAPM, G1SP2,GT,GTab)
+function [S2 SMx] = S2_MainClusterFun(S2,SMx,sap,hkMask,ACTINp2,stepN)
  
-%=========================================================%
-% INITIALIZE CONSTANTS
-%=========================================================%
-% sap1 = sap(1); % SAPdotsPSD1
-% sap2 = sap(2); % SAPdotsPSD2
-% sap3 = sap(3); % SAPbetaPSD1
-% sap4 = sap(4); % SAPtauPSD1
-% sap5 = sap(5); % SAPL1PSD1
-% sap6 = sap(6); % SAPbetaPSD2
-% sap7 = sap(7); % SAPtauPSD2
-% sap8 = sap(8); % SAPL1PSD2
-% sap9 = sap(9); % SAPmuPSD1
-% sap10 = sap(10); % SAPmuPSD2
-% sap11 = sap(11); % SAPdTPSD1
-% sap12 = sap(12); % SAPdTPSD2
-% sap13 = sap(13); % SAPrhoPSD1
-% sap14 = sap(14); % SAPrhoPSD2
-% sap15 = sap(15); % SAPrPSD1
-% sap16 = sap(16); % SAPrPSD2
-% sap17 = sap(17); % doDynamicLeP2
-% sap18 = sap(18); % doDynamicLeP2
-% sap19 = sap(19); % doLTPS2
-% sap20 = sap(20); % doLTPS2
-GhkMask=GTab{2};
-GTon = GT(4);
-GToff = GT(5);
-LTPv = GT(6);
 
-%=========================================================%
-% COMPUTE DYNAMIC LATTICE REPULSION FORCE FROM SAP DENSITY
-%=========================================================%
-S2Le = sap(8);
-doDynamicLe = sap(18);
-if doDynamicLe
-L1x = linspace(1.0,3.2);
-Tsz = numel(S2);            % Total matrix space
-Ssz = numel(find(S2>0));    % Filled matrix space
-Psz = round(Ssz/Tsz*100)+1; % Percent filled space
-S2Le = L1x(Psz);
-end
- 
 %=========================================================%
 %   TEST MASK AGAINST CLUSTER - GET CONVOLUTION MX
 %=========================================================%
 S=S2;
 dT = sap(12);
-hkMask=[0 1 0; 1 0 1; 0 1 0];
 
 Lon = sap(27);	% On Energy (lower = more on events)
 Bon = sap(28);	% On Neighbor-Independant Rate (new growth) (lower = more on)
@@ -4749,454 +3490,112 @@ Loff = sap(30);	% Off Energy (higher = more off events)
 Boff = sap(31);	% Off Neighbor-Inependant Rate (uniform off)  (lower = more off)
 Roff = sap(32);	% Off Neighbor-Dependant Rate (edge off) (higher = more off)
 
-
+%------------
 Pmx = rand(size(S));
 Soc = (S>0);
 Sno = ~Soc;
-hk = convn(Soc,hkMask,'same');
-
-Lhon = (hk-Lon) .* (-Bon);
-Pon = 1 ./ (1+exp(Lhon));
+%---
+hk = convn(ACTINp2,hkMask,'same');
+%------------
+Pon = 1 ./ (1+exp((hk-Lon).*(-Bon)));
 Pkon = Sno .* ( Ron * dT * Pon );
+%---
 Son = (Pkon>Pmx);
-
-Lhoff = ((-hk)+Loff) .* (-Boff);
-Poff = 1 ./ (1+exp(Lhoff));
+%------------
+Poff = 1 ./ (1+exp(((-hk)+Loff).*(-Boff)));
 Pkoff = Soc .* ( Roff * dT * Poff );
+%---
 Soff = (Pkoff>Pmx);
+%------------
 
-% S = (Soc-Soff) + Son;
-
-%-------------------------------%
-G1oc = zeros(S2sz);
-%-------------------------------%
-
-%=========================================================%
-doLTPS2 = sap(20);
-if doLTPS2 
-%---------------------------------------------------------%
-%       Get Matrix Locations of SAPs near AMPARs
-%---------------------------------------------------------%
-G1P2poly0 = G1P2SAPM(:,2);
-[~, ~, G1P2poly1] = find(G1P2poly0);
-G1P2poly2 = G1P2poly1;
-
-%=============================================%
-for nx = 1:(numel(G1P2poly1))
-%=============================================%
-    if G1P2poly1(nx)<=8 && G1P2poly1(nx)>0
-        G1P2poly2(nx) = (G1P2poly1(nx)*2)+(S2sz*0)-1;
-    end
-    if G1P2poly1(nx)<=16 && G1P2poly1(nx)>8
-        G1P2poly2(nx) = (G1P2poly1(nx)*2)+(S2sz*1)-1;
-    end
-    if G1P2poly1(nx)<=24 && G1P2poly1(nx)>16
-        G1P2poly2(nx) = (G1P2poly1(nx)*2)+(S2sz*2)-1;
-    end
-    if G1P2poly1(nx)<=32 && G1P2poly1(nx)>24
-        G1P2poly2(nx) = (G1P2poly1(nx)*2)+(S2sz*3)-1;
-    end
-    if G1P2poly1(nx)<=40 && G1P2poly1(nx)>32
-        G1P2poly2(nx) = (G1P2poly1(nx)*2)+(S2sz*4)-1;
-    end
-    if G1P2poly1(nx)<=48 && G1P2poly1(nx)>40
-        G1P2poly2(nx) = (G1P2poly1(nx)*2)+(S2sz*5)-1;
-    end
-    if G1P2poly1(nx)<=56 && G1P2poly1(nx)>48
-        G1P2poly2(nx) = (G1P2poly1(nx)*2)+(S2sz*6)-1;
-    end
-    if G1P2poly1(nx)<=64 && G1P2poly1(nx)>56
-        G1P2poly2(nx) = (G1P2poly1(nx)*2)+(S2sz*7)-1;
-	end
-%=============================================%
-end % for nx
-%=============================================%
-
-
-
-%=============================================%
-if GTon > 0
-%---------------------------------------------%
-
-G1oc(G1P2poly2)=1;
-
-%-------------------------------%
-GRhk = convn(G1oc,GhkMask,'same');
-GRk=(GRhk.*GTon);
-GSk=(GRhk.*GToff);
-%-------------------------------%
-Gon = Pkon+(GRk.*(Pkon + LTPv));
-Goff = Pkoff+(GSk.*Pkoff);
-%-------------------------------%
-Son = (Gon>Pmx);
-Soff = (Goff>Pmx);
-
-%-------------------------------%
-end % if G1RTBASE > 0
-%-------------------------------%
-end % if doLTPS1
-%=========================================================%
-
-
-%=========================================================%
-%		FINAL CLUSTER PARAMETERS
-%---------------------------------------------------------%
 S = (Soc-Soff) + Son;
 S2=S;
-%=========================================================%
 
+% S2CP = {hk,Pkon,Sno};
 
-
-%=========================================================%
-%					PLOT CLUSTER
-%---------------------------------------------------------%
-if mod(stepN,100) == 0
-set(S2Ph1,'CData',S2);
-drawnow
 end
-
-%=========================================================%
-%			ADDITIONAL CLUSTER PLOTS
-%---------------------------------------------------------%
-doS1PLOTS=1;
-if doS1PLOTS
-if mod(stepN,200) == 0
-figure(1);
-%---
-
-set(S2Ph2,'CData',hk);
-drawnow
-
-set(S2Ph3,'CData',Pkon);
-drawnow
-
-set(S2Ph4,'CData',Sno);
-drawnow
-
-set(S2Ph5,'CData',G1oc);
-drawnow
-
-end % if mod(stepN,100) == 0
-end % if doS1PLOTS
-%=========================================================%
-%%
+%----------------------------------%
 
 
 
 
- 
-%---------------------------% 
-% if nn == 400; keyboard; end
-% if G1P2n>1 && nn>1000; keyboard; end
-%---------------------------%
+%----------------------------------%
+%			MaskFun
+%----------------------------------%
+% Creates a kernel mask using a 3D Gaussian
+% that can be used for SAP clustering and
+% other matrix conv() functions
+%----------------------------------%
+function [hkMask] = MaskFun(doGMask,AMX,MSK)
+
+%-------------------------------%
+%		Mask Setup
+%-------------------------------%
+hkMask=ones(AMX{6});
+%----------------%
+if doGMask
+%----------------%
+
+%--------------------
+GNpk  = MSK{1};	% hight of peak
+GNx0 = MSK{2};	% x-axis peak locations
+GNy0 = MSK{3};	% y-axis peak locations
+GNsd = MSK{4};	% sigma (stdev of slope)
+
+GNnum = MSK{5};
+GNres = MSK{6};
+GNspr = ((GNnum-1)*GNres)/2;
+
+a = .5/GNsd^2;
+c = .5/GNsd^2;
+
+[X, Y] = meshgrid((-GNspr):(GNres):(GNspr), (-GNspr):(GNres):(GNspr));
+Z = GNpk*exp( - (a*(X-GNx0).^2 + c*(Y-GNy0).^2)) ;
+
+%--------------------
+hkMask=Z;
+% hk = convn(S,hkMask,'same');
+% hkor = hk(PSAsz+1,PSAsz+1);
+%-----
+%LBR(1) = hkor-sqrt(GNpk); LBR(2) = hkor+sqrt(GNpk);
+%--------------------
+
+
+%----------------%
+% FIGURE: 3D Gaussian Distribution
+fh5 = figure(5); %set(fh5,'OuterPosition',(scsz./[2e-3 2e-3 2 2]))
+fh5op = get(fh5,'OuterPosition');
+set(fh5,'OuterPosition',[200 200 500 300]);
+%----------------%
+figure(fh5)
+subplot('Position',[.05 .55 .30 .40]); 
+	ph5 = imagesc(hkMask); 
+	axis equal;
+	%set(gca,'XTick',[],'YTick',[])
+subplot('Position',[.04 .08 .32 .42]); 
+	ph7 = surf(X,Y,Z);
+	axis equal; shading interp; view(90,90); 
+subplot('Position',[.45 .05 .50 .90]); 
+	ph7 = surf(X,Y,Z);
+	axis vis3d; shading interp;
+	view(-45,30); 
+	xlabel('x-axis');ylabel('y-axis');zlabel('z-axis')
+%----------------%
 end
-
-%===================================%
-
-
-
-
-
-%%				   SPECIALIZED TOOLS
-%-------------##########################------------------%
-%				   SPECIALIZED TOOLS
-%-------------##########################------------------%
-
-
-%===================================%
-% HOMEOSTATIC
-%===================================%
-function [S1beta S2beta S1mu_array S2mu_array S1L1_array S2L1_array]...
-	= HOMEOSTATIC(stepN,HShi,HSlow,TTDots,doCalcium,SPYNT,PSD1CaT,...
-	S1num_epochs,S2num_epochs,S1mu,S2mu)
-
-	if mod(stepN, 5) == 0
-		PSDtot = SPYNT;
-		PSDtot2 = SPYNT;
-		if doCalcium
-		PSDtot2 = SPYNT-(fix(sqrt(PSD1CaT)));		
-		end
-		%{
-		% LINHi = linspace(60,80,(TTDots+1));
-		% LINLo = linspace(25,45,(TTDots+1));
-		% when L=1.1  tau=1.1  beta=60-80   higer=slower growth
-        % when L=2.1  tau=2.1  beta=25-45   lower=slower shrink
-		%}
-		LINHi = linspace(60,80,(HSlow+2));
-		LINLo = linspace(25,45,(TTDots-HShi+2));
-		
-		if PSDtot < HSlow
-			Ltau = 1.1;
-			beta1 = LINHi(PSDtot+1);
-			S1mew=1/Ltau;
-		elseif PSDtot > HShi
-			Ltau = 2.1;
-			beta1 = LINLo(PSDtot-HShi+1);
-			S1mew=1/Ltau;
-		else
-			Ltau = 1.2;
-			beta1 = 50;
-			S1mew=S1mu;
-		end
-		
-		
-		if PSDtot2 < HSlow
-			Ltau2 = 1.1;
-			beta2 = LINHi(PSDtot+1);
-			S2mew=1/Ltau2;
-		elseif PSDtot2 > HShi
-			Ltau2 = 2.1;
-			beta2 = LINLo(PSDtot-HShi+1);
-			S2mew=1/Ltau2;
-		else
-			Ltau2 = 1.2;
-			beta2 = 50;
-			S2mew=S2mu;
-		end
-		S1beta=beta1;   
-        S2beta=beta2;
-        S1mu_array=S1mew*ones(1,S1num_epochs);
-        S2mu_array=S2mew*ones(1,S2num_epochs);
-        S1L1_array=Ltau*ones(1,S1num_epochs);
-        S2L1_array=Ltau2*ones(1,S2num_epochs);
-	end
+%-------------------------------%
 
 
 end
-%===================================%
-
-
-%===================================%
-% IzhFun SPIKE GENERATOR
-%===================================%
-function [] = IzhFun(spikes)
-
-global v;
-izhikevich(spikes)
-
-end
-%===================================%
-
-
-%===================================%
-%		ZGEN FUNCTION
-%===================================%
-function [G1Z G2Z] = ZGEN(stepN,G1Z,G2Z,...
-    GluR2Ndots, GluR2xyl,GluR1Ndots, GluR1xyl,...
-	XYLTpr1,XYRTpr1,XYLBpr1,XYRBpr1,XYLTpr2,XYRTpr2,XYLBpr2,XYRBpr2,...
-	XYLTp1,XYRTp1,XYLBp1,XYRBp1,XYLTp2,XYRTp2,XYLBp2,XYRBp2)
+%----------------------------------%
 
 
 
-%--GLUR2--%
-for j = 1:GluR2Ndots 
-%Inside PSD1
-if (GluR2xyl(1,j)>=XYLBp1(1) && GluR2xyl(1,j)<=XYRTp1(1)) &&...
-   (GluR2xyl(2,j)>=XYLBp1(2) && GluR2xyl(2,j)<=XYRTp1(2))
- 
-    G2Z(:,j) = 4;
- 
-%Inside PSD2
-elseif  (GluR2xyl(1,j)>=XYLBp2(1) && GluR2xyl(1,j)<=XYRTp2(1)) &&...
-        (GluR2xyl(2,j)>=XYLBp2(2) && GluR2xyl(2,j)<=XYRTp2(2))
-    G2Z(:,j) = 4;
- 
-%Inside PSA1
-elseif  (GluR2xyl(1,j)>=XYLBpr1(1) && GluR2xyl(1,j)<=XYRTpr1(1)) &&...
-        (GluR2xyl(2,j)>=XYLBpr1(2) && GluR2xyl(2,j)<=XYRTpr1(2)) &&...
-        ((GluR2xyl(1,j)<=XYLBp1(1) || GluR2xyl(1,j)>=XYRTp1(1))) &&...
-        ((GluR2xyl(2,j)<=XYLBp1(2) || GluR2xyl(2,j)>=XYRTp1(2)))
-    
-    G2Z(:,j) = 2+(.1 * randi(15,1));
- 
-%Inside PSA2
-elseif  (GluR2xyl(1,j)>=XYLBpr2(1) && GluR2xyl(1,j)<=XYRTpr2(1)) &&...
-        (GluR2xyl(2,j)>=XYLBpr2(2) && GluR2xyl(2,j)<=XYRTpr2(2)) &&...
-        ((GluR2xyl(1,j)<=XYLBp2(1) || GluR2xyl(1,j)>=XYRTp2(1))) &&...
-        ((GluR2xyl(2,j)<=XYLBp2(2) || GluR2xyl(2,j)>=XYRTp2(2)))
-    
-    G2Z(:,j) = 2+(.1 * randi(15,1));
- 
-else
-    G2Z(:,j) = 1;
-end
- 
-end
- 
-%--GLUR1--%
-for j = 1:GluR1Ndots 
-%Inside PSD1
-if (GluR1xyl(1,j)>=XYLBp1(1) && GluR1xyl(1,j)<=XYRTp1(1)) &&...
-   (GluR1xyl(2,j)>=XYLBp1(2) && GluR1xyl(2,j)<=XYRTp1(2))
- 
-    G1Z(:,j) = 4;
- 
-%Inside PSD2
-elseif  (GluR1xyl(1,j)>=XYLBp2(1) && GluR1xyl(1,j)<=XYRTp2(1)) &&...
-        (GluR1xyl(2,j)>=XYLBp2(2) && GluR1xyl(2,j)<=XYRTp2(2))
-    G1Z(:,j) = 4;
- 
-%Inside PSA1
-elseif  (GluR1xyl(1,j)>=XYLBpr1(1) && GluR1xyl(1,j)<=XYRTpr1(1)) &&...
-        (GluR1xyl(2,j)>=XYLBpr1(2) && GluR1xyl(2,j)<=XYRTpr1(2)) &&...
-        ((GluR1xyl(1,j)<=XYLBp1(1) || GluR1xyl(1,j)>=XYRTp1(1))) &&...
-        ((GluR1xyl(2,j)<=XYLBp1(2) || GluR1xyl(2,j)>=XYRTp1(2)))
-    
-    G1Z(:,j) = 2+(.1 * randi(15,1));
- 
-%Inside PSA2
-elseif  (GluR1xyl(1,j)>=XYLBpr2(1) && GluR1xyl(1,j)<=XYRTpr2(1)) &&...
-        (GluR1xyl(2,j)>=XYLBpr2(2) && GluR1xyl(2,j)<=XYRTpr2(2)) &&...
-        ((GluR1xyl(1,j)<=XYLBp2(1) || GluR1xyl(1,j)>=XYRTp2(1))) &&...
-        ((GluR1xyl(2,j)<=XYLBp2(2) || GluR1xyl(2,j)>=XYRTp2(2)))
-    
-    G1Z(:,j) = 2+(.1 * randi(15,1));
- 
-else
-    G1Z(:,j) = 1;
-end
- 
-end
- 
-
-%{
-%-------------------%
-for j = 1:GluR2Ndots
-%-------------------%
-
-		if GluR2xyl(1,j)>=XcPr1lft && GluR2xyl(1,j)<=XcPr1rit &&...
-          GluR2xyl(2,j)>=YrPr1top && GluR2xyl(2,j)<=YrPr1bot &&...
-		  GluR2xyl(1,j)>=(XcPr1lft+PSDSZE(2,1)) && GluR2xyl(1,j)<=(XcPr1rit-PSDSZE(2,1)) &&...
-          GluR2xyl(2,j)>=(YrPr1top+PSDSZE(2,1)) && GluR2xyl(2,j)<=(YrPr1bot-PSDSZE(2,1))
-		
-			G2Z(:,j) = 3;
-	
-		elseif GluR2xyl(1,j)>=XcPr1lft && GluR2xyl(1,j)<=XcPr1rit &&...
-          GluR2xyl(2,j)>=YrPr2bot && GluR2xyl(2,j)<=YrPr2top &&...
-		  GluR2xyl(1,j)>=(XcPr1lft+PSDSZE(2,2)) && GluR2xyl(1,j)<=(XcPr1rit-PSDSZE(2,2)) &&...
-          GluR2xyl(2,j)>=(YrPr2bot+PSDSZE(2,2)) && GluR2xyl(2,j)<=(YrPr2top-PSDSZE(2,2))
-
-			G2Z(:,j) = 3;
-			
-			
-		elseif GluR2xyl(1,j)>=XcPr1lft && GluR2xyl(1,j)<=XcPr1rit &&...
-          GluR2xyl(2,j)>=YrPr1top && GluR2xyl(2,j)<=YrPr1bot &&...
-          ((GluR2xyl(1,j)<=(XcPr1lft+PSDSZE(2,1)) || GluR2xyl(1,j)>=(XcPr1rit-PSDSZE(2,1))) ||...
-          (GluR2xyl(2,j)<=(YrPr1top+PSDSZE(2,1)) || GluR2xyl(2,j)>=(YrPr1bot-PSDSZE(2,1))))
-      
-            G2Z(:,j) = 1+(.1 * randi(15,1));
-            
-        elseif GluR2xyl(1,j)>=XcPr1lft && GluR2xyl(1,j)<=XcPr1rit &&...
-          GluR2xyl(2,j)>=YrPr2bot && GluR2xyl(2,j)<=YrPr2top &&...
-          ((GluR2xyl(1,j)<=(XcPr1lft+PSDSZE(2,2)) || GluR2xyl(1,j)>=(XcPr1rit-PSDSZE(2,2))) ||...
-          (GluR2xyl(2,j)<=(YrPr2bot+PSDSZE(2,2)) || GluR2xyl(2,j)>=(YrPr2top-PSDSZE(2,2))))
-	  
-            G2Z(:,j) = 1+(.1 * randi(15,1));
-			
-			
-		else
-		   G2Z(:,j) = 1;
-		end % if
-%-------------------%
-end  %j = 1:GluR2Ndots
-%-------------------%
-
-
-
-%-------------------%
-for j = 1:GluR1Ndots
-%-------------------%
- 
-        if GluR1xyl(1,j)>=XcPr1lft && GluR1xyl(1,j)<=XcPr1rit &&...
-          GluR1xyl(2,j)>=YrPr1top && GluR1xyl(2,j)<=YrPr1bot &&...
-          GluR1xyl(1,j)>=(XcPr1lft+PSDSZE(2,1)) && GluR1xyl(1,j)<=(XcPr1rit-PSDSZE(2,1)) &&...
-          GluR1xyl(2,j)>=(YrPr1top+PSDSZE(2,1)) && GluR1xyl(2,j)<=(YrPr1bot-PSDSZE(2,1))
-        
-            G1Z(:,j) = 3;
-    
-        elseif GluR1xyl(1,j)>=XcPr1lft && GluR1xyl(1,j)<=XcPr1rit &&...
-          GluR1xyl(2,j)>=YrPr2bot && GluR1xyl(2,j)<=YrPr2top &&...
-          GluR1xyl(1,j)>=(XcPr1lft+PSDSZE(2,2)) && GluR1xyl(1,j)<=(XcPr1rit-PSDSZE(2,2)) &&...
-          GluR1xyl(2,j)>=(YrPr2bot+PSDSZE(2,2)) && GluR1xyl(2,j)<=(YrPr2top-PSDSZE(2,2))
- 
-            G1Z(:,j) = 3;
-			
-			
-		elseif GluR1xyl(1,j)>=XcPr1lft && GluR1xyl(1,j)<=XcPr1rit &&...
-          GluR1xyl(2,j)>=YrPr1top && GluR1xyl(2,j)<=YrPr1bot &&...
-          ((GluR1xyl(1,j)<=(XcPr1lft+PSDSZE(2,1)) || GluR1xyl(1,j)>=(XcPr1rit-PSDSZE(2,1))) ||...
-          (GluR1xyl(2,j)<=(YrPr1top+PSDSZE(2,1)) || GluR1xyl(2,j)>=(YrPr1bot-PSDSZE(2,1))))
-      
-            G1Z(:,j) = 1+(.1 * randi(15,1));
-            
-        elseif GluR1xyl(1,j)>=XcPr1lft && GluR1xyl(1,j)<=XcPr1rit &&...
-          GluR1xyl(2,j)>=YrPr2bot && GluR1xyl(2,j)<=YrPr2top &&...
-          ((GluR1xyl(1,j)<=(XcPr1lft+PSDSZE(2,2)) || GluR1xyl(1,j)>=(XcPr1rit-PSDSZE(2,2))) ||...
-          (GluR1xyl(2,j)<=(YrPr2bot+PSDSZE(2,2)) || GluR1xyl(2,j)>=(YrPr2top-PSDSZE(2,2))))
-      
-            G1Z(:,j) = 1+(.1 * randi(15,1));
-			
-            
-        else
-           G1Z(:,j) = 1;
-        end % if
-%-------------------%
-end  %j = 1:GluR1Ndots
-%-------------------%
-%}
-	
-%================%
-% if stepN == 100; keyboard; end
-%================%
-end
-%===================================%
-
-
-%===================================%
+%----------------------------------%
 %		inboxfun
-%===================================%
+%----------------------------------%
 % Tests whether particles are in a box polygon
 % and returns a logical vector
-%===================================%
-function [inbox] = inboxfunGENERAL(LB,RT,xyl)
-
-if LB(1)>RT(1)
-	LBt=LB;
-	RTt=RT;
-	LB(1)=RTt(1);
-	RT(1)=LBt(1);
-end
-if LB(2)>RT(2)
-	LBt=LB;
-	RTt=RT;
-	LB(2)=RTt(2);
-	RT(2)=LBt(2);
-end
-
-
-sz = numel(xyl(1,:));
-inbox = zeros(1,sz);
-
-for s = 1:sz
-	
-	if xyl(1,s) > LB(1) && xyl(1,s) < RT(1) &&...
-	   xyl(2,s) > LB(2) && xyl(2,s) < RT(2)
-		
-		inbox(s) = 1;
-	end
-   
-end
-
-inbox = inbox>0;
-
-end
-%===================================%
-%===================================%
-%		inboxfun
-%===================================%
-% Tests whether particles are in a box polygon
-% and returns a logical vector
-%===================================%
+%----------------------------------%
 function [inbox] = inboxfun(LB,RT,xyl)
 
 if LB(1)>RT(1)
@@ -5220,7 +3619,810 @@ xylRT2 = xyl(2,:) < RT(2);
 inbox = xylLB1 & xylRT1 & xylLB2 & xylRT2;
 
 end
+%----------------------------------%
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%			DENDRITIC FIELD MAPPING TOOLS
+%-------------##########################------------------%
+
+
+%----------------------------------%
+%			FieldFun
+%----------------------------------%
+% FieldFun
+% short description of this function
+%----------------------------------%
+function [DFszX,DFszY,PSD1sz,PSD2sz,PSA1sz,PSA2sz,SPY1sz,SPY2sz,...
+		 S1sz,S2sz,SSsz,SMx,DFum,SS,DF] = FieldFun(S1,S2,um,Scale)
+
+
+% DENDRITIC FIELD
+DFszX = round(um(1)/Scale);
+DFszY = round(um(2)/Scale);
+PSD1sz = round(um(3)/Scale);
+PSD2sz = round(um(4)/Scale);
+PSA1sz = round(um(5)/Scale);
+PSA2sz = round(um(6)/Scale);
+SPY1sz = PSD1sz+(PSA1sz*2);
+SPY2sz = PSD2sz+(PSA2sz*2);
+
+
+% SAP/ACTIN MATRIX DIMS
+S1sz = size(S1,1);		% Full Length of S1 Mx along 1 dimension
+S2sz = size(S2,1);		% Full Length of S2 Mx along 1 dimension
+
+S1num = numel(S1);		% Full Number of elements in the S1 Mx
+S2num = numel(S2);		% Full Number of elements in the S2 Mx
+
+S1um = um(3)/Scale + (um(5)/Scale*2); % S1 size based on synapse size inputs
+S2um = um(4)/Scale + (um(6)/Scale*2); % S2 size based on synapse size inputs
+
+
+
+
+
+
+%---
+% Here's where it gets a little tricky. 
+% When converting between real-space and matrix-space you must consider that,
+% if real space extends between 1 to 100, the total distance is 99 units (100-1=99).
+% Meanwhile, a  Vx=[1:100]  has a  length(Vx)==100  instead of 99. 
+% Here I'm choosing to add +1 to the synaptic (S) starting position to mitigate 
+% any potential positioning errors. Therefore the universal convention will be
+% such that, if a real-space dendritic width of 300 is chosen, S will be positioned
+% at SMx(101:200,101:200), and the real-space a particle can diffuse freely within
+% will be from 1-300 (1 unit smaller than GUI-entered dendritic width).
+
+S1xcL = round(DFszX/2 - S1sz/2)   +1;
+S1yrB = round(DFszY/4*1 - S1sz/2) +1;
+S1xcR = S1xcL-1 + S1sz;
+S1yrT = S1yrB-1 + S1sz;
+
+S2xcL = round(DFszX/2 - S1sz/2)   +1;
+S2yrB = round(DFszY/4*3 - S1sz/2) +1;
+S2xcR = S2xcL-1 + S1sz;
+S2yrT = S2yrB-1 + S1sz;
+
+S1L = S1xcL;
+S1B = S1yrB;
+S1R = S1xcR;
+S1T = S1yrT;
+S2L = S2xcL;
+S2B = S2yrB;
+S2R = S2xcR;
+S2T = S2yrT;
+
+PS1sz = round(S1sz/2);
+PS2sz = round(S2sz/2);
+PS1xy = round(S1sz/4);
+PS2xy = round(S2sz/4);
+PS1L = S1L + PS1xy;
+PS1B = S1B + PS1xy;
+PS1R = S1R - PS1xy;
+PS1T = S1T - PS1xy;
+PS2L = S2L + PS2xy;
+PS2B = S2B + PS2xy;
+PS2R = S2R - PS2xy;
+PS2T = S2T - PS2xy;
+
+
+
+SMxE = zeros(DFszY,DFszX);
+SMx = SMxE;
+SMx(S1B:S1T,S1L:S1R) = S1;
+SMx(S2B:S2T,S2L:S2R) = S2;
+
+
+%-----------------------
+% Function Return Cells & Structure Arrays
+%-----------------------
+% DFum = {DFszX,DFszY,PSD1sz,PSD2sz,PSA1sz,PSA2sz,SPY1sz,SPY2sz};
+SSsz = {S1sz,S2sz,S1num,S2num,S1um,S2um};
+
+
+
+DFum = struct;
+%---
+DFum.X = DFszX;
+DFum.Y = DFszY;
+DFum.PSD1 = PSD1sz;
+DFum.PSD2 = PSD2sz;
+DFum.PSA1 = PSA1sz;
+DFum.PSA2 = PSA2sz;
+DFum.SPY1 = SPY1sz;
+DFum.SPY2 = SPY2sz;
+
+% Matrix Space
+SS = struct;
+%---
+SS.SMx = SMx;
+SS.SMxE = SMxE;
+SS.S1 = S2;
+SS.S1 = S2;
+SS.S1L = S1L;
+SS.S1B = S1B;
+SS.S1R = S1R;
+SS.S1T = S1T;
+SS.S2L = S2L;
+SS.S2B = S2B;
+SS.S2R = S2R;
+SS.S2T = S2T;
+SS.S1LB = [SS.S1L SS.S1B];
+SS.S1RT = [SS.S1R SS.S1T];
+SS.S2LB = [SS.S2L SS.S2B];
+SS.S2RT = [SS.S2R SS.S2T];
+SS.S1sz = S1sz;
+SS.S2sz = S2sz;
+SS.S1num = S1num;
+SS.S2num = S2num;
+SS.S1um = S1um;
+SS.S2um = S2um;
+SS.PS1L = PS1L;
+SS.PS1B = PS1B;
+SS.PS1R = PS1R;
+SS.PS1T = PS1T;
+SS.PS2L = PS2L;
+SS.PS2B = PS2B;
+SS.PS2R = PS2R;
+SS.PS2T = PS2T;
+SS.PS1sz = PS1sz;
+SS.PS2sz = PS2sz;
+
+% Real Space
+DF = struct;
+%---
+DF.X = size(SMx,2);
+DF.Y = size(SMx,1);
+DF.S1sz = S1sz;
+DF.S2sz = S2sz;
+DF.S1L = S2L;
+DF.S1B = S2B;
+DF.S1R = S2R;
+DF.S1T = S2T;
+DF.S2L = S1L;
+DF.S2B = S1B;
+DF.S2R = S1R;
+DF.S2T = S1T;
+DF.S1LB = [DF.S1L DF.S1B];
+DF.S1RT = [DF.S1R DF.S1T];
+DF.S2LB = [DF.S2L DF.S2B];
+DF.S2RT = [DF.S2R DF.S2T];
+DF.SMxE = SMxE;
+DF.SMx = SMx;
+DF.S1 = S1;
+DF.S2 = S2;
+
+DF.PS1L = PS2L;
+DF.PS1B = PS2B;
+DF.PS1R = PS2R;
+DF.PS1T = PS2T;
+DF.PS2L = PS1L;
+DF.PS2B = PS1B;
+DF.PS2R = PS1R;
+DF.PS2T = PS1T;
+DF.PS1LB = [DF.PS1L DF.PS1B];
+DF.PS1RT = [DF.PS1R DF.PS1T];
+DF.PS2LB = [DF.PS2L DF.PS2B];
+DF.PS2RT = [DF.PS2R DF.PS2T];
+DF.PS1sz = PS1sz;
+DF.PS2sz = PS2sz;
+
+
+
+
+%------------
+%{
+
+
+S1Hsz = size(S1,1)/2;	% Half Length of S1 Mx along 1 dimension
+S2Hsz = size(S2,1)/2;	% Half Length of S1 Mx along 1 dimension
+
+S1Hnum = numel(S1)/2;	% Half Number of elements in the S1 Mx
+S2Hnum = numel(S2)/2;	% Half Number of elements in the S1 Mx
+
+% SS.S1sz = S1sz;
+% SS.S2sz = S2sz;
+% SS.S1numel = S1num;
+% SS.S2numel = S2num;
+% SS.S1Hsz = S1Hsz;
+% SS.S2Hsz = S2Hsz;
+% SS.S1Hnumel = S1Hnum;
+% SS.S2Hnumel = S2Hnum;
+% SS.S1um = S1um;
+% SS.S2um = S2um;
+
+% % ZMx1 = S1um;
+% % ZMx2 = S2um;
+% ZMx1=S1Hsz;
+% ZMx2=S2Hsz;
+% 
+% oVx1 = round(.5:.5:ZMx1);
+% oVx1 = [oVx1;oVx1];
+% zx = 0;
+% for ox = 1:2:ZMx1*2
+% 	rVx1(ox:ox+1,:) = oVx1 + (ZMx1*zx);
+% 	zx = zx+1;
+% end
+% 
+% oVx2 = round(.5:.5:ZMx2);
+% oVx2 = [oVx2;oVx2];
+% zx = 0;
+% for ox = 1:2:ZMx2*2
+% 	rVx2(ox:ox+1,:) = oVx2 + (ZMx2*zx);
+% 	zx = zx+1;
+% end
+
+
+
+%---
+% Dot Matrix Preallocate
+% PG1xy = zeros(DFszY);
+% PG1xy((DFszX+1):end,:) = [];
+% PG1xy=PG1xy';
+% PG2xy = PG1xy;
+% SMx=PG1xy;
+% SMx(401:500,101:200) = S1;
+% SMx(101:200,101:200) = S2;
+%------
+
+
+%}
+%------------
+% OLD
+%{
+
+PSD1size=PSD1sz;
+PSD2size=PSA1sz;
+periPSD1size=PSD2sz;
+periPSD2size=PSA2sz;
+
+
+Syn1Size = PSD1size+(periPSD1size*2);
+Syn2Size = PSD2size+(periPSD2size*2);
+
+PSD1padX = round((fsizeX - Syn1Size)/2);
+PSD1padY = round(((fsizeY - Syn1Size)/2)/2);
+PSD2padX = round((fsizeX - Syn2Size)/2);
+PSD2padY = round(((fsizeY - Syn2Size)/2)/2);
+
+
+fPSD1 = ones(PSD1size+1);						% PSD1 SIZE
+fPSD2 = ones(PSD2size+1);						% PSD2 SIZE
+fPSD1 = padarray(fPSD1,[periPSD1size periPSD1size], 2);	% PSD1 SIZE
+fPSD2 = padarray(fPSD2,[periPSD2size periPSD2size], 2);	% PSD2 SIZE
+pfPSD1 = padarray(fPSD1,[PSD1padY PSD1padX], 0);	% PAD PSD1 [Y-rows X-cols]
+pfPSD2 = padarray(fPSD2,[PSD2padY PSD2padX], 0);	% PAD PSD2 [Y-rows X-cols]
+
+[pfPSD1R pfPSD1C] = size(pfPSD1);
+[pfPSD2R pfPSD2C] = size(pfPSD2);
+
+
+if pfPSD1C > pfPSD2C
+		pfPSD2 = padarray(pfPSD2,[0 (pfPSD1C - pfPSD2C)], 0,'post');
+elseif pfPSD1C < pfPSD2C
+		pfPSD1 = padarray(pfPSD1,[0 (pfPSD2C - pfPSD1C)], 0,'post');
+end
+
+
+%=========================================================%
+PSDfield = cat(1, pfPSD1, pfPSD2);				% CONCAT PSD FIELDS
+[Yrows Xcols] = size(PSDfield);					% Even value, total field
+[YrPr1top XcPr1lft] = find(pfPSD1,1,'first');	% PSD1 1st row & col
+[YrPr1bot XcPr1rit] = find(pfPSD1,1,'last');	% PSD1 Lst row & col
+[YrPr2top XcPr2lft] = find(pfPSD2,1,'first');	% PSD2 1st row & col
+[YrPr2bot XcPr2rit] = find(pfPSD2,1,'last');	% PSD2 Lst row & col
+YrowsHIGH = Yrows/2;							% Rows high from Y=0
+XcolsWIDE = Xcols;								% Cols wide from X=0
+YHIGH = YrowsHIGH;								% Rows high from Y=0
+XWIDE = XcolsWIDE;								% Cols wide from X=0
+%=========================================================%
+Y1RowsUpTop = (YrowsHIGH-YrPr1top);
+Y1RowsUpBot = (YrowsHIGH-YrPr1bot);
+X1ColsOvrL = XcPr1lft;
+X1ColsOvrR = XcPr1rit;
+
+Y2RowsDnTop = (YrowsHIGH-YrPr2bot)*-1;
+Y2RowsDnBot = (YrowsHIGH-YrPr2top)*-1;
+X2ColsOvrL = XcPr2lft;
+X2ColsOvrR = XcPr2rit;
+%=========================================================%
+PSD1WH = PSD1size;
+PSD2WH = PSD2size;
+PERI1WH = periPSD1size;
+PERI2WH = periPSD2size;
+SPYN1WH = PSD1WH+(PERI1WH*2);
+SPYN2WH = PSD2WH+(PERI2WH*2);
+%=========================================================%
+XYLTpr1 = [X1ColsOvrL Y1RowsUpTop];
+XYRTpr1 = [X1ColsOvrR Y1RowsUpTop];
+XYLBpr1 = [X1ColsOvrL Y1RowsUpBot];
+XYRBpr1 = [X1ColsOvrR Y1RowsUpBot];
+XYLTpr2 = [X2ColsOvrL Y2RowsDnTop];
+XYRTpr2 = [X2ColsOvrR Y2RowsDnTop];
+XYLBpr2 = [X2ColsOvrL Y2RowsDnBot];
+XYRBpr2 = [X2ColsOvrR Y2RowsDnBot];
+XYLTp1 = [(XYLTpr1(1,1)+PERI1WH) (XYLTpr1(1,2)-PERI1WH)];
+XYRTp1 = [(XYRTpr1(1,1)-PERI1WH) (XYRTpr1(1,2)-PERI1WH)];
+XYLBp1 = [(XYLBpr1(1,1)+PERI1WH) (XYLBpr1(1,2)+PERI1WH)];
+XYRBp1 = [(XYRBpr1(1,1)-PERI1WH) (XYRBpr1(1,2)+PERI1WH)];
+XYLTp2 = [(XYLTpr2(1,1)+PERI2WH) (XYLTpr2(1,2)-PERI2WH)];
+XYRTp2 = [(XYRTpr2(1,1)-PERI2WH) (XYRTpr2(1,2)-PERI2WH)];
+XYLBp2 = [(XYLBpr2(1,1)+PERI2WH) (XYLBpr2(1,2)+PERI2WH)];
+XYRBp2 = [(XYRBpr2(1,1)-PERI2WH) (XYRBpr2(1,2)+PERI2WH)];
+%=========================================================%
+% rectangle('Position',[x,y,w,h])
+XYBOXpr1 = [XYLBpr1 SPYN1WH SPYN1WH];
+XYBOXpr2 = [XYLBpr2 SPYN2WH SPYN2WH];
+XYBOXp1 = [XYLBp1 PSD1WH PSD1WH];
+XYBOXp2 = [XYLBp2 PSD2WH PSD2WH];
+%=========================================================%
+Zfield = changem(PSDfield,[1 2 3],[0 2 1]);
+%=========================================================%
+
+
+
+%%
+%=========================================================%
+if doRun(8)
+%=========================================================%
+xlim = [0 XcolsWIDE];
+ylim = [-YrowsHIGH YrowsHIGH];
+%---
+scsz = get(0,'ScreenSize'); 
+scsx=scsz(3); scsy=scsz(4);
+
+Fh96 = figure(96);
+set(gcf,'OuterPosition',[145,145,scsx/2,scsy/1.2])
+
+axes('Position',[.25 .05 .7 .9]);
+scatter(1:4,1:4,5,[1 0 0]);
+axis([xlim, ylim]);
+grid on
+set(get(gca,'XLabel'),'String','GluR2:Blue \bullet \bullet GluR1:Red')
+rectangle('Position',[XYBOXpr1(1),XYBOXpr1(2),XYBOXpr1(3),XYBOXpr1(4)])
+rectangle('Position',[XYBOXpr2(1),XYBOXpr2(2),XYBOXpr2(3),XYBOXpr2(4)])
+rectangle('Position',[XYBOXp1(1),XYBOXp1(2),XYBOXp1(3),XYBOXp1(4)])
+rectangle('Position',[XYBOXp2(1),XYBOXp2(2),XYBOXp2(3),XYBOXp2(4)])
+%---
+text(XYLTpr1(1),XYLTpr1(2),...
+strcat(num2str(XYLTpr1(1)), '\bullet',num2str(XYLTpr1(2)),'\rightarrow'),...
+'FontSize',12,'HorizontalAlignment','right');
+text(XYRTpr1(1),XYRTpr1(2),...
+strcat('\leftarrow ', num2str(XYRTpr1(1)), '\bullet',num2str(XYRTpr1(2))),...
+'FontSize',12,'HorizontalAlignment','left');
+text(XYLBpr1(1),XYLBpr1(2),...
+strcat(num2str(XYLBpr1(1)), '\bullet',num2str(XYLBpr1(2)),'\rightarrow'),...
+'FontSize',12,'HorizontalAlignment','right');
+text(XYRBpr1(1),XYRBpr1(2),...
+strcat('\leftarrow ', num2str(XYRBpr1(1)), '\bullet',num2str(XYRBpr1(2))),...
+'FontSize',12,'HorizontalAlignment','left');
+%---
+text(XYLTpr2(1),XYLTpr2(2),...
+strcat(num2str(XYLTpr2(1)), '\bullet',num2str(XYLTpr2(2)),'\rightarrow'),...
+'FontSize',12,'HorizontalAlignment','right');
+text(XYRTpr2(1),XYRTpr2(2),...
+strcat('\leftarrow ', num2str(XYRTpr2(1)), '\bullet',num2str(XYRTpr2(2))),...
+'FontSize',12,'HorizontalAlignment','left');
+text(XYLBpr2(1),XYLBpr2(2),...
+strcat(num2str(XYLBpr2(1)), '\bullet',num2str(XYLBpr2(2)),'\rightarrow'),...
+'FontSize',12,'HorizontalAlignment','right');
+text(XYRBpr2(1),XYRBpr2(2),...
+strcat('\leftarrow ', num2str(XYRBpr2(1)), '\bullet',num2str(XYRBpr2(2))),...
+'FontSize',12,'HorizontalAlignment','left');
+%---
+text(XYLTp1(1),XYLTp1(2),...
+strcat(num2str(XYLTp1(1)), '\bullet',num2str(XYLTp1(2)),'\rightarrow'),...
+'FontSize',12,'HorizontalAlignment','right');
+text(XYRTp1(1),XYRTp1(2),...
+strcat('\leftarrow ', num2str(XYRTp1(1)), '\bullet',num2str(XYRTp1(2))),...
+'FontSize',12,'HorizontalAlignment','left');
+text(XYLBp1(1),XYLBp1(2),...
+strcat(num2str(XYLBp1(1)), '\bullet',num2str(XYLBp1(2)),'\rightarrow'),...
+'FontSize',12,'HorizontalAlignment','right');
+text(XYRBp1(1),XYRBp1(2),...
+strcat('\leftarrow ', num2str(XYRBp1(1)), '\bullet',num2str(XYRBp1(2))),...
+'FontSize',12,'HorizontalAlignment','left');
+%---
+text(XYLTp2(1),XYLTp2(2),...
+strcat(num2str(XYLTp2(1)), '\bullet',num2str(XYLTp2(2)),'\rightarrow'),...
+'FontSize',12,'HorizontalAlignment','right');
+text(XYRTp2(1),XYRTp2(2),...
+strcat('\leftarrow ', num2str(XYRTp2(1)), '\bullet',num2str(XYRTp2(2))),...
+'FontSize',12,'HorizontalAlignment','left');
+text(XYLBp2(1),XYLBp2(2),...
+strcat(num2str(XYLBp2(1)), '\bullet',num2str(XYLBp2(2)),'\rightarrow'),...
+'FontSize',12,'HorizontalAlignment','right');
+text(XYRBp2(1),XYRBp2(2),...
+strcat('\leftarrow ', num2str(XYRBp2(1)), '\bullet',num2str(XYRBp2(2))),...
+'FontSize',12,'HorizontalAlignment','left');
+%---
+text(XcolsWIDE,0,...
+strcat(num2str(XcolsWIDE), '\bullet',num2str(0),'\rightarrow'),...
+'FontSize',12,'HorizontalAlignment','right');
+text(0,0,...
+strcat('\leftarrow ', num2str(0), '\bullet',num2str(0)),...
+'FontSize',12,'HorizontalAlignment','left');
+text(XcolsWIDE,YrowsHIGH,...
+strcat(num2str(XcolsWIDE), '\bullet',num2str(YrowsHIGH),'\rightarrow'),...
+'FontSize',12,'HorizontalAlignment','right');
+text(0,-YrowsHIGH,...
+strcat('\leftarrow ', num2str(0), '\bullet',num2str(-YrowsHIGH)),...
+'FontSize',12,'HorizontalAlignment','left');
+%---
+
+axes('Position',[.05 .5 .15 .4]);
+imagesc(Zfield);     % <--FIG--##
+colormap('bone')
+title('PSD1');
+axes('Position',[.05 .05 .15 .4]); 
+imagesc(PSDfield); % <--FIG--##
+title('PSD2');
+
+
+%%
+%=========================================================%
+end %if doRun(8)
+%=========================================================%
+
+SPYN1xv = [XYLTpr1(1) XYRTpr1(1) XYRBpr1(1) XYLBpr1(1) XYLTpr1(1)]';
+SPYN1yv = [XYLTpr1(2) XYRTpr1(2) XYRBpr1(2) XYLBpr1(2) XYLTpr1(2)]';
+SPYN2xv = [XYLTpr2(1) XYRTpr2(1) XYRBpr2(1) XYLBpr2(1) XYLTpr2(1)]';
+SPYN2yv = [XYLTpr2(2) XYRTpr2(2) XYRBpr2(2) XYLBpr2(2) XYLTpr2(2)]';
+
+PSD1xv = [XYLTp1(1) XYRTp1(1) XYRBp1(1) XYLBp1(1) XYLTp1(1)]';
+PSD1yv = [XYLTp1(2) XYRTp1(2) XYRBp1(2) XYLBp1(2) XYLTp1(2)]';
+PSD2xv = [XYLTp2(1) XYRTp2(1) XYRBp2(1) XYLBp2(1) XYLTp2(1)]';
+PSD2yv = [XYLTp2(2) XYRTp2(2) XYRBp2(2) XYLBp2(2) XYLTp2(2)]';
+ 
+[PERI1xv, PERI1yv] = polybool('xor', PSD1xv, PSD1yv, SPYN1xv, SPYN1yv);
+[PERI2xv, PERI2yv] = polybool('xor', PSD2xv, PSD2yv, SPYN2xv, SPYN2yv);
+%}
+%------------
+
+
+end
+%----------------------------------%
+
+
+
+
+%%			 PLOTTING AND LIVE SIMULATION
+%-------------##########################------------------%
+
+
+
+
+
+%----------------------------------%
+%			plotMx
+%----------------------------------%
+% plotMx
+% short description of this function
+%----------------------------------%
+function [] = plotMx(Fh,PhA,PhB,PhC,PhD,PhE,G1xy,G2xy,GR1c,GR1r,GR2c,GR2r,SMx)
+
+%figure(Fh)
+set(PhA,'CData',G1xy);
+set(PhB,'CData',G2xy);
+%---
+set(PhC,'XData',GR1c,'YData',GR1r);
+set(PhD,'XData',GR2c,'YData',GR2r);
+%---
+set(PhE,'CData',SMx);
+%drawnow
+
+
+% THIS PLOT MAY BE FASTER
+%{
 %===================================%
+%				FIGURE
+%-----------------------------------%
+%figure(Fh)
+subplot('Position',[.62 .04 .34 .93]), 
+imagesc(G1xy)
+hold on
+imagesc(G2xy)
+hold on
+subplot('Position',[.62 .04 .34 .93]), 
+scatter(GR1c,GR1r, 'r')
+hold on
+scatter(GR2c,GR2r, 'b')
+hold off
+%-----------------------------------%
+%}
+end
+%----------------------------------%
+
+
+%----------------------------------%
+%			SPLOTS
+%----------------------------------%
+% plotMx
+% short description of this function
+%----------------------------------%
+function [] = SPLOTS(SPh,S1,S2,S1Tx,S1Ty,S2Tx,S2Ty)
+
+set(SPh.S1Ph1,'CData',S1);
+set(SPh.S1Ph2,'XData',S1Tx,'YData',S1Ty);
+set(SPh.S2Ph1,'CData',S2);
+set(SPh.S2Ph2,'XData',S2Tx,'YData',S2Ty);
+drawnow
+
+%--------------------------------
+% S1CP = {hk,Pkon,Sno};
+% set(S2Ph2,'CData',hk);
+% set(S2Ph3,'CData',Pkon);
+% set(S2Ph4,'CData',Sno);
+% % set(S2Ph5,'CData',G1oc);
+%--------------------------------
+	
+end
+%----------------------------------%
+
+
+
+
+%----------------------------------%
+%			MAINPLOT
+%----------------------------------%
+% FieldFun
+% short description of this function
+%----------------------------------%
+function [] = MAINPLOT(G1Ph1,G2Ph1,GluR2xyl,GluR1xyl)
+%-------------------------------------------%
+
+set(G2Ph1,'XData',GluR2xyl(1,:),'YData',GluR2xyl(2,:));
+%drawnow
+
+set(G1Ph1,'XData',GluR1xyl(1,:),'YData',GluR1xyl(2,:));
+drawnow
+
+
+end
+%----------------------------------%
+
+
+
+%----------------------------------%
+%			ActinPlot
+%----------------------------------%
+function [varargout] = ActinMainPlot(Fh,Actin,inPSD,spos,varargin)
+
+
+scsz = get(0,'ScreenSize');
+basepos = scsz./[2.5e-3 2.5e-3 1.5 2];
+baseazel = [-32 12];
+baserot=[0 0];
+% spos = [.03 .53 .27 .44];
+
+if nargin == 7
+	rot=varargin{1};
+	azel=varargin{2};
+	dims=varargin{3};
+elseif nargin == 6 
+	rot=varargin{1};
+	azel=varargin{2};
+	dims = [25   300   200    50    50    25   275];
+elseif nargin == 5 
+	rot=varargin{1};
+	azel = baseazel;
+	dims = [25   300   200    50    50    25   275];
+else
+	rot=baserot;
+	azel = baseazel;
+	dims = [25   300   200    50    50    25   275];
+end
+
+AxLims = [-dims(4) dims(4) -dims(5) dims(5) 0 dims(2)].*1.2;
+
+%--------------------
+ActinTips = [Actin(:,4) Actin(:,7) Actin(:,10)];
+[Zin,Zic] = find(ActinTips(:,3) > inPSD);
+PSDTips = ActinTips(Zin,:);
+[Zout,Zoc] = find(ActinTips(:,3) < inPSD);
+SPYTips = ActinTips(Zout,:);
+
+% [Zin,Zic] = find(ActinTips(:,3) > SPYz);
+% XYsq = sqrt(ActinTips(:,1).^2 + ActinTips(:,2).^2);
+% [XYin,XYic] = find(XYsq < (HX-SPYxy));
+% XYZin = intersect(XYin, Zin);
+% % XYt = intersect(Xrow1, Yrow1);
+% %[tf, loc] = ismember(Xrow1, Yrow1)
+%--------------------
+figure(Fh)
+hold on;
+subplot('Position',spos), 
+ph11c = plot3([Actin(:,3) Actin(:,4)]', [Actin(:,6) Actin(:,7)]', [Actin(:,9) Actin(:,10)]');
+	axis(AxLims); 
+	%axis vis3d;
+	%xlabel('X');ylabel('Y');zlabel('Z');
+	set(gca,'xticklabel',[])
+	set(gca,'yticklabel',[])
+	set(gca,'zticklabel',[])
+	view(azel); grid off;
+	hold on;
+ph11a = scatter3([SPYTips(:,1)]', [SPYTips(:,2)]', [SPYTips(:,3)]',7,'ob');
+	hold on;
+ph11b = scatter3([PSDTips(:,1)]', [PSDTips(:,2)]', [PSDTips(:,3)]',7,'or');
+	axis(AxLims)
+	%xlabel('X');ylabel('Y');zlabel('Z');
+	view(azel+rot)
+	grid off
+	set(ph11a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
+	set(ph11b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
+	set(ph11c,'LineStyle','-','Color',[.7 .7 .7],'LineWidth',.1);
+	%hold off;
+	set(gca,'xticklabel',[])
+	set(gca,'yticklabel',[])
+	set(gca,'zticklabel',[])
+%--------------------
+% subplot('Position',[.13 .04 .27 .44]), 
+% ph12a = scatter3([SPYTips(:,1)]', [SPYTips(:,2)]', [SPYTips(:,3)]',7,'ob');
+% 	hold on;
+% ph12b = scatter3([PSDTips(:,1)]', [PSDTips(:,2)]', [PSDTips(:,3)]',7,'or');
+% 	axis(AxLims)
+% 	view([0 90])
+% 	grid off
+% 	set(gca,'Color',[1,1,1])
+% 	set(ph12a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
+% 	set(ph12b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
+% 	%--------------------
+% 	%set(gca,'XTickLabel', sprintf('%.1f|',nT),'FontSize',10)
+% 	%hold off;
+% %--------------------
+
+
+
+
+varargout = {Fh};
+end
+%----------------------------------%
+
+
+
+
+
+%----------------------------------%
+%			ActinPlot
+%----------------------------------%
+function [varargout] = ActinPlot(Fh,nT,Actin,inPSD,varargin)
+
+
+scsz = get(0,'ScreenSize');
+basepos = scsz./[2.5e-3 2.5e-3 1.5 2];
+baseazel = [-32 12];
+baserot=[0 0];
+
+if nargin >= 3
+	rot=varargin{1};
+	azel=varargin{2};
+	dims=varargin{3};
+elseif nargin == 2 
+	rot=varargin{1};
+	azel=varargin{2};
+	dims = [60   400   280   160   160    40   360];
+elseif nargin == 1 
+	rot=varargin{1};
+	azel = baseazel;
+	dims = [60   400   280   160   160    40   360];
+else
+	rot=baserot;
+	azel = baseazel;
+	dims = [60   400   280   160   160    40   360];
+end
+
+AxLims = [-dims(4) dims(4) -dims(5) dims(5) 0 dims(2)].*1.2;
+
+%--------------------
+ActinTips = [Actin(:,4) Actin(:,7) Actin(:,10)];
+[Zrow1,Zcol1] = find(ActinTips(:,3) > inPSD);
+PSDTips = ActinTips(Zrow1,:);
+[Zrow2,Zcol2] = find(ActinTips(:,3) < inPSD);
+SPYTips = ActinTips(Zrow2,:);
+%--------------------
+figure(Fh)
+subplot('Position',[.03 .03 .65 .95]), 
+ph11c = plot3([Actin(:,3) Actin(:,4)]', [Actin(:,6) Actin(:,7)]', [Actin(:,9) Actin(:,10)]');
+axis(AxLims); axis vis3d;
+set(gcf,'Color',[1,1,1])
+xlabel('X');ylabel('Y');zlabel('Z');
+view(azel)
+grid off
+set(gca,'Color',[1,1,1])
+hold on;
+ph11a = scatter3([SPYTips(:,1)]', [SPYTips(:,2)]', [SPYTips(:,3)]',7,'ob');
+hold on;
+ph11b = scatter3([PSDTips(:,1)]', [PSDTips(:,2)]', [PSDTips(:,3)]',7,'or');
+axis(AxLims)
+set(gcf,'Color',[1,1,1])
+xlabel('X');ylabel('Y');zlabel('Z');
+view(azel+rot)
+grid off
+set(gca,'Color',[1,1,1])
+set(ph11a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
+set(ph11b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
+set(ph11c,'LineStyle','-','Color',[.7 .7 .7],'LineWidth',.1);
+hold off;
+%--------------------
+figure(Fh)
+subplot('Position',[.7 .55 .28 .38]), 
+ph12a = scatter3([SPYTips(:,1)]', [SPYTips(:,2)]', [SPYTips(:,3)]',7,'ob');
+hold on;
+ph12b = scatter3([PSDTips(:,1)]', [PSDTips(:,2)]', [PSDTips(:,3)]',7,'or');
+axis(AxLims)
+view([0 90])
+grid off
+set(gca,'Color',[1,1,1])
+set(ph12a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
+set(ph12b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
+%--------------------
+set(gca,'XTickLabel', sprintf('%.1f|',nT),'FontSize',10)
+hold off;
+%--------------------
+
+
+%{
+%==================================================%
+if nargin >= 3
+dims=varargin{3};
+%-----------------------------------%
+% Spine Dimensions
+SPYneckXY = dims(1);
+SPYheadZN = dims(2);
+SPYheadZS = dims(3);
+SPYheadX = dims(4);
+SPYheadY = dims(5);
+PSDproxy = dims(6);
+inPSD = dims(7);
+%-----------------------------------%
+ActinTips = [Actin(:,4) Actin(:,7) Actin(:,10)];
+[Zrow1,Zcol1] = find(ActinTips(:,3) > inPSD);
+PSDTips = ActinTips(Zrow1,:);
+[Zrow2,Zcol2] = find(ActinTips(:,3) < inPSD);
+SPYTips = ActinTips(Zrow2,:);
+%-----------------------------------%
+PSDXYZ = [PSDTips(:,1) PSDTips(:,2) PSDTips(:,3)];
+PSDXY = round([PSDTips(:,1) PSDTips(:,2)]);
+PSDactMx = zeros(SPYheadY+100,SPYheadX+100);
+for mxp = 1:numel(PSDXY(:,1))
+PSDactMx(PSDXY(mxp,2)+SPYheadY+10, PSDXY(mxp,1)+SPYheadX+10) = 1;
+end
+ActMask=[1 1 1 1 1 1 1; 1 1 1 1 1 1 1; 1 1 1 1 1 1 1];
+ActMx = convn(PSDactMx,ActMask,'same');
+ActMx = (ActMx>0).*1.0;
+%===================================%
+%				FIGURE
+%-----------------------------------%
+figure(Fh)
+subplot('Position',[.6 .1 .38 .38]), 
+imagesc(ActMx)
+colormap(bone)
+hold on
+% subplot('Position',[.55 .05 .40 .40]), 
+subplot('Position',[.6 .1 .38 .38]), 
+scatter(PSDXY(:,1),PSDXY(:,2), 'r')
+hold off
+%-----------------------------------%
+
+end
+%==================================================%
+if nT >40000; keyboard; end
+%}
+
+varargout = {Fh};
+end
+%----------------------------------%
 
 
 
@@ -5229,8 +4431,7 @@ end
 
 %%					PARTICLE COUNTERS
 %-------------##########################------------------%
-%					PARTICLE COUNTERS
-%-------------##########################------------------%
+
 
 %-------------------------------%
 %       MAIN PARTICLE COUNTER
@@ -5238,10 +4439,11 @@ end
 function [GR1SPY1N GR1SPY2N GR1PER1N GR1PER2N GR1PSD1N GR1PSD2N...
 		GR2SPY1N GR2SPY2N GR2PER1N GR2PER2N GR2PSD1N GR2PSD2N...
 		GR1PERN GR1PSDN GR2PERN GR2PSDN GR1SPYN GR2SPYN...
-		SPY1N SPY2N SPYNT ESNT EST]...
+		SPY1N SPY2N SPYNT ESNT EST G1INSP G2INSP GINSP]...
 		= dotCount(stepN,GluR2Ndots, GluR1Ndots,...
 		G2INSPYN1,G2INSPYN2,G2INPSD1,G2INPSD2,G2INPERI1,G2INPERI2,...
-		G1INSPYN1,G1INSPYN2,G1INPSD1,G1INPSD2,G1INPERI1,G1INPERI2)
+		G1INSPYN1,G1INSPYN2,G1INPSD1,G1INPSD2,G1INPERI1,G1INPERI2,...
+		G1INSPA,G2INSPA)
 %================%
 % if stepN == 600; keyboard; end
 %================%
@@ -5284,19 +4486,17 @@ GR2PSDN = GR2PSD1N + GR2PSD2N;	% GR2PSDN
 
 GR1SPYN = GR1SPY1N + GR1SPY2N;	% GR1SPYN
 GR2SPYN = GR2SPY1N + GR2SPY2N;	% GR2SPYN
-%GR1SPYN = GR1PERN + GR1PSDN;
-%GR2SPYN = GR2PERN + GR2PSDN;
 
 SPY1N = GR1SPY1N + GR2SPY1N;	% SPY1N SPY1N
 SPY2N = GR1SPY2N + GR2SPY2N;	% SPY2N SPY2N
-%SPY1N = GR1PER1N+GR1PSD1N+GR2PER1N+GR2PSD1N;
-%SPY2N = GR1PER2N+GR1PSD2N+GR2PER2N+GR2PSD2N;
 
 SPYNT = SPY1N + SPY2N;							% SPYNT SPYNT
 ESNT = (GluR2Ndots+GluR1Ndots)-(SPY1N+SPY2N);	% ESNT
 EST = [ESNT SPY1N SPY2N SPYNT];					% EST
 
-
+G1INSP = sum(G1INSPA);
+G2INSP = sum(G2INSPA);
+GINSP = G1INSP + G2INSP;
 
 end
 %================================%
@@ -5435,351 +4635,21 @@ end %if doRun1 %MAIN 2D PLOT IS ON
 	
 	
 end
+%-------------------------------%
 
 
 
 
 
-%%			4. DENDRITIC FIELD MAPPING TOOLS
+
+
+
+
+
+%%			  SUPPLEMENTAL GRAPHICS FUNCTIONS
 %-------------##########################------------------%
-%		FIELD MAP FOR DENDRITE AREA AND PSD AREAS
+%				SUPPLEMENTAL GRAPHICS
 %-------------##########################------------------%
-
-% FieldFun
-function [Yrows Xcols YrPr2bot XcPr2rit YrPr2top XcPr2lft...
-YrPr1bot XcPr1rit YrPr1top XcPr1lft PSDfield...
-PSDSZE Zfield XWIDE YHIGH...
-PSD1WH PSD2WH PERI1WH PERI2WH SPYN1WH SPYN2WH...
-XYLTpr1 XYRTpr1 XYLBpr1 XYRBpr1 XYLTpr2 XYRTpr2 XYLBpr2 XYRBpr2...
-XYLTp1 XYRTp1 XYLBp1 XYRBp1 XYLTp2 XYRTp2 XYLBp2 XYRBp2...
-XYBOXpr1 XYBOXpr2 XYBOXp1 XYBOXp2...
-SPYN1xv SPYN1yv SPYN2xv SPYN2yv...
-PSD1xv PSD1yv PSD2xv PSD2yv...
-PERI1xv PERI1yv PERI2xv PERI2yv...
-fPSD1 fPSD2...
-] = FieldFun(doRun,fsizeX, fsizeY,PSD1size, PSD2size, periPSD1size, periPSD2size)
-
-
-Syn1Size = PSD1size+(periPSD1size*2);
-Syn2Size = PSD2size+(periPSD2size*2);
-
-PSD1padX = round((fsizeX - Syn1Size)/2);
-PSD1padY = round(((fsizeY - Syn1Size)/2)/2);
-PSD2padX = round((fsizeX - Syn2Size)/2);
-PSD2padY = round(((fsizeY - Syn2Size)/2)/2);
-
-fPSD1 = ones(PSD1size+1);						% PSD1 SIZE
-fPSD2 = ones(PSD2size+1);						% PSD2 SIZE
-fPSD1 = padarray(fPSD1,[periPSD1size periPSD1size], 2);	% PSD1 SIZE
-fPSD2 = padarray(fPSD2,[periPSD2size periPSD2size], 2);	% PSD2 SIZE
-pfPSD1 = padarray(fPSD1,[PSD1padY PSD1padX], 0);	% PAD PSD1 [Y-rows X-cols]
-pfPSD2 = padarray(fPSD2,[PSD2padY PSD2padX], 0);	% PAD PSD2 [Y-rows X-cols]
-
-[pfPSD1R pfPSD1C] = size(pfPSD1);
-[pfPSD2R pfPSD2C] = size(pfPSD2);
-
-
-if pfPSD1C > pfPSD2C
-		pfPSD2 = padarray(pfPSD2,[0 (pfPSD1C - pfPSD2C)], 0,'post');
-elseif pfPSD1C < pfPSD2C
-		pfPSD1 = padarray(pfPSD1,[0 (pfPSD2C - pfPSD1C)], 0,'post');
-end
-
-
-%=========================================================%
-PSDfield = cat(1, pfPSD1, pfPSD2);				% CONCAT PSD FIELDS
-[Yrows Xcols] = size(PSDfield);					% Even value, total field
-[YrPr1top XcPr1lft] = find(pfPSD1,1,'first');	% PSD1 1st row & col
-[YrPr1bot XcPr1rit] = find(pfPSD1,1,'last');	% PSD1 Lst row & col
-[YrPr2top XcPr2lft] = find(pfPSD2,1,'first');	% PSD2 1st row & col
-[YrPr2bot XcPr2rit] = find(pfPSD2,1,'last');	% PSD2 Lst row & col
-PSDSZE = [PSD1size PSD2size; periPSD1size periPSD2size];
-YrowsHIGH = Yrows/2;							% Rows high from Y=0
-XcolsWIDE = Xcols;								% Cols wide from X=0
-YHIGH = YrowsHIGH;								% Rows high from Y=0
-XWIDE = XcolsWIDE;								% Cols wide from X=0
-%=========================================================%
-Y1RowsUpTop = (YrowsHIGH-YrPr1top);
-Y1RowsUpBot = (YrowsHIGH-YrPr1bot);
-X1ColsOvrL = XcPr1lft;
-X1ColsOvrR = XcPr1rit;
-
-Y2RowsDnTop = (YrowsHIGH-YrPr2bot)*-1;
-Y2RowsDnBot = (YrowsHIGH-YrPr2top)*-1;
-X2ColsOvrL = XcPr2lft;
-X2ColsOvrR = XcPr2rit;
-%=========================================================%
-PSD1WH = PSD1size;
-PSD2WH = PSD2size;
-PERI1WH = periPSD1size;
-PERI2WH = periPSD2size;
-SPYN1WH = PSD1WH+(PERI1WH*2);
-SPYN2WH = PSD2WH+(PERI2WH*2);
-%=========================================================%
-XYLTpr1 = [X1ColsOvrL Y1RowsUpTop];
-XYRTpr1 = [X1ColsOvrR Y1RowsUpTop];
-XYLBpr1 = [X1ColsOvrL Y1RowsUpBot];
-XYRBpr1 = [X1ColsOvrR Y1RowsUpBot];
-XYLTpr2 = [X2ColsOvrL Y2RowsDnTop];
-XYRTpr2 = [X2ColsOvrR Y2RowsDnTop];
-XYLBpr2 = [X2ColsOvrL Y2RowsDnBot];
-XYRBpr2 = [X2ColsOvrR Y2RowsDnBot];
-XYLTp1 = [(XYLTpr1(1,1)+PERI1WH) (XYLTpr1(1,2)-PERI1WH)];
-XYRTp1 = [(XYRTpr1(1,1)-PERI1WH) (XYRTpr1(1,2)-PERI1WH)];
-XYLBp1 = [(XYLBpr1(1,1)+PERI1WH) (XYLBpr1(1,2)+PERI1WH)];
-XYRBp1 = [(XYRBpr1(1,1)-PERI1WH) (XYRBpr1(1,2)+PERI1WH)];
-XYLTp2 = [(XYLTpr2(1,1)+PERI2WH) (XYLTpr2(1,2)-PERI2WH)];
-XYRTp2 = [(XYRTpr2(1,1)-PERI2WH) (XYRTpr2(1,2)-PERI2WH)];
-XYLBp2 = [(XYLBpr2(1,1)+PERI2WH) (XYLBpr2(1,2)+PERI2WH)];
-XYRBp2 = [(XYRBpr2(1,1)-PERI2WH) (XYRBpr2(1,2)+PERI2WH)];
-%=========================================================%
-% rectangle('Position',[x,y,w,h])
-XYBOXpr1 = [XYLBpr1 SPYN1WH SPYN1WH];
-XYBOXpr2 = [XYLBpr2 SPYN2WH SPYN2WH];
-XYBOXp1 = [XYLBp1 PSD1WH PSD1WH];
-XYBOXp2 = [XYLBp2 PSD2WH PSD2WH];
-%=========================================================%
-Zfield = changem(PSDfield,[1 2 3],[0 2 1]);
-%=========================================================%
-
-
-
-
-%=========================================================%
-if doRun(8)
-%=========================================================%
-xlim = [0 XcolsWIDE];
-ylim = [-YrowsHIGH YrowsHIGH];
-%---
-SNSZ = get(0,'ScreenSize');
-fig99 = figure(99);
-
-figure(fig99)
-subplot(5,5,[3 20]), subplot('Position',[.45 .40 .5 .59]),...
-scatter(1:4,1:4,5,[1 0 0]);
-axis([xlim, ylim]);
-grid on
-set(get(gca,'XLabel'),'String','GluR2:Blue \bullet \bullet GluR1:Red')
-rectangle('Position',[XYBOXpr1(1),XYBOXpr1(2),XYBOXpr1(3),XYBOXpr1(4)])
-rectangle('Position',[XYBOXpr2(1),XYBOXpr2(2),XYBOXpr2(3),XYBOXpr2(4)])
-rectangle('Position',[XYBOXp1(1),XYBOXp1(2),XYBOXp1(3),XYBOXp1(4)])
-rectangle('Position',[XYBOXp2(1),XYBOXp2(2),XYBOXp2(3),XYBOXp2(4)])
-%---
-text(XYLTpr1(1),XYLTpr1(2),...
-strcat(num2str(XYLTpr1(1)), '\bullet',num2str(XYLTpr1(2)),'\rightarrow'),...
-'FontSize',12,'HorizontalAlignment','right');
-text(XYRTpr1(1),XYRTpr1(2),...
-strcat('\leftarrow ', num2str(XYRTpr1(1)), '\bullet',num2str(XYRTpr1(2))),...
-'FontSize',12,'HorizontalAlignment','left');
-text(XYLBpr1(1),XYLBpr1(2),...
-strcat(num2str(XYLBpr1(1)), '\bullet',num2str(XYLBpr1(2)),'\rightarrow'),...
-'FontSize',12,'HorizontalAlignment','right');
-text(XYRBpr1(1),XYRBpr1(2),...
-strcat('\leftarrow ', num2str(XYRBpr1(1)), '\bullet',num2str(XYRBpr1(2))),...
-'FontSize',12,'HorizontalAlignment','left');
-%---
-text(XYLTpr2(1),XYLTpr2(2),...
-strcat(num2str(XYLTpr2(1)), '\bullet',num2str(XYLTpr2(2)),'\rightarrow'),...
-'FontSize',12,'HorizontalAlignment','right');
-text(XYRTpr2(1),XYRTpr2(2),...
-strcat('\leftarrow ', num2str(XYRTpr2(1)), '\bullet',num2str(XYRTpr2(2))),...
-'FontSize',12,'HorizontalAlignment','left');
-text(XYLBpr2(1),XYLBpr2(2),...
-strcat(num2str(XYLBpr2(1)), '\bullet',num2str(XYLBpr2(2)),'\rightarrow'),...
-'FontSize',12,'HorizontalAlignment','right');
-text(XYRBpr2(1),XYRBpr2(2),...
-strcat('\leftarrow ', num2str(XYRBpr2(1)), '\bullet',num2str(XYRBpr2(2))),...
-'FontSize',12,'HorizontalAlignment','left');
-%---
-text(XYLTp1(1),XYLTp1(2),...
-strcat(num2str(XYLTp1(1)), '\bullet',num2str(XYLTp1(2)),'\rightarrow'),...
-'FontSize',12,'HorizontalAlignment','right');
-text(XYRTp1(1),XYRTp1(2),...
-strcat('\leftarrow ', num2str(XYRTp1(1)), '\bullet',num2str(XYRTp1(2))),...
-'FontSize',12,'HorizontalAlignment','left');
-text(XYLBp1(1),XYLBp1(2),...
-strcat(num2str(XYLBp1(1)), '\bullet',num2str(XYLBp1(2)),'\rightarrow'),...
-'FontSize',12,'HorizontalAlignment','right');
-text(XYRBp1(1),XYRBp1(2),...
-strcat('\leftarrow ', num2str(XYRBp1(1)), '\bullet',num2str(XYRBp1(2))),...
-'FontSize',12,'HorizontalAlignment','left');
-%---
-text(XYLTp2(1),XYLTp2(2),...
-strcat(num2str(XYLTp2(1)), '\bullet',num2str(XYLTp2(2)),'\rightarrow'),...
-'FontSize',12,'HorizontalAlignment','right');
-text(XYRTp2(1),XYRTp2(2),...
-strcat('\leftarrow ', num2str(XYRTp2(1)), '\bullet',num2str(XYRTp2(2))),...
-'FontSize',12,'HorizontalAlignment','left');
-text(XYLBp2(1),XYLBp2(2),...
-strcat(num2str(XYLBp2(1)), '\bullet',num2str(XYLBp2(2)),'\rightarrow'),...
-'FontSize',12,'HorizontalAlignment','right');
-text(XYRBp2(1),XYRBp2(2),...
-strcat('\leftarrow ', num2str(XYRBp2(1)), '\bullet',num2str(XYRBp2(2))),...
-'FontSize',12,'HorizontalAlignment','left');
-%---
-text(XcolsWIDE,0,...
-strcat(num2str(XcolsWIDE), '\bullet',num2str(0),'\rightarrow'),...
-'FontSize',12,'HorizontalAlignment','right');
-text(0,0,...
-strcat('\leftarrow ', num2str(0), '\bullet',num2str(0)),...
-'FontSize',12,'HorizontalAlignment','left');
-text(XcolsWIDE,YrowsHIGH,...
-strcat(num2str(XcolsWIDE), '\bullet',num2str(YrowsHIGH),'\rightarrow'),...
-'FontSize',12,'HorizontalAlignment','right');
-text(0,-YrowsHIGH,...
-strcat('\leftarrow ', num2str(0), '\bullet',num2str(-YrowsHIGH)),...
-'FontSize',12,'HorizontalAlignment','left');
-%---
-
-
-figure(fig99)
-subplot(5,5,[1 6]), imagesc(Zfield);     % <--FIG--##
-colormap('bone')
-title('PSD1');
-figure(fig99)
-subplot(5,5,[2 7]), imagesc(PSDfield); % <--FIG--##
-title('PSD2');
-
-set(gcf,'Position',...
-	[SNSZ(3)/1.5	SNSZ(4)/5		SNSZ(3)/3	SNSZ(4)/1.5]);
-
-%=========================================================%
-end %if doRun(8)
-%=========================================================%
-
-SPYN1xv = [XYLTpr1(1) XYRTpr1(1) XYRBpr1(1) XYLBpr1(1) XYLTpr1(1)]';
-SPYN1yv = [XYLTpr1(2) XYRTpr1(2) XYRBpr1(2) XYLBpr1(2) XYLTpr1(2)]';
-SPYN2xv = [XYLTpr2(1) XYRTpr2(1) XYRBpr2(1) XYLBpr2(1) XYLTpr2(1)]';
-SPYN2yv = [XYLTpr2(2) XYRTpr2(2) XYRBpr2(2) XYLBpr2(2) XYLTpr2(2)]';
-
-PSD1xv = [XYLTp1(1) XYRTp1(1) XYRBp1(1) XYLBp1(1) XYLTp1(1)]';
-PSD1yv = [XYLTp1(2) XYRTp1(2) XYRBp1(2) XYLBp1(2) XYLTp1(2)]';
-PSD2xv = [XYLTp2(1) XYRTp2(1) XYRBp2(1) XYLBp2(1) XYLTp2(1)]';
-PSD2yv = [XYLTp2(2) XYRTp2(2) XYRBp2(2) XYLBp2(2) XYLTp2(2)]';
- 
-[PERI1xv, PERI1yv] = polybool('xor', PSD1xv, PSD1yv, SPYN1xv, SPYN1yv);
-[PERI2xv, PERI2yv] = polybool('xor', PSD2xv, PSD2yv, SPYN2xv, SPYN2yv);
-
-
-
-%=================================%
-%{
-plot(SPYN1xv,SPYN1yv,GluR2xyl(1,G2INSPYN1),GluR2xyl(2,G2INSPYN1),...
-    'r+',GluR2xyl(1,~G2INSPYN1),GluR2xyl(2,~G2INSPYN1),'bo');
-hold on
-plot(SPYN2xv,SPYN2yv,GluR2xyl(1,G2INSPYN2),GluR2xyl(2,G2INSPYN2),...
-    'r+',GluR2xyl(1,~G2INSPYN2),GluR2xyl(2,~G2INSPYN2),'bo');
-hold off
-
-plot(PSD1xv,PSD1yv,GluR2xyl(1,G2INPSD1),GluR2xyl(2,G2INPSD1),...
-	'r+',GluR2xyl(1,~G2INPSD1),GluR2xyl(2,~G2INPSD1),'bo');
-hold on
-plot(PSD2xv,PSD2yv,GluR2xyl(1,G2INPSD2),GluR2xyl(2,G2INPSD2),...
-	'r+',GluR2xyl(1,~G2INPSD2),GluR2xyl(2,~G2INPSD2),'bo');
-hold off
-
-plot(PERI1xv,PERI1yv,GluR2xyl(1,G2INPERI1),GluR2xyl(2,G2INPERI1),...
-    'r+',GluR2xyl(1,~G2INPERI1),GluR2xyl(2,~G2INPERI1),'bo');
-hold on
-plot(PERI2xv,PERI2yv,GluR2xyl(1,G2INPERI2),GluR2xyl(2,G2INPERI2),...
-    'r+',GluR2xyl(1,~G2INPERI2),GluR2xyl(2,~G2INPERI2),'bo');
-hold off
-%}
-%{
-plot(SPYN1xv,SPYN1yv,GluR1xyl(1,G1INSPYN1),GluR1xyl(2,G1INSPYN1),...
-    'r+',GluR1xyl(1,~G1INSPYN1),GluR1xyl(2,~G1INSPYN1),'bo');
-hold on
-plot(SPYN2xv,SPYN2yv,GluR1xyl(1,G1INSPYN2),GluR1xyl(2,G1INSPYN2),...
-    'r+',GluR1xyl(1,~G1INSPYN2),GluR1xyl(2,~G1INSPYN2),'bo');
-hold off
- 
-plot(PSD1xv,PSD1yv,GluR1xyl(1,G1INPSD1),GluR1xyl(2,G1INPSD1),...
-    'r+',GluR1xyl(1,~G1INPSD1),GluR1xyl(2,~G1INPSD1),'bo');
-hold on
-plot(PSD2xv,PSD2yv,GluR1xyl(1,G1INPSD2),GluR1xyl(2,G1INPSD2),...
-    'r+',GluR1xyl(1,~G1INPSD2),GluR1xyl(2,~G1INPSD2),'bo');
-hold off
- 
-plot(PERI1xv,PERI1yv,GluR1xyl(1,G1INPERI1),GluR1xyl(2,G1INPERI1),...
-    'r+',GluR1xyl(1,~G1INPERI1),GluR1xyl(2,~G1INPERI1),'bo');
-hold on
-plot(PERI2xv,PERI2yv,GluR1xyl(1,G1INPERI2),GluR1xyl(2,G1INPERI2),...
-    'r+',GluR1xyl(1,~G1INPERI2),GluR1xyl(2,~G1INPERI2),'bo');
-hold off
-%}
-%=================================%
-end
-
-
-
-%%			  PLOTTING AND LIVE SIMULATION
-%-------------##########################------------------%
-%				VISUALIZATION FUNCTIONS
-%-------------##########################------------------%
-
-%-------------------------------------------%
-% PLOT Particle Motion
-%-------------------------------------------%
-function [] = MAINPLOT(G1Ph1, G2Ph1, stepN,GluR2xyl,GluR1xyl,...
-	XWIDE,YHIGH,XYBOXpr1,XYBOXpr2,XYBOXp1,XYBOXp2)
-%-------------------------------------------%
-
-set(G2Ph1,'XData',GluR2xyl(1,:),'YData',GluR2xyl(2,:));
-drawnow
-
-set(G1Ph1,'XData',GluR1xyl(1,:),'YData',GluR1xyl(2,:));
-drawnow
-
-
-%{
-xlim = [0 XWIDE];
-ylim = [-YHIGH YHIGH];
-%---
-
-figure(1)
-subplot(5,5,[3 25]), 
-scatter(GluR2xyl(1,:),GluR2xyl(2,:),5,[0 0 1]);
-hold on;
-subplot(5,5,[3 25]), 
-scatter(GluR1xyl(1,:),GluR1xyl(2,:),5,[1 0 0]);
-axis([xlim, ylim]);
-set(gca,'xticklabel',[])
-set(gca,'yticklabel',[])
-set(get(gca,'XLabel'),'String','GluR2:Blue \bullet \bullet GluR1:Red')
-rectangle('Position',[XYBOXpr1(1),XYBOXpr1(2),XYBOXpr1(3),XYBOXpr1(4)])
-rectangle('Position',[XYBOXpr2(1),XYBOXpr2(2),XYBOXpr2(3),XYBOXpr2(4)])
-rectangle('Position',[XYBOXp1(1),XYBOXp1(2),XYBOXp1(3),XYBOXp1(4)])
-rectangle('Position',[XYBOXp2(1),XYBOXp2(2),XYBOXp2(3),XYBOXp2(4)])
-hold off;
-%}
-
-
-%=================================%
-%           3D PLOT
-%---------------------------------%
-%{
-%=================================%
-%           3D PLOT
-%---------------------------------%
-%     MAIN DOTS
-%----------------------%
-if do3DPLOT
-figure(1);
-subplot(5,5,[1 7]), 
-%gscatter(GluR2xyl(1,:),GluR2xyl(2,:)); view(20, 30);
-scatter3(GluR2xyl(1,:),GluR2xyl(2,:),G2Z(:),'.'), view(20, 30)
-axis normal;
-grid off
-axis([xlim, ylim, zlim]);
-set(gca, 'Box', 'on');
-set(gca,'xticklabel',[])
-set(gca,'yticklabel',[])
-%-------%
-%}
-%=================================%
-
-end
-
 
 %-------------------------------------------%
 % PLOT3DS
@@ -7700,6 +6570,305 @@ end
 
 
 
+%%				   SPECIALIZED TOOLS
+%-------------##########################------------------%
+%				   SPECIALIZED TOOLS
+%-------------##########################------------------%
+
+
+
+
+%===================================%
+% IzhFun SPIKE GENERATOR
+%===================================%
+function [] = IzhFun(spikes)
+
+global v;
+izhikevich(spikes)
+
+end
+%===================================%
+
+
+
+
+%===================================%
+% HOMEOSTATIC
+%===================================%
+function [S1beta S2beta S1mu_array S2mu_array S1L1_array S2L1_array]...
+	= HOMEOSTATIC(stepN,HShi,HSlow,TTDots,doCalcium,SPYNT,PSD1CaT,...
+	S1num_epochs,S2num_epochs,S1mu,S2mu)
+
+	if mod(stepN, 5) == 0
+		PSDtot = SPYNT;
+		PSDtot2 = SPYNT;
+		if doCalcium
+		PSDtot2 = SPYNT-(fix(sqrt(PSD1CaT)));		
+		end
+		%{
+		% LINHi = linspace(60,80,(TTDots+1));
+		% LINLo = linspace(25,45,(TTDots+1));
+		% when L=1.1  tau=1.1  beta=60-80   higer=slower growth
+        % when L=2.1  tau=2.1  beta=25-45   lower=slower shrink
+		%}
+		LINHi = linspace(60,80,(HSlow+2));
+		LINLo = linspace(25,45,(TTDots-HShi+2));
+		
+		if PSDtot < HSlow
+			Ltau = 1.1;
+			beta1 = LINHi(PSDtot+1);
+			S1mew=1/Ltau;
+		elseif PSDtot > HShi
+			Ltau = 2.1;
+			beta1 = LINLo(PSDtot-HShi+1);
+			S1mew=1/Ltau;
+		else
+			Ltau = 1.2;
+			beta1 = 50;
+			S1mew=S1mu;
+		end
+		
+		
+		if PSDtot2 < HSlow
+			Ltau2 = 1.1;
+			beta2 = LINHi(PSDtot+1);
+			S2mew=1/Ltau2;
+		elseif PSDtot2 > HShi
+			Ltau2 = 2.1;
+			beta2 = LINLo(PSDtot-HShi+1);
+			S2mew=1/Ltau2;
+		else
+			Ltau2 = 1.2;
+			beta2 = 50;
+			S2mew=S2mu;
+		end
+		S1beta=beta1;   
+        S2beta=beta2;
+        S1mu_array=S1mew*ones(1,S1num_epochs);
+        S2mu_array=S2mew*ones(1,S2num_epochs);
+        S1L1_array=Ltau*ones(1,S1num_epochs);
+        S2L1_array=Ltau2*ones(1,S2num_epochs);
+	end
+
+
+end
+%===================================%
+
+
+%===================================%
+%		ZGEN FUNCTION
+%===================================%
+function [G1Z G2Z] = ZGEN(stepN,G1Z,G2Z,...
+    GluR2Ndots, GluR2xyl,GluR1Ndots, GluR1xyl,...
+	XYLTpr1,XYRTpr1,XYLBpr1,XYRBpr1,XYLTpr2,XYRTpr2,XYLBpr2,XYRBpr2,...
+	XYLTp1,XYRTp1,XYLBp1,XYRBp1,XYLTp2,XYRTp2,XYLBp2,XYRBp2)
+
+
+
+%--GLUR2--%
+for j = 1:GluR2Ndots 
+%Inside PSD1
+if (GluR2xyl(1,j)>=XYLBp1(1) && GluR2xyl(1,j)<=XYRTp1(1)) &&...
+   (GluR2xyl(2,j)>=XYLBp1(2) && GluR2xyl(2,j)<=XYRTp1(2))
+ 
+    G2Z(:,j) = 4;
+ 
+%Inside PSD2
+elseif  (GluR2xyl(1,j)>=XYLBp2(1) && GluR2xyl(1,j)<=XYRTp2(1)) &&...
+        (GluR2xyl(2,j)>=XYLBp2(2) && GluR2xyl(2,j)<=XYRTp2(2))
+    G2Z(:,j) = 4;
+ 
+%Inside PSA1
+elseif  (GluR2xyl(1,j)>=XYLBpr1(1) && GluR2xyl(1,j)<=XYRTpr1(1)) &&...
+        (GluR2xyl(2,j)>=XYLBpr1(2) && GluR2xyl(2,j)<=XYRTpr1(2)) &&...
+        ((GluR2xyl(1,j)<=XYLBp1(1) || GluR2xyl(1,j)>=XYRTp1(1))) &&...
+        ((GluR2xyl(2,j)<=XYLBp1(2) || GluR2xyl(2,j)>=XYRTp1(2)))
+    
+    G2Z(:,j) = 2+(.1 * randi(15,1));
+ 
+%Inside PSA2
+elseif  (GluR2xyl(1,j)>=XYLBpr2(1) && GluR2xyl(1,j)<=XYRTpr2(1)) &&...
+        (GluR2xyl(2,j)>=XYLBpr2(2) && GluR2xyl(2,j)<=XYRTpr2(2)) &&...
+        ((GluR2xyl(1,j)<=XYLBp2(1) || GluR2xyl(1,j)>=XYRTp2(1))) &&...
+        ((GluR2xyl(2,j)<=XYLBp2(2) || GluR2xyl(2,j)>=XYRTp2(2)))
+    
+    G2Z(:,j) = 2+(.1 * randi(15,1));
+ 
+else
+    G2Z(:,j) = 1;
+end
+ 
+end
+ 
+%--GLUR1--%
+for j = 1:GluR1Ndots 
+%Inside PSD1
+if (GluR1xyl(1,j)>=XYLBp1(1) && GluR1xyl(1,j)<=XYRTp1(1)) &&...
+   (GluR1xyl(2,j)>=XYLBp1(2) && GluR1xyl(2,j)<=XYRTp1(2))
+ 
+    G1Z(:,j) = 4;
+ 
+%Inside PSD2
+elseif  (GluR1xyl(1,j)>=XYLBp2(1) && GluR1xyl(1,j)<=XYRTp2(1)) &&...
+        (GluR1xyl(2,j)>=XYLBp2(2) && GluR1xyl(2,j)<=XYRTp2(2))
+    G1Z(:,j) = 4;
+ 
+%Inside PSA1
+elseif  (GluR1xyl(1,j)>=XYLBpr1(1) && GluR1xyl(1,j)<=XYRTpr1(1)) &&...
+        (GluR1xyl(2,j)>=XYLBpr1(2) && GluR1xyl(2,j)<=XYRTpr1(2)) &&...
+        ((GluR1xyl(1,j)<=XYLBp1(1) || GluR1xyl(1,j)>=XYRTp1(1))) &&...
+        ((GluR1xyl(2,j)<=XYLBp1(2) || GluR1xyl(2,j)>=XYRTp1(2)))
+    
+    G1Z(:,j) = 2+(.1 * randi(15,1));
+ 
+%Inside PSA2
+elseif  (GluR1xyl(1,j)>=XYLBpr2(1) && GluR1xyl(1,j)<=XYRTpr2(1)) &&...
+        (GluR1xyl(2,j)>=XYLBpr2(2) && GluR1xyl(2,j)<=XYRTpr2(2)) &&...
+        ((GluR1xyl(1,j)<=XYLBp2(1) || GluR1xyl(1,j)>=XYRTp2(1))) &&...
+        ((GluR1xyl(2,j)<=XYLBp2(2) || GluR1xyl(2,j)>=XYRTp2(2)))
+    
+    G1Z(:,j) = 2+(.1 * randi(15,1));
+ 
+else
+    G1Z(:,j) = 1;
+end
+ 
+end
+ 
+
+%{
+%-------------------%
+for j = 1:GluR2Ndots
+%-------------------%
+
+		if GluR2xyl(1,j)>=XcPr1lft && GluR2xyl(1,j)<=XcPr1rit &&...
+          GluR2xyl(2,j)>=YrPr1top && GluR2xyl(2,j)<=YrPr1bot &&...
+		  GluR2xyl(1,j)>=(XcPr1lft+PSDSZE(2,1)) && GluR2xyl(1,j)<=(XcPr1rit-PSDSZE(2,1)) &&...
+          GluR2xyl(2,j)>=(YrPr1top+PSDSZE(2,1)) && GluR2xyl(2,j)<=(YrPr1bot-PSDSZE(2,1))
+		
+			G2Z(:,j) = 3;
+	
+		elseif GluR2xyl(1,j)>=XcPr1lft && GluR2xyl(1,j)<=XcPr1rit &&...
+          GluR2xyl(2,j)>=YrPr2bot && GluR2xyl(2,j)<=YrPr2top &&...
+		  GluR2xyl(1,j)>=(XcPr1lft+PSDSZE(2,2)) && GluR2xyl(1,j)<=(XcPr1rit-PSDSZE(2,2)) &&...
+          GluR2xyl(2,j)>=(YrPr2bot+PSDSZE(2,2)) && GluR2xyl(2,j)<=(YrPr2top-PSDSZE(2,2))
+
+			G2Z(:,j) = 3;
+			
+			
+		elseif GluR2xyl(1,j)>=XcPr1lft && GluR2xyl(1,j)<=XcPr1rit &&...
+          GluR2xyl(2,j)>=YrPr1top && GluR2xyl(2,j)<=YrPr1bot &&...
+          ((GluR2xyl(1,j)<=(XcPr1lft+PSDSZE(2,1)) || GluR2xyl(1,j)>=(XcPr1rit-PSDSZE(2,1))) ||...
+          (GluR2xyl(2,j)<=(YrPr1top+PSDSZE(2,1)) || GluR2xyl(2,j)>=(YrPr1bot-PSDSZE(2,1))))
+      
+            G2Z(:,j) = 1+(.1 * randi(15,1));
+            
+        elseif GluR2xyl(1,j)>=XcPr1lft && GluR2xyl(1,j)<=XcPr1rit &&...
+          GluR2xyl(2,j)>=YrPr2bot && GluR2xyl(2,j)<=YrPr2top &&...
+          ((GluR2xyl(1,j)<=(XcPr1lft+PSDSZE(2,2)) || GluR2xyl(1,j)>=(XcPr1rit-PSDSZE(2,2))) ||...
+          (GluR2xyl(2,j)<=(YrPr2bot+PSDSZE(2,2)) || GluR2xyl(2,j)>=(YrPr2top-PSDSZE(2,2))))
+	  
+            G2Z(:,j) = 1+(.1 * randi(15,1));
+			
+			
+		else
+		   G2Z(:,j) = 1;
+		end % if
+%-------------------%
+end  %j = 1:GluR2Ndots
+%-------------------%
+
+
+
+%-------------------%
+for j = 1:GluR1Ndots
+%-------------------%
+ 
+        if GluR1xyl(1,j)>=XcPr1lft && GluR1xyl(1,j)<=XcPr1rit &&...
+          GluR1xyl(2,j)>=YrPr1top && GluR1xyl(2,j)<=YrPr1bot &&...
+          GluR1xyl(1,j)>=(XcPr1lft+PSDSZE(2,1)) && GluR1xyl(1,j)<=(XcPr1rit-PSDSZE(2,1)) &&...
+          GluR1xyl(2,j)>=(YrPr1top+PSDSZE(2,1)) && GluR1xyl(2,j)<=(YrPr1bot-PSDSZE(2,1))
+        
+            G1Z(:,j) = 3;
+    
+        elseif GluR1xyl(1,j)>=XcPr1lft && GluR1xyl(1,j)<=XcPr1rit &&...
+          GluR1xyl(2,j)>=YrPr2bot && GluR1xyl(2,j)<=YrPr2top &&...
+          GluR1xyl(1,j)>=(XcPr1lft+PSDSZE(2,2)) && GluR1xyl(1,j)<=(XcPr1rit-PSDSZE(2,2)) &&...
+          GluR1xyl(2,j)>=(YrPr2bot+PSDSZE(2,2)) && GluR1xyl(2,j)<=(YrPr2top-PSDSZE(2,2))
+ 
+            G1Z(:,j) = 3;
+			
+			
+		elseif GluR1xyl(1,j)>=XcPr1lft && GluR1xyl(1,j)<=XcPr1rit &&...
+          GluR1xyl(2,j)>=YrPr1top && GluR1xyl(2,j)<=YrPr1bot &&...
+          ((GluR1xyl(1,j)<=(XcPr1lft+PSDSZE(2,1)) || GluR1xyl(1,j)>=(XcPr1rit-PSDSZE(2,1))) ||...
+          (GluR1xyl(2,j)<=(YrPr1top+PSDSZE(2,1)) || GluR1xyl(2,j)>=(YrPr1bot-PSDSZE(2,1))))
+      
+            G1Z(:,j) = 1+(.1 * randi(15,1));
+            
+        elseif GluR1xyl(1,j)>=XcPr1lft && GluR1xyl(1,j)<=XcPr1rit &&...
+          GluR1xyl(2,j)>=YrPr2bot && GluR1xyl(2,j)<=YrPr2top &&...
+          ((GluR1xyl(1,j)<=(XcPr1lft+PSDSZE(2,2)) || GluR1xyl(1,j)>=(XcPr1rit-PSDSZE(2,2))) ||...
+          (GluR1xyl(2,j)<=(YrPr2bot+PSDSZE(2,2)) || GluR1xyl(2,j)>=(YrPr2top-PSDSZE(2,2))))
+      
+            G1Z(:,j) = 1+(.1 * randi(15,1));
+			
+            
+        else
+           G1Z(:,j) = 1;
+        end % if
+%-------------------%
+end  %j = 1:GluR1Ndots
+%-------------------%
+%}
+	
+%================%
+% if stepN == 100; keyboard; end
+%================%
+end
+%===================================%
+
+
+%===================================%
+%		inboxfun
+%===================================%
+% Tests whether particles are in a box polygon
+% and returns a logical vector
+%===================================%
+function [inbox] = inboxfunGENERAL(LB,RT,xyl)
+
+if LB(1)>RT(1)
+	LBt=LB;
+	RTt=RT;
+	LB(1)=RTt(1);
+	RT(1)=LBt(1);
+end
+if LB(2)>RT(2)
+	LBt=LB;
+	RTt=RT;
+	LB(2)=RTt(2);
+	RT(2)=LBt(2);
+end
+
+
+sz = numel(xyl(1,:));
+inbox = zeros(1,sz);
+
+for s = 1:sz
+	
+	if xyl(1,s) > LB(1) && xyl(1,s) < RT(1) &&...
+	   xyl(2,s) > LB(2) && xyl(2,s) < RT(2)
+		
+		inbox(s) = 1;
+	end
+   
+end
+
+inbox = inbox>0;
+
+end
+%===================================%
+
 
 
 
@@ -9049,4 +8218,761 @@ end
 %}
 %===================================%
 
+
+
+%%					 SAPS & SLOTS
+%-------------##########################------------------%
+% PRE-LOOP FUNCTIONS
+%---
+% SAPSLOTSETUP
+% SAPMAP
+% SAPMASKREPORT
+% SAPPREALLOCATE
+%--------------------
+%{
+
+
+%===================================%
+% SAPSLOTSETUP
+%===================================%
+% Create initial SAP S-Clulster Matrix
+% Take PSD Size (4) and multiply by 2 (8)
+% Create a (8x8) Matrix of 1s 
+% Then pad this Mx on all sides by Os
+%-------------------%
+% Establish the initial scalars, vectors, and matrices
+% for the SAP cluster turnnover functions
+%-------------------%
+function [Nsteps,S1,S2,S1sum,S2sum,...
+SC1beta,SC1mu,SC1r,SC1ro,SC1tau,...
+SC2beta,SC2mu,SC2r,SC2ro,SC2tau...
+] = SAPSLOTSETUP(Nsteps,...
+sap,um,dot,SAPPADPSD1,SAPPADPSD2)
+
+%{
+SCdeltaT = 0.01;	% Shouval [.01]		Brad [.01]
+SCbeta = 60;		% Shouval [60]		Brad [50]
+SCtau = 1.0;		% Shouval [1.0]		Brad [1.8]
+SCmu = 1/SCtau;		% Shouval [1/tau]	Brad [1/tau]
+SCL = 1.5;			% Shouval [1.5]		Brad [1.2]
+SCL2 = 1.1;			% Shouval [0.9]		Brad [1.1]
+SCr = 10;			% Shouval [10]		Brad [15]
+SCro = 0.95;		% Shouval [.95]		Brad [.90]
+SCszi = 7;			% Shouval [8]		Brad [7]
+SCszb = 17;			% Shouval [17]		Brad [17]
+
+SCdeltaT = 0.01;	% Shouval [.01]		Brad [.01]
+SCbeta = 50;		% Shouval [60]		Brad [50]
+SCtau = 1.8;		% Shouval [1.0]		Brad [1.8]
+SCmu = 1/SCtau;		% Shouval [1/tau]	Brad [1/tau]
+SCL = 1.2;			% Shouval [1.5]		Brad [1.2]
+SCL2 = 1.1;			% Shouval [0.9]		Brad [1.1]
+SCr = 15;			% Shouval [10]		Brad [15]
+SCro = 0.90;		% Shouval [.95]		Brad [.90]
+SCszi = 7;			% Shouval [8]		Brad [7]
+SCszb = 17;			% Shouval [17]		Brad [17]
+
+%}
+
+% TIME & SCALE
+SAPSTEP = sap(11);
+SAPSTEP1 = sap(11);
+SAPSTEP2 = sap(12);
+
+Steps = dot(3);			% Steps
+TimeStep = dot(4)/1000; % TimeStep
+Scale = dot(5);			% Scale
+time=Nsteps;
+
+
+% DENDRITIC FIELD
+um1 = um(1); % denWidthX
+um2 = um(2); % denHeightY
+um3 = um(3); % PSD1um
+um4 = um(4); % PSD2um
+um5 = um(5); % PERI1um
+um6 = um(6); % PERI2um
+fsizeX = round(um1/Scale);
+fsizeY = round(um2/Scale);
+PSD1size = round(um3/Scale);
+PSD2size = round(um4/Scale);
+periPSD1size = round(um5/Scale);
+periPSD2size = round(um6/Scale);
+
+PSD1SAPF = PSD1size*2;
+PSD2SAPF = PSD2size*2;
+PSA1SAPF = periPSD1size*2;
+PSA2SAPF = periPSD2size*2;
+
+
+if ~SAPPADPSD1
+SAPMXPSD1 = ones(PSD1SAPF);
+S1=SAPMXPSD1;
+end
+
+if ~SAPPADPSD2
+SAPMXPSD2 = ones(PSD2SAPF);
+S2=SAPMXPSD2;
+end
+
+PADSAP1 = SAPPADPSD1*2;
+PADSAP2 = SAPPADPSD2*2;
+
+if SAPPADPSD1
+SAPMXPSD1=padarray(ones(PSD1SAPF),[PADSAP1 PADSAP1], 0);
+S1=SAPMXPSD1;
+end
+
+if SAPPADPSD2
+SAPMXPSD2=padarray(ones(PSD2SAPF),[PADSAP2 PADSAP2], 0);
+S2=SAPMXPSD2;
+end
+
+
+%===========================================%
+sap1 = sap(1); % SAPdotsPSD1
+sap2 = sap(2); % SAPdotsPSD2
+sap3 = sap(3); % SAPbetaPSD1
+sap4 = sap(4); % SAPtauPSD1
+sap5 = sap(5); % SAPL1PSD1
+sap6 = sap(6); % SAPbetaPSD2
+sap7 = sap(7); % SAPtauPSD2
+sap8 = sap(8); % SAPL1PSD2
+sap9 = sap(9); % SAPmuPSD1
+sap10 = sap(10); % SAPmuPSD2
+sap11 = sap(11); % SAPdTPSD1
+sap12 = sap(12); % SAPdTPSD2
+sap13 = sap(13); % SAPrhoPSD1
+sap14 = sap(14); % SAPrhoPSD2
+sap15 = sap(15); % SAPrPSD1
+sap16 = sap(16); % SAPrPSD2
+sap17 = sap(17); % doDynamicLeP1
+sap18 = sap(18); % doDynamicLeP2
+
+
+h_mask=[0 1 0; 1 0 1; 0 1 0];
+
+
+SC1szi = sap(1);		SC2szi = sap(2);
+SC1beta = sap(3);		SC2beta = sap(6);	
+SC1tau = sap(4);		SC2tau = sap(7);		
+SC1mu = sap(9);			SC2mu = sap(10);	
+SC1L = sap(5);			SC2L = sap(8);
+SC1r = sap(15);			SC2r = sap(16);			
+SC1ro = sap(13);		SC2ro = sap(14);
+
+SC1L2 = 1.1;			SC2L2 = 1.1;	
+SC1szb = 17;			SC2szb = 17;
+
+SC1deltaT = TimeStep*SAPSTEP;	SC2deltaT = TimeStep*SAPSTEP;
+
+%===========================================%
+% CLUSTER SUMS FOR PSD POTENTIATION LEVEL
+%-------------------------------------------%
+S1sum = sum(S1(:));
+S2sum = sum(S2(:));
+%===========================================%
+
+
+end
+%===================================%
+
+
+%===================================%
+% SAPMAP
+%===================================%
+% Create two Cells that contain the X and Y coordinates respectively
+% for polygon boxes distributed throughout the PSD
+% Return Cell Mx to function caller
+%-------------------%
+function [PSD1Sxvecs PSD1Syvecs PSD2Sxvecs PSD2Syvecs] = SAPMAP(...
+	um,dot,...
+	SPYN1xv,SPYN1yv,SPYN2xv,SPYN2yv,...
+	PSD1xv,PSD1yv,PSD2xv,PSD2yv,...
+	PERI1xv,PERI1yv,PERI2xv,PERI2yv,SAPPADPSD1,SAPPADPSD2,SS)
+
+
+%{
+Scale = dot(5); % Scale
+% DENDRITIC FIELD
+um1 = um(1); % denWidthX
+um2 = um(2); % denHeightY
+um3 = um(3); % PSD1um
+um4 = um(4); % PSD2um
+um5 = um(5); % PERI1um
+um6 = um(6); % PERI2um
+PSD1sz = round(um3/Scale);
+PSD2sz = round(um4/Scale);
+periPSD1sz = round(um5/Scale);
+periPSD2sz = round(um6/Scale);
+
+PSD1XL = PSD1xv(1);
+PSD1YL = PSD1yv(1);
+
+PSD2XL = PSD2xv(1);
+PSD2YL = PSD2yv(1);
+
+% Get top left corner coordinates for SYN
+PSD1XL = PSD1XL-SAPPADPSD1;
+PSD1YL = PSD1YL+SAPPADPSD1;
+PSD2XL = PSD2XL-SAPPADPSD2;
+PSD2YL = PSD2YL+SAPPADPSD2;
+
+% PSD1size = PSD1sz + (SAPPADPSD1*2);
+% PSD2size = PSD2sz + (SAPPADPSD2*2);
+
+% PSD1size = PSD1sz + (periPSD1sz*2);
+% PSD2size = PSD2sz + (periPSD2sz*2);
+%}
+
+PSD1XL = PSD1xv(1);
+PSD1YL = PSD1yv(1);
+
+PSD2XL = PSD2xv(1);
+PSD2YL = PSD2yv(1);
+
+% Get top left corner coordinates for SYN
+PSD1XL = PSD1XL-SAPPADPSD1;
+PSD1YL = PSD1YL+SAPPADPSD1;
+PSD2XL = PSD2XL-SAPPADPSD2;
+PSD2YL = PSD2YL+SAPPADPSD2;
+
+PSD1size = SS.S1um;
+PSD2size = SS.S2um;
+
+
+% Create two Cells that contain the X and Y coordinates respectively
+% for the small polygons that are uniformly distributed throughout the PSD
+% and return those Cells outside of the main loop
+for m = 0:(PSD1size - 1)
+for n = 0:(PSD1size - 1)
+p = 1+n+(m*PSD1size);
+PSD1Sxv = [(PSD1XL+m) (PSD1XL+(1+m)) (PSD1XL+(1+m)) (PSD1XL+m) (PSD1XL+m)]';
+PSD1Syv = [(PSD1YL-n) (PSD1YL-n) (PSD1YL-(1+n)) (PSD1YL-(1+n)) (PSD1YL-n)]';
+PSD1Sxvecs{p} = PSD1Sxv;
+PSD1Syvecs{p} = PSD1Syv;
+end
+end
+
+
+for m = 0:(PSD2size - 1)
+for n = 0:(PSD2size - 1)
+p = 1+n+(m*PSD2size);
+PSD2Sxv = [(PSD2XL+m) (PSD2XL+(1+m)) (PSD2XL+(1+m)) (PSD2XL+m) (PSD2XL+m)]';
+PSD2Syv = [(PSD2YL-n) (PSD2YL-n) (PSD2YL-(1+n)) (PSD2YL-(1+n)) (PSD2YL-n)]';
+PSD2Sxvecs{p} = PSD2Sxv;
+PSD2Syvecs{p} = PSD2Syv;
+end
+end
+
+
+end
+%===================================%
+
+
+%===================================%
+% SAPMASKREPORT
+%===================================%
+% Function takes SAP S-Cluster Matrix (S1)
+% uses mask to count SAPs in each 1x1 PolyBox region
+% returns condensed Field-Mx 1/4th of full S-Cluster field, 
+% holds values (0-4) of number of SAPs in each PolyBox
+%-------------------%
+function [SAPFmx1 SAPFmx2 SAPmx1 SAPmx2] = SAPMASKREPORT(Nsteps,S1, S2,um,dot)
+
+Scale = dot(5); % Scale
+um3 = um(3); % PSD1um
+um4 = um(4); % PSD2um
+PSD1size = round(um3/Scale);
+PSD2size = round(um4/Scale);
+sap_mask=[1 1; 1 1];
+
+[SS1PSD1 SS2PSD1] = size(S1);
+[SS1PSD2 SS2PSD2] = size(S2);
+
+SSPSD1 = round(SS1PSD1/2);
+SSPSD2 = round(SS1PSD2/2);
+
+
+% This constructs SAPFmx like: 
+% SAPFmx = [(1,1) (1,3) (1,5)... (3,1) (3,3)....]
+
+	SAPmx1_occ=(S1>0);  
+	SAPmx1=convn(SAPmx1_occ,sap_mask,'same');
+	SAPFmx1=zeros(SSPSD1);
+	for n = 0:(SSPSD1-1)
+	for m = 0:(SSPSD1-1)
+	SAPFmx1(m+1,n+1) = SAPmx1(1+(m*2),1+(n*2));
+	end
+	end
+
+	SAPmx2_occ=(S2>0);  
+	SAPmx2=convn(SAPmx2_occ,sap_mask,'same');
+	SAPFmx2=zeros(SSPSD2);
+	for n = 0:(SSPSD2-1)
+	for m = 0:(SSPSD2-1)
+	SAPFmx2(m+1,n+1) = SAPmx2(1+(m*2),1+(n*2));
+	end
+	end
+
+end
+%===================================%
+
+
+%===================================%
+%		SAPPREALLOCATE
+%===================================%
+function [sap_mask SSPSD1 SSPSD2 GluR1SdP1 GluR1SdP2...
+    GluR1SLOCMXa GluR1SLOCMXb g1polyN1 g2polyN1...
+    GluR2SdP1 GluR2SdP2 GluR2SLOCMXa GluR2SLOCMXb] = SAPPREALLOCATE(...
+    S1,S2,um,dot,runSAPPSD1,runSAPPSD2,PSD1Sxvecs,...
+    GluR1xyl,GluR2xyl)
+
+
+%-------------------
+% SAPMASKREPORT
+%-------------------
+%Scale = dot(5); % Scale
+%um3 = um(3); % PSD1um
+%um4 = um(4); % PSD2um
+%PSD1size = round(um3/Scale);
+%PSD2size = round(um4/Scale);
+
+sap_mask=[1 1; 1 1];
+% [SS1PSD1 SS2PSD1] = size(S1);
+% [SS1PSD2 SS2PSD2] = size(S2);
+[SS1PSD1, ~] = size(S1);
+[SS1PSD2, ~] = size(S2);
+SSPSD1 = round(SS1PSD1/2); %!! SSPSD1 MAY NOT NEED ROUNDING
+SSPSD2 = round(SS1PSD2/2); %!! SSPSD2 MAY NOT NEED ROUNDING
+
+
+
+%-------------------
+% G1SAPPOLYGON
+%-------------------
+GluR1SdP1 = zeros(size(GluR1xyl));
+GluR1SdP2 = GluR1SdP1;
+ 
+GluR1SLOCMXa = zeros(1,size(GluR1SdP1,2));
+GluR1SLOCMXb = GluR1SLOCMXa;
+
+[m,g1polyN1,n] = size(PSD1Sxvecs);
+    % currentcell = zeros(1,size(GluR1xyl,2));
+
+
+%-------------------
+% G2SAPPOLYGON
+%-------------------
+GluR2SdP1 = zeros(size(GluR2xyl));
+GluR2SdP2 = GluR2SdP1;
+ 
+GluR2SLOCMXa = zeros(1,size(GluR2SdP1,2));
+GluR2SLOCMXb = GluR2SLOCMXa;
+ 
+[m,g2polyN1,n] = size(PSD1Sxvecs);
+    % currentcell = zeros(1,size(GluR2xyl,2));
+
+
+
+end
+
+%}
+%--------------------
+% LOOPED FUNCTIONS
+%---
+% SUPERSLOT()
+% S1_MainClusterFun()
+% S2_MainClusterFun()
+% MaskFun()
+% inboxfun()
+%--------------------
+
+
+%----------------------------------%
+% S1_MainClusterFun Old
+%{
+%----------------------------------%
+% S1_MainClusterFun
+%----------------------------------%
+function [S1 G1SP1, SMx] = S1_MainClusterFun(S1Ph1, S1Ph2, S1Ph3, S1Ph4, S1Ph5,...
+			S1, S1sz, sap, stepN, G1SP1,GT,GTab,...
+			ActinTips,ActUpdate,TipCellA,AMask,hkMask,ACTINp,...
+			G1xy,G2xy,SMx,MXSZ,G1V1,G1V2)
+
+%=========================================================%
+%	TEST MASK AGAINST CLUSTER - GET CONVOLUTION MX
+%=========================================================%
+% Pen = (S) * mu * dT
+% Pex = 1/(1+exp(-B*hk))
+% Pkex = (1-S) ( rho * r * dT * Pex)
+%{
+% B:	slope of Pex function						[hi = shrink]
+% mu:	internalization rate						[hi = shrink]
+% Le:	lattice energy repulsion constant			[hi = shrink]
+% rho:	probability an endo pool sap is available	[hi = grow]
+% r:	transition rate from endo to empty site		[hi = grow]
+% hk:	mask energy field (matrix convelution)
+% dT:	time-step interval
+% S:	Surface SAP matrix
+
+% S=padarray(ones(7),[4 4], 0);
+% hkMask=[0 1 0; 1 0 1; 0 1 0];
+% B = 80;			% hi = shrink
+% Le = 1.21;		% hi = shrink
+% rho = 0.9;		% hi = grow
+% r = 10;			% hi = grow
+% mu = .15;		% hi = shrink
+
+% Pmx = rand(size(S));
+% Soc = (S>0);
+% Snoc = (S<1);
+% 
+% hk = convn(Soc,hkMask,'same');
+% Lhk = hk-Le;
+% 
+% Pen = (Soc) .* mu * dT;
+% Pex = 1 ./ (1+exp((-1*B)*Lhk));
+% Pkex = (1-Soc) .* ( rho * r * dT * Pex );
+% 
+% Sen = (Pen>Pmx);
+% Sex = (Pkex>Pmx);
+% 
+% S = (Soc-Sen) + Sex;
+%}
+%{
+hkMask=[0 1 0; 1 0 1; 0 1 0];
+S = S1;
+dT = sap(11);
+
+Le = S1Le;		% hi = shrink
+B = sap(3);		% hi = shrink
+rho = sap(13);	% hi = grow
+r = sap(15);	% hi = grow
+mu = sap(9);	% hi = shrink
+%-------------------------------%
+Pmx = rand(size(S));
+Soc = (S>0);
+Snoc = (S<1);
+Sno = ~Soc;
+%---
+hk = convn(Soc,hkMask,'same');
+Lhk = hk-Le;
+%---
+Pex = 1 ./ (1+exp((-1*B)*Lhk));
+Pkex = (1-Soc) .* ( rho * r * dT * Pex );
+Pkex0 = Pkex;
+Pen = (Soc) .* mu * dT;
+%---
+S0 = S;
+Pex0 = Pex;
+Pkex0 = Pkex;
+Pen0 = Pen;
+
+%=========================================================%
+% hk:	cluster force (2D field mask:Mx convelution)
+% Le:	repulsion constant (lattice repulsion force)	[hi = shrink]
+% Lhk:	(cluster force) - (repulsion constant)
+% B:	slope of Pex(Lhk) function						[hi = shrink]
+% rho:	probability an endo pool sap is available		[hi = grow]
+% r:	transition rate from endo to empty site			[hi = grow]
+% dT:	time-step interval
+% mu:	internalization rate							[hi = shrink]
+
+% S:	Surface SAP matrix (Soc:occupied | Snoc:not occupied)
+%=========================================================%
+%-------------------------------%
+G1oc = (S>2) .* 0.0;
+SG1oc = Pkex;
+%-------------------------------%
+
+%=========================================================%
+doLTPS1 = sap(19);
+if doLTPS1
+%=========================================================%
+
+%=========================================================%
+% GluA RT SAP recruitment tails coefficent (basal and LTP)
+%=========================================================%
+G1RT = G1RTBASE;
+if stepN >= LTP1onG1 && stepN <= LTP1offG1; G1RT=G1RTLTP; end
+if stepN >= LTP2onG1 && stepN <= LTP2offG1; G1RT=G1RTLTP; end
+
+%=========================================================%
+%		Get Matrix Locations of SAPs near AMPARs
+%=========================================================%
+G1P1poly0 = G1P1SAPM(:,2);
+[~, ~, G1P1poly1] = find(G1P1poly0);
+G1P1poly2 = G1P1poly1;
+%=============================================%
+for nx = 1:(numel(G1P1poly1))
+%=============================================%
+    if G1P1poly1(nx)<=8 && G1P1poly1(nx)>0
+        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*0)-1;
+    end
+    if G1P1poly1(nx)<=16 && G1P1poly1(nx)>8
+        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*1)-1;
+    end
+    if G1P1poly1(nx)<=24 && G1P1poly1(nx)>16
+        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*2)-1;
+    end
+    if G1P1poly1(nx)<=32 && G1P1poly1(nx)>24
+        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*3)-1;
+    end
+    if G1P1poly1(nx)<=40 && G1P1poly1(nx)>32
+        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*4)-1;
+    end
+    if G1P1poly1(nx)<=48 && G1P1poly1(nx)>40
+        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*5)-1;
+    end
+    if G1P1poly1(nx)<=56 && G1P1poly1(nx)>48
+        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*6)-1;
+    end
+    if G1P1poly1(nx)<=64 && G1P1poly1(nx)>56
+        G1P1poly2(nx) = (G1P1poly1(nx)*2)+(S1sz*7)-1;
+	end
+%=============================================%
+end % for nx
+%=============================================%
+
+
+%=============================================%
+if G1RTBASE > 0
+%=============================================%
+
+%-------------------------------%
+G1oc = (S>2) .* 0.0;
+SG1oc = Pkex;
+G1P1n = numel(G1P1poly2);
+%-------------------------------%
+
+%=============================================%
+for polyid = 1:G1P1n
+%=============================================%
+G1P1IDo = G1P1poly2(polyid);
+
+G1P1IDb = G1P1IDo+1;
+G1P1IDr = G1P1IDo+16;
+G1P1IDd = G1P1IDo+17;
+
+if G1P1IDo>=16
+	G1P1IDb = G1P1IDo+1;
+	G1P1IDr = G1P1IDo+16+(round(rand)*-32); 
+	G1P1IDd = G1P1IDr+1;
+	% 50:50 WHETHER EAST OR WEST SAP
+	% ALWAYS EAST SAP IF COMMENTED
+	%G1P1IDd = G1P1IDo+17+(round(rand)*-34);
+end
+%---
+G1oc(G1P1IDo)=1;
+G1oc(G1P1IDb)=1;
+G1oc(G1P1IDr)=1;
+G1oc(G1P1IDd)=1;
+%---
+SG1oc(G1P1IDo)=1;
+SG1oc(G1P1IDb)=1;
+SG1oc(G1P1IDr)=1;
+SG1oc(G1P1IDd)=1;
+%=============================================%
+end % for polyid = 1:G1P1n
+%=============================================%
+Gex = Sno .* SG1oc .* G1RT + Pkex;
+Gp = 1 ./ (1+exp((-1*1)*hk)) + .001;
+Gpex = Gex .* Gp;
+%---
+Pkex = Gpex;
+%=============================================%
+end % if G1RTBASE > 0
+%=============================================%
+end % if doLTPS1
+%=========================================================%
+
+
+%=========================================================%
+%		FINAL CLUSTER PARAMETERS
+%---------------------------------------------------------%
+Sen = (Pen>Pmx);
+Sex = (Pkex>Pmx);
+S = (Soc-Sen) + Sex;
+S1=S;
+
+% S=padarray(ones(7),[4 4], 0);
+%=========================================================%
+%}
+%---------------------------------------------%
+
+
+S=S1;
+dT = sap(11);
+% hkMask=[0 1 0; 1 0 1; 0 1 0];
+
+
+Lon = sap(21);	% On Energy (lower = more on events)
+Bon = sap(22);	% On Neighbor-Independant Rate (new growth) (lower = more on)
+Ron = sap(23);	% On Neighbor-Dependant Rate (cluster fill-in) (higher = more on)
+
+Loff = sap(24);	% Off Energy (higher = more off events)
+Boff = sap(25);	% Off Neighbor-Inependant Rate (uniform off)  (lower = more off)
+Roff = sap(26);	% Off Neighbor-Dependant Rate (edge off) (higher = more off)
+
+% %------------
+% if mod(stepN,ActUpdate) == 0
+% TipCellA = TipCellA+1;
+% ACTINp = ActinTips{TipCellA};
+% ACTINp = convn(ACTINp,AMask,'same');
+% end
+% %------------
+
+%------------
+Pmx = rand(size(S));
+Soc = (S>0);
+Sno = ~Soc;
+%---
+hk = convn(ACTINp,hkMask,'same');
+%------------
+Pon = 1 ./ (1+exp((hk-Lon).*(-Bon)));
+Pkon = Sno .* ( Ron * dT * Pon );
+%---
+Son = (Pkon>Pmx);
+%------------
+Poff = 1 ./ (1+exp(((-hk)+Loff).*(-Boff)));
+Pkoff = Soc .* ( Roff * dT * Poff );
+%---
+Soff = (Pkoff>Pmx);
+%------------
+
+
+%-------------------------------%
+G1oc = zeros(S1sz);
+%-------------------------------%
+
+% %=========================================================%
+% doLTPS1 = sap(19);
+% if doLTPS1
+% if GTon > 0
+% 	
+% G1oc(G1P2poly2)=1;
+% %---------------------------------------------%
+% GRhk = convn(G1oc,GhkMask,'same');
+% GRk=(GRhk.*GTon);
+% GSk=(GRhk.*GToff);
+% %-------------------------------%
+% Gon = Pkon+(GRk.*(Pkon + LTPv));
+% Goff = Pkoff+(GSk.*Pkoff);
+% %-------------------------------%
+% Son = (Gon>Pmx);
+% Soff = (Goff>Pmx);
+% %-------------------------------%
+% end % if G1RTBASE > 0
+% %-------------------------------%
+% end % if doLTPS1
+% %=========================================================%
+
+
+%---------------------------------------------%
+%			FINAL CLUSTER PARAMETERS
+%---------------------------------------------%
+S = (Soc-Soff) + Son;
+S1=S;
+%---------------------------------------------%
+
+
+
+%=============================================%
+%				PLOT CLUSTER
+%---------------------------------------------%
+if mod(stepN,100) == 0
+set(S1Ph1,'CData',S1);
+drawnow
+end
+%---------------------------------------------%
+%			ADDITIONAL CLUSTER PLOTS
+%---------------------------------------------%
+doS1PLOTS=1;
+if doS1PLOTS
+if mod(stepN,200) == 0
+%---------------------------------------------%
+figure(1);
+%---
+
+set(S1Ph2,'CData',hk);
+drawnow
+
+set(S1Ph3,'CData',Pkon);
+drawnow
+
+set(S1Ph4,'CData',Sno);
+drawnow
+
+% set(S1Ph5,'CData',GRhk);
+% drawnow
+
+%{
+%=========================================================%
+% if stepN == 2000; keyboard; end
+% cbr = colorbar('location','South');
+% set(cbr(1), 'XColor', 'r');
+% text(1,1.5,'S0','FontSize',22,'Color',[.7 1 .7]);
+% caxis(caxis);
+%=========================================================%
+
+%---
+% LEFT POS-2 (hk)
+%---
+% subplot('Position',[.02 .54 .3 .45]),...
+subplot(5,5,6),
+imagesc(hk)
+title('hk');
+
+%---
+% LEFT POS-3 (Pkon)
+%---
+% subplot('Position',[.35 .54 .3 .45]),...
+subplot(5,5,11),
+imagesc(Pkon);
+title('Pkon');
+
+%---
+% LEFT POS-4 (Sno)
+%---
+% subplot('Position',[.68 .54 .3 .45]),...
+subplot(5,5,16),
+imagesc(Sno);
+title('Sno');
+
+
+%---
+% LEFT POS-5 (G1oc)
+%---
+% subplot('Position',[.02 .05 .3 .45]),...
+subplot(5,5,21),
+imagesc(G1oc);
+title('TETHERED G1');
+
+%---
+% LEFT POS-6 (Sex)
+%---
+% subplot('Position',[.35 .05 .3 .45]),...
+% subplot(5,5,16),
+% imagesc(Sex);
+% title('Sex');
+
+%---
+% LEFT POS-4 (Sen)
+%---
+% subplot('Position',[.68 .54 .3 .45]),...
+% subplot(5,5,16),
+% imagesc(Sen);
+% title('Sen');
+
+%}
+%---------------------------------------------%
+end % if mod(stepN,100) == 0
+end % if doS1PLOTS
+%=========================================================%
+end
+
+
+%}
+%----------------------------------%
 
