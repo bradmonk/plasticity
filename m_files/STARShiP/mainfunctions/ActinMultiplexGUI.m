@@ -120,13 +120,14 @@ SIZE = [PSDsz PSAsz];
 
 
 %-------
-doPlot = get(handles.doPlot,'Value');
-PlotNum = str2double(get(handles.PlotNum,'String'));
-doFluorPlot = get(handles.doFluorPlot,'Value');
-FluorT = str2double(get(handles.FluorT,'String'));
+doP1 = get(handles.doPlot,'Value');
+doP2 = str2double(get(handles.PlotNum,'String'));
+doP3 = get(handles.doFluorPlot,'Value');
+doP4 = str2double(get(handles.FluorT,'String'));
 %---
-DOES = [doPlot PlotNum doFluorPlot FluorT];
+DOES = [doP1 doP2 doP3 doP4];
 %-------
+
 
 
 %-------
@@ -162,20 +163,52 @@ AMX18  = str2double(get(handles.CofR,'String'));
 AMX19  = str2double(get(handles.SaveTipsAfter,'String'));
 AMX20  = str2double(get(handles.SaveTipsRate,'String'));
 AMX21  = str2double(get(handles.ARPsc,'String'));
-AMX22  = str2double(get(handles.ARPdec,'String'));
+AMX22  = str2double(get(handles.ARPmax,'String'));
 AMX23  = str2double(get(handles.Asja,'String'));
 AMX24  = str2double(get(handles.Asjb,'String'));
 AMX25  = str2double(get(handles.Asjc,'String'));
 AMX26  = str2double(get(handles.Asjd,'String'));
 AMX27  = str2double(get(handles.PSDproxyXY,'String'));
 AMX28  = get(handles.doClustering,'Value');
+AMX29  = str2double(get(handles.ACTadd2new,'String'));
+AMX30  = str2double(get(handles.ACTdelCofN,'String'));
+AMX31  = str2double(get(handles.ArpON,'String'));
+AMX32  = str2double(get(handles.ArpOFF,'String'));
+AMX33  = str2double(get(handles.GArpN,'String'));
+AMX34  = str2double(get(handles.CofScalar,'String'));
+AMX35  = get(handles.doActCounts,'Value');
+AMX36  = get(handles.doActLTP,'Value');
+AMX37  = str2double(get(handles.AcLTPs,'String'));
+AMX38  = str2double(get(handles.AcLTPe,'String'));
+AMX39  = get(handles.DelOrigFils,'Value');
+AMX40  = str2double(get(handles.DelOrigFilsT,'String'));
+AMX41  = str2double(get(handles.startmonos,'String'));
+AMX42  = str2double(get(handles.startfils,'String'));
+AMX43  = str2double(get(handles.fZo,'String'));
+AMX44  = str2double(get(handles.fZa,'String'));
+AMX45  = str2double(get(handles.fXYo,'String'));
+AMX46  = str2double(get(handles.fXYa,'String'));
+AMX47  = str2double(get(handles.AdT,'String'));
+AMX48  = str2double(get(handles.Aska,'String'));
+AMX49  = str2double(get(handles.Askb,'String'));
+AMX50  = str2double(get(handles.Askc,'String'));
+AMX51  = str2double(get(handles.Askd,'String'));
+AMX52  = str2double(get(handles.delOrate,'String'));
 %---
 AMX = {AMX1, AMX2, AMX3, AMX4, AMX5, AMX6, AMX7, AMX8, AMX9, AMX10,...
 	   AMX11, AMX12, AMX13, AMX14, AMX15, AMX16, AMX17, AMX18, AMX19,...
-	   AMX20, AMX21, AMX22, AMX23, AMX24, AMX25, AMX26, AMX27, AMX28};
+	   AMX20, AMX21, AMX22, AMX23, AMX24, AMX25, AMX26, AMX27, AMX28,...
+	   AMX29, AMX30, AMX31, AMX32, AMX33, AMX34, AMX35, AMX36, AMX37,...
+	   AMX38, AMX39, AMX40, AMX41, AMX42, AMX43, AMX44, AMX45, AMX46,...
+	   AMX47, AMX48, AMX49, AMX50, AMX51, AMX52};
 %-------
 
 
+%-------
+AMS1  = str2double(get(handles.LivePlotM,'String'));
+%--
+AMS = {AMS1};
+%-------
 
 
 MSK1  = str2double(get(handles.GNpk,'String'));
@@ -194,7 +227,7 @@ MSK = {MSK1, MSK2, MSK3, MSK4, MSK5, MSK6};
 
 
 % handles.output = ActinMultiplex(LBR,TIME,SIZE,MODS,DOES,REVA,GLU,GT,GTab,doTs,AMX,MSK);
-handles.output = ActinMultiplex(LBR,TIME,SIZE,DOES,REVA,AMX,MSK);
+handles.output = ActinMultiplex(LBR,TIME,SIZE,DOES,REVA,AMX,MSK,AMS);
 
 
 
@@ -395,10 +428,10 @@ ARPsc = get(hObject, 'Value');
 handles.guidata.ARPsc = ARPsc;
 guidata(hObject,handles)
 %---
-function ARPdec(hObject, eventdata, handles)
-ARPdec = get(hObject, 'Value');
+function ARPmax(hObject, eventdata, handles)
+ARPmax = get(hObject, 'Value');
  
-handles.guidata.ARPdec = ARPdec;
+handles.guidata.ARPmax = ARPmax;
 guidata(hObject,handles)
 %---
 function Asja(hObject, eventdata, handles)
@@ -437,6 +470,210 @@ doClustering = get(hObject, 'Value');
 handles.guidata.doClustering = doClustering;
 guidata(hObject,handles)
 %---
+function ACTadd2new(hObject, eventdata, handles)
+ACTadd2new = get(hObject, 'Value');
+ 
+handles.guidata.ACTadd2new = ACTadd2new;
+guidata(hObject,handles)
+%---
+function ACTdelCofN(hObject, eventdata, handles)
+ACTdelCofN = get(hObject, 'Value');
+ 
+handles.guidata.ACTdelCofN = ACTdelCofN;
+guidata(hObject,handles)
+%---
+function ArpON(hObject, eventdata, handles)
+ArpON = get(hObject, 'Value');
+ 
+handles.guidata.ArpON = ArpON;
+guidata(hObject,handles)
+%---
+function ArpOFF(hObject, eventdata, handles)
+ArpOFF = get(hObject, 'Value');
+ 
+handles.guidata.ArpOFF = ArpOFF;
+guidata(hObject,handles)
+%---
+function GArpN(hObject, eventdata, handles)
+GArpN = get(hObject, 'Value');
+ 
+handles.guidata.GArpN = GArpN;
+guidata(hObject,handles)
+%---
+function CofScalar(hObject, eventdata, handles)
+CofScalar = get(hObject, 'Value');
+ 
+handles.guidata.CofScalar = CofScalar;
+guidata(hObject,handles)
+%---
+function doActCounts(hObject, eventdata, handles)
+doActCounts = get(hObject, 'Value');
+ 
+handles.guidata.doActCounts = doActCounts;
+guidata(hObject,handles)
+%---
+function doActLTP(hObject, eventdata, handles)
+doActLTP = get(hObject, 'Value');
+ 
+handles.guidata.doActLTP = doActLTP;
+guidata(hObject,handles)
+%---
+function AcLTPs(hObject, eventdata, handles)
+AcLTPs = get(hObject, 'Value');
+ 
+handles.guidata.AcLTPs = AcLTPs;
+guidata(hObject,handles)
+%---
+function AcLTPe(hObject, eventdata, handles)
+AcLTPe = get(hObject, 'Value');
+ 
+handles.guidata.AcLTPe = AcLTPe;
+guidata(hObject,handles)
+%---
+function DelOrigFils(hObject, eventdata, handles)
+DelOrigFils = get(hObject, 'Value');
+ 
+handles.guidata.DelOrigFils = DelOrigFils;
+guidata(hObject,handles)
+%---
+function DelOrigFilsT(hObject, eventdata, handles)
+DelOrigFilsT = get(hObject, 'Value');
+ 
+handles.guidata.DelOrigFilsT = DelOrigFilsT;
+guidata(hObject,handles)
+%---
+function startmonos(hObject, eventdata, handles)
+startmonos = get(hObject, 'Value');
+ 
+handles.guidata.startmonos = startmonos;
+guidata(hObject,handles)
+%---
+function startfils(hObject, eventdata, handles)
+startfils = get(hObject, 'Value');
+ 
+handles.guidata.startfils = startfils;
+guidata(hObject,handles)
+%---
+function fZo(hObject, eventdata, handles)
+fZo = get(hObject, 'Value');
+ 
+handles.guidata.fZo = fZo;
+guidata(hObject,handles)
+%---
+function fZa(hObject, eventdata, handles)
+fZa = get(hObject, 'Value');
+ 
+handles.guidata.fZa = fZa;
+guidata(hObject,handles)
+%---
+function fXYo(hObject, eventdata, handles)
+fXYo = get(hObject, 'Value');
+ 
+handles.guidata.fXYo = fXYo;
+guidata(hObject,handles)
+%---
+function fXYa(hObject, eventdata, handles)
+fXYa = get(hObject, 'Value');
+ 
+handles.guidata.fXYa = fXYa;
+guidata(hObject,handles)
+%---
+function AdT(hObject, eventdata, handles)
+AdT = get(hObject, 'Value');
+ 
+handles.guidata.AdT = AdT;
+guidata(hObject,handles)
+%---
+function Aska(hObject, eventdata, handles)
+Aska = get(hObject, 'Value');
+ 
+handles.guidata.Aska = Aska;
+guidata(hObject,handles)
+%---
+function Askb(hObject, eventdata, handles)
+Askb = get(hObject, 'Value');
+ 
+handles.guidata.Askb = Askb;
+guidata(hObject,handles)
+%---
+function Askc(hObject, eventdata, handles)
+Askc = get(hObject, 'Value');
+ 
+handles.guidata.Askc = Askc;
+guidata(hObject,handles)
+%---
+function Askd(hObject, eventdata, handles)
+Askd = get(hObject, 'Value');
+ 
+handles.guidata.Askd = Askd;
+guidata(hObject,handles)
+%---
+function delOrate(hObject, eventdata, handles)
+delOrate = get(hObject, 'Value');
+ 
+handles.guidata.delOrate = delOrate;
+guidata(hObject,handles)
+%---
+function LivePlotM(hObject, eventdata, handles)
+LivePlotM = get(hObject, 'Value');
+ 
+handles.guidata.LivePlotM = LivePlotM;
+guidata(hObject,handles)
+%---
+
+
+
+
+%{
+
+LivePlotM
+
+function XXXXX(hObject, eventdata, handles)
+XXXXX = get(hObject, 'Value');
+ 
+handles.guidata.XXXXX = XXXXX;
+guidata(hObject,handles)
+%---
+
+
+
+function XXXXX(hObject, eventdata, handles)
+XXXXX = get(hObject, 'Value');
+ 
+handles.guidata.XXXXX = XXXXX;
+guidata(hObject,handles)
+%---
+
+
+
+
+function XXXXX(hObject, eventdata, handles)
+XXXXX = get(hObject, 'Value');
+ 
+handles.guidata.XXXXX = XXXXX;
+guidata(hObject,handles)
+%---
+
+
+
+function XXXXX(hObject, eventdata, handles)
+XXXXX = get(hObject, 'Value');
+ 
+handles.guidata.XXXXX = XXXXX;
+guidata(hObject,handles)
+%---
+
+%}
+
+
+
+
+
+
+
+
+
+
 
 
 

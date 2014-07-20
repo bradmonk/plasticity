@@ -1,11 +1,10 @@
-function [varargout] = SimpleMultiplex(varargin)
-format compact;format short;close all;clc; clear all;
-scsz = get(0,'ScreenSize');
+function [] = SimpleMultiplex()
+clc; close all; clear all;
 
 
 % USER ENTERED VALUES
 NSteps = 1000;			% number of steps (loop time)
-Ndots = 1000;			% number of particles
+Ndots = 100;			% number of particles
 NLoops= 100;
 
 
@@ -78,10 +77,11 @@ Box2LB = BOXLOC2(1:2);
 Box2RT = Box2LB + BOXLOC2(3:4);
 
 
+doTrace=0;
+doLiveScatter = 0;
+doLiveBar = 0;
 
-doLivePlot = 0;
-
-if doLivePlot
+if doLiveScatter
 %================================================%
 %               FIGURE SETUP
 %------------------------------------------------%
@@ -95,17 +95,19 @@ xlim = [-XWIDE*1.01 XWIDE*1.01]; ylim = [-YHIGH*1.01 YHIGH*1.01];
 %---
 subplot('Position',[.05 .05 .65 .9])
 Ph1 = scatter(XYL(1,:),XYL(2,:),5,[0 0 1]);
+set(Ph1,'Marker','o','SizeData',60,'LineWidth',.5,...
+	'MarkerFaceColor',[.95 .1 .1],'MarkerEdgeColor','none')
 axis([xlim, ylim]);
 % axis off
 set(gca,'XTick',[],'YTick',[],'Color',[.8 .8 .8])
 hold on
 
-pause(1)
-SPh2 = subplot(1,1,1);
-Ph2 = plot(XYLp(1,:),XYLp(2,:));
-axis([xlim, ylim]);
-axis off
-hold(SPh2,'on');
+% pause(1)
+% SPh2 = subplot(1,1,1);
+% Ph2 = plot(XYLp(1,:),XYLp(2,:));
+% axis([xlim, ylim]);
+% axis off
+% hold(SPh2,'on');
 rectangle('Position',BOXLOC1); hold on;
 rectangle('Position',BOXLOC2); hold on;
 rectangle('Position',BOARDER); hold on;
@@ -120,6 +122,8 @@ pause(1)
 %-------------------------------------------------%
 end %if doLivePlot
 
+
+SMxE = zeros(50);
 
 for Ln = 1:NLoops
 mm=1;
@@ -142,32 +146,35 @@ for Nt = 1:NSteps
 	% Keep everything inside enclosure  %
 	[XYL] = ENCLOSE(Nt,XYL,XWIDE,YHIGH,Ndots);
 
+	[G1xy] = dopartmx(XYL,SMxE);
+	figure(1)
+	imagesc(G1xy)
 	
-	doTrace=0;
 	if doTrace
 	XYLp(:,Nt) = XYL(:,1);		% save step of first dot (for trace)
-	DUALPLOT(Nt,XYL,Ph1,XYLp,SPh2)
+	DUALPLOT(Nt,XYL,Ph1,XYLp,Ph2)
 	XL(Nt,:) = XYL(1,:);
 	YL(Nt,:) = XYL(2,:);
 	end
 	
-	if doLivePlot
-	figure(SPh2)
+	if doLiveScatter
+	%figure(SPh2)
 	set(Ph1,'XData',XYL(1,:),'YData',XYL(2,:));
 	drawnow
 	end
 	
+
+	
 	if mod(Nt,100)==0	
 	Box1N(mm) = sum(Box1>0);
 	Box2N(mm) = sum(Box2>0);
-	
-	if doLivePlot
-	set(Ph3,'YData',[Box1N(mm) Box2N(mm)]);
-	drawnow
-	end
-		
+		if doLiveBar
+		set(Ph3,'YData',[Box1N(mm) Box2N(mm)]);
+		drawnow
+		end
 	mm=mm+1;
 	end
+
 	
 %-------------------------------%
 % pause(Delay)
@@ -196,11 +203,31 @@ FINALPLOT(Boxy1,Boxy2,Boxy3)
 
 
 %===============================%
-% varargout = {XYLp}; % export traced particle location
-varargout = {Boxy1,Boxy2};
+%varargout = {Boxy1,Boxy2};
 
 end
 %===============================%
+
+
+
+
+
+
+
+function [G1xy] = dopartmx(XYL,SMxE)
+
+
+GR1c = round(XYL(1,:))+55;
+GR1r = round(XYL(2,:))+55;
+% GR1xy(1,:) = GR1c;
+% GR1xy(2,:) = GR1r;
+
+G1xy = SMxE;
+for xy = 1:numel(GR1c)
+G1xy(GR1r(xy),GR1c(xy)) = 1;
+end
+
+end
 
 
 

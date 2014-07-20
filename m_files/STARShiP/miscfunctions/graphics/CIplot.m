@@ -1,6 +1,7 @@
 function varargout = CIplot(datas,varargin)
 
 dataINo = datas;
+fromMB  = 0;
 
 if nargin ==1
 	cOLOR   = [.01 .95 .01];
@@ -27,28 +28,46 @@ elseif nargin ==5
 	ptype	= varargin{2};
 	sbpos   = varargin{3};
 	itemN   = varargin{4};
+elseif nargin ==6
+	cOLOR   = varargin{1};
+	ptype	= varargin{2};
+	sbpos   = varargin{3};
+	itemN   = varargin{4};
+	fromMB  = varargin{5};
 end
 
 
+if fromMB
+	
+	dataIN = [];
+	dataTemp = [];
+	for c = 1:numel(dataINo{1}(1,:));
+		for now = 1:numel(dataINo); 
+			dataTemp(:,now) = dataINo{1,now}(:,c);
+		end; 
+	dataIN{c}=dataTemp; 
+	end;
 
+else
 
-dataIN = dataINo;
-
-if iscell(dataIN)
-	datasz = size(dataIN{1});
-	if datasz(1) > datasz(2)
-		for nn = 1:numel(dataIN)
-			dataRE(:,nn) = dataIN{nn};
-		end
-	else
-		for nn = 1:numel(dataIN)
-			dataRE(:,nn) = dataIN{nn}';
+	dataIN = dataINo;
+	if iscell(dataIN)
+		datasz = size(dataIN{1});
+		if datasz(1) > datasz(2)
+			for nn = 1:numel(dataIN)
+				dataRE(:,nn) = dataIN{nn};
+			end
+		else
+			for nn = 1:numel(dataIN)
+				dataRE(:,nn) = dataIN{nn}';
+			end
 		end
 	end
+	dataIN = {dataRE};
+
 end
 
 
-dataIN = {dataRE};
 
 
 %==============================================%

@@ -131,7 +131,7 @@ hold on;
 
 if mod(Nt,10)==0
 axis vis3d
-camorbit(10,0,'camera')
+camorbit(5,0,'camera')
 drawnow
 end
  

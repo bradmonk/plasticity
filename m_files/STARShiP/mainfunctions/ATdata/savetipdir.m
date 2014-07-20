@@ -1,17 +1,14 @@
 function [] = savetipdir(AMX,varargin)
 
-% if loadsave=1 load; 
-% if loadsave=2 save;
-bdir='BradsModel';
 thisfile='savetipdir';
 fdata=AMX{3};
 loadsave=1;
 
 if numel(varargin) > 0
 	loadsave=varargin{1};
-	%ATs = varargin{2};
 	ATs = evalin('base', 'ATs');
 	Ax = evalin('base', 'Ax');
+	AMx = evalin('base', 'AMx');
 end
 
 
@@ -36,7 +33,7 @@ end
 	load(fd);
 	end
 	if loadsave==2
-		save(fdata, 'ATs','Ax')
+		save(fdata, 'ATs','Ax','AMx')
 	end
 	
 

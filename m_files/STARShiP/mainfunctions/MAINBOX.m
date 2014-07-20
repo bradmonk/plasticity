@@ -2,56 +2,13 @@ function [varargout] = MAINBOX(dot,dr,um,sap,hr,ko,doUse,doRun,doKo,box,slt,stky
 clc; format compact; format short; close all; SNSZ = get(0,'ScreenSize');
 
 
-%=========================================================%
-%					INPUTS FROM GUI
-%---------------------------------------------------------%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%						INPUTS FROM GUI
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 doIz = doRun(10);
 doprofile = doRun(11);
-
-if doprofile
-profile on;
-end
-
-%{
-% IF NO GUI INPUTS
-if nargin < 1 
-
-dot = [150.00 50.00 3600.00 1000.00 0.10 1.00];
-dr = [0.130 0.100 0.050 0.040 0.130 0.100 0.050 0.040];
-um = [3.000 6.000 0.400 0.400 0.200 0.200];
-sap = [7.000 7.000 50.000 1.800 1.300 50.000 1.800 1.300];
-hr = [30 60];
-ko = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1];
-doUse = [1 1 1 1];
-doRun = [0 0 0 0 1 0 0];
-doKo = [1 1 1 1 0 0];
-box = [30 200 5 0];
-slt = [1 1 1 1];
-stky = [1.500 0.200 4.000 0.400 6.900 5.800 4.000 0.000 2.000...
-	0.000 5.800 5.800 1800.000 1.000 2100.000 1.000 1800.000...
-	1.000 2100.000 1.000 2.000 2.000];
-
-disp('Using internal (non-GUI) parameter constants:');
-% sprintf('%.3f|',strcat('dot:', num2str(dot)))
-disp('dot...');sprintf('%.3f|',dot)
-disp('dr...');sprintf('%.3f|',dr)
-disp('um...');sprintf('%.3f|',um)
-disp('sap...');sprintf('%.3f|',sap)
-disp('hr...');sprintf('%.0f|',hr)
-disp('ko...');sprintf('%.0f|',ko)
-disp('doUse...');sprintf('%.0f|',doUse)
-disp('doRun...');sprintf('%.0f|',doRun)
-disp('doKo...');sprintf('%.0f|',doKo)
-disp('box...');sprintf('%.0f|',box)
-disp('slt...');sprintf('%.0f|',slt)
-disp('stky...');sprintf('%.3f|',stky)
-
-end
-
-%}
-
-
-
+if doprofile; profile on; end
 
 dot1 = dot(1); % GluR1dots
 dot2 = dot(2); % GluR2dots
@@ -68,47 +25,9 @@ dr5 = dr(5); % esDGR2
 dr6 = dr(6); % spineDGR2
 dr7 = dr(7); % PERIDGR2
 dr8 = dr(8); % PSDDGR2
- 
-um1 = um(1); % denWidthX
-um2 = um(2); % denHeightY
-um3 = um(3); % PSD1um
-um4 = um(4); % PSD2um
-um5 = um(5); % PERI1um
-um6 = um(6); % PERI2um
- 
+
 sap1 = sap(1); % SAPdotsPSD1
 sap2 = sap(2); % SAPdotsPSD2
-% sap3 = sap(3); % SAPbetaPSD1
-% sap4 = sap(4); % SAPtauPSD1
-% sap5 = sap(5); % SAPL1PSD1
-% sap6 = sap(6); % SAPbetaPSD2
-% sap7 = sap(7); % SAPtauPSD2
-% sap8 = sap(8); % SAPL1PSD2
-% 
-% sap9 = sap(9); % SAPmuPSD1
-% sap10 = sap(10); % SAPmuPSD2
-% sap11 = sap(11); % SAPdTPSD1
-% sap12 = sap(12); % SAPdTPSD2
-% sap13 = sap(13); % SAPrhoPSD1
-% sap14 = sap(14); % SAPrhoPSD2
-% sap15 = sap(15); % SAPrPSD1
-% sap16 = sap(16); % SAPrPSD2
-% sap17 = sap(17); % doDynamicLeP1
-% sap18 = sap(18); % doDynamicLeP2
-% 
-% sap21 = sap(21); % LonS1
-% sap22 = sap(22); % BonS1
-% sap23 = sap(23); % RonS1
-% sap24 = sap(24); % LoffS1
-% sap25 = sap(25); % BoffS1
-% sap26 = sap(26); % RoffS1
-% sap27 = sap(27); % LonS2
-% sap28 = sap(28); % BonS2
-% sap29 = sap(29); % RonS2
-% sap30 = sap(30); % LoffS2
-% sap31 = sap(31); % BoffS2
-% sap32 = sap(32); % RoffS2
-
 
 slt1 = slt(1); % G1PSDslotN
 slt2 = slt(2); % G1PERIslotN
@@ -122,25 +41,14 @@ ko10 = ko(10); % KoffSpi1PSDGR1
 
 doUse1 = doUse(1); % useGluR1
 doUse2 = doUse(2); % useGluR2
-% doUse3 = doUse(3); % runSAPPSD1
-% doUse4 = doUse(4); % runSAPPSD2
  
 doRun1 = doRun(1); % run2Dplot
-doRun2 = doRun(2); % run3Dplot
 doRun3 = doRun(3); % runMSDtest
-% doRun4 = doRun(4); % runTraceSingleDot
 doRun5 = doRun(5); % runMSDpopup      % POPUP
-doRun6 = doRun(6); % runHomeostatic
 doRun7 = doRun(7); % runPoissonsBox
-doRun8 = doRun(8); % doFieldFig
-% doRun9 = doRun(9); % doSlotColormap
 
 doKo1 = doKo(1); % useGluR1slots
 doKo2 = doKo(2); % useGluR2slots
-% doKo3 = doKo(3); % useSlotsPSDGR1
-% doKo4 = doKo(4); % useSlotsPSDGR2
-% doKo5 = doKo(5); % useSlotsPERIGR1
-% doKo6 = doKo(6); % useSlotsPERIGR2
 
 box1 = box(1);	% GraphTime
 box2 = box(2);	% AllowedTime
@@ -160,98 +68,46 @@ DontDo = 0;
 MSDdrop = doRun5;
 
 
-SAPPADPSD1 = stky(21);
-SAPPADPSD2 = stky(22);
-
-
-G1STBASE = stky(1);
-G1RTBASE = stky(2);
-G1STLTP = stky(3);
-G1RTLTP = stky(4);
-G1BSMu = stky(5);
-G1LSMu = stky(6);
-
-G2STBASE = stky(7);
-G2RTBASE = stky(8);
-G2STLTP = stky(9);
-G2RTLTP = stky(10);
-G2BSMu = stky(11);
-G2LSMu = stky(12);
-
-LTP1onG1 = stky(13);
-LTP1offG1 = stky(15);
-LTP2onG1 = stky(14);
-LTP2offG1 = stky(16);
-
-% LTP1onG2 = stky(17);
-% LTP1offG2 = stky(19);
-% LTP2onG2 = stky(18);
-% LTP2offG2 = stky(20);
-
-
-% GT1on = GT(1);
-% GT1off = GT(2);
-% GT1LTPv = GT(3);
-% GT2on = GT(4);
-% GT2off = GT(5);
-% GT2LTPv = GT(6);
-% GT1masktab = GTab{1};
-% GT2masktab = GTab{2};
-
-
-
-
-
-%%
-%=========================================================%
-%                  FUNCTION SWITCHES
-%---------------------------------------------------------%
-% DO PLOTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%						FUNCTION SWITCHES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 doMainPlot = doRun1;
-% do3DPLOT = doRun2;
 
-% PARTICLES?
 Nsteps = dot3;
 doGluR1 = doUse1;
 doGluR2 = doUse2;
 
-GluR1Ndots = dot1;		% GluR1 Particles
-GluR2Ndots = dot2;		% GluR2 Particles
+G1N = dot1;		% GluR1 Particles
+G2N = dot2;		% GluR2 Particles
 
-if ~doGluR1
-	GluR1Ndots = 0;
-end
-if ~doGluR2
-	GluR2Ndots = 0;
-end
+if ~doGluR1;G1N=0;end;
+if ~doGluR2;G2N=0;end;
 
-
-% DO TRACK MSD?
 trackMSD = doRun3;
-if trackMSD
-	GluR2Ndots = 100;
-	GluR1Ndots = 0;
-	Nsteps = 100;
-end
+if trackMSD; G2N=100;G1N=0;Nsteps=100;end;
 
 
 
 
-
-%######################################################################%
-%######################################################################%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%				START OUTER LOOP (DATA COLLECTION LOOP)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 loops = dot6;
 for re = 1:loops
-%======================================================================%
+%----------------------------------------------------------------------%
+	
 
 
-%=========================================================%
-%               STARTING PARAMETERS
-%---------------------------------------------------------%
-% BASE DIFFUSION RATES EQUATIONS
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%					DIFFUSION PARAMETERS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Scale = dot5;				% scale of model
 Sc = Scale;					% scale for diffusion
-
 
 t = dot4/1000;				% time step
 d = 2;                      % dimensions
@@ -314,33 +170,31 @@ LsGR2psd = 1/sqrt(DrGR2psd);	% GluR2 (PSA) D Lx-Scalar
 % DIFFUSION RATE WHEN SLOTTED
 LsGR1S = LsGR1psa / 10;
 LsGR2S = LsGR2psa / 1000;
-
-
 % LsGR1S=1;
 % LsGR2S=1;
 
-%=========================================================%
-% Synaptic Dwell-Time Values
-%=========================================================%
-GluR2_TdwellPSD = zeros(2,GluR2Ndots);
-GluR1_TdwellPSD = zeros(2,GluR1Ndots);
-GluR2_TdwellPERI = zeros(2,GluR2Ndots);
-GluR1_TdwellPERI = zeros(2,GluR1Ndots);
-GluR2_TdwellSPYN = zeros(2,GluR2Ndots);
-GluR1_TdwellSPYN = zeros(2,GluR1Ndots);
 
 
-%%
-%=========================================================%
-%			PARTICLE BOX EXIT SIMULATION (EXITBOX)
-%---------------------------------------------------------%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%					Synaptic Dwell-Time Values
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+GluR2_TdwellPSD = zeros(2,G2N);
+GluR1_TdwellPSD = zeros(2,G1N);
+GluR2_TdwellPERI = zeros(2,G2N);
+GluR1_TdwellPERI = zeros(2,G1N);
+GluR2_TdwellSPYN = zeros(2,G2N);
+GluR1_TdwellSPYN = zeros(2,G1N);
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%				PARTICLE BOX EXIT SIMULATION (EXITBOX)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if doRun7
-
 pbox = [box1 box2 box3 box4 dot5 dot4 dot1 dot2...
     DGR1spy kGR1 DGR1psd DGR2spy kGR2 DGR2psd LsGR1psd LsGR2psd...
 	doKo1 doKo2 ko9 ko10 ko1 ko2...
 	sap1 sap2 slt1 slt2 slt3 slt4];
-
 varargin = EXITBOX(pbox,um);
 GluR1exT30 = [varargin{1,1}]';
 GluR2exT30 = [varargin{1,2}]';
@@ -350,196 +204,172 @@ end
 
 
 
-%=========================================================%
-MSDstring = ['D  Dn_PSD1  Dn_PSD2  d  t  k  L  Lx'];
-MSDdata = [D Dn_PSD1 Dn_PSD2 d t k L Lx];
-%=========================================================%
 
 
 
-
-
-
-
-%%
-%=========================================================%
-%              CLUSTER MODEL PARAMETERS
-%=========================================================%
-% SLOTS PER 5 SAPS
-G1PSDSAP5 = slt1;	% G1PSDslotN
-G1PERISAP5 = slt2; % G1PERIslotN
-G2PSDSAP5 = slt3;	% G2PSDslotN
-G2PERISAP5 = slt4; % G2PERIslotN
-
-% SLOTS PER 5 SAPS
-SAP5 = [G1PSDSAP5 G1PERISAP5 G2PSDSAP5 G2PERISAP5];
-
-
-
-
-
-
-
-
-%%
-%###################################################################%
-%						ACTIN MULTIPLEX TIP DATA
-%===================================================================%
-AMX = {1,0,'ATdata.mat',70000,1,10,500,10,20,100,500,350,150,150,25,.1,...
-		.0005,.0005,60000,10,10,.001,0,350,0.3,8};
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%				S1 ACTIN MULTIPLEX TIP DATA 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 MSK = {2.5,0,0,.18,11,.1};
-% LBR = {2,2,5,1,16,4};
-
-
-
-%-------------------------------%
-% S1 Actin Tips Setup
-%-------------------------------%
-
-savetipdir(AMX);
-% ATdat = which('ATdataArp005.mat');
-S1TipFile = which('ATdataXYZt.mat');
+%savetipdir(AMX);
+S1TipFile = which('ATdataP1f.mat');
 load(S1TipFile);
-assignin('base', 'ATs', ATs);
-ATs = evalin('base', 'ATs');
 
+assignin('base', 'ATs', ATs);
+ATs1 = evalin('base', 'ATs');
 
 assignin('base', 'Ax', Ax);
 Ax1 = evalin('base', 'Ax');
 ActinS1 = Ax1{3};
-%ActinPlot(Ax1{1},Ax1{2},Ax1{3},Ax1{4},Ax1{5},Ax1{6},Ax1{7});
 
+assignin('base', 'AMx', AMx);
+AMx1 = evalin('base', 'AMx');
 
 %------------
-ActinTipsP1 = ATs;
+ActinTipsP1 = ATs1;
 TipCellN = numel(ActinTipsP1);
-ACTn = TipCellN - AMX{7};
-NumTipCells = TipCellN - ACTn;
-%------------
+ACTnP1 = TipCellN - AMx1{7};
+NumTipCells = TipCellN - ACTnP1;
+
 TrimActMx = size(ActinTipsP1{1},1)+1;
-ACTINp1 = ActinTipsP1{ACTn};
+ACTINp1 = ActinTipsP1{ACTnP1};
 ACTINp1(:,TrimActMx:end) = [];
 ACTINp1(TrimActMx:end,:) = [];
+
+ActUpdateP1 = AMx1{8};
 %------------
 % Mask Setup
-%------------
 doGMask = 1;
-hkMask = MaskFun(doGMask,AMX,MSK);
+hkMask = MaskFun(doGMask,AMx1,MSK);
 
-AMask=ones(AMX{5});
+AMask=ones(AMx1{5});
 Ahk = convn(ACTINp1,AMask,'same');
 S = (Ahk>0).*1.0;
 
+%------------
 S1=S;
+[S1Ty,S1Tx] = find(ACTINp1);
+%------------
 
 
+%ActinPlot(Ax1{1},Ax1{2},Ax1{3},Ax1{4},Ax1{5},Ax1{6},Ax1{7});
 
 
-%-------------------------------%
-% S2 Actin Tips Setup
-%-------------------------------%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%				S2 ACTIN MULTIPLEX TIP DATA 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%savetipdir(AMX);
+S2TipFile = which('ATdataP1e.mat');
+load(S2TipFile);
 
-% S2TipFile = 'ATdataS2.mat';
-S2TipFile = which('ATdataArp005.mat');
-
-savetipdir(AMX)
-ATdat = which(S2TipFile);
-load(ATdat);
-assignin('base', 'ATs', ATs)
-ATs = evalin('base', 'ATs');
+assignin('base', 'ATs', ATs);
+ATs2 = evalin('base', 'ATs');
 
 assignin('base', 'Ax', Ax);
 Ax2 = evalin('base', 'Ax');
-ActinS2 = Ax2{3};
-% ActinPlot(Ax2{1},Ax2{2},Ax2{3},Ax2{4},Ax2{5},Ax2{6},Ax2{7})
+ActinS2 = Ax1{3};
+
+assignin('base', 'AMx', AMx);
+AMx2 = evalin('base', 'AMx');
 
 %------------
-ActinTipsP2 = ATs;
+ActinTipsP2 = ATs2;
 TipCellN = numel(ActinTipsP2);
-ACTn = TipCellN - AMX{7};
-NumTipCells = TipCellN - ACTn;
-%------------
+ACTnP2 = TipCellN - AMx2{7};
+NumTipCells = TipCellN - ACTnP2;
+
 TrimActMx = size(ActinTipsP2{1},1)+1;
-ACTINp2 = ActinTipsP2{ACTn};
+ACTINp2 = ActinTipsP2{ACTnP2};
 ACTINp2(:,TrimActMx:end) = [];
 ACTINp2(TrimActMx:end,:) = [];
+
+ActUpdateP2 = AMx2{8};
+
+
 %------------
 % Mask Setup
-%------------
 doGMask = 1;
-hkMask = MaskFun(doGMask,AMX,MSK);
-%hkMask=ones(AMX{6});
+hkMask = MaskFun(doGMask,AMx2,MSK);
 
-
-AMask=ones(AMX{5});
+AMask=ones(AMx2{5});
 Ahk = convn(ACTINp2,AMask,'same');
 S = (Ahk>0).*1.0;
 
+%------------
 S2=S;
+[S2Ty,S2Tx] = find(ACTINp2);	
 %------------
 
-%-------------------------
-% DEDUCE NSteps
-%-------------------------
-ActUpdate = AMX{8};
-ANSteps = ActUpdate * NumTipCells - ActUpdate - 1;
-%-------------------------
 
-
-	[S1Ty,S1Tx] = find(ACTINp1);
-	[S2Ty,S2Tx] = find(ACTINp2);	
-
-%%
-%===================================================================%
-%						ACTIN MULTIPLEX TIP DATA
-%###################################################################%
+% ActinPlot(Ax2{1},Ax2{2},Ax2{3},Ax2{4},Ax2{5},Ax2{6},Ax2{7})
 
 
 
-
-
-%%
-%=========================================================%
-%				PSD & FIELD MATRIX SETUP
-%---------------------------------------------------------%
-
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%				FIELD SYNAPTIC MATRIX SETUP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [DFszX,DFszY,PSD1sz,PSD2sz,PSA1sz,PSA2sz,SPY1sz,SPY2sz,...
 S1sz,S2sz,SSsz,SMx,DFum,SS,DF] = FieldFun(S1,S2,um,Scale);
 
+S1C = SS.S1C;
+S2C = SS.S2C;
+S1rad = SS.S1rad;
+S2rad = SS.S2rad;
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%				AMPAR DOT PARTICLE MATRIX SETUP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-%=========================================================%
-%				AMPAR DOT PARTICLE MATRIX
-%---------------------------------------------------------%
 %GLUR1
-GluR1xyl = ones(2,GluR1Ndots);
-GluR1xyds = ones(2,GluR1Ndots);
+xyG1 = ones(2,G1N);
+xysG1 = ones(2,G1N);
 
 % GLUR2
-GluR2xyl = ones(2,GluR2Ndots);
-GluR2xyds = ones(2,GluR2Ndots);
+xyG2 = ones(2,G2N);
+xysG2 = ones(2,G2N);
 
 % Position Dots in the middle of DF
-GluR1xyl(1,:) = GluR1xyl(1,:) + DF.X/2;
-GluR2xyl(1,:) = GluR2xyl(1,:) + DF.X/2;
-GluR1xyl(2,:) = GluR1xyl(2,:) + DF.Y/2;
-GluR2xyl(2,:) = GluR2xyl(2,:) + DF.Y/2;
+xyG1(1,:) = xyG1(1,:) + DF.X/2;
+xyG2(1,:) = xyG2(1,:) + DF.X/2;
+xyG1(2,:) = xyG1(2,:) + DF.Y/2;
+xyG2(2,:) = xyG2(2,:) + DF.Y/2;
 
 % Rounded version of GluRxyl
-GR1xy = round(GluR1xyl);
-GR2xy = round(GluR2xyl);
+GR1xy = round(xyG1);
+GR2xy = round(xyG2);
 
 
-%=========================================================%
-%				MAKE PARTICLE MATRIX
-%---------------------------------------------------------%
-	
-GR1x = GluR1xyl(1,:);
-GR1y = GluR1xyl(2,:);
+% Radius from synapse counters
+S1G1C = repmat(S1C,1,numel(xyG1(1,:)));
+S2G1C = repmat(S2C,1,numel(xyG1(1,:)));
+S1G2C = repmat(S1C,1,numel(xyG2(1,:)));
+S2G2C = repmat(S2C,1,numel(xyG2(1,:)));
+
+
+S1G1Cv = xyG1-S1G1C;
+S2G1Cv = xyG1-S2G1C;
+S1G2Cv = xyG2-S1G2C;
+S2G2Cv = xyG2-S2G2C;
+
+G1P1r = sqrt(sum((S1G1Cv).^2));
+G1P2r = sqrt(sum((S2G1Cv).^2));
+G2P1r = sqrt(sum((S1G2Cv).^2));
+G2P2r = sqrt(sum((S2G2Cv).^2));
+
+G1inP1=G1P1r<S1rad;
+G1inP2=G1P2r<S2rad;
+G2inP1=G2P1r<S1rad;
+G2inP2=G2P2r<S2rad;
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%				PARTICLE SPACE TO MATRIX SPACE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	GR1x = xyG1(1,:);
+GR1y = xyG1(2,:);
 GR1c = round(GR1x);
 GR1r = round(GR1y);
 GR1c(GR1c>DF.X) = DF.X;		% any dot somehow outside, place inside
@@ -555,8 +385,8 @@ G1xy(GR1r(xy),GR1c(xy)) = 1;
 end
 
 %--------
-GR2x = GluR2xyl(1,:);
-GR2y = GluR2xyl(2,:);
+GR2x = xyG2(1,:);
+GR2y = xyG2(2,:);
 GR2c = round(GR2x);
 GR2r = round(GR2y);
 GR2c(GR2c>DF.X) = DF.X;		% any dot somehow outside, place inside
@@ -572,15 +402,14 @@ G2xy(GR2r(xy),GR2c(xy)) = 1;
 end
 
 
-%###################################################################%
 
 
 
 
-%%
-%===========================================%
-% TIME AND PARTICLE COUNT VARIABLES
-%-------------------------------------------%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%				TIME AND PARTICLE COUNT VARIABLES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 DATARATE = 10;
 AveOver = 10;
 SaveSteps = Nsteps/DATARATE;
@@ -588,18 +417,16 @@ dataset = zeros(SaveSteps,10);
 SAPdata = zeros(SaveSteps,2);
 Ddata = zeros(SaveSteps,2);
 AMPARdata = zeros(SaveSteps,2);
-GluRdata = zeros(SaveSteps,11);
+GluRdata = zeros(SaveSteps,19);
 G1SLOTSDATA = zeros(SaveSteps,4);
 G2SLOTSDATA = zeros(SaveSteps,4);
-%===========================================%
 
 
 
 
-
-
-
-%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%				FIGURES - PLOTS - LIVE GRAPHICS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %{
 % fig1 = figure(1);
 % fig1box(fig1);
@@ -625,12 +452,12 @@ G2SLOTSDATA = zeros(SaveSteps,4);
 % 
 % axes('Position',[.32 .25 .28 .72]);
 % 
-% G1Ph1 = scatter(GluR1xyl(1,:),GluR1xyl(2,:),10,[.9 .08 .24],'filled');
+% G1Ph1 = scatter(xyG1(1,:),xyG1(2,:),10,[.9 .08 .24],'filled');
 % axis([xlim, ylim]);
 % %set(gca,'Color',[1,1,1])
 % hold on;
 % 
-% G2Ph1 = scatter(GluR2xyl(1,:),GluR2xyl(2,:),10,[.1 .9 .1],'filled');
+% G2Ph1 = scatter(xyG2(1,:),xyG2(2,:),10,[.1 .9 .1],'filled');
 % %set(gca,'YDir','reverse')
 % hold on;
 % 
@@ -709,10 +536,10 @@ G2SLOTSDATA = zeros(SaveSteps,4);
 % colormap(clrmap)
 % hold on;
 % %---
-% Ph303 = scatter(GluR1xyl(1,:),GluR1xyl(2,:),20, [.9 .08 .24],'filled');
+% Ph303 = scatter(xyG1(1,:),xyG1(2,:),20, [.9 .08 .24],'filled');
 % hold on
 % %---
-% Ph304 = scatter(GluR2xyl(1,:),GluR2xyl(2,:),20, [.1 .9 .1],'filled');
+% Ph304 = scatter(xyG2(1,:),xyG2(2,:),20, [.1 .9 .1],'filled');
 % hold off
 % 
 % %------------------------------------------------%
@@ -811,30 +638,18 @@ G2SLOTSDATA = zeros(SaveSteps,4);
 %------------------------------------------------%
 %%
 %}
-%================================================%
-%			FIGURE SETUPS
-%------------------------------------------------%
-scsz = get(0,'ScreenSize'); 
-scsx=scsz(3); scsy=scsz(4);
-xlim = [0 DF.X];
-ylim = [0 DF.Y];
-
-Fh1 = figure(1);
-set(gcf,'OuterPosition',[145,145,scsx/1.2,scsy/1.2])
-set(gcf,'Color',[1,1,1])
-
+%{
 %================================================%
 %			Real-Space Scatter Plot
 %------------------------------------------------%
-
 % axes('Position',[.32 .25 .28 .72]);
 % 
-% G1Ph1 = scatter(GluR1xyl(1,:),GluR1xyl(2,:),10,[.9 .08 .24],'filled');
+% G1Ph1 = scatter(xyG1(1,:),xyG1(2,:),10,[.9 .08 .24],'filled');
 % axis([xlim, ylim]);
 % %set(gca,'Color',[1,1,1])
 % hold on;
 % 
-% G2Ph1 = scatter(GluR2xyl(1,:),GluR2xyl(2,:),10,[.1 .9 .1],'filled');
+% G2Ph1 = scatter(xyG2(1,:),xyG2(2,:),10,[.1 .9 .1],'filled');
 % %set(gca,'YDir','reverse')
 % hold on;
 % 
@@ -844,11 +659,25 @@ set(gcf,'Color',[1,1,1])
 % rectangle('Position',[DF.S1L,DF.S1B,DF.S1sz,DF.S1sz],'Curvature',[1,1])
 % rectangle('Position',[DF.S2L,DF.S2B,DF.S2sz,DF.S2sz],'Curvature',[1,1])
 % hold on;
+%}
+
+%-----------------------------------%
+%	PLOTS: SETUP
+%-----------------------------------%
+scsz = get(0,'ScreenSize'); 
+scsx=scsz(3); scsy=scsz(4);
+xlim = [0 DF.X];
+ylim = [0 DF.Y];
+
+Fh1 = figure(1);
+set(gcf,'OuterPosition',[145,145,scsx/1.2,scsy/1.2])
+set(gcf,'Color',[1,1,1])
 
 
-%================================================%
-%			Actin Network Plots
-%------------------------------------------------%
+
+%-----------------------------------%
+%	PLOTS: ACTIN NETWORK
+%-----------------------------------%
 % ActinMainPlot(Fh,nT,Actin,inPSD,varargin(rot,azel,dims))
 inPSD1 = Ax1{7}(7); 
 spos1 = [.02 .50 .26 .47];
@@ -859,14 +688,10 @@ spos2 = [.02 .02 .26 .47];
 ActinMainPlot(Fh1,ActinS2,inPSD2,spos2)
 
 
-%================================================%
-%			S Cluster Plots
-%------------------------------------------------%
-
-% clrmap = 'cool';
-% clrmap = [1 1 1; .1 .1 .5];
+%-----------------------------------%
+%	PLOTS: CLUSTERS (S1 & S2)
+%-----------------------------------%
 clrmap = [1 1 1; .55 .55 .55];
-
 %-- S1 Cluster Plots --
 axes('Position',[.31 .53 .27 .44]);
 S1Ph1 = imagesc(S1);
@@ -879,7 +704,6 @@ S1Ph2 = scatter(PSDX,PSDY);
 set(S1Ph2,'Marker','s','SizeData',60,'LineWidth',.5,...
 	'MarkerFaceColor',[.95 .1 .1],'MarkerEdgeColor','none')
 hold off
-%--------
 
 
 %-- S2 Cluster Plots --
@@ -897,9 +721,9 @@ hold off
 %--------
 
 
-%================================================%
-%			PARTICLE MATRIX PLOT
-%------------------------------------------------%
+%-----------------------------------%
+%	PLOTS: PARTICLE MATRIX
+%-----------------------------------%
 axes('Position',[.62 .04 .34 .93]);
 %--------
 Ph301 = imagesc(G1xy);
@@ -918,86 +742,73 @@ set(gca,'YDir','normal')
 colormap(clrmap)
 hold on;
 %---
-Ph303 = scatter(GluR1xyl(1,:),GluR1xyl(2,:),50, [.0 .5 .8],'filled');
+Ph303 = scatter(xyG1(1,:),xyG1(2,:),50, [.0 .5 .8],'filled');
 hold on
 %---
-%GluR2xyl = GluR1xyl.*rand(2,150)
-Ph304 = scatter(GluR2xyl(1,:),GluR2xyl(2,:),50, [.2 .7 .0],'filled');
+%xyG2 = xyG1.*rand(2,150)
+Ph304 = scatter(xyG2(1,:),xyG2(2,:),50, [.2 .7 .0],'filled');
 set(Ph304,'Marker','s')
 hold off
 
-%------------------------------------------------%
+%--------
 rectangle('Position',[DF.S1L,DF.S1B,DF.S1sz,DF.S1sz],'Curvature',[1,1])
 rectangle('Position',[DF.S2L,DF.S2B,DF.S2sz,DF.S2sz],'Curvature',[1,1])
 rectangle('Position',[DF.PS1L,DF.PS1B,DF.PS1sz,DF.PS1sz],'Curvature',[1,1])
 rectangle('Position',[DF.PS2L,DF.PS2B,DF.PS2sz,DF.PS2sz],'Curvature',[1,1])
 hold on;
+%--------
 
 
-%----------------------%
-% SAVE PLOT HANDLES
-%----------------------%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%				PLOT HANDLES AND UPDATE RATES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 SPh = struct;
 SPh.S1Ph1 = S1Ph1;
 SPh.S1Ph2 = S1Ph2;
 SPh.S2Ph1 = S2Ph1;
 SPh.S2Ph2 = S2Ph2;
-%----------------------%
-
-
-
-%----------------------%
-% Plot Update Rate
-%----------------------%
+%----
 SPLOTr=100;
 MPLOTr=200;
-%----------------------%
-
-
-%------------------------------------------------%
-%%
 
 
 
 
 
-%=============%%%%%%%%%%%%%%%%%%%%%%%%%%%%=============%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%					START Main Loop
-%=============%%%%%%%%%%%%%%%%%%%%%%%%%%%%=============% 
-stepN = 1;
-for Nt = 1:Nsteps 
-nn = Nt;
-%===========================================%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+for stepN = 1:Nsteps 
+%------------------------------------------------------------------------------%
 
-	%-------------------------------%
-    %   STEP DIRECTION & SIZE
-    %-------------------------------%
-	if doGluR1
-	GluR1xyds = STEPxyds(GluR1Ndots, kGR1);
-	end
-	if doGluR2
-    GluR2xyds = STEPxyds(GluR2Ndots, kGR2);
-	end
+
+
+	%------------------------------------------%
+    %		STEP DIRECTION & SIZE
+    %------------------------------------------%
+	if doGluR1; xysG1 = STEPxyds(G1N, kGR1); end
+	if doGluR2; xysG2 = STEPxyds(G2N, kGR2); end
     
   
-	%~~~~~~~~~~~~~~~~~~~~~~~~~ NEW ~~~~~~~~~~~~~~~~~~~~~~~~~%
 	
-	%----------------------------%
-    %     SAP MATRIX UPDATE
-    %----------------------------%
-	
- 	
+	%------------------------------------------%
+    %		SAP MATRIX UPDATE
+    %------------------------------------------%
 	% THIS SHIT SEEMS BACKWARDS BUT IT WORKS
 	SMx(SS.S1B:SS.S1T,SS.S1L:SS.S1R) = S2;
 	SMx(SS.S2B:SS.S2T,SS.S2L:SS.S2R) = S1;
-
 	SS.SMx = SMx;
 	
-	%----------------------------%
-    %	MAKE PARTICLE MATRIX
-	%----------------------------%
-	GR1x = GluR1xyl(1,:);
-	GR1y = GluR1xyl(2,:);
+	
+	
+	%------------------------------------------%
+    %		MAKE PARTICLE MATRIX
+	%------------------------------------------%
+	GR1x = xyG1(1,:);
+	GR1y = xyG1(2,:);
 	GR1c = round(GR1x);
 	GR1r = round(GR1y);
 	GR1c(GR1c>DF.X) = DF.X;		% any dot somehow outside, place inside
@@ -1006,15 +817,14 @@ nn = Nt;
 	GR1r(GR1r<1) = 1;			% any dot somehow outside, place inside
 	GR1xy(1,:) = GR1c;
 	GR1xy(2,:) = GR1r;
-	
+	%---
 	G1xy = DF.SMxE;
 	for xy = 1:numel(GR1c)
 	G1xy(GR1r(xy),GR1c(xy)) = 1;
 	end
-
 	%--------
-	GR2x = GluR2xyl(1,:);
-	GR2y = GluR2xyl(2,:);
+	GR2x = xyG2(1,:);
+	GR2y = xyG2(2,:);
 	GR2c = round(GR2x);
 	GR2r = round(GR2y);
 	GR2c(GR2c>DF.X) = DF.X;		% any dot somehow outside, place inside
@@ -1023,134 +833,115 @@ nn = Nt;
 	GR2r(GR2r<1) = 1;			% any dot somehow outside, place inside
 	GR2xy(1,:) = GR2c;
 	GR2xy(2,:) = GR2r;
-	
+	%---
 	G2xy = DF.SMxE;
 	for xy = 1:numel(GR2c)
 	G2xy(GR2r(xy),GR2c(xy)) = 1;
 	end
 	
-
-	
-	
-	
-	
-	
-	%~~~~~~~~~~~~~~~~~~~~~~ End New ~~~~~~~~~~~~~~~~~~~~~~%
 	
 
-	%===================================%
-    %     SUPERSLOT FUNCTION
-    %-----------------------------------%
-	[GluR1xyl GluR2xyl GluR1xyds GluR2xyds...
+	
+	
+	%------------------------------------------%
+    %		SUPERSLOT FUNCTION
+    %------------------------------------------%
+	[xyG1 xyG2 xysG1 xysG2...
 	G1FSLOTS G2FSLOTS...
 	GluR1_TdwellSPYN GluR1_TdwellPSD GluR1_TdwellPERI...
 	GluR2_TdwellSPYN GluR2_TdwellPSD GluR2_TdwellPERI...
-	G1INSPYN1 G1INSPYN2 G1INPSD1 G1INPSD2 G1INPERI1 G1INPERI2...
-	G2INSPYN1 G2INSPYN2 G2INPSD1 G2INPSD2 G2INPERI1 G2INPERI2...
-	G1INSPA G2INSPA...
-	SMx G1v G2v]...
-	= SUPERSLOT(stepN,t,GluR1xyl,GluR2xyl,GluR1xyds,GluR2xyds,...
+	G1INSPA G2INSPA SMx G1v G2v...
+	G1P1r G1P2r G2P1r G2P2r G1inP1 G1inP2 G2inP1 G2inP2...
+	S1G1Cv S2G1Cv S1G2Cv S2G2Cv]...
+	= SUPERSLOT(stepN,t,xyG1,xyG2,xysG1,xysG2,...
 	GluR1_TdwellPSD,GluR1_TdwellPERI,GluR1_TdwellSPYN,LsGR1psa,LsGR1psd,LsGR1S,...
 	GluR2_TdwellPSD,GluR2_TdwellPERI,GluR2_TdwellSPYN,LsGR2psa,LsGR2psd,LsGR2S,...	
-	SSsz,G1xy,G2xy,SMx,SS,DF,GR1xy,GR2xy);
+	SSsz,G1xy,G2xy,SMx,SS,DF,GR1xy,GR2xy,...
+	S1G1C,S2G1C,S1G2C,S2G2C,S1rad,S2rad);
 
 	
 
-    %===================================%
-    %     SAP CLUSTERS
-    %-----------------------------------%
-	
-	%~~~~~~~~~~~~ NEW ~~~~~~~~~~~%
-	if mod(stepN,ActUpdate) == 0
-	
-	ACTINp1 = ActinTipsP1{ACTn};
+    %------------------------------------------%
+    %		SAP CLUSTERS
+    %------------------------------------------%
+	if mod(stepN,ActUpdateP1) == 0
+	ACTINp1 = ActinTipsP1{ACTnP1};
 	ACTINp1 = convn(ACTINp1,AMask,'same');
 	[S1Ty,S1Tx] = find(ACTINp1);
 	
-	ACTINp2 = ActinTipsP2{ACTn};
+	ACTnP1 = ACTnP1+1;
+	end
+	
+	if mod(stepN,ActUpdateP2) == 0
+	ACTINp2 = ActinTipsP2{ACTnP2};
 	ACTINp2 = convn(ACTINp2,AMask,'same');
 	[S2Ty,S2Tx] = find(ACTINp2);
 	
-	ACTn = ACTn+1;
-	
+	ACTnP2 = ACTnP2+1;
 	end
-	%----------------------------%
-	
 
-	%----S1_MainClusterFun----%
+	
+	
+	
+	%------------------------------------------%
+	%		S1 & S2  MainClusterFun
+	%------------------------------------------%
 	[S1 SMx] = S1_MainClusterFun(S1,SMx,sap,hkMask,ACTINp1,stepN);
-	%----S2_MainClusterFun----%
 	[S2 SMx] = S2_MainClusterFun(S2,SMx,sap,hkMask,ACTINp2,stepN);
+	
+	S1sum = sum(S1(:))/2;
+	S2sum = sum(S2(:))/2;
 		
-	%----S1sum & S2sum----%
-	S1sum = sum(S1(:))/4; S2sum = sum(S2(:))/4;
-	
-	
-	%-------------------------------%
-    %   CLUSTER PLOT
-    %-------------------------------%
-	if mod(stepN, SPLOTr) == 0
-		SPLOTS(SPh,S1,S2,S1Tx,S1Ty,S2Tx,S2Ty);
-	end
-	
-	%===================================%
 	
 	
 	
-	%=============================================%
+	%------------------------------------------%
     %		MOVE PARTICLES MAIN FUNCTION
-	%=============================================%
-	[GluR1xyds GluR1xyl GluR2xyds GluR2xyl]...
-    = MOVEGLUR(stepN,DF,...
-	GluR1Ndots,GluR1xyds,GluR1xyl,...
-    GluR2Ndots,GluR2xyds,GluR2xyl);
+	%------------------------------------------%
+	[xysG1 xyG1 xysG2 xyG2] = MOVEGLUR(stepN,DF,G1N,xysG1,xyG1, G2N,xysG2,xyG2);
 	
 
 	
-    %-------------------------------%
-    %   MAIN PLOT XYL SIMULATION
-    %-------------------------------%
-	if mod(stepN, MPLOTr) == 0
-	% MAINPLOT(G1Ph1,G2Ph1,GluR2xyl,GluR1xyl)
-	plotMx(Fh1,Ph301,Ph302,Ph303,Ph304,Ph305,G1xy,G2xy,GR1c,GR1r,GR2c,GR2r,SMx);
-	end
 	
+	
+	%------------------------------------------%
+    %		CLUSTER PLOT
+    %------------------------------------------%
+	if doMainPlot;if mod(stepN,SPLOTr)==0;
+		SPLOTS(SPh,S1,S2,S1Tx,S1Ty,S2Tx,S2Ty);
+	end;end;
+	
+    %------------------------------------------%
+    %		MAIN PLOT XYL SIMULATION
+    %------------------------------------------%
+	if doMainPlot;if mod(stepN,MPLOTr)==0;
+	plotMx(Fh1,Ph301,Ph302,Ph303,Ph304,Ph305,G1xy,G2xy,GR1c,GR1r,GR2c,GR2r,SMx);
+	end;end;
 
 
  	
-  % if stepN == 600; keyboard; end;
-  %---------------------------------------------%
-  %       START PARTICLE COUNTERS
-  %---------------------------------------------%
-  if mod(stepN, DATARATE) == 0
-	  
-	  
+ 
+
+
+	%==========================================================%
+	%				START PARTICLE COUNTERS
+	%----------------------------------------------------------%
+	if mod(stepN, DATARATE) == 0
 	  
     %-------------------------------%
     %       PARTICLE COUNTERS
     %-------------------------------%
 	[GR1SPY1N GR1SPY2N GR1PER1N GR1PER2N GR1PSD1N GR1PSD2N...
-	GR2SPY1N GR2SPY2N GR2PER1N GR2PER2N GR2PSD1N GR2PSD2N...
-	GR1PERN GR1PSDN GR2PERN GR2PSDN GR1SPYN GR2SPYN...
-	SPY1N SPY2N SPYNT ESNT EST G1INSP G2INSP GINSP]...
-	= dotCount(stepN,GluR2Ndots, GluR1Ndots,...
-	G2INSPYN1,G2INSPYN2,G2INPSD1,G2INPSD2,G2INPERI1,G2INPERI2,...
-	G1INSPYN1,G1INSPYN2,G1INPSD1,G1INPSD2,G1INPERI1,G1INPERI2,...
-	G1INSPA,G2INSPA);
-
-	
+		GR2SPY1N GR2SPY2N GR2PER1N GR2PER2N GR2PSD1N GR2PSD2N...
+		GR1PERN GR1PSDN GR2PERN GR2PSDN GR1SPYN GR2SPYN...
+		SPY1N SPY2N SPYNT ESNT EST G1INSP G2INSP GINSP...
+		G1xyP1 G1xyP2 G2xyP1 G2xyP2]...
+		= dotCount(stepN,G2N, G1N,...
+		G1P1r, G1P2r, G2P1r, G2P2r, G1inP1, G1inP2, G2inP1, G2inP2,...
+		S1G1Cv,S2G1Cv,S1G2Cv,S2G2Cv,G1INSPA,G2INSPA,xyG1,xyG2);
 	
 	%-------------------------------%
-    %   GRAPH PARTICLE COUNTS
-    %-------------------------------%
-	if doMainPlot
-	GRAPHCOUNTS(stepN,GluR2Ndots,doGluR1,doGluR2,doRun1,doRun2,doRun6,...
-	HSlow, HShi, G1FSLOTS,G2FSLOTS,SAP5,S1sum,S2sum,doKo,...
-	EST,SPY1N,SPY2N);
-	end
-	
-	%-------------------------------%
-    % SAVE DATA AND STREAM OUTPUT
+    %	SAVE DATA
     %-------------------------------%
        
        data = [stepN/Nsteps ESNT SPY1N SPY2N SPYNT;... 
@@ -1163,40 +954,44 @@ nn = Nt;
 	   
 	   GluRdata(stepN/DATARATE,:) = [GR1PSDN GR1PERN GR2PSDN GR2PERN...
 								GR1SPY1N GR1SPY2N GR2SPY1N GR2SPY2N...
-								G1INSP G2INSP GINSP];
+								G1INSP G2INSP GINSP...
+								GR1PER1N GR1PER2N GR1PSD1N GR1PSD2N...
+								GR2PER1N GR2PER2N GR2PSD1N GR2PSD2N];
 							
 							
 	   G1SLOTSDATA(stepN/DATARATE,:) = G1FSLOTS;
 	   G2SLOTSDATA(stepN/DATARATE,:) = G2FSLOTS; 
 	   
+	   SGr{stepN/DATARATE}={G1P1r,G1P2r,G2P1r,G2P2r,G1inP1,G1inP2,G2inP1,G2inP2,...
+							G1xyP1 G1xyP2 G2xyP1 G2xyP2};
+	   
 	   if mod(stepN, DATARATE*10) == 0
 	   head1 = ('Time%2go    CntDwn');
-	   disp(head1);
-	   disp([data(1,1) data(2,1)])
+	   disp(head1); disp([data(1,1) data(2,1)]); %snapnow;
 	   end
        
-	   
-	   
-       %snapnow;
 	end
- %---------------------------------------------%
- %       END PARTICLE COUNTERS
- %---------------------------------------------%
-	
+	%----------------------------------------------------------%
+	%				END PARTICLE COUNTERS
+	%==========================================================%
 	
 
-%=============%%%%%%%%%%%%%%%%%%%%%%%%%%%%=============%
-% if stepN == 400; keyboard; end 
-stepN = stepN+1;
-nn = stepN;
-end
-%=============%%%%%%%%%%%%%%%%%%%%%%%%%%%%=============%
-%%					END Main Loop
-%=============%%%%%%%%%%%%%%%%%%%%%%%%%%%%=============%
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
-if doprofile
-profile viewer;
-end
+%------------------------------------------------------------------------------%
+end;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%							END SIMULATION LOOP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+if doprofile; profile viewer; end
+
 
 DATAdataset(:,1) = mean(reshape(dataset(:,1), [AveOver, length(dataset(:,1))/AveOver])); 
 DATAdataset(:,2) = mean(reshape(dataset(:,2), [AveOver, length(dataset(:,2))/AveOver])); 
@@ -1230,7 +1025,14 @@ DATAGluRdata(:,8) = mean(reshape(GluRdata(:,8), [AveOver, length(GluRdata(:,8))/
 DATAGluRdata(:,9) = mean(reshape(GluRdata(:,9), [AveOver, length(GluRdata(:,9))/AveOver])); 
 DATAGluRdata(:,10) = mean(reshape(GluRdata(:,10), [AveOver, length(GluRdata(:,10))/AveOver])); 
 DATAGluRdata(:,11) = mean(reshape(GluRdata(:,11), [AveOver, length(GluRdata(:,11))/AveOver])); 
-
+DATAGluRdata(:,12) = mean(reshape(GluRdata(:,12), [AveOver, length(GluRdata(:,12))/AveOver])); 
+DATAGluRdata(:,13) = mean(reshape(GluRdata(:,13), [AveOver, length(GluRdata(:,13))/AveOver])); 
+DATAGluRdata(:,14) = mean(reshape(GluRdata(:,14), [AveOver, length(GluRdata(:,14))/AveOver])); 
+DATAGluRdata(:,15) = mean(reshape(GluRdata(:,15), [AveOver, length(GluRdata(:,15))/AveOver])); 
+DATAGluRdata(:,16) = mean(reshape(GluRdata(:,16), [AveOver, length(GluRdata(:,16))/AveOver])); 
+DATAGluRdata(:,17) = mean(reshape(GluRdata(:,17), [AveOver, length(GluRdata(:,17))/AveOver])); 
+DATAGluRdata(:,18) = mean(reshape(GluRdata(:,18), [AveOver, length(GluRdata(:,18))/AveOver])); 
+DATAGluRdata(:,19) = mean(reshape(GluRdata(:,19), [AveOver, length(GluRdata(:,19))/AveOver])); 
 
 
 DATAG1SLOTSDATA(:,1) = mean(reshape(G1SLOTSDATA(:,1), [AveOver, length(G1SLOTSDATA(:,1))/AveOver])); 
@@ -1251,9 +1053,22 @@ reDATAAMPARdata{re} = DATAAMPARdata;
 reDATAGluRdata{re} = DATAGluRdata;
 reDATAG1SLOTSDATA{re} = DATAG1SLOTSDATA;
 reDATAG2SLOTSDATA{re} = DATAG2SLOTSDATA;
-%=========================================================%
+
+
+
+reSGr{re} = SGr;
+
+
+
+
+
+%==============================================================================%
 end % for re = 1:loops
-%=========================================================%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%								END DATA LOOP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 
 %=============================================%
@@ -1314,6 +1129,7 @@ assignin('base', 'BMData4', reDATAAMPARdataFull)
 assignin('base', 'BMData5', reDATAGluRdataFull)
 assignin('base', 'BMData6', reDATAG1SLOTSDATAFull)
 assignin('base', 'BMData7', reDATAG2SLOTSDATAFull)
+assignin('base', 'BMData8', reSGr)
 BMData1= reDATAdatasetFull;
 BMData2= reDATASAPdataFull;
 BMData3= reDATADdataFull;
@@ -1321,23 +1137,19 @@ BMData4= reDATAAMPARdataFull;
 BMData5= reDATAGluRdataFull;
 BMData6= reDATAG1SLOTSDATAFull;
 BMData7= reDATAG2SLOTSDATAFull;
+BMData8= reSGr;
 
 
 
 
 
-
-
-%{
+%=============================================%
 % UNCOMMENT TO REINITIALIZE DATA
-
+%{
 AveOver = 10;
 DATARATE = 100;
 t = .1;
-
 %}
-
-
 reDATAdataset = BMData1;
 reDATASAPdata = BMData2;
 reDATADdata = BMData3;
@@ -1345,20 +1157,18 @@ reDATAAMPARdata = BMData4;
 reDATAGluRdata = BMData5;
 reDATAG1SLOTSDATA = BMData6;
 reDATAG2SLOTSDATA = BMData7;
-
+reSGr = BMData8;
+%=============================================%
 
 
 
 
 %%
-%---------------
+%=============================================%
 if ~doRun(3);
-%---------------
-
-ChopStart = 1;
+ChopStart = 1; 
 if ChopStart
-
-% chop = 3;
+%------------------
 chop = 4;
 	
 for p = 1:numel(reDATAdataset)
@@ -1389,28 +1199,468 @@ for p = 1:numel(reDATAG2SLOTSDATA)
 reDATAG2SLOTSDATA{p}(1:chop,:) = [];
 end
 
-end		% if ChopStart
 
-
+%------------------
+end; % if ChopStart
+%------------------
 % for p = 1:numel(reDATAdataset)
 % reDATAdataset = smooth(reDATAdataset{p},5);
 % end
 
-%%
-%======================================================================%
-%					SAVE FIGURE 1 PLOTS
-%======================================================================%
-saveoutputfigs('STARShiP0')
-%======================================================================%
+
+
 
 
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%======================================================================%
-%					FINAL OUTPUT (SPLINE) FIGURE 1 OF 2
-%======================================================================%
-%							FIGURE SETUP
-%----------------------------------------------------------------------%
+%					SPINE RADIAL DISTANCE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%SGr={  G1P1r,	G1P2r,	G2P1r,	G2P2r,
+%       G1inP1,	G1inP2,	G2inP1,	G2inP2,
+%       G1xyP1,	G1xyP2,	G2xyP1,	G2xyP2  };
+doRadDist = 1;
+doRadDistDPlots=1;
+if doRadDist
+
+
+
+%=================================================
+for reN = 1:loops
+%=================================================
+
+SGr = reSGr{reN};
+
+%--------------------------------------
+% Make concentric circle annulus
+%--------------------------------------
+S1r = round(S1rad);
+Qhr = S1r/2;
+Qx = linspace(0,S1r,6);
+QxL = Qx - Qhr;
+yL = sqrt(Qhr.^2 - QxL.^2);
+Qr = sqrt(Qx.^2 + yL.^2);	% Concentric circles
+
+%--------------------------------------
+% Tally GluRs in each spine annulus
+%--------------------------------------
+for qq = 1:4
+Q0=0;Q1=0;Q2=0;Q3=0;Q4=0;Q5=0;Qnan=0;
+for mm = 1:numel(SGr)
+	QD1 = (SGr{mm}{qq}(SGr{mm}{qq+4}(:)));
+	for Nin=1:numel(QD1)
+		if	   QD1(Nin) <= Qr(1)
+			Q0 = Q0+1;
+		elseif QD1(Nin) <= Qr(2)
+			Q1 = Q1+1;
+		elseif QD1(Nin) <= Qr(3)
+			Q2 = Q2+1;
+		elseif QD1(Nin) <= Qr(4)
+			Q3 = Q3+1;
+		elseif QD1(Nin) <= Qr(5)
+			Q4 = Q4+1;
+		elseif QD1(Nin) <= Qr(6)
+			Q5 = Q5+1;
+		elseif QD1(Nin) > Qr(7)
+			Qnan = Qnan+1;
+		end
+	end
+end
+Qqs(qq,:) = [Q1 Q2 Q3 Q4 Q5] ./(stepN/DATARATE);
+end
+
+%--------------------------------------
+% Parse out G1 G2 in SPY1 SPY2
+%--------------------------------------
+% Qqs =   
+%  anullus 1  2  3  4  5
+% G1-SPY1: N  N  N  N  N
+% G1-SPY2: N  N  N  N  N
+% G2-SPY1: N  N  N  N  N 
+% G2-SPY2: N  N  N  N  N
+
+% Raw Single
+G1SP1 = Qqs(1,:);
+G1SP2 = Qqs(2,:);
+G2SP1 = Qqs(3,:);
+G2SP2 = Qqs(4,:);
+
+% Raw Multi					% Means						% Sums
+G12SPY12 = Qqs;				G12SPY12m = mean(G12SPY12);	G12SPY12s = sum(G12SPY12);
+G12SPY1 = [G1SP1 ; G2SP1];	G12SPY1m = mean(G12SPY1);	G12SPY1s = sum(G12SPY1);
+G12SPY2 = [G1SP2 ; G2SP2];	G12SPY2m = mean(G12SPY2);	G12SPY2s = sum(G12SPY2);
+G1SPY12 = [G1SP1 ; G1SP2];	G1SPY12m = mean(G1SPY12);	G1SPY12s = sum(G1SPY12);
+G2SPY12 = [G2SP1 ; G2SP2];	G2SPY12m = mean(G2SPY12);	G2SPY12s = sum(G2SPY12);
+
+%-------------------------------%
+
+reG1SP1(reN,:) = G1SP1;
+reG1SP2(reN,:) = G1SP2;
+reG2SP1(reN,:) = G2SP1;
+reG2SP2(reN,:) = G2SP2;
+
+%=================================================
+end; %for reN = 1:loops
+%=================================================
+
+
+
+mG1SP1 = mean(reG1SP1);
+mG1SP2 = mean(reG1SP2);
+mG2SP1 = mean(reG2SP1);
+mG2SP2 = mean(reG2SP2);
+
+sG1SP1 = std(reG1SP1);
+sG1SP2 = std(reG1SP2);
+sG2SP1 = std(reG2SP1);
+sG2SP2 = std(reG2SP2);
+
+semG1SP1 = sG1SP1 ./ sqrt(loops);
+semG1SP2 = sG1SP2 ./ sqrt(loops);
+semG2SP1 = sG2SP1 ./ sqrt(loops);
+semG2SP2 = sG2SP2 ./ sqrt(loops);
+
+
+
+
+
+
+
+
+
+%=====================================================
+if doRadDistDPlots
+for GSPswitch = 1:4;	
+%=====================================================
+
+switch GSPswitch
+    case 1
+		Qs = mean(reG1SP1);
+	case 2
+		Qs = mean(reG1SP2);
+	case 3
+		Qs = mean(reG2SP1);
+	case 4
+		Qs = mean(reG2SP2);
+end
+
+%--------------------------------------
+% Interpolate Annulus Patch Densities
+%--------------------------------------
+[clrmap1 CRank] = ClrMap2;
+[QsortVal, QsortInd] = sort(Qs, 2);
+QcRankA = [fliplr(QsortInd) 6];
+QcRankB =  circshift(QcRankA,[0 -1]);
+
+for Nx = 1:5
+clear xverts yverts verts faces Adatc Bdatc fvals xdata ydata cdata t xdat ydat cdat
+	QcA = QcRankA(Nx);
+	QcB = QcRankB(Nx);
+	
+	nverts = 50;
+	t = linspace(0,2*pi,nverts);	
+
+	xverts = [(Qr(Nx+1)*sin(t)) (Qr(Nx)*sin(t))]';
+	yverts = [(Qr(Nx+1)*cos(t)) (Qr(Nx)*cos(t))]';
+	verts = [xverts yverts];
+	
+	fvals = [1 2 (nverts+2) (nverts+1)];
+	fvals = repmat(fvals,nverts-1,1);
+	for mm = 1:(nverts-2); fvals(mm+1,:) = fvals(mm+1,:)+mm; end
+	faces = fvals;
+	
+	Adatc = repmat(CRank{QcB}, nverts, 1);
+	Bdatc = repmat(CRank{QcA}, nverts, 1);
+	cdata = [Adatc; Bdatc];
+
+	Qfaces(Nx) = {faces};
+	Qverts(Nx) = {verts};
+	Qcdata(Nx) = {cdata};
+end
+
+
+%--------------------------------------
+% Plot Annulus Patch Densities
+%--------------------------------------
+Ax1LBWH = [-.02 .53 .40 .40	;...
+			.47	.53 .40 .40	;...
+		   -.02 .05 .40 .40	;...
+			.47 .05 .40 .40 ;...
+			.38 .60 .09 .35	;...
+			.87	.60 .09 .35	;...
+		    .38 .12 .09 .35	;...
+			.87 .12 .09 .35	];
+AxCB = [ 0.322221476510067 0.573033707865168 0.0168 0.320848938826467 ;...
+		 0.813060402684563 0.576779026217228 0.0168 0.31585518102372 ;...
+		 0.32289932885906 0.0898876404494382 0.0168 0.32334581772784 ;...
+		 0.81389932885906 0.0898876404494382 0.0168 0.318352059925094 ];
+figure1 = figure(44);
+set(figure1,'Colormap',clrmap1,'OuterPosition',[400 150 1100 800],'Color',[1 1 1])
+pause(.1)
+%figure(figure1)
+axes1 = subplot('Position',Ax1LBWH(GSPswitch,:),'Visible','off');
+hold(axes1,'all');
+pause(.1)
+%--------
+for Ntx = 1:5
+p = patch('Faces',Qfaces{Ntx},'Vertices',Qverts{Ntx},'FaceColor','b');
+set(p,'FaceColor','interp','FaceVertexCData',Qcdata{Ntx},...
+'EdgeColor','interp','LineWidth',.1,...
+'EdgeLighting','flat','FaceLighting','flat',...
+'BackFaceLighting','lit')
+hold on; material shiny; axis vis3d off;
+end
+pause(.1)
+%--------
+colorbar('peer',axes1,AxCB(GSPswitch,:),'YTickLabel',{num2str(QsortVal(1), '% 10.2f'),...
+'-','-','-','-',num2str(QsortVal(3), '% 10.2f'),...
+'-','-','-','-',num2str(QsortVal(end), '% 10.2f')},...
+'LineWidth',1);
+hold on;			  
+%--------
+
+switch GSPswitch
+
+    case 1 % G1xyP1
+		CQRall = [];CQG1P1=[];
+		figure(figure1)
+		for mm = 340:1:numel(SGr)
+		QPh2 = scatter(SGr{mm}{9}(1,:),SGr{mm}{9}(2,:));
+		hold on
+		set(QPh2,'Marker','o','SizeData',20,'LineWidth',.5,...
+			'MarkerFaceColor',[.2 1 1],'MarkerEdgeColor',[0 .4 .4])
+		CQRall = cat(2,CQRall,[SGr{mm}{9}(1,:);SGr{mm}{9}(2,:)]);
+		CQG1P1 = cat(2,CQG1P1,[SGr{mm}{9}(1,:);SGr{mm}{9}(2,:)]);
+		end
+		hTit1  = title('G1-S1');
+		set([hTit1],'FontName','Euclid Extra','FontSize',16);
+		hold on
+		%--------
+		[PSDY,PSDX] = find(ACTINp1);
+		S1Ph2 = scatter(PSDX-50,PSDY-50);
+		set(S1Ph2,'Marker','o','SizeData',60,'LineWidth',.5,...
+			'MarkerFaceColor',[.9 .2 .2],'MarkerEdgeColor',[.4 0 0])
+		hold on
+		%--------
+		axes1 = subplot('Position',Ax1LBWH(GSPswitch+4,:));
+		axis off
+		hold(axes1,'all');
+		bpcols = [1 0 0;1 0 1;0 0 1;0 1 1];
+		bplabs = {num2str(mG1SP1(1),'% 10.1f');...
+				num2str(mG1SP1(2),'% 10.1f');...
+				num2str(mG1SP1(3),'% 10.1f');...
+				num2str(mG1SP1(4),'% 10.1f');...
+				num2str(mG1SP1(5),'% 10.1f')};
+		hbp = boxplot(reG1SP1 ...
+			,'notch','marker' ...
+			,'whisker',1 ...
+			,'boxstyle','filled' ...
+			,'colors',bpcols ...
+			,'fullfactors','off'...
+			,'labels',bplabs ...
+			,'widths',.8 ...
+			,'factorgap',[0] ...
+			,'medianstyle','target');
+		hold on
+		annotation(figure1,'textarrow',[0.355 0.455],...
+	[0.941 0.942],'TextEdgeColor','none','FontSize',14,'String','Center');
+	case 2 % G1xyP2
+		CQRall = [];CQG1P2=[];
+		figure(figure1)
+		for mm = 340:1:numel(SGr)
+		QPh2 = scatter(SGr{mm}{10}(1,:),SGr{mm}{10}(2,:));
+		set(QPh2,'Marker','o','SizeData',20,'LineWidth',.5,...
+			'MarkerFaceColor',[.2 1 1],'MarkerEdgeColor',[0 .4 .4])
+		CQRall = cat(2,CQRall,[SGr{mm}{10}(1,:);SGr{mm}{10}(2,:)]);
+		CQG1P2 = cat(2,CQG1P2,[SGr{mm}{9}(1,:);SGr{mm}{9}(2,:)]);
+		end
+		hTit1  = title('G1-S2');
+		set([hTit1],'FontName','Euclid Extra','FontSize',16);
+		hold on
+		%--------
+		[PSDY,PSDX] = find(ACTINp2);
+		S1Ph2 = scatter(PSDX-50,PSDY-50);
+		set(S1Ph2,'Marker','o','SizeData',60,'LineWidth',.5,...
+			'MarkerFaceColor',[.9 .2 .2],'MarkerEdgeColor',[.4 0 0])
+		hold on
+		%--------
+		axes1 = subplot('Position',Ax1LBWH(GSPswitch+4,:));
+		axis off
+		hold(axes1,'all');
+		bpcols = [1 0 0;1 0 1;0 0 1;0 1 1];
+		bplabs = {num2str(mG1SP2(1),'% 10.1f');...
+				  num2str(mG1SP2(2),'% 10.1f');...
+				  num2str(mG1SP2(3),'% 10.1f');...
+				  num2str(mG1SP2(4),'% 10.1f');...
+				  num2str(mG1SP2(5),'% 10.1f')};
+		hbp = boxplot(reG1SP2 ...
+			,'notch','marker' ...
+			,'whisker',1 ...
+			,'boxstyle','filled' ...
+			,'colors',bpcols ...
+			,'fullfactors','off'...
+			,'labels',bplabs ...
+			,'widths',.8 ...
+			,'factorgap',[0] ...
+			,'medianstyle','target');
+		hold on
+		annotation(figure1,'textarrow',[0.845637583892617 0.942114093959731],...
+	[0.941323345817728 0.941323345817728],'TextEdgeColor','none','FontSize',14,'String','Center');
+	case 3 % G2xyP1
+		CQRall = [];CQG2P1=[];
+		figure(figure1)
+		for mm = 280:1:numel(SGr)
+		QPh2 = scatter(SGr{mm}{11}(1,:),SGr{mm}{11}(2,:));
+		set(QPh2,'Marker','o','SizeData',20,'LineWidth',.5,...
+			'MarkerFaceColor',[.2 1 1],'MarkerEdgeColor',[0 .4 .4])
+		CQRall = cat(2,CQRall,[SGr{mm}{11}(1,:);SGr{mm}{11}(2,:)]);
+		CQG2P1 = cat(2,CQG2P1,[SGr{mm}{9}(1,:);SGr{mm}{9}(2,:)]);
+		end
+		hTit1  = title('G2-S1');
+		set([hTit1],'FontName','Euclid Extra','FontSize',16);
+		hold on
+		%--------
+		[PSDY,PSDX] = find(ACTINp1);
+		S1Ph2 = scatter(PSDX-50,PSDY-50);
+		set(S1Ph2,'Marker','o','SizeData',60,'LineWidth',.5,...
+			'MarkerFaceColor',[.9 .2 .2],'MarkerEdgeColor',[.4 0 0])
+		hold on
+		%--------
+		axes1 = subplot('Position',Ax1LBWH(GSPswitch+4,:));
+		axis off
+		hold(axes1,'all');
+		bpcols = [1 0 0;1 0 1;0 0 1;0 1 1];
+		bplabs = {num2str(mG2SP1(1),'% 10.1f');...
+				  num2str(mG2SP1(2),'% 10.1f');...
+				  num2str(mG2SP1(3),'% 10.1f');...
+				  num2str(mG2SP1(4),'% 10.1f');...
+				  num2str(mG2SP1(5),'% 10.1f')};
+		hbp = boxplot(reG2SP1 ...
+			,'notch','marker' ...
+			,'whisker',1 ...
+			,'boxstyle','filled' ...
+			,'colors',bpcols ...
+			,'fullfactors','off'...
+			,'labels',bplabs ...
+			,'widths',.8 ...
+			,'factorgap',[0] ...
+			,'medianstyle','target');
+		hold on
+		annotation(figure1,'textarrow',[0.359060402684564 0.462248322147651],...
+	[0.461922596754057 0.461922596754057],'TextEdgeColor','none','FontSize',14,'String','Center');
+	case 4 % G2xyP2
+		CQRall = [];CQG2P2=[];
+		figure(figure1)
+		for mm = 280:1:numel(SGr)
+		QPh2 = scatter(SGr{mm}{12}(1,:),SGr{mm}{12}(2,:));
+		set(QPh2,'Marker','o','SizeData',20,'LineWidth',.5,...
+			'MarkerFaceColor',[.2 1 1],'MarkerEdgeColor',[0 .4 .4])
+		CQRall = cat(2,CQRall,[SGr{mm}{12}(1,:);SGr{mm}{12}(2,:)]);
+		CQG2P2 = cat(2,CQG2P2,[SGr{mm}{9}(1,:);SGr{mm}{9}(2,:)]);
+		end
+		hTit1  = title('G2-S2');
+		set([hTit1],'FontName','Euclid Extra','FontSize',16);
+		hold on
+		%--------
+		[PSDY,PSDX] = find(ACTINp2);
+		S1Ph2 = scatter(PSDX-50,PSDY-50);
+		set(S1Ph2,'Marker','o','SizeData',60,'LineWidth',.5,...
+			'MarkerFaceColor',[.9 .2 .2],'MarkerEdgeColor',[.4 0 0])
+		hold on
+		%--------
+		axes1 = subplot('Position',Ax1LBWH(GSPswitch+4,:));
+		axis off
+		hold(axes1,'all');
+		bpcols = [1 0 0;1 0 1;0 0 1;0 1 1];
+		bplabs = {num2str(mG2SP2(1),'% 10.1f');...
+				  num2str(mG2SP2(2),'% 10.1f');...
+				  num2str(mG2SP2(3),'% 10.1f');...
+				  num2str(mG2SP2(4),'% 10.1f');...
+				  num2str(mG2SP2(5),'% 10.1f')};
+		hbp = boxplot(reG2SP2 ...
+			,'notch','marker' ...
+			,'whisker',1 ...
+			,'boxstyle','filled' ...
+			,'colors',bpcols ...
+			,'fullfactors','off'...
+			,'labels',bplabs ...
+			,'widths',.8 ...
+			,'factorgap',[0] ...
+			,'medianstyle','target');
+		hold on
+		annotation(figure1,'textarrow',[0.849 0.944],...
+	[0.465 0.465],'TextEdgeColor','none','FontSize',14,'String','Center');
+	otherwise
+        warning('Unexpected plot type.');
+end
+
+%--------
+for mm = 2:5
+rectangle('Position',[-Qr(mm),-Qr(mm),Qr(mm)*2,Qr(mm)*2],'Curvature',[1,1])
+hold on;
+end
+%--------
+
+
+
+
+
+
+
+
+
+
+
+
+%{
+X = CQG1P1';
+opts = statset('Display','final');
+[idx,ctrs] = kmeans(X,15,'Distance','city','Replicates',10,'Options',opts);
+
+for pidx = 1:15
+plot(X(idx==pidx,1),X(idx==pidx,2),'o','MarkerSize',5,'MarkerEdgeColor',[rand rand rand])
+hold on
+end
+plot(ctrs(:,1),ctrs(:,2),'kx','MarkerSize',10,'LineWidth',1)
+plot(ctrs(:,1),ctrs(:,2),'ko','MarkerSize',10,'LineWidth',1)
+hold on
+[PSDY,PSDX] = find(ACTINp1);
+S1Ph2 = scatter(PSDX-50,PSDY-50);
+set(S1Ph2,'Marker','s','SizeData',60,'LineWidth',1,...
+			'MarkerFaceColor',[.1 .9 .9],'MarkerEdgeColor',[.0 .7 .7])
+hold on
+pause(.5)
+options = statset('Display','final','MaxIter',300);
+obj = gmdistribution.fit(X,12,'Options',options);
+h = ezcontour(@(x,y)pdf(obj,[x y]),[-50 50],[-50 50]);
+%}
+
+
+%=====================================================
+end %for GSPswitch = 1:4;	
+end; %if doRadDistDPlots
+%=====================================================
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+end; %if doRadDist
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+keyboard
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%					FINAL OUTPUT (SPLINE) FIGURE 1 OF 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+saveoutputfigs('STARShiP0')
 %----------------------------------------------------------------------%
 fig21 = figure(21);
 set(21,'Units','pixels');scnsize = get(0,'ScreenSize');
@@ -1418,12 +1668,11 @@ pos1 = [scnsize(3)/3  scnsize(4)/5  scnsize(3)/1.5  scnsize(4)/1.5];
 set(fig21,'OuterPosition',pos1)
 set(gcf,'Color',[.9,.9,.9])
 %----------------------------------------------------------------------%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6]; c5= [.01 .9 .01];
 c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7]; c55=[.01 .9 .01];
 cOLOR = [c1; c2; c3; c4];
-
+pause(1);
 
 %===========================================================%
 % FIG1 TOP LEFT: GluR Subtypes in Synapses
@@ -1465,8 +1714,7 @@ set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
 haxes=axis;
 % ylim([0 haxes(4)*1.2 ]);
 % xlim([0 (haxes(2)*.9)]);
-%======================================================================%
-
+%===========================================================%
 
 
 %===========================================================%
@@ -1508,7 +1756,7 @@ set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
 haxes=axis;
 % ylim([0 haxes(4)*1.2 ]);
 % xlim([0 (haxes(2)*.9)]);
-%======================================================================%
+%===========================================================%
 sbpos = [.55 .57 .4 .18]; ptype = 4;
 cOLOR = [c1; c2; c3; c4];
 itemN = 3; 
@@ -1545,7 +1793,7 @@ set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
 haxes=axis;
 % ylim([0 haxes(4)*1.2 ]);
 % xlim([0 (haxes(2)*.9)]);
-%======================================================================%
+%===========================================================%
 
 
 
@@ -1621,7 +1869,7 @@ set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
 haxes=axis;
 % ylim([0 haxes(4)]);
 % xlim([0 (haxes(2)*.9)]);
-%======================================================================%
+%===========================================================%
 
 
 
@@ -1682,28 +1930,36 @@ set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
 haxes=axis;
 % ylim([0 haxes(4)*1.2 ]);
 % xlim([0 (haxes(2)*.9)]);
-%======================================================================%
+%===========================================================%
 
 
-%======================================================================%
+
+
+
+
+
+%===========================================================%
 saveoutputfigs('STARShiP1')
-%======================================================================%
+%===========================================================%
+
+
+
+
+
+
+
+
 
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%======================================================================%
-%					FINAL OUTPUT (SPLINE) FIGURE 2 OF 2
-%======================================================================%
-%							FIGURE SETUP
-%----------------------------------------------------------------------%
+%					FINAL OUTPUT (SPLINE) FIGURE 2 OF 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 fig12 = figure(12);
 set(12,'Units','pixels');scnsize = get(0,'ScreenSize');
 pos1 = [scnsize(3)/3  scnsize(4)/5  scnsize(3)/1.5  scnsize(4)/1.5];
 set(fig12,'OuterPosition',pos1)
 set(gcf,'Color',[.9,.9,.9])
 %----------------------------------------------------------------------%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
 c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
 cOLOR = [c1; c2; c3; c4; c1; c2; c3; c4];
@@ -1759,9 +2015,7 @@ haxes=axis;
 
 
 
-%===========================================================%
-% WAS FIG1 BOTTOM LEFT: GluR Subtypes in Synapse 1v2
-%===========================================================%
+
 %===========================================================%
 % FIG2 TOP RIGHT: GluR Subtypes in Synapse 1v2
 %===========================================================%
@@ -1921,968 +2175,354 @@ haxes=axis;
 %======================================================================%
 saveoutputfigs('STARShiP2')
 %======================================================================%
+%%
 
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%					FINAL OUTPUT (SPLINE) FIGURE 3 OF 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+fig23 = figure(23);
+set(23,'Units','pixels');scnsize = get(0,'ScreenSize');
+pos1 = [scnsize(3)/3  scnsize(4)/5  scnsize(3)/1.5  scnsize(4)/1.5];
+set(fig23,'OuterPosition',pos1)
+set(gcf,'Color',[.9,.9,.9])
+c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6]; c5= [.01 .9 .01];
+c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7]; c55=[.01 .9 .01];
+
+
+applered= [.9 .2 .2];
+oceanblue= [.2 .4 .6];
+neongreen = [.1 .9 .1];
+liteblue = [.2 .9 .9];
+hotpink=[.9 .1 .9];
+
+cOLOR = [c1; c2; c3; c4];
+%----------------------------------------------------------------------%
+
+
+
+%===========================================================%
+% FIG3 TOP LEFT: GluR Subtypes in Synapses
+%===========================================================%
+sbpos = [.05 .57 .4 .38]; ptype = 4;
+cOLOR = [c1; c2; c3; c4];
+cOLOR = repmat(cOLOR,15,1);
+%------------------------------------------%
+itemN = 12; 
+[ph1 hax1 mu1] = CIplot(reDATAGluRdata,applered,5,sbpos,itemN,1);
+legend(ph1,'G1-PSA1');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph1 = plot(mu1);
+%hold on
+%---
+itemN = 13; 
+[ph2 hax2 mu2] = CIplot(reDATAGluRdata,oceanblue,5,sbpos,itemN,1);
+legend([OUTH;ph2],OUTM{:},'G1-PSA2');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph2 = plot(mu2);
+%hold on
+%---
+itemN = 14; 
+[ph3 hax3 mu3] = CIplot(reDATAGluRdata,neongreen,5,sbpos,itemN,1);
+legend([OUTH;ph3],OUTM{:},'G1-PSD1');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph3 = plot(mu3);
+%hold on
+%---
+itemN = 15; 
+[ph4 hax4 mu4] = CIplot(reDATAGluRdata,hotpink,5,sbpos,itemN,1);
+legend([OUTH;ph4],OUTM{:},'G1-PSD2');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph4 = plot(mu4);
+%hold on
+%------------------------------------------%
+xt = (get(gca,'XTick'))*100;
+set(gca,'XTickLabel', sprintf('%.0f|',xt))
+%------------------------------------------%
+MS1 = 5; LnW=1;
+set(ph1,'LineStyle','-','Color',applered,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',applered,'MarkerFaceColor',applered);
+set(ph2,'LineStyle','-','Color',oceanblue,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',oceanblue,'MarkerFaceColor',oceanblue);
+set(ph3,'LineStyle',':','Color',neongreen,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',neongreen,'MarkerFaceColor',neongreen);
+set(ph4,'LineStyle',':','Color',hotpink,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',hotpink,'MarkerFaceColor',hotpink);
+hTitle  = title('Distribution of Particles with Brownian Motion');
+hXLabel = xlabel('Time');
+hYLabel = ylabel('Particles (+/- SEM)');
+set(gca,'FontName','Helvetica');
+set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
+set([hXLabel, hYLabel],'FontSize',10);
+set( hTitle,'FontSize',12);
+set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
+'XMinorTick','on','YMinorTick','on','YGrid','on', ...
+'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
+haxes=axis;
+%ylim([0 haxes(4)*1.2 ]);
+% xlim([0 (haxes(2)*.9)]);
+%======================================================================%
+
+
+
+
+
+
+%===========================================================%
+% FIG3 TOP RIGHT: Synapse Particle Counts
+%===========================================================%
+sbpos = [.55 .57 .4 .38]; ptype = 4;
+cOLOR = [c1; c2; c3; c4];
+cOLOR = repmat(cOLOR,15,1);
+%------------------------------------------%
+itemN = 16; 
+[ph1 hax1 mu1] = CIplot(reDATAGluRdata,applered,5,sbpos,itemN,1);
+legend(ph1,'G2-PSA1');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph1 = plot(mu1);
+%hold on
+%---
+itemN = 17; 
+[ph2 hax2 mu2] = CIplot(reDATAGluRdata,oceanblue,5,sbpos,itemN,1);
+legend([OUTH;ph2],OUTM{:},'G2-PSA2');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph2 = plot(mu2);
+%hold on
+%---
+itemN = 18; 
+[ph3 hax3 mu3] = CIplot(reDATAGluRdata,neongreen,5,sbpos,itemN,1);
+legend([OUTH;ph3],OUTM{:},'G2-PSD1');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph3 = plot(mu3);
+%hold on
+%---
+itemN = 19; 
+[ph4 hax4 mu4] = CIplot(reDATAGluRdata,hotpink,5,sbpos,itemN,1);
+legend([OUTH;ph4],OUTM{:},'G2-PSD2');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph4 = plot(mu4);
+%hold on
+%------------------------------------------%
+xt = (get(gca,'XTick'))*100;
+set(gca,'XTickLabel', sprintf('%.0f|',xt))
+%------------------------------------------%
+MS1 = 5; LnW=1;
+set(ph1,'LineStyle','-','Color',applered,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',applered,'MarkerFaceColor',applered);
+set(ph2,'LineStyle','-','Color',oceanblue,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',oceanblue,'MarkerFaceColor',oceanblue);
+set(ph3,'LineStyle',':','Color',neongreen,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',neongreen,'MarkerFaceColor',neongreen);
+set(ph4,'LineStyle',':','Color',hotpink,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',hotpink,'MarkerFaceColor',hotpink);
+
+hTitle  = title('Distribution of Particles with Brownian Motion');
+hXLabel = xlabel('Time');
+hYLabel = ylabel('Particles (+/- SEM)');
+set(gca,'FontName','Helvetica');
+set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
+set([hXLabel, hYLabel],'FontSize',10);
+set( hTitle,'FontSize',12);
+set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
+'XMinorTick','on','YMinorTick','on','YGrid','on', ...
+'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
+haxes=axis;
+%ylim([0 haxes(4)*1.2 ]);
+% xlim([0 (haxes(2)*.9)]);
+%======================================================================%
+
+
+
+
+
+%===========================================================%
+% FIG3 BOTTOM LEFT: GluR Subtypes in Synapse 1v2
+%===========================================================%
+sbpos = [.05 .09 .4 .38]; ptype = 4;
+cOLOR = [c1; c2; c3; c4];
+cOLOR = repmat(cOLOR,15,1);
+%------------------------------------------%
+itemN = 12; 
+[ph1 hax1 mu1] = CIplot(reDATAGluRdata,applered,5,sbpos,itemN,1);
+legend(ph1,'G1-PSA1');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph1 = plot(mu1);
+%hold on
+%---
+itemN = 13; 
+[ph2 hax2 mu2] = CIplot(reDATAGluRdata,oceanblue,5,sbpos,itemN,1);
+legend([OUTH;ph2],OUTM{:},'G1-PSA2');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph2 = plot(mu2);
+%hold on
+%---
+itemN = 16; 
+[ph3 hax3 mu3] = CIplot(reDATAGluRdata,neongreen,5,sbpos,itemN,1);
+legend([OUTH;ph3],OUTM{:},'G2-PSA1');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph3 = plot(mu3);
+%hold on
+%---
+itemN = 17; 
+[ph4 hax4 mu4] = CIplot(reDATAGluRdata,hotpink,5,sbpos,itemN,1);
+legend([OUTH;ph4],OUTM{:},'G2-PSA2');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph4 = plot(mu4);
+%hold on
+%------------------------------------------%
+xt = (get(gca,'XTick'))*100;
+set(gca,'XTickLabel', sprintf('%.0f|',xt))
+%------------------------------------------%
+MS1 = 5; LnW=1;
+set(ph1,'LineStyle','-','Color',applered,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',applered,'MarkerFaceColor',applered);
+set(ph2,'LineStyle','-','Color',oceanblue,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',oceanblue,'MarkerFaceColor',oceanblue);
+set(ph3,'LineStyle',':','Color',neongreen,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',neongreen,'MarkerFaceColor',neongreen);
+set(ph4,'LineStyle',':','Color',hotpink,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',hotpink,'MarkerFaceColor',hotpink);
+hTitle  = title('Distribution of Particles with Brownian Motion');
+hXLabel = xlabel('Time');
+hYLabel = ylabel('Particles (+/- SEM)');
+set(gca,'FontName','Helvetica');
+set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
+set([hXLabel, hYLabel],'FontSize',10);
+set( hTitle,'FontSize',12);
+set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
+'XMinorTick','on','YMinorTick','on','YGrid','on', ...
+'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
+haxes=axis;
+%ylim([0 haxes(4)*1.2 ]);
+% xlim([0 (haxes(2)*.9)]);
+%======================================================================%
+
+
+
+
+
+%===========================================================%
+% FIG3 BOTTOM RIGHT: Synapse Particle Counts
+%===========================================================%
+sbpos = [.55 .09 .4 .38]; ptype = 4;
+cOLOR = [c1; c2; c3; c4];
+cOLOR = repmat(cOLOR,15,1);
+%------------------------------------------%
+itemN = 14; 
+[ph1 hax1 mu1] = CIplot(reDATAGluRdata,applered,5,sbpos,itemN,1);
+legend(ph1,'G1-PSD1');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph1 = plot(mu1);
+%hold on
+%---
+itemN = 15; 
+[ph2 hax2 mu2] = CIplot(reDATAGluRdata,oceanblue,5,sbpos,itemN,1);
+legend([OUTH;ph2],OUTM{:},'G1-PSD2');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph2 = plot(mu2);
+%hold on
+%---
+itemN = 18; 
+[ph3 hax3 mu3] = CIplot(reDATAGluRdata,neongreen,5,sbpos,itemN,1);
+legend([OUTH;ph3],OUTM{:},'G2-PSD1');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph3 = plot(mu3);
+%hold on
+%---
+itemN = 19; 
+[ph4 hax4 mu4] = CIplot(reDATAGluRdata,hotpink,5,sbpos,itemN,1);
+legend([OUTH;ph4],OUTM{:},'G2-PSD2');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%ph4 = plot(mu4);
+%hold on
+%------------------------------------------%
+xt = (get(gca,'XTick'))*100;
+set(gca,'XTickLabel', sprintf('%.0f|',xt))
+%------------------------------------------%
+MS1 = 5; LnW=1;
+set(ph1,'LineStyle','-','Color',applered,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',applered,'MarkerFaceColor',applered);
+set(ph2,'LineStyle','-','Color',oceanblue,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',oceanblue,'MarkerFaceColor',oceanblue);
+set(ph3,'LineStyle',':','Color',neongreen,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',neongreen,'MarkerFaceColor',neongreen);
+set(ph4,'LineStyle',':','Color',hotpink,'LineWidth',LnW,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',hotpink,'MarkerFaceColor',hotpink);
+hTitle  = title('Distribution of Particles with Brownian Motion');
+hXLabel = xlabel('Time');
+hYLabel = ylabel('Particles (+/- SEM)');
+set(gca,'FontName','Helvetica');
+set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
+set([hXLabel, hYLabel],'FontSize',10);
+set( hTitle,'FontSize',12);
+set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
+'XMinorTick','on','YMinorTick','on','YGrid','on', ...
+'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
+haxes=axis;
+%ylim([0 haxes(4)*1.2 ]);
+% xlim([0 (haxes(2)*.9)]);
+%======================================================================%
+
+
+%======================================================================%
+saveoutputfigs('STARShiP3')
+%======================================================================%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%
 %---------------
 end % if ~doRun(3);
 %---------------
 
-%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%======================================================================%
-%					FINAL OUTPUT (NONAVERAGED) FIGURE 1 OF 2
-%======================================================================%
-%======================================================================%
-%{
-%======================================================================%
-%							FIGURE SETUP
-%----------------------------------------------------------------------%
-fig2 = figure(2);
-set(2,'Units','pixels');scnsize = get(0,'ScreenSize');
-pos1 = [scnsize(3)/3  scnsize(4)/5  scnsize(3)/1.5  scnsize(4)/1.5];
-set(fig2,'OuterPosition',pos1)
-set(gcf,'Color',[.9,.9,.9])
-%----------------------------------------------------------------------%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%======================================================================%
-subplot(2,2,1), subplot('Position',[.055 .57 .4 .38]),...
-RecepPerRegFIG1=plot([dataset(:,3) dataset(:,4) dataset(:,5) dataset(:,2)]);
-xt = (get(gca,'XTick'))*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.1f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','PARTICLES')
-F2AT = title('Receptors Per Region'); leg1=legend('Synapse 1', 'Synapse 2', 'Synapse Total', 'ES');
-set(F2AT, 'FontSize', 14);
-set(leg1,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-MS1 = 5; 
-MS2 = 5;
-set(RecepPerRegFIG1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(RecepPerRegFIG1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS2,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-set(RecepPerRegFIG1(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-set(RecepPerRegFIG1(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-'Marker','o','MarkerSize',MS2,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('Extrasynaptic vs Synaptic AMPARs');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-
-
-%======================================================================%
-subplot(2,2,2), subplot('Position',[.55 .77 .4 .18]),...
-G1PSDvPSAFIG1=plot([GluRdata(:,1) GluRdata(:,2)]);
-xt = (get(gca,'XTick'))*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.1f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','PARTICLES')
-GluR1PSDvsPERI=title('GluR1 in PSD vs PSA'); leg1=legend('PSD', 'PSA');
-set(GluR1PSDvsPERI, 'FontSize', 14);
-set(leg1,'Location','NorthWest');
-set(gca,'XTickLabel',{'-'})
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-MS1 = 5; 
-MS2 = 5;
-set(G1PSDvPSAFIG1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(G1PSDvPSAFIG1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-% set(XXXXXXXX(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(XXXXXXXX(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('GluR Subtypes in PSD vs PSA');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('GluR1/2');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%===========================================================%
-subplot('Position',[.55 .57 .4 .18]),...
-G1PSDvPSAFIG2=plot([GluRdata(:,3) GluRdata(:,4)]);
-xt = (get(gca,'XTick'))*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.1f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','PARTICLES')
-GluR2PSDvsPERI=title('GluR2 PSD vs PSA'); leg1=legend('PSD', 'PSA');
-set(GluR2PSDvsPERI, 'FontSize', 14);
-set(leg1,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-MS1 = 5; 
-MS2 = 5;
-set(G1PSDvPSAFIG2(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(G1PSDvPSAFIG2(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-% set(XXXXXXXX(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(XXXXXXXX(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('-');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('GluR2/3');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-
-
-%======================================================================%
-subplot(2,2,3), subplot('Position',[.05 .09 .4 .38]),...
-Spy1vSpy2FIG1=plot([GluRdata(:,5) GluRdata(:,6) GluRdata(:,7) GluRdata(:,8)]);
-xt = (get(gca,'XTick'))*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.1f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','PARTICLES')
-F2CT = title('GluR Subtypes in Synapse 1v2'); 
-set(F2CT, 'FontSize', 14);
-leg1=legend('G1/2 Synapse 1', 'G1/2 Synapse 2',	'G2/3 Synapse 1', 'G2/3 Synapse 2');
-set(leg1,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-MS1 = 5; 
-MS2 = 5;
-set(Spy1vSpy2FIG1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(Spy1vSpy2FIG1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-set(Spy1vSpy2FIG1(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-set(Spy1vSpy2FIG1(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('GluR Subtypes in Synapse 1v2');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-
-
-%======================================================================%
-subplot(2,2,4), subplot('Position',[.55 .09 .4 .38]),...
-SpyTotalsFIG1=plot([dataset(:,3) dataset(:,4) dataset(:,5)]);
-xt = (get(gca,'XTick'))*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','PARTICLES')
-F2DT=title('Synapse Totals'); leg2=legend('Synapse 1', 'Synapse 2', 'Synapse Total');
-set(F2DT, 'FontSize', 14);
-set(leg2,'Location','SouthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-MS1 = 5; 
-MS2 = 5;
-set(SpyTotalsFIG1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(SpyTotalsFIG1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-set(SpyTotalsFIG1(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(XXXXXXXX(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('Synapse Particle Counts');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-
-%======================================================================%
-set(gcf, 'PaperPositionMode', 'auto');
-print -depsc2 NonMeanOutput1.eps
-fixPSlinestyle('NonMeanOutput1.eps', 'NonMeanOutput1.eps');
-%======================================================================%
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%======================================================================%
-%					FINAL OUTPUT (NONAVERAGED) FIGURE 2 OF 2
-%======================================================================%
-%							FIGURE SETUP
-%----------------------------------------------------------------------%
-fig3 = figure(3);
-set(3,'Units','pixels');scnsize = get(0,'ScreenSize');
-pos1 = [scnsize(3)/3  scnsize(4)/5  scnsize(3)/1.5  scnsize(4)/1.5];
-set(fig3,'OuterPosition',pos1)
-set(gcf,'Color',[.9,.9,.9])
-%----------------------------------------------------------------------%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-%======================================================================%
-subplot(2,2,1), subplot('Position',[.05 .57 .4 .38]),...
-AMPARTinSpyFIG1=plot([AMPARdata(:,1) AMPARdata(:,2)]);
-xt = (get(gca,'XTick'))*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','Particles')
-F3AT=title('AMPAR subtype totals in synapses'); 
-leg3=legend('GluR1', 'GluR2');
-set(F3AT, 'FontSize', 14);
-set(leg3,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-MS1 = 5; 
-MS2 = 5;
-set(AMPARTinSpyFIG1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(AMPARTinSpyFIG1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-% set(XXXXXXXX(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(XXXXXXXX(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('GluR Subtypes in Synapses');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-
-
-%======================================================================%
-% subplot(2,2,2), 
-subplot('Position',[.55 .77 .4 .18]),...
-G1DotsInSPYFIG1=plot([GluRdata(:,5) GluRdata(:,6)]);
-xt = (get(gca,'XTick'))*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'YLabel'),'String','GluR1 Particles')
-F3B2T=title('GluR1');
-set(F3B2T, 'FontSize', 14);
-leg1=legend('Synapse 1', 'Synapse 2');
-set(leg1,'Location','NorthWest');
-set(gca,'XTickLabel',{'-'})
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-MS1 = 5; 
-MS2 = 5;
-set(G1DotsInSPYFIG1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(G1DotsInSPYFIG1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-% set(XXXXXXXX(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(XXXXXXXX(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('GluR Subtypes in Synapse 1v2');
-hXLabel = xlabel('-');
-hYLabel = ylabel('GluR1 Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%===========================================================%
-subplot('Position',[.55 .57 .4 .18]),...
-G2DotsInSPYFIG2=plot([GluRdata(:,7) GluRdata(:,8)]);
-xt = (get(gca,'XTick'))*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'YLabel'),'String','GluR2 Particles')
-F3B1T=title('GluR2 Particles');
-set(F3B1T, 'FontSize', 14);
-leg1=legend('Synapse 1', 'Synapse 2');
-set(leg1,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-MS1 = 5; 
-MS2 = 5;
-set(G2DotsInSPYFIG2(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(G2DotsInSPYFIG2(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-% set(XXXXXXXX(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(XXXXXXXX(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('-');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('GluR2 Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-
-
-%======================================================================%
-% subplot(2,2,3), 
-subplot('Position',[.55 .29 .4 .18]),...
-%G1FSLOTSFIG1=plot([G1SLOTSDATA(:,1) G1SLOTSDATA(:,2) G1SLOTSDATA(:,3) G1SLOTSDATA(:,4)]);
-G1FSLOTSFIG1=plot([G1SLOTSDATA(:,1) G1SLOTSDATA(:,2)]);
-xt = (get(gca,'XTick'))*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'YLabel'),'String','Occupied Slots')
-F3B1T=title('Slots Occupied by GluR1');
-set(F3B1T, 'FontSize', 14);
-leg1=legend('PSD 1', 'PSD 2');
-set(leg1,'Location','NorthWest');
-set(gca,'XTickLabel',{'-'})
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-MS1 = 5; 
-MS2 = 5;
-set(G1FSLOTSFIG1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(G1FSLOTSFIG1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-% set(G1FSLOTSFIG1(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(G1FSLOTSFIG1(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('Occupied Synaptic Slots');
-hXLabel = xlabel('-');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%===========================================================%
-sbpos = [.55 .09 .4 .18];
-subplot('Position',[.55 .09 .4 .18]),...
-G2FSLOTSFIG1=plot([G2SLOTSDATA(:,1) G2SLOTSDATA(:,2)]);
-xt = (get(gca,'XTick'))*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','Occupied Slots')
-F3B2T=title('Slots Occupied by GluR2');
-set(F3B2T, 'FontSize', 14);
-leg1=legend('PSD 1', 'PSD 2');
-set(leg1,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-MS1 = 5; 
-MS2 = 5;
-set(G2FSLOTSFIG1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(G2FSLOTSFIG1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-% set(G2FSLOTSFIG1(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(G2FSLOTSFIG1(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('-');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-
-%======================================================================%
-
-
-%======================================================================%
-subplot('Position',[.055 .09 .4 .38]),...
-SAPCLPTFIG1=plot([SAPdata(:,1) SAPdata(:,2)]);
-xt = (get(gca,'XTick'))*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','SAP Particles')
-F3CT=title('Synaptic SAP Cluster Size'); leg4=legend('Synapse 1', 'Synapse 2');
-set(F3CT, 'FontSize', 14);
-set(leg4,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-MS1 = 5; 
-MS2 = 5;
-set(SAPCLPTFIG1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(SAPCLPTFIG1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-% set(XXXXXXXX(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(XXXXXXXX(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('Synaptic SAP Cluster Size');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-
-%======================================================================%
-set(gcf, 'PaperPositionMode', 'auto');
-print -depsc2 NonMeanOutput2.eps
-fixPSlinestyle('NonMeanOutput2.eps', 'NonMeanOutput2.eps');
-%======================================================================%
-
 
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%======================================================================%
-%					AVERAGED OUTPUTS FIGURE 1 OF 2
-%======================================================================%
-%							FIGURE SETUP
-%----------------------------------------------------------------------%
-fig4 = figure(4);
-set(4,'Units','pixels');scnsize = get(0,'ScreenSize');
-pos1 = [scnsize(3)/3  scnsize(4)/5  scnsize(3)/1.5  scnsize(4)/1.5];
-set(fig4,'OuterPosition',pos1)
-set(gcf,'Color',[.95,.95,.95])
-%----------------------------------------------------------------------%
+%						MSD REVERSE TRACE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%======================================================================%
-subplot(2,2,1),subplot('Position',[.055 .57 .4 .38]),...
-RPRFIG1 = plot([DATAdataset(:,3) DATAdataset(:,4) DATAdataset(:,5) DATAdataset(:,2)]);
-xt = (get(gca,'XTick'))*AveOver*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','PARTICLES')
-F2AT = title('Receptors Per Region'); leg1=legend('Synapse 1', 'Synapse 2', 'Synapse Total', 'ES');
-set(F2AT, 'FontSize', 14);
-set(leg1,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-MS1 = 5; 
-MS2 = 5;
-set(RPRFIG1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(RPRFIG1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-set(RPRFIG1(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-set(RPRFIG1(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('Extrasynaptic vs Synaptic AMPARs');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-
-
-
-
-%======================================================================%
-% subplot(2,2,2), 
-subplot('Position',[.55 .77 .4 .18]),...
-G1PSvPAF1=plot([DATAGluRdata(:,1) DATAGluRdata(:,2)]);
-xt = (get(gca,'XTick'))*AveOver*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','PARTICLES')
-GluR1PSDvsPERI=title('GluR1 in PSD vs PSA'); leg1=legend('PSD', 'PSA');
-set(GluR1PSDvsPERI, 'FontSize', 14);
-set(leg1,'Location','NorthWest');
-set(gca,'XTickLabel',{'-'})
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-% MS1 = 6; 
-% MS2 = 6;
-set(G1PSvPAF1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(G1PSvPAF1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-% set(XXXXXXXX(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(XXXXXXXX(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('GluR Subtypes in PSD vs PSA');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('GluR1/2');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%===========================================================%
-subplot('Position',[.55 .57 .4 .18]),...
-G2PSvPAF1=plot([DATAGluRdata(:,3) DATAGluRdata(:,4)]);
-xt = (get(gca,'XTick'))*AveOver*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','PARTICLES')
-GluR2PSDvsPERI=title('GluR2 PSD vs PSA'); leg1=legend('PSD', 'PSA');
-set(GluR2PSDvsPERI, 'FontSize', 14);
-set(leg1,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-% MS1 = 6; 
-% MS2 = 6;
-set(G2PSvPAF1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(G2PSvPAF1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-% set(XXXXXXXX(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(XXXXXXXX(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('-');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('GluR2/3');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-
-
-%======================================================================%
-% subplot(2,2,3), subplot('Position',[.05 .077 .4 .38]),...
-subplot('Position',[.05 .09 .4 .38]),...
-GR1SpyF1=plot([DATAGluRdata(:,5) DATAGluRdata(:,6) DATAGluRdata(:,7) DATAGluRdata(:,8)]);
-xt = (get(gca,'XTick'))*AveOver*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','Particles')
-F2CT = title('GluR Subtypes in Synapse 1v2'); 
-set(F2CT, 'FontSize', 14);
-leg1=legend('G1/2 Synapse 1', 'G1/2 Synapse 2',	'G2/3 Synapse 1', 'G2/3 Synapse 2');
-set(leg1,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-% MS1 = 6; 
-% MS2 = 6;
-set(GR1SpyF1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(GR1SpyF1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-set(GR1SpyF1(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-set(GR1SpyF1(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('GluR Subtypes in Synapse 1v2');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-
-
-%======================================================================%
-% subplot(2,2,4), subplot('Position',[.55 .077 .4 .38]),...
-subplot('Position',[.55 .09 .4 .38]),...
-SpyTF1=plot([DATAdataset(:,3) DATAdataset(:,4) DATAdataset(:,5)]);
-xt = (get(gca,'XTick'))*AveOver*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','PARTICLES')
-F2DT=title('Synapse Totals'); leg2=legend('Synapse 1', 'Synapse 2', 'Synapse Total');
-set(F2DT, 'FontSize', 14);
-set(leg2,'Location','SouthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-% MS1 = 6; 
-% MS2 = 6;
-set(SpyTF1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(SpyTF1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-set(SpyTF1(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(XXXXXXXX(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('Synapse Particle Counts');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-
-
-%======================================================================%
-set(gcf, 'PaperPositionMode', 'auto');
-print -depsc2 MeanOutput1.eps
-fixPSlinestyle('MeanOutput1.eps', 'MeanOutput2.eps');
-%======================================================================%
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%======================================================================%
-%					AVERAGED OUTPUTS FIGURE 2 OF 2
-%======================================================================%
-%							FIGURE SETUP
-%----------------------------------------------------------------------%
-fig5 = figure(5);
-set(5,'Units','pixels');scnsize = get(0,'ScreenSize');
-pos1 = [scnsize(3)/3  scnsize(4)/5  scnsize(3)/1.5  scnsize(4)/1.5];
-set(fig5,'OuterPosition',pos1)
-set(gcf,'Color',[.9,.9,.9])
-%----------------------------------------------------------------------%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-%======================================================================%
-subplot(2,2,1),subplot('Position',[.05 .57 .4 .38]),...
-GRSubsSpinesFig1=plot([DATAAMPARdata(:,1) DATAAMPARdata(:,2)]);
-xt = (get(gca,'XTick'))*AveOver*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','PARTICLES')
-F3AT=title('AMPAR SUBTYPE TOTALS IN SynapseS'); 
-leg3=legend('GluR1/2', 'GluR2/3');
-set(F3AT, 'FontSize', 14);
-set(leg3,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-MS1 = 5; 
-MS2 = 5;
-set(GRSubsSpinesFig1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(GRSubsSpinesFig1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-% set(XXXXXXXX(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(XXXXXXXX(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('GluR Subtypes in Synapses');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-
-
-%======================================================================%
-subplot('Position',[.55 .765 .4 .18]),...
-GluInSpineFig1=plot([DATAGluRdata(:,5) DATAGluRdata(:,6)]);
-xt = (get(gca,'XTick'))*AveOver*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'YLabel'),'String','GluR1/2 Particles')
-F3B2T=title('GluR1');
-set(F3B2T, 'FontSize', 14);
-leg1=legend('Synapse 1', 'Synapse 2');
-set(leg1,'Location','NorthWest');
-set(gca,'XTickLabel',{'-'})
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-% MS1 = 6; 
-% MS2 = 6;
-set(GluInSpineFig1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(GluInSpineFig1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-% set(XXXXXXXX(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(XXXXXXXX(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('GluR Subtypes in Synapse 1v2');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('GluR1/2');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%===========================================================%
-subplot(2,2,3), subplot('Position',[.55 .57 .4 .18]),...
-GluInSpineFig2=plot([DATAGluRdata(:,7) DATAGluRdata(:,8)]);
-xt = (get(gca,'XTick'))*AveOver*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'YLabel'),'String','GluR2/3 Particles')
-F3B1T=title('GluR2/3');
-set(F3B1T, 'FontSize', 14);
-leg1=legend('Synapse 1', 'Synapse 2');
-set(leg1,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-% MS1 = 6; 
-% MS2 = 6;
-set(GluInSpineFig2(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(GluInSpineFig2(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-% set(XXXXXXXX(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(XXXXXXXX(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('-');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('GluR2/3');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-
-
-
-
-
-%======================================================================%
-%{
-%======================================================================%
-subplot('Position',[.55 .265 .4 .19]),...
-FilledSlotsFig1=plot([DATAG1SLOTSDATA(:,1) DATAG1SLOTSDATA(:,2) ...
-					DATAG1SLOTSDATA(:,3) DATAG1SLOTSDATA(:,4)]);
-xt = (get(gca,'XTick'))*AveOver*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'YLabel'),'String','Occupied Slots')
-F3B1T=title('Slots Occupied by GluR1');
-set(F3B1T, 'FontSize', 14);
-leg1=legend('PSD 1', 'PSD 2','PSA 1','PSA 2');
-set(leg1,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-% MS1 = 6; 
-% MS2 = 6;
-set(FilledSlotsFig1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(FilledSlotsFig1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-set(FilledSlotsFig1(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-set(FilledSlotsFig1(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('Occupied Slots');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%===========================================%
-subplot('Position',[.55 .055 .4 .19]),...
-FilledSlotsFig2=plot([DATAG2SLOTSDATA(:,1) DATAG2SLOTSDATA(:,2) ...
-					DATAG2SLOTSDATA(:,3) DATAG2SLOTSDATA(:,4)]);
-xt = (get(gca,'XTick'))*AveOver*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','Occupied Slots')
-F3B2T=title('Slots Occupied by GluR2');
-set(F3B2T, 'FontSize', 14);
-leg1=legend('PSD 1', 'PSD 2','PSA 1','PSA 2');
-set(leg1,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-% MS1 = 6; 
-% MS2 = 6;
-set(FilledSlotsFig2(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(FilledSlotsFig2(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-set(FilledSlotsFig2(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-set(FilledSlotsFig2(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('-');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-%}
-sbpos=[.55 .09 .4 .38];
-subplot(2,2,4), subplot('Position',[.55 .09 .4 .38]),...
-FilledSlotsF1=plot([DATAG1SLOTSDATA(:,1) DATAG1SLOTSDATA(:,2) ...
-					DATAG2SLOTSDATA(:,1) DATAG2SLOTSDATA(:,2)]);
-xt = (get(gca,'XTick'))*AveOver*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'YLabel'),'String','Occupied Slots')
-F3B1T=title('Slots Occupied by GluR');
-set(F3B1T, 'FontSize', 14);
-leg1=legend('G1/2 PSD 1', 'G1/2 PSD 2','G2/3 PSD 1', 'G2/3 PSD 2');
-set(leg1,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-% MS1 = 6; 
-% MS2 = 6;
-set(FilledSlotsF1(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(FilledSlotsF1(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-set(FilledSlotsF1(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-set(FilledSlotsF1(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('Occupied Slots');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%===========================================%
-
-
-
-
-
-
-
-
-
-
-
-
-
-%======================================================================%
-subplot(2,2,3), subplot('Position',[.055 .09 .4 .38]),...
-SAPNdotsFig2 = plot([DATASAPdata(:,1) DATASAPdata(:,2)]);
-xt = (get(gca,'XTick'))*AveOver*DATARATE*(t)/(60);
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-set(get(gca,'XLabel'),'String','Time (min)')
-set(get(gca,'YLabel'),'String','SAP PARTICLES')
-F3CT=title('Synaptic SAP Cluster Size'); leg4=legend('Synapse 1', 'Synapse 2');
-set(F3CT, 'FontSize', 14);
-set(leg4,'Location','NorthWest');
-%------------------------------------------%
-c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6];
-c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7];
-% MS1 = 6; 
-% MS2 = 6;
-set(SAPNdotsFig2(1),'LineStyle','-','Color', c1,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
-set(SAPNdotsFig2(2),'LineStyle','-','Color',c2,'LineWidth',1,...
-'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
-% set(XXXXXXXX(3),'LineStyle','-','Color', c3,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c3,'MarkerFaceColor',c33);
-% set(XXXXXXXX(4),'LineStyle','-','Color',c4,'LineWidth',1,...
-% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c4,'MarkerFaceColor',c44);
-hTitle  = title ('Synaptic SAP Cluster Size');
-hXLabel = xlabel('Time (min)');
-hYLabel = ylabel('Particles');
-set(gca,'FontName','Helvetica');
-set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
-set([hXLabel, hYLabel],'FontSize',10);
-set( hTitle,'FontSize',12,'FontWeight','bold');
-set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
-'XMinorTick','on','YMinorTick','on','YGrid','on', ...
-'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
-%======================================================================%
-
-
-%======================================================================%
-set(gcf, 'PaperPositionMode', 'auto');
-print -depsc2 MeanOutput2.eps
-fixPSlinestyle('MeanOutput2.eps', 'MeanOutput2.eps');
-%======================================================================%
-%}
-%======================================================================%
-%======================================================================%
-%%
-%===========================================%
-%   IF TRACK MSD
-%-------------------------------%
 % TRACK MSD AND STEP SIZE MEANS (0:no 1:yes)
 trackMSD = doRun(3);
 if trackMSD
 
 dT = t;
-GluR2Ndots = 100;
-Nsteps = GluR2Ndots;
-tracks = cell(GluR2Ndots, 1);
+G2N = 100;
+Nsteps = G2N;
+tracks = cell(G2N, 1);
 lims = ((D+1)^2)*10;
 
 trackStepMeans = DontDo;
@@ -2902,25 +2542,25 @@ for Nt = 1:Nsteps
     %-------------------------------%
     %     STEP DIRECTION & SIZE
     %-------------------------------%
-    GluR2xyds = STEPxyds(GluR2Ndots, k);
+    xysG2 = STEPxyds(G2N, k);
 	%-------------------------------%
     %     DO MANUAL STEP SIZES
     %-------------------------------%
 	if MANstepsize
-		GluR2xyds = CIRCSTEPxyds(GluR2Ndots, k);
+		xysG2 = CIRCSTEPxyds(G2N, k);
 	end % xyd = DIRxyd(xyd);
 	
 		
-	[GluR2xyl GluR2xyds] = MSDAMPARSTEP(GluR2Ndots, GluR2xyds, GluR2xyl,... 
+	[xyG2 xysG2] = MSDAMPARSTEP(G2N, xysG2, xyG2,... 
 	testPSD1MSD, testPSD2MSD, testESMSD, PSD1, PSD2, D, Dn_PSD1, Dn_PSD2);
 
 
-    [tracks] = MSDfun(stepN, Nsteps, tracks, GluR2xyds);
+    [tracks] = MSDfun(stepN, Nsteps, tracks, xysG2);
 
     
     if trackStepMeans
      if mod(stepN, 10) == 0
-        StepMeans = meanStep(GluR2xyds, k, D);
+        StepMeans = meanStep(xysG2, k, D);
         head = ['MeanAbsStep CalcHalfNorm MeanPythStep CalcPythStep CalcHalfPythStep'];
        disp(head)
        disp(StepMeans)
@@ -2931,7 +2571,7 @@ for Nt = 1:Nsteps
  stepN = stepN+1;
 end
 output1 = tracks;
-[rawMSDout] = MSDfunction(tracks, GluR2Ndots, Nsteps, D, Dn_PSD1, Dn_PSD2, dT, k, MSDtest);
+[rawMSDout] = MSDfunction(tracks, G2N, Nsteps, D, Dn_PSD1, Dn_PSD2, dT, k, MSDtest);
 
 
 %===========================================================%
@@ -2939,9 +2579,9 @@ output1 = tracks;
 %-----------------------------------------------------------%
 for Nt = 1:Nsteps
 
-    GluR2xyds = STEPxyds2(GluR2Ndots, k);
-	[GluR2xyl] = AMPARSTEP2(GluR2Ndots, GluR2xyds, GluR2xyl);
-	MAINPLOT2(GluR2xyl, lims);
+    xysG2 = STEPxyds2(G2N, k);
+	[xyG2] = AMPARSTEP2(G2N, xysG2, xyG2);
+	MAINPLOT2(xyG2, lims);
 
 end
 %===========================================================%
@@ -2950,18 +2590,18 @@ end
 %===========================================================%
 %               MSD RANDOM STEPS ANALYSIS
 %-----------------------------------------------------------%
-tracks = cell(GluR2Ndots, 1);
+tracks = cell(G2N, 1);
 
 stepN = 1;
 for Nt = 1:Nsteps 
 
-	GluR2xyds = STEPxyds2(GluR2Ndots, k);
-	[GluR2xyl] = AMPARSTEP2(GluR2Ndots, GluR2xyds, GluR2xyl);
-    [tracks] = MSDfun2(stepN, Nsteps, tracks, GluR2xyds);
+	xysG2 = STEPxyds2(G2N, k);
+	[xyG2] = AMPARSTEP2(G2N, xysG2, xyG2);
+    [tracks] = MSDfun2(stepN, Nsteps, tracks, xysG2);
 
 stepN = stepN+1;
 end
-[ESMSDout] = MSDfunction2(tracks,GluR2Ndots,Nsteps,D,Dn,L,dT,k,Scale,MSDtest);
+[ESMSDout] = MSDfunction2(tracks,G2N,Nsteps,D,Dn,L,dT,k,Scale,MSDtest);
 
 %===========================================================%
 %               MSD UNIFORM STEPS ANALYSIS
@@ -2969,13 +2609,13 @@ end
 stepN = 1;
 for t = 1:Nsteps 
 
-	GluR2xyds = UNIFORMSTEPS2(GluR2Ndots, Lx);
-	[GluR2xyl GluR2xyds] = SCALEUNIFORMSTEPS2(GluR2Ndots, GluR2xyds, GluR2xyl, Ls, MSDtest);
-    [tracks] = MSDfun2(stepN, Nsteps, tracks, GluR2xyds);
+	xysG2 = UNIFORMSTEPS2(G2N, Lx);
+	[xyG2 xysG2] = SCALEUNIFORMSTEPS2(G2N, xysG2, xyG2, Ls, MSDtest);
+    [tracks] = MSDfun2(stepN, Nsteps, tracks, xysG2);
 
 stepN = stepN+1;
 end
-[PSDMSDout] = MSDfunction2(tracks,GluR2Ndots,Nsteps,D,Dn,L,dT,k,Scale,MSDtest);
+[PSDMSDout] = MSDfunction2(tracks,G2N,Nsteps,D,Dn,L,dT,k,Scale,MSDtest);
 
 figure(80)
 set(gcf,'OuterPosition',[600,400,300,300])
@@ -2991,9 +2631,16 @@ end % if trackMSD
 
 
 
-%----------------------------------------%
+
+
+
+
+
+
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   Do Izhikevich Spiking
-%----------------------------------------%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if doIz
 spikes=DATAdataset(:,3:4);
 IzhFun(spikes);
@@ -3002,28 +2649,22 @@ end
 
 
 %%
-%----------------------------------------%
-%   OUTPUT RETURNS FOR TOP LEVEL FUNCTION
-%----------------------------------------%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				OUTPUT RETURNS FOR TOP LEVEL FUNCTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % varargout = {GluRdata;SAPdata;Ddata;AMPARdata};
 varargout = {DATAdataset;DATASAPdata;DATADdata;DATAAMPARdata;DATAGluRdata;...
 	DATAG1SLOTSDATA;DATAG2SLOTSDATA};
 assignin('base', 'varargout', varargout)
 
-%{
-time1 = datestr(clock, 0);
-time2 = num2str(time1(1,[1:2 16:17 19:20]));
-time3 = strcat(['BradsModelData' time2 '.txt']);
-time4 = strcat(['BradsModelData' time2 '.txt']);
-XLSdata1 = dataset({varargout{1}});
-export(XLSdata1,'file',eval('time3'));
-%}
 
 
-%-------------############################------------------%
-end %		  ##    END MAIN FUNCTION   ##
-%-------------############################------------------% 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+end %			##    END MAIN FUNCTION   ##
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 
 
@@ -3038,9 +2679,9 @@ end %		  ##    END MAIN FUNCTION   ##
 
 
 %%						 SUBROUTINES
-%=================########################=================%
-%				  ##		INDEX		##
-%=================########################=================% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%					 ##		INDEX		##
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 %				1. BROWNIAN MOTION FUNCTIONS
 %				2. SAPS & SLOTS
 %				3. DENDRITIC FIELD MAPPING TOOLS
@@ -3054,9 +2695,9 @@ end %		  ##    END MAIN FUNCTION   ##
 
 
 
-
-%%			  BROWNIAN MOTION FUNCTIONS
-%-------------##########################------------------%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%					BROWNIAN MOTION FUNCTIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %===================================%
@@ -3072,16 +2713,16 @@ end
 %===================================%
 % MOVE PARTICLES MAIN FUNCTION
 %===================================%
-function [GluR1xyds GluR1xyl GluR2xyds GluR2xyl]...
+function [xysG1 xyG1 xysG2 xyG2]...
     = MOVEGLUR(stepN,DF,...
-	GluR1Ndots,GluR1xyds,GluR1xyl,...
-    GluR2Ndots,GluR2xyds,GluR2xyl)
+	G1N,xysG1,xyG1,...
+    G2N,xysG2,xyG2)
 
 %------------------
 
 % This function will add step-sizes to the particles current location.
 % This function has been updated so particles located in a position
-% less than 1 (ie. GluR1xyl<1) are out-of-bounds (instead of particles
+% less than 1 (ie. xyG1<1) are out-of-bounds (instead of particles
 % located in a position less than zero). This will make it so all particles
 % will have a rounded particle location of 1 or greater, which can be used
 % as a matrix index ID value (zero cannot be used as a Mx index number). 
@@ -3089,8 +2730,8 @@ function [GluR1xyds GluR1xyl GluR2xyds GluR2xyl]...
 
 %------------------
 % add step to current location
-GluR1xyl = GluR1xyl+GluR1xyds;
-GluR2xyl = GluR2xyl+GluR2xyds;
+xyG1 = xyG1+xysG1;
+xyG2 = xyG2+xysG2;
 %------------------
 
 
@@ -3101,27 +2742,27 @@ GluR2xyl = GluR2xyl+GluR2xyds;
 %LOWVAL=0;
 LOWVAL=1;
 
-G1XLO = GluR1xyl(1,:) < LOWVAL;
-G1XHI = GluR1xyl(1,:) > DF.X;
-G1YLO = GluR1xyl(2,:) < LOWVAL;
-G1YHI = GluR1xyl(2,:) > DF.Y;
+G1XLO = xyG1(1,:) < LOWVAL;
+G1XHI = xyG1(1,:) > DF.X;
+G1YLO = xyG1(2,:) < LOWVAL;
+G1YHI = xyG1(2,:) > DF.Y;
 
-G2XLO = GluR2xyl(1,:) < LOWVAL;
-G2XHI = GluR2xyl(1,:) > DF.X;
-G2YLO = GluR2xyl(2,:) < LOWVAL;
-G2YHI = GluR2xyl(2,:) > DF.Y;
-
-
-GluR1xyl(1,G1XLO) = LOWVAL;
-GluR1xyl(1,G1XHI) = DF.X;
-GluR1xyl(2,G1YLO) = LOWVAL;
-GluR1xyl(2,G1YHI) = DF.Y;
+G2XLO = xyG2(1,:) < LOWVAL;
+G2XHI = xyG2(1,:) > DF.X;
+G2YLO = xyG2(2,:) < LOWVAL;
+G2YHI = xyG2(2,:) > DF.Y;
 
 
-GluR2xyl(1,G2XLO) = LOWVAL;
-GluR2xyl(1,G2XHI) = DF.X;
-GluR2xyl(2,G2YLO) = LOWVAL;
-GluR2xyl(2,G2YHI) = DF.Y;
+xyG1(1,G1XLO) = LOWVAL;
+xyG1(1,G1XHI) = DF.X;
+xyG1(2,G1YLO) = LOWVAL;
+xyG1(2,G1YHI) = DF.Y;
+
+
+xyG2(1,G2XLO) = LOWVAL;
+xyG2(1,G2XHI) = DF.X;
+xyG2(2,G2YLO) = LOWVAL;
+xyG2(2,G2YHI) = DF.Y;
 
 
 
@@ -3132,14 +2773,14 @@ GluR2xyl(2,G2YHI) = DF.Y;
 % GluR1
 
 % add step to current location
-GluR1xyl = GluR1xyl+GluR1xyds;
+xyG1 = xyG1+xysG1;
 
 % containment
-for j = 1:GluR1Ndots 
-    if GluR1xyl(1,j)>(DF.X) || GluR1xyl(1,j)<LOWVAL
-            GluR1xyl(1,j) = uint16(sign(GluR1xyl(1,j)))*(DF.X);
-    elseif GluR1xyl(2,j)>(DF.Y) || GluR1xyl(2,j)<LOWVAL
-            GluR1xyl(2,j) = uint16(sign(GluR1xyl(2,j)))*(DF.Y);
+for j = 1:G1N 
+    if xyG1(1,j)>(DF.X) || xyG1(1,j)<LOWVAL
+            xyG1(1,j) = uint16(sign(xyG1(1,j)))*(DF.X);
+    elseif xyG1(2,j)>(DF.Y) || xyG1(2,j)<LOWVAL
+            xyG1(2,j) = uint16(sign(xyG1(2,j)))*(DF.Y);
     end    
         
 end
@@ -3149,14 +2790,14 @@ end
 % GluR2
 
 % add step to current location
-GluR2xyl = GluR2xyl+GluR2xyds;
+xyG2 = xyG2+xysG2;
 
 % containment
-for j = 1:GluR2Ndots 
-	if GluR2xyl(1,j)>(DF.X) || GluR2xyl(1,j)<LOWVAL
-            GluR2xyl(1,j) = uint16(sign(GluR2xyl(1,j)))*(DF.X);
-	elseif GluR2xyl(2,j)>(DF.Y) || GluR2xyl(2,j)<LOWVAL
-            GluR2xyl(2,j) = uint16(sign(GluR2xyl(2,j)))*(DF.Y);
+for j = 1:G2N 
+	if xyG2(1,j)>(DF.X) || xyG2(1,j)<LOWVAL
+            xyG2(1,j) = uint16(sign(xyG2(1,j)))*(DF.X);
+	elseif xyG2(2,j)>(DF.Y) || xyG2(2,j)<LOWVAL
+            xyG2(2,j) = uint16(sign(xyG2(2,j)))*(DF.Y);
 	end	   
         
 end
@@ -3170,51 +2811,27 @@ end
 
 
 
-
-%%					 SAPS & SLOTS
-%-------------##########################------------------%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%						SAPS & SLOTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
 %----------------------------------%
 %		SUPERSLOT
 %----------------------------------%
-function [GluR1xyl GluR2xyl GluR1xyds GluR2xyds...
+function [xyG1 xyG2 xysG1 xysG2...
 	G1FSLOTS G2FSLOTS...
 	GluR1_TdwellSPYN GluR1_TdwellPSD GluR1_TdwellPERI...
 	GluR2_TdwellSPYN GluR2_TdwellPSD GluR2_TdwellPERI...
-	G1INSPYN1 G1INSPYN2 G1INPSD1 G1INPSD2 G1INPERI1 G1INPERI2...
-	G2INSPYN1 G2INSPYN2 G2INPSD1 G2INPSD2 G2INPERI1 G2INPERI2...
-	G1INSPA G2INSPA...
-	SMx G1v G2v]...
-	= SUPERSLOT(stepN,t,GluR1xyl,GluR2xyl,GluR1xyds,GluR2xyds,...
+	G1INSPA G2INSPA SMx G1v G2v...
+	G1P1r G1P2r G2P1r G2P2r G1inP1 G1inP2 G2inP1 G2inP2...
+	S1G1Cv S2G1Cv S1G2Cv S2G2Cv]...
+	= SUPERSLOT(stepN,t,xyG1,xyG2,xysG1,xysG2,...
 	GluR1_TdwellPSD,GluR1_TdwellPERI,GluR1_TdwellSPYN,LsGR1psa,LsGR1psd,LsGR1S,...
 	GluR2_TdwellPSD,GluR2_TdwellPERI,GluR2_TdwellSPYN,LsGR2psa,LsGR2psd,LsGR2S,...	
-	SSsz,G1xy,G2xy,SMx,SS,DF,GR1xy,GR2xy)
-% THIS FUNCTION WILL FIND GLUR RECEPTORS THAT OVERLAP WITH
-% SAPS IN BOTH PSDs SIMULTANIOUSLY, DON'T WORRY THAT
-% THERE IS ONLY 1 ROUTINE FOR BOTH PSDs.
-% This simulation represents particles in both real-space and matrix-space.
-%   Real-space is the 2xNdot array of particle locations and step sizes, 
-%     composed of real numbers (ie. pos & neg values with decimals).
-%   Matrix-space particle locations are represented as positive integers. 
-%     These locations simultaniously refer to each particle's index ID in the
-%     matrix. These are constructed as follows: 
-% 	(1) The entire dendritic field is mapped to a space-matrix (SMx), 
-% 	so a dendritic field of (30x60)*10 has a SMx of 300x600 [cols x rows, 
-% 	SMx(1:600,1:300)]. 
-% 	(2) SMx synaptic locations are defined. This primarily means that the 
-% 	SAP/Actin matrices for S1 & S2 (100x100) are embedded into the SMx. 
-% 	As a standard, S1 & S2 are inserted at:
-% 		SMx(401:500,101:200) = S1;
-% 		SMx(101:200,101:200) = S2;
-% 	N.B. 
-% 	The Y-Dimension in matrix-space is flipped compared to real-space,
-% 	that is, by default SMx(600,300) refers to the most bottom-right cell, 
-% 	not the top-right cell. Thus after S1 & S2 are embedded into the SMx
-% 	this
-
-
+	SSsz,G1xy,G2xy,SMx,SS,DF,GR1xy,GR2xy,...
+	S1G1C,S2G1C,S1G2C,S2G2C,S1rad,S2rad)
 
 
 
@@ -3286,8 +2903,8 @@ end
 
 % ADJUST STEP SIZE OF SLOTTED GLUR
 %-------------
-GluR1xyds(:,G1v) = GluR1xyds(:,G1v)*(LsGR1S);
-GluR2xyds(:,G2v) = GluR2xyds(:,G2v)*(LsGR2S);
+xysG1(:,G1v) = xysG1(:,G1v)*(LsGR1S);
+xysG2(:,G2v) = xysG2(:,G2v)*(LsGR2S);
 
 
 
@@ -3295,7 +2912,7 @@ GluR2xyds(:,G2v) = GluR2xyds(:,G2v)*(LsGR2S);
 % SAVE SLOT INFO
 %-------------
 % GluR1
-G1Slot = GluR1xyl(:,G1v);
+G1Slot = xyG1(:,G1v);
 G1inS1 = G1Slot(2,:) > (DF.Y/2);
 G1inS2 = ~G1inS1;
 G1PSD1FSLOTS = sum(G1inS1);
@@ -3303,7 +2920,7 @@ G1PSD2FSLOTS = sum(G1inS2);
 G1FSLOTS = [G1PSD1FSLOTS G1PSD2FSLOTS 0 0];
 
 % GluR2
-G2Slot = GluR2xyl(:,G2v);
+G2Slot = xyG2(:,G2v);
 G2inS1 = G2Slot(2,:) > (DF.Y/2);
 G2inS2 = ~G2inS1;
 G2PSD1FSLOTS = sum(G2inS1);
@@ -3316,98 +2933,124 @@ G2FSLOTS = [G2PSD1FSLOTS G2PSD2FSLOTS 0 0];
 %############################################################
 
 
+S1G1Cv = xyG1-S1G1C;
+S2G1Cv = xyG1-S2G1C;
+S1G2Cv = xyG2-S1G2C;
+S2G2Cv = xyG2-S2G2C;
+
+G1P1r = sqrt(sum((S1G1Cv).^2));
+G1P2r = sqrt(sum((S2G1Cv).^2));
+G2P1r = sqrt(sum((S1G2Cv).^2));
+G2P2r = sqrt(sum((S2G2Cv).^2));
+
+G1inP1=G1P1r<S1rad;
+G1inP2=G1P2r<S2rad;
+G2inP1=G2P1r<S1rad;
+G2inP2=G2P2r<S2rad;
+
+
+
 %----------------------------------------
 % Step Size adjustments (location based)
 %----------------------------------------
 
-
-
-% GluR1 
-%-------------
-% SPINE %
-%-------%
-G1INSPYN1 = inboxfun(DF.S1LB,DF.S1RT,GluR1xyl);
-G1INSPYN2 = inboxfun(DF.S2LB,DF.S2RT,GluR1xyl);
-
-GluR1xyds(:,G1INSPYN1) = GluR1xyds(:,G1INSPYN1)*(LsGR1psa);
-GluR1xyds(:,G1INSPYN2) = GluR1xyds(:,G1INSPYN2)*(LsGR1psa);
-
-GluR1_TdwellSPYN(1,G1INSPYN1) = GluR1_TdwellSPYN(1,G1INSPYN1)+t;
-GluR1_TdwellSPYN(1,~G1INSPYN1) = 0;
-GluR1_TdwellSPYN(2,G1INSPYN2) = GluR1_TdwellSPYN(2,G1INSPYN2)+t;
-GluR1_TdwellSPYN(2,~G1INSPYN2) = 0;
-
-%-------------
-% PSD   %
-%-------%
-G1INPSD1 = inboxfun(DF.PS1LB,DF.PS1RT,GluR1xyl);
-G1INPSD2 = inboxfun(DF.PS2LB,DF.PS2RT,GluR1xyl);
-  
-GluR1_TdwellPSD(1,G1INPSD1) = GluR1_TdwellPSD(1,G1INPSD1)+t;
-GluR1_TdwellPSD(1,~G1INPSD1) = 0;
-GluR1_TdwellPSD(2,G1INPSD2) = GluR1_TdwellPSD(2,G1INPSD2)+t;
-GluR1_TdwellPSD(2,~G1INPSD2) = 0;
-
-%-------------
-% PERI  %
-%-------%
-G1INPERI1 = G1INSPYN1 - G1INPSD1; G1INPERI1 = G1INPERI1>0;
-G1INPERI2 = G1INSPYN2 - G1INPSD2; G1INPERI2 = G1INPERI2>0;
-
-GluR1_TdwellPERI(1,G1INPERI1) = GluR1_TdwellPERI(1,G1INPERI1)+t;
-GluR1_TdwellPERI(1,~G1INPERI1) = 0;
-GluR1_TdwellPERI(2,G1INPERI2) = GluR1_TdwellPERI(2,G1INPERI2)+t;
-GluR1_TdwellPERI(2,~G1INPERI2) = 0;
-%-------------
-
-
-
-
-
-% GluR2
-%-------------
-% SPINE %
-%-------%
-G2INSPYN1 = inboxfun(DF.S1LB,DF.S1RT,GluR2xyl);
-G2INSPYN2 = inboxfun(DF.S2LB,DF.S2RT,GluR2xyl);
-
-GluR2xyds(:,G2INSPYN1) = GluR2xyds(:,G2INSPYN1)*(LsGR2psa);
-GluR2xyds(:,G2INSPYN2) = GluR2xyds(:,G2INSPYN2)*(LsGR2psa);
-
-GluR2_TdwellSPYN(1,G2INSPYN1) = GluR2_TdwellSPYN(1,G2INSPYN1)+t;
-GluR2_TdwellSPYN(1,~G2INSPYN1) = 0;
-GluR2_TdwellSPYN(2,G2INSPYN2) = GluR2_TdwellSPYN(2,G2INSPYN2)+t;
-GluR2_TdwellSPYN(2,~G2INSPYN2) = 0;
-
-%-------------
-% PSD   %
-%-------%
-G2INPSD1 = inboxfun(DF.PS1LB,DF.PS1RT,GluR2xyl);
-G2INPSD2 = inboxfun(DF.PS2LB,DF.PS2RT,GluR2xyl);
-
-GluR2_TdwellPSD(1,G2INPSD1) = GluR2_TdwellPSD(1,G2INPSD1)+t;
-GluR2_TdwellPSD(1,~G2INPSD1) = 0;
-GluR2_TdwellPSD(2,G2INPSD2) = GluR2_TdwellPSD(2,G2INPSD2)+t;
-GluR2_TdwellPSD(2,~G2INPSD2) = 0;
-
-%-------------
-% PERI  %
-%-------%
-G2INPERI1 = G2INSPYN1 - G2INPSD1; G2INPERI1 = G2INPERI1>0;
-G2INPERI2 = G2INSPYN2 - G2INPSD2; G2INPERI2 = G2INPERI2>0;
-
-GluR2_TdwellPERI(1,G2INPERI1) = GluR2_TdwellPERI(1,G2INPERI1)+t;
-GluR2_TdwellPERI(1,~G2INPERI1) = 0;
-GluR2_TdwellPERI(2,G2INPERI2) = GluR2_TdwellPERI(2,G2INPERI2)+t;
-GluR2_TdwellPERI(2,~G2INPERI2) = 0;
-%-------------
-
+xysG1(:,G1inP1) = xysG1(:,G1inP1) .* LsGR1psa;
+xysG1(:,G1inP2) = xysG1(:,G1inP2) .* LsGR1psa;
+xysG2(:,G2inP1) = xysG2(:,G2inP1) .* LsGR2psa;
+xysG2(:,G2inP2) = xysG2(:,G2inP2) .* LsGR2psa;
 
 
 
 % IN EXTRASYNAPSE THE SIZE OF SPINES
-G1INSPA = inboxfun([101 250],[201 350],GluR1xyl);
-G2INSPA = inboxfun([101 250],[201 350],GluR2xyl);
+G1INSPA = inboxfun([101 250],[201 350],xyG1);
+G2INSPA = inboxfun([101 250],[201 350],xyG2);
+
+
+
+% % GluR1 
+% %-------------
+% % SPINE %
+% %-------%
+% G1INSPYN1 = inboxfun(DF.S1LB,DF.S1RT,xyG1);
+% G1INSPYN2 = inboxfun(DF.S2LB,DF.S2RT,xyG1);
+% 
+% xysG1(:,G1INSPYN1) = xysG1(:,G1INSPYN1)*(LsGR1psa);
+% xysG1(:,G1INSPYN2) = xysG1(:,G1INSPYN2)*(LsGR1psa);
+% 
+% GluR1_TdwellSPYN(1,G1INSPYN1) = GluR1_TdwellSPYN(1,G1INSPYN1)+t;
+% GluR1_TdwellSPYN(1,~G1INSPYN1) = 0;
+% GluR1_TdwellSPYN(2,G1INSPYN2) = GluR1_TdwellSPYN(2,G1INSPYN2)+t;
+% GluR1_TdwellSPYN(2,~G1INSPYN2) = 0;
+% 
+% %-------------
+% % PSD   %
+% %-------%
+% G1INPSD1 = inboxfun(DF.PS1LB,DF.PS1RT,xyG1);
+% G1INPSD2 = inboxfun(DF.PS2LB,DF.PS2RT,xyG1);
+%   
+% GluR1_TdwellPSD(1,G1INPSD1) = GluR1_TdwellPSD(1,G1INPSD1)+t;
+% GluR1_TdwellPSD(1,~G1INPSD1) = 0;
+% GluR1_TdwellPSD(2,G1INPSD2) = GluR1_TdwellPSD(2,G1INPSD2)+t;
+% GluR1_TdwellPSD(2,~G1INPSD2) = 0;
+% 
+% %-------------
+% % PERI  %
+% %-------%
+% G1INPERI1 = G1INSPYN1 - G1INPSD1; G1INPERI1 = G1INPERI1>0;
+% G1INPERI2 = G1INSPYN2 - G1INPSD2; G1INPERI2 = G1INPERI2>0;
+% 
+% GluR1_TdwellPERI(1,G1INPERI1) = GluR1_TdwellPERI(1,G1INPERI1)+t;
+% GluR1_TdwellPERI(1,~G1INPERI1) = 0;
+% GluR1_TdwellPERI(2,G1INPERI2) = GluR1_TdwellPERI(2,G1INPERI2)+t;
+% GluR1_TdwellPERI(2,~G1INPERI2) = 0;
+% %-------------
+
+
+
+
+
+% % GluR2
+% %-------------
+% % SPINE %
+% %-------%
+% G2INSPYN1 = inboxfun(DF.S1LB,DF.S1RT,xyG2);
+% G2INSPYN2 = inboxfun(DF.S2LB,DF.S2RT,xyG2);
+% 
+% xysG2(:,G2INSPYN1) = xysG2(:,G2INSPYN1)*(LsGR2psa);
+% xysG2(:,G2INSPYN2) = xysG2(:,G2INSPYN2)*(LsGR2psa);
+% 
+% GluR2_TdwellSPYN(1,G2INSPYN1) = GluR2_TdwellSPYN(1,G2INSPYN1)+t;
+% GluR2_TdwellSPYN(1,~G2INSPYN1) = 0;
+% GluR2_TdwellSPYN(2,G2INSPYN2) = GluR2_TdwellSPYN(2,G2INSPYN2)+t;
+% GluR2_TdwellSPYN(2,~G2INSPYN2) = 0;
+% 
+% %-------------
+% % PSD   %
+% %-------%
+% G2INPSD1 = inboxfun(DF.PS1LB,DF.PS1RT,xyG2);
+% G2INPSD2 = inboxfun(DF.PS2LB,DF.PS2RT,xyG2);
+% 
+% GluR2_TdwellPSD(1,G2INPSD1) = GluR2_TdwellPSD(1,G2INPSD1)+t;
+% GluR2_TdwellPSD(1,~G2INPSD1) = 0;
+% GluR2_TdwellPSD(2,G2INPSD2) = GluR2_TdwellPSD(2,G2INPSD2)+t;
+% GluR2_TdwellPSD(2,~G2INPSD2) = 0;
+% 
+% %-------------
+% % PERI  %
+% %-------%
+% G2INPERI1 = G2INSPYN1 - G2INPSD1; G2INPERI1 = G2INPERI1>0;
+% G2INPERI2 = G2INSPYN2 - G2INPSD2; G2INPERI2 = G2INPERI2>0;
+% 
+% GluR2_TdwellPERI(1,G2INPERI1) = GluR2_TdwellPERI(1,G2INPERI1)+t;
+% GluR2_TdwellPERI(1,~G2INPERI1) = 0;
+% GluR2_TdwellPERI(2,G2INPERI2) = GluR2_TdwellPERI(2,G2INPERI2)+t;
+% GluR2_TdwellPERI(2,~G2INPERI2) = 0;
+% %-------------
+
+
+
+
+
 
 
 
@@ -3623,6 +3266,57 @@ end
 
 
 
+%----------------------------------%
+%			CircMask
+%----------------------------------%
+% Creates a kernel mask using a 3D Gaussian
+% that can be used for SAP clustering and
+% other matrix conv() functions
+%----------------------------------%
+function [hkMask] = CircMask(GN)
+
+
+%--------------------
+GNpk = GN(1);	% hight of peak
+GNx0 = 0;	% x-axis peak locations
+GNy0 = 0;	% y-axis peak locations
+GNsd = GN(2);	% sigma (stdev of slope)
+
+GNnum = GN(3);
+GNres = GN(4);
+GNspr = ((GNnum-1)*GNres)/2;
+
+a = .5/GNsd^2;
+c = .5/GNsd^2;
+
+[X, Y] = meshgrid((-GNspr):(GNres):(GNspr), (-GNspr):(GNres):(GNspr));
+Z = GNpk*exp( - (a*(X-GNx0).^2 + c*(Y-GNy0).^2)) ;
+
+
+hkMask=Z;
+
+%----------------%
+% FIGURE: 3D Gaussian Distribution
+fh65 = figure(65); %set(fh5,'OuterPosition',(scsz./[2e-3 2e-3 2 2]))
+set(fh65,'OuterPosition',[200 200 500 300]);
+%----------------%
+figure(fh65)
+subplot('Position',[.05 .55 .30 .40]); 
+	ph5 = imagesc(hkMask); 
+	axis equal;
+	%set(gca,'XTick',[],'YTick',[])
+subplot('Position',[.04 .08 .32 .42]); 
+	ph7 = surf(X,Y,Z);
+	axis equal; shading interp; view(90,90); 
+subplot('Position',[.45 .05 .50 .90]); 
+	ph7 = surf(X,Y,Z);
+	axis vis3d; shading interp;
+	view(-45,30); 
+	xlabel('x-axis');ylabel('y-axis');zlabel('z-axis')
+%----------------%
+
+end
+%----------------------------------%
 
 
 
@@ -3631,10 +3325,9 @@ end
 
 
 
-
-
-%%			DENDRITIC FIELD MAPPING TOOLS
-%-------------##########################------------------%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%				DENDRITIC FIELD MAPPING TOOLS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %----------------------------------%
@@ -3702,6 +3395,12 @@ S2L = S2xcL;
 S2B = S2yrB;
 S2R = S2xcR;
 S2T = S2yrT;
+
+S1C = [((S1L + S1R) / 2); ((S1T + S1B) / 2)];
+S2C = [((S2L + S2R) / 2); ((S2T + S2B) / 2)];
+S1rad = ((S1R - S1L) / 2);
+S2rad = ((S2R - S2L) / 2);
+
 
 PS1sz = round(S1sz/2);
 PS2sz = round(S2sz/2);
@@ -3778,6 +3477,10 @@ SS.PS2R = PS2R;
 SS.PS2T = PS2T;
 SS.PS1sz = PS1sz;
 SS.PS2sz = PS2sz;
+SS.S1C = S1C;
+SS.S2C = S2C;
+SS.S1rad = S1rad;
+SS.S2rad = S2rad;
 
 % Real Space
 DF = struct;
@@ -3817,7 +3520,10 @@ DF.PS2LB = [DF.PS2L DF.PS2B];
 DF.PS2RT = [DF.PS2R DF.PS2T];
 DF.PS1sz = PS1sz;
 DF.PS2sz = PS2sz;
-
+DF.PS1C = S2C;
+DF.PS2C = S1C;
+DF.PS1rad = S2rad;
+DF.PS2rad = S1rad;
 
 
 
@@ -4097,8 +3803,10 @@ end
 
 
 
-%%			 PLOTTING AND LIVE SIMULATION
-%-------------##########################------------------%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%					PLOTTING AND LIVE SIMULATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
@@ -4179,13 +3887,13 @@ end
 % FieldFun
 % short description of this function
 %----------------------------------%
-function [] = MAINPLOT(G1Ph1,G2Ph1,GluR2xyl,GluR1xyl)
+function [] = MAINPLOT(G1Ph1,G2Ph1,xyG2,xyG1)
 %-------------------------------------------%
 
-set(G2Ph1,'XData',GluR2xyl(1,:),'YData',GluR2xyl(2,:));
+set(G2Ph1,'XData',xyG2(1,:),'YData',xyG2(2,:));
 %drawnow
 
-set(G1Ph1,'XData',GluR1xyl(1,:),'YData',GluR1xyl(2,:));
+set(G1Ph1,'XData',xyG1(1,:),'YData',xyG1(2,:));
 drawnow
 
 
@@ -4428,9 +4136,9 @@ end
 
 
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%					PARTICLE COUNTERS
-%-------------##########################------------------%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %-------------------------------%
@@ -4439,44 +4147,27 @@ end
 function [GR1SPY1N GR1SPY2N GR1PER1N GR1PER2N GR1PSD1N GR1PSD2N...
 		GR2SPY1N GR2SPY2N GR2PER1N GR2PER2N GR2PSD1N GR2PSD2N...
 		GR1PERN GR1PSDN GR2PERN GR2PSDN GR1SPYN GR2SPYN...
-		SPY1N SPY2N SPYNT ESNT EST G1INSP G2INSP GINSP]...
-		= dotCount(stepN,GluR2Ndots, GluR1Ndots,...
-		G2INSPYN1,G2INSPYN2,G2INPSD1,G2INPSD2,G2INPERI1,G2INPERI2,...
-		G1INSPYN1,G1INSPYN2,G1INPSD1,G1INPSD2,G1INPERI1,G1INPERI2,...
-		G1INSPA,G2INSPA)
-%================%
-% if stepN == 600; keyboard; end
-%================%
-
-
-GR1SPY1N = 0; GR1SPY2N = 0; 
-GR1PER1N = 0; GR1PER2N = 0; 
-GR1PSD1N = 0; GR1PSD2N = 0; 
-GR2SPY1N = 0; GR2SPY1N = 0; 
-GR2PER1N = 0; GR2PER2N = 0; 
-GR2PSD1N = 0; GR2PSD2N = 0; 
-GR1PERN = 0; GR1PSDN = 0; 
-GR2PERN = 0; GR2PSDN = 0; 
-GR1SPYN = 0; GR2SPYN = 0; 
-SPY1N = 0; SPY2N = 0;
-SPYNT = 0; ESNT = 0; EST = 0;
-
+		SPY1N SPY2N SPYNT ESNT EST G1INSP G2INSP GINSP...
+		G1xyP1 G1xyP2 G2xyP1 G2xyP2]...
+		= dotCount(stepN,G2N, G1N,...
+		G1P1r, G1P2r, G2P1r, G2P2r, G1inP1, G1inP2, G2inP1, G2inP2,...
+		S1G1Cv,S2G1Cv,S1G2Cv,S2G2Cv,G1INSPA,G2INSPA,xyG1,xyG2)
 
 
 %================%
-GR1SPY1N = sum(G1INSPYN1);	% GR1PSD1
-GR1SPY2N = sum(G1INSPYN2);	% GR1PSD2
-GR1PER1N = sum(G1INPERI1);	% GR1PS1T
-GR1PER2N = sum(G1INPERI2);	% GR1PS2T
-GR1PSD1N = sum(G1INPSD1);	% GR1PSD1T
-GR1PSD2N = sum(G1INPSD2);	% GR1PSD2T
+GR1SPY1N = sum(G1inP1);	% GR1PSD1
+GR1SPY2N = sum(G1inP2);	% GR1PSD2
+GR1PER1N = sum(G1inP1);	% GR1PS1T
+GR1PER2N = sum(G1inP2);	% GR1PS2T
+GR1PSD1N = sum(G1inP1);	% GR1PSD1T
+GR1PSD2N = sum(G1inP2);	% GR1PSD2T
 %==========%
-GR2SPY1N = sum(G2INSPYN1);	% GR2SPY1N
-GR2SPY2N = sum(G2INSPYN2);	% GR2SPY2N
-GR2PER1N = sum(G2INPERI1);	% GR2PER1N
-GR2PER2N = sum(G2INPERI2);	% GR2PER2N
-GR2PSD1N = sum(G2INPSD1);	% GR2PSD1N
-GR2PSD2N = sum(G2INPSD2);	% GR2PSD2N
+GR2SPY1N = sum(G2inP1);	% GR2SPY1N
+GR2SPY2N = sum(G2inP2);	% GR2SPY2N
+GR2PER1N = sum(G2inP1);	% GR2PER1N
+GR2PER2N = sum(G2inP2);	% GR2PER2N
+GR2PSD1N = sum(G2inP1);	% GR2PSD1N
+GR2PSD2N = sum(G2inP2);	% GR2PSD2N
 %================%
 
 GR1PERN = GR1PER1N + GR1PER2N;	% GR1PERN
@@ -4490,13 +4181,23 @@ GR2SPYN = GR2SPY1N + GR2SPY2N;	% GR2SPYN
 SPY1N = GR1SPY1N + GR2SPY1N;	% SPY1N SPY1N
 SPY2N = GR1SPY2N + GR2SPY2N;	% SPY2N SPY2N
 
-SPYNT = SPY1N + SPY2N;							% SPYNT SPYNT
-ESNT = (GluR2Ndots+GluR1Ndots)-(SPY1N+SPY2N);	% ESNT
-EST = [ESNT SPY1N SPY2N SPYNT];					% EST
+SPYNT = SPY1N + SPY2N;			% SPYNT SPYNT
+ESNT = (G2N+G1N)-(SPY1N+SPY2N);	% ESNT
+EST = [ESNT SPY1N SPY2N SPYNT];	% EST
 
 G1INSP = sum(G1INSPA);
 G2INSP = sum(G2INSPA);
 GINSP = G1INSP + G2INSP;
+
+
+
+
+G1xyP1 = S1G1Cv(:,G1inP1);
+G1xyP2 = S2G1Cv(:,G1inP2);
+G2xyP1 = S1G2Cv(:,G2inP1);
+G2xyP2 = S2G2Cv(:,G2inP2);
+
+
 
 end
 %================================%
@@ -4506,7 +4207,7 @@ end
 %-------------------------------%
 %   GRAPH PARTICLE COUNTERS
 %-------------------------------%
-function [] = GRAPHCOUNTS(stepN,GluR2Ndots,doGluR1,doGluR2,doRun1,doRun2,doRun6,...
+function [] = GRAPHCOUNTS(stepN,G2N,doGluR1,doGluR2,doRun1,doRun2,doRun6,...
 	HSlow, HShi, G1FSLOTS,G2FSLOTS,SAP5,S1sum,S2sum,doKo,...
 	EST,SPY1N,SPY2N)
 
@@ -4516,8 +4217,8 @@ doPLOT2D = doRun1;
 doPLOT3D = doRun2;
 doHOMEO = doRun6;
 
-if GluR2Ndots == 0
-	GluR2Ndots = 50;
+if G2N == 0
+	G2N = 50;
 end
 
 
@@ -4555,7 +4256,7 @@ if doPLOT3D == 0 && doHOMEO == 0
 	figure(1)
 	subplot(5,5,[1 7]);
 	bar(1:4, [EST'], .8, 'EdgeColor',[1 0.5 0.5]);
-	set(gca,'Ylim',[0 GluR2Ndots],'XLim',[.5 4.5])
+	set(gca,'Ylim',[0 G2N],'XLim',[.5 4.5])
 	title('AMPAR#:   EC    -   SPINE1   -     SPINE2  -    SPINES');
 	end
 end
@@ -4565,7 +4266,7 @@ if doPLOT3D == 1
 	figure(1)
 	subplot(5,5,[21 22]);
 	bar(1:4, [EST'], .8, 'EdgeColor',[1 0.5 0.5]);
-	set(gca,'Ylim',[0 GluR2Ndots],'XLim',[.5 4.5])
+	set(gca,'Ylim',[0 G2N],'XLim',[.5 4.5])
 	title('AMPAR#:   EC    -   SPINE1   -     SPINE2  -    SPINES');
 	end
 end
@@ -4646,15 +4347,611 @@ end
 
 
 
-%%			  SUPPLEMENTAL GRAPHICS FUNCTIONS
-%-------------##########################------------------%
-%				SUPPLEMENTAL GRAPHICS
-%-------------##########################------------------%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%				   IzhFun NEURAL SPKING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%-------------------------------------------%
+% IzhFun SPIKE GENERATOR
+%-------------------------------------------%
+function [] = IzhFun(spikes)
+global v
+izhikevich(spikes)
+end
+%-------------------------------------------%
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%				MSD BROWNIAN MOTION ANALYSIS TOOLS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------%
+% MSD PARTICLE MOVEMENT GENERATION
+%-------------------------------------------%
+function [xyG2 xysG2] = MSDAMPARSTEP(G2N, xysG2, xyG2,... 
+	testPSD1MSD, testPSD2MSD, testESMSD, PSD1, PSD2, D, Dn_PSD1, Dn_PSD2)
+	
+	for j = 1:G2N
+        
+		if testPSD1MSD
+           xysG2(:,j) = xysG2(:,j)*PSD1;
+        elseif testPSD2MSD
+            xysG2(:,j) = xysG2(:,j)*PSD2;
+		elseif testESMSD
+            xysG2(:,j) = xysG2(:,j);
+		end
+		
+	   
+        xyG2(:,j) = xyG2(:,j)+xysG2(:,j);
+	end
+
+end
+
+%-------------------------------------------%
+% MEAN SQUARED DISPLACEMENT FUNCTION
+%-------------------------------------------%
+function [tracks] = MSDfun(stepN, Nsteps, tracks, xysG2)
+    time = (0:Nsteps-1)';
+    xymsd = xysG2';
+    xymsd = cumsum(xymsd,1);
+    tracks{stepN} = [time xymsd];
+
+end
+
+
+%-------------------------------------------%
+% MSDfunction - FINAL TRACKS ANALYSIS
+%-------------------------------------------%
+function [MSDout] = MSDfunction(tracks, G2N, Nsteps, D, Dn_PSD1, Dn_PSD2, dT, k, MSDtest)
+
+SPACE_UNITS = 'µm';
+TIME_UNITS = 's';
+N_PARTICLES = G2N;
+N_TIME_STEPS = Nsteps;
+N_DIM = 2;
+
+oDes = D;				% raw		µm^2/s
+D  = D*.1;              % to-scale	µm^2/s
+
+oDpsd1 = Dn_PSD1;		% raw		µm^2/s
+Dpsd1 = Dn_PSD1*.1;		% to-scale	µm^2/s
+
+oDpsd2 = Dn_PSD2;		% raw		µm^2/s
+Dpsd2 = Dn_PSD2*.1;		% to-scale	µm^2/s
+
+dTbase = dT;			% raw time-step 
+dT = dT*1;				% to-scale time-step
+k = k;					% stdv of step distribution
+
+ma = msdanalyzer(2, SPACE_UNITS, TIME_UNITS);
+ma = ma.addAll(tracks);
+disp(ma)
+
+figure
+ma.plotTracks;
+ma.labelPlotTracks;
+
+ma = ma.computeMSD;
+ma.msd;
+
+t = (0 : N_TIME_STEPS)' * dT;
+[T1, T2] = meshgrid(t, t);
+all_delays = unique( abs(T1 - T2) );
+
+figure
+ma.plotMSD;
+
+
+cla
+ma.plotMeanMSD(gca, true)
+
+mmsd = ma.getMeanMSD;
+t = mmsd(:,1);
+x = mmsd(:,2);
+dx = mmsd(:,3) ./ sqrt(mmsd(:,4));
+errorbar(t, x, dx, 'k')
+
+[fo, gof] = ma.fitMeanMSD;
+plot(fo)
+ma.labelPlotMSD;
+legend off
+
+
+ma = ma.fitMSD;
+
+good_enough_fit = ma.lfit.r2fit > 0.8;
+Dmean = mean( ma.lfit.a(good_enough_fit) ) / 2 / ma.n_dim;
+Dstd  =  std( ma.lfit.a(good_enough_fit) ) / 2 / ma.n_dim;
+
+Dheader1 = ['Raw Unscaled Values'];
+Dhead1 = ['     D.es	D.psd1	D.psd2'];
+Ddat1 = [oDes oDpsd1 oDpsd2];
+disp(' ')
+disp(Dheader1)
+disp(Dhead1)
+disp(Ddat1)
+
+
+yourtesthead = ['YOU ARE TESTING DIFFUSION FOR:'];
+if MSDtest(1)
+	yourtest = ['   Des:   extrasynaptic diffusion rate'];
+elseif MSDtest(2)
+	yourtest = ['   Dpsd1:  PSD-1 diffusion rate'];
+elseif MSDtest(3)
+	yourtest = ['   Dpsd2:  PSD-2 diffusion rate'];
+else
+	yourtest = ['   generic diffusion rate'];
+end
+disp(yourtesthead)
+disp(yourtest)
+
+disp(' ')
+fprintf('Estimation of raw D coefficient from MSD:\n')
+fprintf('D = %.3g ± %.3g (mean ± std, N = %d)\n', ...
+    Dmean, Dstd, sum(good_enough_fit));
+
+
+
+
+% Retrieve instantaneous velocities, per track
+ trackV = ma.getVelocities;
+
+ % Pool track data together
+ TV = vertcat( trackV{:} );
+
+ % Velocities are returned in a N x (nDim+1) array: [ T Vx Vy ...]. So the
+ % velocity vector in 2D is:
+ V = TV(:, 2:3);
+
+ % Compute diffusion coefficient
+varV = var(V);
+mVarV = mean(varV); % Take the mean of the two estimates
+Dest = mVarV / 2 * dT;
+
+
+
+Dheader2 = ['Scaling to model (10units = 1µm)...'];
+Dhead2 = ['     D.es	D.psd1	D.psd2'];
+Ddat2 = [D Dpsd1 Dpsd2];
+
+disp(' ')
+disp(Dheader2)
+disp(Dhead2)
+disp(Ddat2)
+fprintf('Estimation from velocities histogram:\n')
+fprintf('Tested D = %.3g %s, compare to scaled Des value of %.3g %s\n', ...
+    Dest, [SPACE_UNITS '²/' TIME_UNITS], D, [SPACE_UNITS '²/' TIME_UNITS]);
+
+% printf('D.psd target value was %.3g %s\n', ...
+%     Dest, msdDpsd, [SPACE_UNITS '²/' TIME_UNITS]);
+
+MSDout = D;
+
+end
+
+
+
+%-----------------------------------------------------------%
+%			  ##   MSD2 SUBFUNCTIONS    ##
+%-----------------------------------------------------------% 
+
+%-------------------------------------------%
+% STEP SIZE GENERATOR
+%-------------------------------------------%
+function xysG2 = STEPxyds2(G2N, k)
+
+    xysG2 = (k * randn(2,G2N));
+
+end
+
+
+%-------------------------------------------%
+% MOVE PARTICLES MAIN FUNCTION
+%-------------------------------------------%
+function [xyG2] = AMPARSTEP2(G2N, xysG2, xyG2)
+	
+	for j = 1:G2N
+        xyG2(:,j) = xyG2(:,j)+xysG2(:,j);
+	end
+	
+end
+
+
+%-------------------------------------------%
+% LIVE DIFFUSION PLOT
+%-------------------------------------------%
+function [] = MAINPLOT2(xyG2, lims)
+%-------------------------------------------%
+xlim = [-lims lims];
+ylim = [-lims lims];
+zlim = [-5 5];
+
+%=================================%
+%       MAIN 2D PLOT
+%---------------------------------%
+figure(1)
+subplot(2,1,1), 
+AMPARPlot = gscatter(xyG2(1,:),xyG2(2,:));
+axis([xlim, ylim]);
+set(AMPARPlot,'marker','.','markersize',[6],'color',[1 0 0])
+
+
+%=================================%
+%           3D PLOT
+%---------------------------------%
+figure(1);
+subplot(2,1,2), 
+gscatter(xyG2(1,:),xyG2(2,:)); view(20, 30);
+axis normal;
+grid off
+axis([xlim, ylim, zlim]);
+set(gca, 'Box', 'on');
+
+end
+
+
+%-------------------------------------------%
+% MANUAL STEP SIZE FUNCTION
+%-------------------------------------------%
+function xysG2 = UNIFORMSTEPS2(G2N, Lx)
+%-------------------------------------------%
+
+   Lx(1:2,1:G2N) = Lx;
+   xyd = randi([0 1],G2N,2)';
+   xyd(xyd == 0) = -1;
+   xysG2 = (Lx.*xyd);
+   
+end
+
+
+%-------------------------------------------%
+% MSD SCALED STEPS FUNCTION
+%-------------------------------------------%
+function [xyG2 xysG2] = SCALEUNIFORMSTEPS2(G2N, xysG2, xyG2, Ls, MSDtest)
+
+
+if MSDtest(1)
+	Ls = 1;	
+end
+	
+	for j = 1:G2N
+        xysG2(:,j) = xysG2(:,j)*Ls;
+        xyG2(:,j) = xyG2(:,j)+xysG2(:,j);
+	end	
+	
+end
+
+
+%-------------------------------------------%
+% MSD TRACKS GENERATOR
+%-------------------------------------------%
+function [tracks] = MSDfun2(stepN, Nsteps, tracks, xysG2)
+    time = (0:Nsteps-1)';
+    xymsd = xysG2';
+    xymsd = cumsum(xymsd,1);
+    tracks{stepN} = [time xymsd];
+
+end
+
+
+%-------------------------------------------%
+% MSD TRACKS ANALYSIS
+%-------------------------------------------%
+function [Dest] = MSDfunction2(tracks,G2N,Nsteps,D,Dn,L,dT,k,Scale,MSDtest)
+
+
+% printf('D.psd target value was %.3g %s\n', ...
+%     Dest, msdDpsd, [SPACE_UNITS '²/' TIME_UNITS]);
+
+yourtesthead = ['-------TESTING DIFFUSION---------'];
+if MSDtest(1)
+	yourtest = ['   D:   original diffusion rate'];
+elseif MSDtest(2)
+	yourtest = ['   Dn:  PSD diffusion rate'];
+elseif MSDtest(3)
+	yourtest = ['   L:  step length'];
+else
+	yourtest = ['   generic diffusion rate'];
+end
+disp(yourtesthead)
+disp(yourtest)
+
+
+
+SPACE_UNITS = 'µm';
+TIME_UNITS = 's';
+N_PARTICLES = G2N;
+N_TIME_STEPS = Nsteps;
+N_DIM = 2;
+
+oD = D;				% raw		µm^2/s
+D  = D*Scale;       % to-scale	µm^2/s
+
+oDn = Dn;			% raw		µm^2/s
+Dn = Dn*Scale;		% to-scale	µm^2/s
+
+oL = L;				% raw		µm
+L = L*Scale;		% to-scale	µm
+
+dTbase = dT;		% raw time-step 
+dT = dT*Scale;		% to-scale time-step
+k = k;				% stdv of step distribution
+
+ma = msdanalyzer(2, SPACE_UNITS, TIME_UNITS);
+ma = ma.addAll(tracks);
+disp(ma)
+
+figure
+ma.plotTracks;
+ma.labelPlotTracks;
+
+ma = ma.computeMSD;
+ma.msd;
+
+t = (0 : N_TIME_STEPS)' * dT;
+[T1, T2] = meshgrid(t, t);
+all_delays = unique( abs(T1 - T2) );
+
+figure
+ma.plotMSD;
+
+
+cla
+ma.plotMeanMSD(gca, true)
+
+mmsd = ma.getMeanMSD;
+t = mmsd(:,1);
+x = mmsd(:,2);
+dx = mmsd(:,3) ./ sqrt(mmsd(:,4));
+errorbar(t, x, dx, 'k')
+
+[fo, gof] = ma.fitMeanMSD;
+plot(fo)
+ma.labelPlotMSD;
+legend off
+
+
+ma = ma.fitMSD;
+
+good_enough_fit = ma.lfit.r2fit > 0.8;
+Dmean = mean( ma.lfit.a(good_enough_fit) ) / 2 / ma.n_dim;
+Dstd  =  std( ma.lfit.a(good_enough_fit) ) / 2 / ma.n_dim;
+
+Dheader1 = ['Raw Unscaled Values'];
+Dhead1 = ['    D        Dn        L'];
+Ddat1 = [oD oDn oL];
+disp(' ')
+disp(Dheader1)
+disp(Dhead1)
+disp(Ddat1)
+
+
+yourtesthead = ['YOU ARE TESTING DIFFUSION FOR:'];
+if MSDtest(1)
+	yourtest = ['   D:   original diffusion rate'];
+elseif MSDtest(2)
+	yourtest = ['   Dn:  PSD diffusion rate'];
+elseif MSDtest(3)
+	yourtest = ['   L:  step length'];
+else
+	yourtest = ['   generic diffusion rate'];
+end
+disp(yourtesthead)
+disp(yourtest)
+
+disp(' ')
+fprintf('Estimation of raw D coefficient from MSD:\n')
+fprintf('D = %.3g ± %.3g (mean ± std, N = %d)\n', ...
+    Dmean, Dstd, sum(good_enough_fit));
+
+
+
+
+% Retrieve instantaneous velocities, per track
+ trackV = ma.getVelocities;
+
+ % Pool track data together
+ TV = vertcat( trackV{:} );
+
+ % Velocities are returned in a N x (nDim+1) array: [ T Vx Vy ...]. So the
+ % velocity vector in 2D is:
+ V = TV(:, 2:3);
+
+ % Compute diffusion coefficient
+varV = var(V);
+mVarV = mean(varV); % Take the mean of the two estimates
+Dest = mVarV / 2 * dT;
+
+
+
+Dheader2 = ['Scaling to model...'];
+Dhead2 = ['    D        Dn        L'];
+Ddat2 = [D Dn L];
+
+disp(' ')
+disp(Dheader2)
+disp(Dhead2)
+disp(Ddat2)
+fprintf('Estimation from velocities histogram:\n')
+fprintf('Computed scaled velocity D = %.3g %s, generated from set D = %.3g %s\n', ...
+    Dest, [SPACE_UNITS '²/' TIME_UNITS], D, [SPACE_UNITS '²/' TIME_UNITS]);
+
+
+end
+
+
+
+
+
+
+
+
+
+
+					
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%						CODE GRAVE YARD
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%--------------------------------------
+% Alternative Anullus Plots:
+%{
+TQs = [PSDY PSDX]'-50;
+TQRz = sqrt(sum(TQs)).*0+1;
+CQRz = sqrt(sum(CQRall.^2)).*0+2;
+figure2 = figure('XVisual','');
+axes2 = axes('Parent',figure2,'PlotBoxAspectRatio',[0.555555555555556 0.555555555555556 1],...
+	'OuterPosition',[0 0 1 1],...
+	'DataAspectRatio',[10 10 1],...
+	'CameraViewAngle',4.36580191767115);
+view(axes2,[50.5 40]);
+grid(axes2,'on');
+hold(axes2,'all');
+PhS3a = scatter3(TQs(1,:),TQs(2,:),TQRz,50, [.8 .2 .2],'filled');
+set(PhS3a,'Marker','s')
+hold on
+PhS3b = scatter3(CQRall(1,:),CQRall(2,:),CQRz,10, [.2 .7 .0],'filled');
+set(PhS3b,'Marker','o')
+hold off
+%}
+%{
+
+QallTG = cat(2,CQRall,TQs);
+QallTGz = cat(2,CQRz,TQRz);
+
+Qallz = cat(1,QallTG,QallTGz);
+spinesurf2(Qallz(1,:)', Qallz(2,:)', Qallz(3,:)')
+sftool(Qallz(1,:)', Qallz(2,:)', Qallz(3,:)')
+
+%--------------------------------------
+CQRz = sqrt(sum(CQRall.^2));
+sja=0;
+sjb=max(CQRz);
+sjc=2;
+sjd=1;
+linsc = @(jx) (sjc*(1-(jx-sja)/(sjb-sja)) + sjd*((jx-sja)/(sjb-sja)));
+for mm = 1:numel(CQRz)
+	CQRz(mm) = linsc(CQRz(mm));
+end
+Qallz = cat(1,CQRall,CQRz);
+spinesurf2(Qallz(1,:)', Qallz(2,:)', Qallz(3,:)')
+sftool(Qallz(1,:)', Qallz(2,:)', Qallz(3,:)')
+%}
+%{
+
+%-------------------------------------
+%Generate values from the uniform distribution on the interval [a, b]:
+% r = a + (b-a).*rand(100,1);
+clear pxr pyr Qpr
+for mm = 1:(numel(Qr)-1)
+clear pxr pyr
+	Qr1 = Qr(mm+1); Qr2 = Qr(mm); 
+	for nn = 1:Qs(mm)*8e3 % <------- multiplier
+		theta = 2*pi*rand;
+		r = sqrt(rand*(Qr1^2-Qr2^2)+Qr2^2);
+		pxr(nn) = r*cos(theta); 
+		pyr(nn) = r*sin(theta);
+	end
+	Qpr{mm} = [pxr; pyr];
+end
+
+% figure
+% scatter(Qpr{1}(1,:), Qpr{1}(2,:),3,[1 0 0],'filled')
+% hold on
+% scatter(Qpr{2}(1,:), Qpr{2}(2,:),3,[.8 .9 .1],'filled')
+% hold on
+% scatter(Qpr{3}(1,:), Qpr{3}(2,:),3,[.6 .5 0],'filled')
+% hold on
+% scatter(Qpr{4}(1,:), Qpr{4}(2,:),3,[.4 .9 .9],'filled')
+% hold on
+% scatter(Qpr{5}(1,:), Qpr{5}(2,:),3,[.2 0 1],'filled')
+% hold on
+
+%-------------------------------------
+QA1 = round([Qpr{1}(1,:); Qpr{1}(2,:)]+51);
+QA2 = round([Qpr{2}(1,:); Qpr{2}(2,:)]+51);
+QA3 = round([Qpr{3}(1,:); Qpr{3}(2,:)]+51);
+QA4 = round([Qpr{4}(1,:); Qpr{4}(2,:)]+51);
+QA5 = round([Qpr{5}(1,:); Qpr{5}(2,:)]+51);
+G1xy = zeros(100,100);
+for xy = 1:numel(QA1(1,:));G1xy(QA1(1,xy),QA1(2,xy)) = Qs(1);end
+for xy = 1:numel(QA2(1,:));G1xy(QA2(1,xy),QA2(2,xy)) = Qs(2);end
+for xy = 1:numel(QA3(1,:));G1xy(QA3(1,xy),QA3(2,xy)) = Qs(3);end
+for xy = 1:numel(QA4(1,:));G1xy(QA4(1,xy),QA4(2,xy)) = Qs(4);end
+for xy = 1:numel(QA5(1,:));G1xy(QA5(1,xy),QA5(2,xy)) = Qs(5);end
+
+G1xy(101:end,:) = [];
+G1xy(:,101:end) = [];
+
+GN=[4, .18, 9, .1];
+ccMask = CircMask(GN);
+ccMask = ccMask -.2;
+G1xy(G1xy<min(Qs))=min(Qs)*.3;
+G1Cv = convn(G1xy,ccMask,'same');
+
+figure
+imagesc(G1xy)
+colormap(jet)
+colorbar
+
+figure
+imagesc(G1Cv)
+colormap(jet)
+colorbar
+
+%-------------------------------------
+pxr=0; pyr=0; Qpr={0};
+for mm = 1:(numel(Qr)-1)
+clear pxr pyr
+	Qr1 = Qr(mm+1); Qr2 = Qr(mm); 
+	for nn = 1:round(20^(sqrt(Qs(mm))))
+		theta = 2*pi*rand;
+		r = sqrt(rand*(Qr1^2-Qr2^2)+Qr2^2);
+		pxr(nn) = r*cos(theta); 
+		pyr(nn) = r*sin(theta);
+	end
+	Qpr{mm} = [pxr; pyr];
+end
+
+Qall = [Qpr{1}(1,:) Qpr{2}(1,:) Qpr{3}(1,:) Qpr{4}(1,:) Qpr{5}(1,:);
+		Qpr{1}(2,:) Qpr{2}(2,:) Qpr{3}(2,:) Qpr{4}(2,:) Qpr{5}(2,:)];
+
+Qzz =	[(.8 + (.3).*rand(1,numel(Qpr{1}(1,:)))) ...
+		(.6 + (.3).*rand(1,numel(Qpr{2}(1,:)))) ...
+		(.4 + (.3).*rand(1,numel(Qpr{3}(1,:)))) ...
+		(.2 + (.3).*rand(1,numel(Qpr{4}(1,:)))) ...
+		(0 + (.3).*rand(1,numel(Qpr{5}(1,:))))];
+Qallz = cat(1,Qall,Qzz);
+Qallz(isinf(Qallz)) = 0;
+Qallz(isnan(Qallz)) = 0;
+
+spinesurf2(Qallz(1,:)', Qallz(2,:)', Qallz(3,:)')
+%sftool(Qallz(1,:)', Qallz(2,:)', Qallz(3,:)')
+%-------------------------------------
+%}
+%--------------------------------------
+
+%{
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%					SUPPLEMENTAL GRAPHICS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %-------------------------------------------%
 % PLOT3DS
 %-------------------------------------------%
-function [] = PLOT3DS(stepN,GluR2xyl,GluR1xyl,XWIDE,YHIGH,G1Z,G2Z,Zfield)
+function [] = PLOT3DS(stepN,xyG2,xyG1,XWIDE,YHIGH,G1Z,G2Z,Zfield)
 %-------------------------------------------%
 % xlim = [-10 (XWIDE+10)];
 % ylim = [(-XWIDE-10) (XWIDE+10)];
@@ -4685,7 +4982,7 @@ end
 if mod(stepN, 20) == 0 && stepN>=100
 ti = -XWIDE:2:XWIDE; 
 [XI,YI] = meshgrid(ti,ti);
-ZI = griddata(GluR2xyl(1,:),GluR2xyl(2,:),G2Z(:),XI,YI,'v4');
+ZI = griddata(xyG2(1,:),xyG2(2,:),G2Z(:),XI,YI,'v4');
 end
 
 
@@ -4705,12 +5002,12 @@ mesh(XI,YI,ZI),view(70, 10)
 end
 %}
 
-%{.
+%{
 if mod(stepN, 20) == 0 && stepN>=100
 figure(36);
 ti = -XWIDE:2:XWIDE; 
 [XI,YI] = meshgrid(ti,ti);
-ZI = griddata(GluR2xyl(1,:),GluR2xyl(2,:),G2Z(:),XI,YI,'v4');
+ZI = griddata(xyG2(1,:),xyG2(2,:),G2Z(:),XI,YI,'v4');
 hold on,
 grid off,
 axis([xlim, ylim, zlim]),
@@ -4719,10 +5016,10 @@ set(gca,'xticklabel',[]),
 set(gca,'yticklabel',[]),
 set(gca,'zticklabel',[]),
 mesh(XI,YI,ZI),view(70, 10)
-scatter3(GluR2xyl(1,:),GluR2xyl(2,:),G2Z(:),'.','MarkerEdgeColor',[0 0 1]),...
+scatter3(xyG2(1,:),xyG2(2,:),G2Z(:),'.','MarkerEdgeColor',[0 0 1]),...
 view(70, 10)
 hold on;
-scatter3(GluR1xyl(1,:),GluR1xyl(2,:),G1Z(:),'.','MarkerEdgeColor',[1 0 0]),...
+scatter3(xyG1(1,:),xyG1(2,:),G1Z(:),'.','MarkerEdgeColor',[1 0 0]),...
 	view(70, 10)
 grid off
 axis([xlim, ylim, zlim]);
@@ -4744,11 +5041,11 @@ end
 %----------------------%
 figure(1);
 subplot('Position',[.02 .61 .4 .35]),...
-scatter3(GluR2xyl(1,:),GluR2xyl(2,:),G2Z(:),'.','MarkerEdgeColor',[0 0 1]),...
+scatter3(xyG2(1,:),xyG2(2,:),G2Z(:),'.','MarkerEdgeColor',[0 0 1]),...
 view(70, 10)
 hold on;
 subplot('Position',[.02 .61 .4 .35]),...
-scatter3(GluR1xyl(1,:),GluR1xyl(2,:),G1Z(:),'.','MarkerEdgeColor',[1 0 0]),...
+scatter3(xyG1(1,:),xyG1(2,:),G1Z(:),'.','MarkerEdgeColor',[1 0 0]),...
 	view(70, 10)
 grid off
 axis([xlim, ylim, zlim]);
@@ -4767,7 +5064,7 @@ hold off;
 %----------------------%
 figure(1);
 subplot(5,5,[1 7]), subplot('Position',[.05 .65 .36 .32]),...
-scatter3(GluR2xyl(1,:),GluR2xyl(2,:),G2Z(:),'.'), view(60, 10)
+scatter3(xyG2(1,:),xyG2(2,:),G2Z(:),'.'), view(60, 10)
 axis normal;
 grid off
 axis([xlim, ylim, zlim]);
@@ -4783,7 +5080,7 @@ hold on;
 %----------------------%
 figure(1);
 subplot(5,5,[1 7]), subplot('Position',[.05 .65 .36 .32]),...
-scatter3(GluR1xyl(1,:),GluR1xyl(2,:),G1Z(:),'.'), view(60, 10)
+scatter3(xyG1(1,:),xyG1(2,:),G1Z(:),'.'), view(60, 10)
 axis normal;
 grid off
 axis([xlim, ylim, zlim]);
@@ -4804,14 +5101,14 @@ end
 %-------------------------------------------%
 % ONEDOTPLOT
 %-------------------------------------------%
-function [] = ONEDOTPLOT(stepN,Nsteps,D, GluR2xyl, xyl2, XWIDE,YHIGH,...
+function [] = ONEDOTPLOT(stepN,Nsteps,D, xyG2, xyl2, XWIDE,YHIGH,...
 				XYBOXpr1,XYBOXpr2,XYBOXp1,XYBOXp2)
 %-------------------------------------------%
 xlim = [0 XWIDE];
 ylim = [-YHIGH YHIGH];
 %---
 
-xylcat = cat(2, xyl2,GluR2xyl)';
+xylcat = cat(2, xyl2,xyG2)';
 xl = xylcat(:,1)';
 yl = xylcat(:,2)';
 
@@ -4836,7 +5133,7 @@ end
 %-------------------------------------------%
 % ONEDOTPLOT2
 %-------------------------------------------%
-function [] = ONEDOTPLOT2(stepN,Nsteps,GluR2xyl,xyl2,XWIDE,YHIGH,...
+function [] = ONEDOTPLOT2(stepN,Nsteps,xyG2,xyl2,XWIDE,YHIGH,...
 				XYBOXpr1,XYBOXpr2,XYBOXp1,XYBOXp2)
 %-------------------------------------------%
 xlim = [0 XWIDE]; ylim = [-YHIGH YHIGH];
@@ -4874,6 +5171,18 @@ hold on;
 % end
  
 end
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6140,458 +6449,6 @@ end
 
 
 
-
-
-
-
-
-
-
-
-%%		  MSD BROWNIAN MOTION ANALYSIS TOOLS
-%-------------##########################------------------%
-%			 DIFFUSION ANALYSIS FUNCTIONS
-%-------------##########################------------------%
-%-------------------------------------------%
-% MSD PARTICLE MOVEMENT GENERATION
-%-------------------------------------------%
-function [GluR2xyl GluR2xyds] = MSDAMPARSTEP(GluR2Ndots, GluR2xyds, GluR2xyl,... 
-	testPSD1MSD, testPSD2MSD, testESMSD, PSD1, PSD2, D, Dn_PSD1, Dn_PSD2)
-	
-	for j = 1:GluR2Ndots
-        
-		if testPSD1MSD
-           GluR2xyds(:,j) = GluR2xyds(:,j)*PSD1;
-        elseif testPSD2MSD
-            GluR2xyds(:,j) = GluR2xyds(:,j)*PSD2;
-		elseif testESMSD
-            GluR2xyds(:,j) = GluR2xyds(:,j);
-		end
-		
-	   
-        GluR2xyl(:,j) = GluR2xyl(:,j)+GluR2xyds(:,j);
-	end
-
-end
-
-%-------------------------------------------%
-% MEAN SQUARED DISPLACEMENT FUNCTION
-%-------------------------------------------%
-function [tracks] = MSDfun(stepN, Nsteps, tracks, GluR2xyds)
-    time = (0:Nsteps-1)';
-    xymsd = GluR2xyds';
-    xymsd = cumsum(xymsd,1);
-    tracks{stepN} = [time xymsd];
-
-end
-
-
-%-------------------------------------------%
-% MSDfunction - FINAL TRACKS ANALYSIS
-%-------------------------------------------%
-function [MSDout] = MSDfunction(tracks, GluR2Ndots, Nsteps, D, Dn_PSD1, Dn_PSD2, dT, k, MSDtest)
-
-SPACE_UNITS = 'µm';
-TIME_UNITS = 's';
-N_PARTICLES = GluR2Ndots;
-N_TIME_STEPS = Nsteps;
-N_DIM = 2;
-
-oDes = D;				% raw		µm^2/s
-D  = D*.1;              % to-scale	µm^2/s
-
-oDpsd1 = Dn_PSD1;		% raw		µm^2/s
-Dpsd1 = Dn_PSD1*.1;		% to-scale	µm^2/s
-
-oDpsd2 = Dn_PSD2;		% raw		µm^2/s
-Dpsd2 = Dn_PSD2*.1;		% to-scale	µm^2/s
-
-dTbase = dT;			% raw time-step 
-dT = dT*1;				% to-scale time-step
-k = k;					% stdv of step distribution
-
-ma = msdanalyzer(2, SPACE_UNITS, TIME_UNITS);
-ma = ma.addAll(tracks);
-disp(ma)
-
-figure
-ma.plotTracks;
-ma.labelPlotTracks;
-
-ma = ma.computeMSD;
-ma.msd;
-
-t = (0 : N_TIME_STEPS)' * dT;
-[T1, T2] = meshgrid(t, t);
-all_delays = unique( abs(T1 - T2) );
-
-figure
-ma.plotMSD;
-
-
-cla
-ma.plotMeanMSD(gca, true)
-
-mmsd = ma.getMeanMSD;
-t = mmsd(:,1);
-x = mmsd(:,2);
-dx = mmsd(:,3) ./ sqrt(mmsd(:,4));
-errorbar(t, x, dx, 'k')
-
-[fo, gof] = ma.fitMeanMSD;
-plot(fo)
-ma.labelPlotMSD;
-legend off
-
-
-ma = ma.fitMSD;
-
-good_enough_fit = ma.lfit.r2fit > 0.8;
-Dmean = mean( ma.lfit.a(good_enough_fit) ) / 2 / ma.n_dim;
-Dstd  =  std( ma.lfit.a(good_enough_fit) ) / 2 / ma.n_dim;
-
-Dheader1 = ['Raw Unscaled Values'];
-Dhead1 = ['     D.es	D.psd1	D.psd2'];
-Ddat1 = [oDes oDpsd1 oDpsd2];
-disp(' ')
-disp(Dheader1)
-disp(Dhead1)
-disp(Ddat1)
-
-
-yourtesthead = ['YOU ARE TESTING DIFFUSION FOR:'];
-if MSDtest(1)
-	yourtest = ['   Des:   extrasynaptic diffusion rate'];
-elseif MSDtest(2)
-	yourtest = ['   Dpsd1:  PSD-1 diffusion rate'];
-elseif MSDtest(3)
-	yourtest = ['   Dpsd2:  PSD-2 diffusion rate'];
-else
-	yourtest = ['   generic diffusion rate'];
-end
-disp(yourtesthead)
-disp(yourtest)
-
-disp(' ')
-fprintf('Estimation of raw D coefficient from MSD:\n')
-fprintf('D = %.3g ± %.3g (mean ± std, N = %d)\n', ...
-    Dmean, Dstd, sum(good_enough_fit));
-
-
-
-
-% Retrieve instantaneous velocities, per track
- trackV = ma.getVelocities;
-
- % Pool track data together
- TV = vertcat( trackV{:} );
-
- % Velocities are returned in a N x (nDim+1) array: [ T Vx Vy ...]. So the
- % velocity vector in 2D is:
- V = TV(:, 2:3);
-
- % Compute diffusion coefficient
-varV = var(V);
-mVarV = mean(varV); % Take the mean of the two estimates
-Dest = mVarV / 2 * dT;
-
-
-
-Dheader2 = ['Scaling to model (10units = 1µm)...'];
-Dhead2 = ['     D.es	D.psd1	D.psd2'];
-Ddat2 = [D Dpsd1 Dpsd2];
-
-disp(' ')
-disp(Dheader2)
-disp(Dhead2)
-disp(Ddat2)
-fprintf('Estimation from velocities histogram:\n')
-fprintf('Tested D = %.3g %s, compare to scaled Des value of %.3g %s\n', ...
-    Dest, [SPACE_UNITS '²/' TIME_UNITS], D, [SPACE_UNITS '²/' TIME_UNITS]);
-
-% printf('D.psd target value was %.3g %s\n', ...
-%     Dest, msdDpsd, [SPACE_UNITS '²/' TIME_UNITS]);
-
-MSDout = D;
-
-end
-
-
-
-%-------------############################------------------%
-%			  ##   MSD2 SUBFUNCTIONS    ##
-%-------------############################------------------% 
-
-%-------------------------------------------%
-% STEP SIZE GENERATOR
-%-------------------------------------------%
-function GluR2xyds = STEPxyds2(GluR2Ndots, k)
-
-    GluR2xyds = (k * randn(2,GluR2Ndots));
-
-end
-
-
-%-------------------------------------------%
-% MOVE PARTICLES MAIN FUNCTION
-%-------------------------------------------%
-function [GluR2xyl] = AMPARSTEP2(GluR2Ndots, GluR2xyds, GluR2xyl)
-	
-	for j = 1:GluR2Ndots
-        GluR2xyl(:,j) = GluR2xyl(:,j)+GluR2xyds(:,j);
-	end
-	
-end
-
-
-%-------------------------------------------%
-% LIVE DIFFUSION PLOT
-%-------------------------------------------%
-function [] = MAINPLOT2(GluR2xyl, lims)
-%-------------------------------------------%
-xlim = [-lims lims];
-ylim = [-lims lims];
-zlim = [-5 5];
-
-%=================================%
-%       MAIN 2D PLOT
-%---------------------------------%
-figure(1)
-subplot(2,1,1), 
-AMPARPlot = gscatter(GluR2xyl(1,:),GluR2xyl(2,:));
-axis([xlim, ylim]);
-set(AMPARPlot,'marker','.','markersize',[6],'color',[1 0 0])
-
-
-%=================================%
-%           3D PLOT
-%---------------------------------%
-figure(1);
-subplot(2,1,2), 
-gscatter(GluR2xyl(1,:),GluR2xyl(2,:)); view(20, 30);
-axis normal;
-grid off
-axis([xlim, ylim, zlim]);
-set(gca, 'Box', 'on');
-
-end
-
-
-%-------------------------------------------%
-% MANUAL STEP SIZE FUNCTION
-%-------------------------------------------%
-function GluR2xyds = UNIFORMSTEPS2(GluR2Ndots, Lx)
-%-------------------------------------------%
-
-   Lx(1:2,1:GluR2Ndots) = Lx;
-   xyd = randi([0 1],GluR2Ndots,2)';
-   xyd(xyd == 0) = -1;
-   GluR2xyds = (Lx.*xyd);
-   
-end
-
-
-%-------------------------------------------%
-% MSD SCALED STEPS FUNCTION
-%-------------------------------------------%
-function [GluR2xyl GluR2xyds] = SCALEUNIFORMSTEPS2(GluR2Ndots, GluR2xyds, GluR2xyl, Ls, MSDtest)
-
-
-if MSDtest(1)
-	Ls = 1;	
-end
-	
-	for j = 1:GluR2Ndots
-        GluR2xyds(:,j) = GluR2xyds(:,j)*Ls;
-        GluR2xyl(:,j) = GluR2xyl(:,j)+GluR2xyds(:,j);
-	end	
-	
-end
-
-
-%-------------------------------------------%
-% MSD TRACKS GENERATOR
-%-------------------------------------------%
-function [tracks] = MSDfun2(stepN, Nsteps, tracks, GluR2xyds)
-    time = (0:Nsteps-1)';
-    xymsd = GluR2xyds';
-    xymsd = cumsum(xymsd,1);
-    tracks{stepN} = [time xymsd];
-
-end
-
-
-%-------------------------------------------%
-% MSD TRACKS ANALYSIS
-%-------------------------------------------%
-function [Dest] = MSDfunction2(tracks,GluR2Ndots,Nsteps,D,Dn,L,dT,k,Scale,MSDtest)
-
-
-% printf('D.psd target value was %.3g %s\n', ...
-%     Dest, msdDpsd, [SPACE_UNITS '²/' TIME_UNITS]);
-
-yourtesthead = ['-------TESTING DIFFUSION---------'];
-if MSDtest(1)
-	yourtest = ['   D:   original diffusion rate'];
-elseif MSDtest(2)
-	yourtest = ['   Dn:  PSD diffusion rate'];
-elseif MSDtest(3)
-	yourtest = ['   L:  step length'];
-else
-	yourtest = ['   generic diffusion rate'];
-end
-disp(yourtesthead)
-disp(yourtest)
-
-
-
-SPACE_UNITS = 'µm';
-TIME_UNITS = 's';
-N_PARTICLES = GluR2Ndots;
-N_TIME_STEPS = Nsteps;
-N_DIM = 2;
-
-oD = D;				% raw		µm^2/s
-D  = D*Scale;       % to-scale	µm^2/s
-
-oDn = Dn;			% raw		µm^2/s
-Dn = Dn*Scale;		% to-scale	µm^2/s
-
-oL = L;				% raw		µm
-L = L*Scale;		% to-scale	µm
-
-dTbase = dT;		% raw time-step 
-dT = dT*Scale;		% to-scale time-step
-k = k;				% stdv of step distribution
-
-ma = msdanalyzer(2, SPACE_UNITS, TIME_UNITS);
-ma = ma.addAll(tracks);
-disp(ma)
-
-figure
-ma.plotTracks;
-ma.labelPlotTracks;
-
-ma = ma.computeMSD;
-ma.msd;
-
-t = (0 : N_TIME_STEPS)' * dT;
-[T1, T2] = meshgrid(t, t);
-all_delays = unique( abs(T1 - T2) );
-
-figure
-ma.plotMSD;
-
-
-cla
-ma.plotMeanMSD(gca, true)
-
-mmsd = ma.getMeanMSD;
-t = mmsd(:,1);
-x = mmsd(:,2);
-dx = mmsd(:,3) ./ sqrt(mmsd(:,4));
-errorbar(t, x, dx, 'k')
-
-[fo, gof] = ma.fitMeanMSD;
-plot(fo)
-ma.labelPlotMSD;
-legend off
-
-
-ma = ma.fitMSD;
-
-good_enough_fit = ma.lfit.r2fit > 0.8;
-Dmean = mean( ma.lfit.a(good_enough_fit) ) / 2 / ma.n_dim;
-Dstd  =  std( ma.lfit.a(good_enough_fit) ) / 2 / ma.n_dim;
-
-Dheader1 = ['Raw Unscaled Values'];
-Dhead1 = ['    D        Dn        L'];
-Ddat1 = [oD oDn oL];
-disp(' ')
-disp(Dheader1)
-disp(Dhead1)
-disp(Ddat1)
-
-
-yourtesthead = ['YOU ARE TESTING DIFFUSION FOR:'];
-if MSDtest(1)
-	yourtest = ['   D:   original diffusion rate'];
-elseif MSDtest(2)
-	yourtest = ['   Dn:  PSD diffusion rate'];
-elseif MSDtest(3)
-	yourtest = ['   L:  step length'];
-else
-	yourtest = ['   generic diffusion rate'];
-end
-disp(yourtesthead)
-disp(yourtest)
-
-disp(' ')
-fprintf('Estimation of raw D coefficient from MSD:\n')
-fprintf('D = %.3g ± %.3g (mean ± std, N = %d)\n', ...
-    Dmean, Dstd, sum(good_enough_fit));
-
-
-
-
-% Retrieve instantaneous velocities, per track
- trackV = ma.getVelocities;
-
- % Pool track data together
- TV = vertcat( trackV{:} );
-
- % Velocities are returned in a N x (nDim+1) array: [ T Vx Vy ...]. So the
- % velocity vector in 2D is:
- V = TV(:, 2:3);
-
- % Compute diffusion coefficient
-varV = var(V);
-mVarV = mean(varV); % Take the mean of the two estimates
-Dest = mVarV / 2 * dT;
-
-
-
-Dheader2 = ['Scaling to model...'];
-Dhead2 = ['    D        Dn        L'];
-Ddat2 = [D Dn L];
-
-disp(' ')
-disp(Dheader2)
-disp(Dhead2)
-disp(Ddat2)
-fprintf('Estimation from velocities histogram:\n')
-fprintf('Computed scaled velocity D = %.3g %s, generated from set D = %.3g %s\n', ...
-    Dest, [SPACE_UNITS '²/' TIME_UNITS], D, [SPACE_UNITS '²/' TIME_UNITS]);
-
-
-end
-
-
-
-
-
-%%				   SPECIALIZED TOOLS
-%-------------##########################------------------%
-%				   SPECIALIZED TOOLS
-%-------------##########################------------------%
-
-
-
-
-%===================================%
-% IzhFun SPIKE GENERATOR
-%===================================%
-function [] = IzhFun(spikes)
-
-global v;
-izhikevich(spikes)
-
-end
-%===================================%
-
-
-
-
 %===================================%
 % HOMEOSTATIC
 %===================================%
@@ -6659,38 +6516,38 @@ end
 %		ZGEN FUNCTION
 %===================================%
 function [G1Z G2Z] = ZGEN(stepN,G1Z,G2Z,...
-    GluR2Ndots, GluR2xyl,GluR1Ndots, GluR1xyl,...
+    G2N, xyG2,G1N, xyG1,...
 	XYLTpr1,XYRTpr1,XYLBpr1,XYRBpr1,XYLTpr2,XYRTpr2,XYLBpr2,XYRBpr2,...
 	XYLTp1,XYRTp1,XYLBp1,XYRBp1,XYLTp2,XYRTp2,XYLBp2,XYRBp2)
 
 
 
 %--GLUR2--%
-for j = 1:GluR2Ndots 
+for j = 1:G2N 
 %Inside PSD1
-if (GluR2xyl(1,j)>=XYLBp1(1) && GluR2xyl(1,j)<=XYRTp1(1)) &&...
-   (GluR2xyl(2,j)>=XYLBp1(2) && GluR2xyl(2,j)<=XYRTp1(2))
+if (xyG2(1,j)>=XYLBp1(1) && xyG2(1,j)<=XYRTp1(1)) &&...
+   (xyG2(2,j)>=XYLBp1(2) && xyG2(2,j)<=XYRTp1(2))
  
     G2Z(:,j) = 4;
  
 %Inside PSD2
-elseif  (GluR2xyl(1,j)>=XYLBp2(1) && GluR2xyl(1,j)<=XYRTp2(1)) &&...
-        (GluR2xyl(2,j)>=XYLBp2(2) && GluR2xyl(2,j)<=XYRTp2(2))
+elseif  (xyG2(1,j)>=XYLBp2(1) && xyG2(1,j)<=XYRTp2(1)) &&...
+        (xyG2(2,j)>=XYLBp2(2) && xyG2(2,j)<=XYRTp2(2))
     G2Z(:,j) = 4;
  
 %Inside PSA1
-elseif  (GluR2xyl(1,j)>=XYLBpr1(1) && GluR2xyl(1,j)<=XYRTpr1(1)) &&...
-        (GluR2xyl(2,j)>=XYLBpr1(2) && GluR2xyl(2,j)<=XYRTpr1(2)) &&...
-        ((GluR2xyl(1,j)<=XYLBp1(1) || GluR2xyl(1,j)>=XYRTp1(1))) &&...
-        ((GluR2xyl(2,j)<=XYLBp1(2) || GluR2xyl(2,j)>=XYRTp1(2)))
+elseif  (xyG2(1,j)>=XYLBpr1(1) && xyG2(1,j)<=XYRTpr1(1)) &&...
+        (xyG2(2,j)>=XYLBpr1(2) && xyG2(2,j)<=XYRTpr1(2)) &&...
+        ((xyG2(1,j)<=XYLBp1(1) || xyG2(1,j)>=XYRTp1(1))) &&...
+        ((xyG2(2,j)<=XYLBp1(2) || xyG2(2,j)>=XYRTp1(2)))
     
     G2Z(:,j) = 2+(.1 * randi(15,1));
  
 %Inside PSA2
-elseif  (GluR2xyl(1,j)>=XYLBpr2(1) && GluR2xyl(1,j)<=XYRTpr2(1)) &&...
-        (GluR2xyl(2,j)>=XYLBpr2(2) && GluR2xyl(2,j)<=XYRTpr2(2)) &&...
-        ((GluR2xyl(1,j)<=XYLBp2(1) || GluR2xyl(1,j)>=XYRTp2(1))) &&...
-        ((GluR2xyl(2,j)<=XYLBp2(2) || GluR2xyl(2,j)>=XYRTp2(2)))
+elseif  (xyG2(1,j)>=XYLBpr2(1) && xyG2(1,j)<=XYRTpr2(1)) &&...
+        (xyG2(2,j)>=XYLBpr2(2) && xyG2(2,j)<=XYRTpr2(2)) &&...
+        ((xyG2(1,j)<=XYLBp2(1) || xyG2(1,j)>=XYRTp2(1))) &&...
+        ((xyG2(2,j)<=XYLBp2(2) || xyG2(2,j)>=XYRTp2(2)))
     
     G2Z(:,j) = 2+(.1 * randi(15,1));
  
@@ -6701,31 +6558,31 @@ end
 end
  
 %--GLUR1--%
-for j = 1:GluR1Ndots 
+for j = 1:G1N 
 %Inside PSD1
-if (GluR1xyl(1,j)>=XYLBp1(1) && GluR1xyl(1,j)<=XYRTp1(1)) &&...
-   (GluR1xyl(2,j)>=XYLBp1(2) && GluR1xyl(2,j)<=XYRTp1(2))
+if (xyG1(1,j)>=XYLBp1(1) && xyG1(1,j)<=XYRTp1(1)) &&...
+   (xyG1(2,j)>=XYLBp1(2) && xyG1(2,j)<=XYRTp1(2))
  
     G1Z(:,j) = 4;
  
 %Inside PSD2
-elseif  (GluR1xyl(1,j)>=XYLBp2(1) && GluR1xyl(1,j)<=XYRTp2(1)) &&...
-        (GluR1xyl(2,j)>=XYLBp2(2) && GluR1xyl(2,j)<=XYRTp2(2))
+elseif  (xyG1(1,j)>=XYLBp2(1) && xyG1(1,j)<=XYRTp2(1)) &&...
+        (xyG1(2,j)>=XYLBp2(2) && xyG1(2,j)<=XYRTp2(2))
     G1Z(:,j) = 4;
  
 %Inside PSA1
-elseif  (GluR1xyl(1,j)>=XYLBpr1(1) && GluR1xyl(1,j)<=XYRTpr1(1)) &&...
-        (GluR1xyl(2,j)>=XYLBpr1(2) && GluR1xyl(2,j)<=XYRTpr1(2)) &&...
-        ((GluR1xyl(1,j)<=XYLBp1(1) || GluR1xyl(1,j)>=XYRTp1(1))) &&...
-        ((GluR1xyl(2,j)<=XYLBp1(2) || GluR1xyl(2,j)>=XYRTp1(2)))
+elseif  (xyG1(1,j)>=XYLBpr1(1) && xyG1(1,j)<=XYRTpr1(1)) &&...
+        (xyG1(2,j)>=XYLBpr1(2) && xyG1(2,j)<=XYRTpr1(2)) &&...
+        ((xyG1(1,j)<=XYLBp1(1) || xyG1(1,j)>=XYRTp1(1))) &&...
+        ((xyG1(2,j)<=XYLBp1(2) || xyG1(2,j)>=XYRTp1(2)))
     
     G1Z(:,j) = 2+(.1 * randi(15,1));
  
 %Inside PSA2
-elseif  (GluR1xyl(1,j)>=XYLBpr2(1) && GluR1xyl(1,j)<=XYRTpr2(1)) &&...
-        (GluR1xyl(2,j)>=XYLBpr2(2) && GluR1xyl(2,j)<=XYRTpr2(2)) &&...
-        ((GluR1xyl(1,j)<=XYLBp2(1) || GluR1xyl(1,j)>=XYRTp2(1))) &&...
-        ((GluR1xyl(2,j)<=XYLBp2(2) || GluR1xyl(2,j)>=XYRTp2(2)))
+elseif  (xyG1(1,j)>=XYLBpr2(1) && xyG1(1,j)<=XYRTpr2(1)) &&...
+        (xyG1(2,j)>=XYLBpr2(2) && xyG1(2,j)<=XYRTpr2(2)) &&...
+        ((xyG1(1,j)<=XYLBp2(1) || xyG1(1,j)>=XYRTp2(1))) &&...
+        ((xyG1(2,j)<=XYLBp2(2) || xyG1(2,j)>=XYRTp2(2)))
     
     G1Z(:,j) = 2+(.1 * randi(15,1));
  
@@ -6738,35 +6595,35 @@ end
 
 %{
 %-------------------%
-for j = 1:GluR2Ndots
+for j = 1:G2N
 %-------------------%
 
-		if GluR2xyl(1,j)>=XcPr1lft && GluR2xyl(1,j)<=XcPr1rit &&...
-          GluR2xyl(2,j)>=YrPr1top && GluR2xyl(2,j)<=YrPr1bot &&...
-		  GluR2xyl(1,j)>=(XcPr1lft+PSDSZE(2,1)) && GluR2xyl(1,j)<=(XcPr1rit-PSDSZE(2,1)) &&...
-          GluR2xyl(2,j)>=(YrPr1top+PSDSZE(2,1)) && GluR2xyl(2,j)<=(YrPr1bot-PSDSZE(2,1))
+		if xyG2(1,j)>=XcPr1lft && xyG2(1,j)<=XcPr1rit &&...
+          xyG2(2,j)>=YrPr1top && xyG2(2,j)<=YrPr1bot &&...
+		  xyG2(1,j)>=(XcPr1lft+PSDSZE(2,1)) && xyG2(1,j)<=(XcPr1rit-PSDSZE(2,1)) &&...
+          xyG2(2,j)>=(YrPr1top+PSDSZE(2,1)) && xyG2(2,j)<=(YrPr1bot-PSDSZE(2,1))
 		
 			G2Z(:,j) = 3;
 	
-		elseif GluR2xyl(1,j)>=XcPr1lft && GluR2xyl(1,j)<=XcPr1rit &&...
-          GluR2xyl(2,j)>=YrPr2bot && GluR2xyl(2,j)<=YrPr2top &&...
-		  GluR2xyl(1,j)>=(XcPr1lft+PSDSZE(2,2)) && GluR2xyl(1,j)<=(XcPr1rit-PSDSZE(2,2)) &&...
-          GluR2xyl(2,j)>=(YrPr2bot+PSDSZE(2,2)) && GluR2xyl(2,j)<=(YrPr2top-PSDSZE(2,2))
+		elseif xyG2(1,j)>=XcPr1lft && xyG2(1,j)<=XcPr1rit &&...
+          xyG2(2,j)>=YrPr2bot && xyG2(2,j)<=YrPr2top &&...
+		  xyG2(1,j)>=(XcPr1lft+PSDSZE(2,2)) && xyG2(1,j)<=(XcPr1rit-PSDSZE(2,2)) &&...
+          xyG2(2,j)>=(YrPr2bot+PSDSZE(2,2)) && xyG2(2,j)<=(YrPr2top-PSDSZE(2,2))
 
 			G2Z(:,j) = 3;
 			
 			
-		elseif GluR2xyl(1,j)>=XcPr1lft && GluR2xyl(1,j)<=XcPr1rit &&...
-          GluR2xyl(2,j)>=YrPr1top && GluR2xyl(2,j)<=YrPr1bot &&...
-          ((GluR2xyl(1,j)<=(XcPr1lft+PSDSZE(2,1)) || GluR2xyl(1,j)>=(XcPr1rit-PSDSZE(2,1))) ||...
-          (GluR2xyl(2,j)<=(YrPr1top+PSDSZE(2,1)) || GluR2xyl(2,j)>=(YrPr1bot-PSDSZE(2,1))))
+		elseif xyG2(1,j)>=XcPr1lft && xyG2(1,j)<=XcPr1rit &&...
+          xyG2(2,j)>=YrPr1top && xyG2(2,j)<=YrPr1bot &&...
+          ((xyG2(1,j)<=(XcPr1lft+PSDSZE(2,1)) || xyG2(1,j)>=(XcPr1rit-PSDSZE(2,1))) ||...
+          (xyG2(2,j)<=(YrPr1top+PSDSZE(2,1)) || xyG2(2,j)>=(YrPr1bot-PSDSZE(2,1))))
       
             G2Z(:,j) = 1+(.1 * randi(15,1));
             
-        elseif GluR2xyl(1,j)>=XcPr1lft && GluR2xyl(1,j)<=XcPr1rit &&...
-          GluR2xyl(2,j)>=YrPr2bot && GluR2xyl(2,j)<=YrPr2top &&...
-          ((GluR2xyl(1,j)<=(XcPr1lft+PSDSZE(2,2)) || GluR2xyl(1,j)>=(XcPr1rit-PSDSZE(2,2))) ||...
-          (GluR2xyl(2,j)<=(YrPr2bot+PSDSZE(2,2)) || GluR2xyl(2,j)>=(YrPr2top-PSDSZE(2,2))))
+        elseif xyG2(1,j)>=XcPr1lft && xyG2(1,j)<=XcPr1rit &&...
+          xyG2(2,j)>=YrPr2bot && xyG2(2,j)<=YrPr2top &&...
+          ((xyG2(1,j)<=(XcPr1lft+PSDSZE(2,2)) || xyG2(1,j)>=(XcPr1rit-PSDSZE(2,2))) ||...
+          (xyG2(2,j)<=(YrPr2bot+PSDSZE(2,2)) || xyG2(2,j)>=(YrPr2top-PSDSZE(2,2))))
 	  
             G2Z(:,j) = 1+(.1 * randi(15,1));
 			
@@ -6775,41 +6632,41 @@ for j = 1:GluR2Ndots
 		   G2Z(:,j) = 1;
 		end % if
 %-------------------%
-end  %j = 1:GluR2Ndots
+end  %j = 1:G2N
 %-------------------%
 
 
 
 %-------------------%
-for j = 1:GluR1Ndots
+for j = 1:G1N
 %-------------------%
  
-        if GluR1xyl(1,j)>=XcPr1lft && GluR1xyl(1,j)<=XcPr1rit &&...
-          GluR1xyl(2,j)>=YrPr1top && GluR1xyl(2,j)<=YrPr1bot &&...
-          GluR1xyl(1,j)>=(XcPr1lft+PSDSZE(2,1)) && GluR1xyl(1,j)<=(XcPr1rit-PSDSZE(2,1)) &&...
-          GluR1xyl(2,j)>=(YrPr1top+PSDSZE(2,1)) && GluR1xyl(2,j)<=(YrPr1bot-PSDSZE(2,1))
+        if xyG1(1,j)>=XcPr1lft && xyG1(1,j)<=XcPr1rit &&...
+          xyG1(2,j)>=YrPr1top && xyG1(2,j)<=YrPr1bot &&...
+          xyG1(1,j)>=(XcPr1lft+PSDSZE(2,1)) && xyG1(1,j)<=(XcPr1rit-PSDSZE(2,1)) &&...
+          xyG1(2,j)>=(YrPr1top+PSDSZE(2,1)) && xyG1(2,j)<=(YrPr1bot-PSDSZE(2,1))
         
             G1Z(:,j) = 3;
     
-        elseif GluR1xyl(1,j)>=XcPr1lft && GluR1xyl(1,j)<=XcPr1rit &&...
-          GluR1xyl(2,j)>=YrPr2bot && GluR1xyl(2,j)<=YrPr2top &&...
-          GluR1xyl(1,j)>=(XcPr1lft+PSDSZE(2,2)) && GluR1xyl(1,j)<=(XcPr1rit-PSDSZE(2,2)) &&...
-          GluR1xyl(2,j)>=(YrPr2bot+PSDSZE(2,2)) && GluR1xyl(2,j)<=(YrPr2top-PSDSZE(2,2))
+        elseif xyG1(1,j)>=XcPr1lft && xyG1(1,j)<=XcPr1rit &&...
+          xyG1(2,j)>=YrPr2bot && xyG1(2,j)<=YrPr2top &&...
+          xyG1(1,j)>=(XcPr1lft+PSDSZE(2,2)) && xyG1(1,j)<=(XcPr1rit-PSDSZE(2,2)) &&...
+          xyG1(2,j)>=(YrPr2bot+PSDSZE(2,2)) && xyG1(2,j)<=(YrPr2top-PSDSZE(2,2))
  
             G1Z(:,j) = 3;
 			
 			
-		elseif GluR1xyl(1,j)>=XcPr1lft && GluR1xyl(1,j)<=XcPr1rit &&...
-          GluR1xyl(2,j)>=YrPr1top && GluR1xyl(2,j)<=YrPr1bot &&...
-          ((GluR1xyl(1,j)<=(XcPr1lft+PSDSZE(2,1)) || GluR1xyl(1,j)>=(XcPr1rit-PSDSZE(2,1))) ||...
-          (GluR1xyl(2,j)<=(YrPr1top+PSDSZE(2,1)) || GluR1xyl(2,j)>=(YrPr1bot-PSDSZE(2,1))))
+		elseif xyG1(1,j)>=XcPr1lft && xyG1(1,j)<=XcPr1rit &&...
+          xyG1(2,j)>=YrPr1top && xyG1(2,j)<=YrPr1bot &&...
+          ((xyG1(1,j)<=(XcPr1lft+PSDSZE(2,1)) || xyG1(1,j)>=(XcPr1rit-PSDSZE(2,1))) ||...
+          (xyG1(2,j)<=(YrPr1top+PSDSZE(2,1)) || xyG1(2,j)>=(YrPr1bot-PSDSZE(2,1))))
       
             G1Z(:,j) = 1+(.1 * randi(15,1));
             
-        elseif GluR1xyl(1,j)>=XcPr1lft && GluR1xyl(1,j)<=XcPr1rit &&...
-          GluR1xyl(2,j)>=YrPr2bot && GluR1xyl(2,j)<=YrPr2top &&...
-          ((GluR1xyl(1,j)<=(XcPr1lft+PSDSZE(2,2)) || GluR1xyl(1,j)>=(XcPr1rit-PSDSZE(2,2))) ||...
-          (GluR1xyl(2,j)<=(YrPr2bot+PSDSZE(2,2)) || GluR1xyl(2,j)>=(YrPr2top-PSDSZE(2,2))))
+        elseif xyG1(1,j)>=XcPr1lft && xyG1(1,j)<=XcPr1rit &&...
+          xyG1(2,j)>=YrPr2bot && xyG1(2,j)<=YrPr2top &&...
+          ((xyG1(1,j)<=(XcPr1lft+PSDSZE(2,2)) || xyG1(1,j)>=(XcPr1rit-PSDSZE(2,2))) ||...
+          (xyG1(2,j)<=(YrPr2bot+PSDSZE(2,2)) || xyG1(2,j)>=(YrPr2top-PSDSZE(2,2))))
       
             G1Z(:,j) = 1+(.1 * randi(15,1));
 			
@@ -6818,7 +6675,7 @@ for j = 1:GluR1Ndots
            G1Z(:,j) = 1;
         end % if
 %-------------------%
-end  %j = 1:GluR1Ndots
+end  %j = 1:G1N
 %-------------------%
 %}
 	
@@ -6871,13 +6728,6 @@ end
 
 
 
-
-
-%%					CODE GRAVE YARD
-%-------------##########################------------------%
-%			   UNUSED OR ARCHIVED CODE
-%-------------##########################------------------%
-
 %-------------------------------------------%
 % GLUR-SAPPOLYGON FUNCTIONS
 %-------------------------------------------%
@@ -6897,17 +6747,17 @@ end
 function [GluR1SP1 GluR1SP2 G1SAPLOC1 G1SAPLOC2]...
 = G1SAPPOLYGON(stepN,...
 PSD1Sxvecs,PSD1Syvecs,PSD2Sxvecs,PSD2Syvecs,...
-GluR1xyl,SAPFmx1,SAPFmx2)
+xyG1,SAPFmx1,SAPFmx2)
 
     
-GluR1Sd1 = ones(size(GluR1xyl));
+GluR1Sd1 = ones(size(xyG1));
 GluR1Sd2 = GluR1Sd1;
 
 GluR1SLOCMXa = zeros(1,size(GluR1Sd1,2));
 GluR1SLOCMXb = GluR1SLOCMXa;
 
 [m,p,n] = size(PSD1Sxvecs);
-	% currentcell = zeros(1,size(GluR1xyl,2));
+	% currentcell = zeros(1,size(xyG1,2));
 	currentcell = zeros(1,p);
 	
 
@@ -6919,8 +6769,8 @@ PSD1SyvNOW = PSD1Syvecs{m};
 PSD2SxvNOW = PSD2Sxvecs{m};
 PSD2SyvNOW = PSD2Syvecs{m};
 
-G1INPSD1 = inpolygon(GluR1xyl(1,:)',GluR1xyl(2,:)',PSD1SxvNOW,PSD1SyvNOW);
-G1INPSD2 = inpolygon(GluR1xyl(1,:)',GluR1xyl(2,:)',PSD2SxvNOW,PSD2SyvNOW);
+G1INPSD1 = inpolygon(xyG1(1,:)',xyG1(2,:)',PSD1SxvNOW,PSD1SyvNOW);
+G1INPSD2 = inpolygon(xyG1(1,:)',xyG1(2,:)',PSD2SxvNOW,PSD2SyvNOW);
  
 GluR1Sd1(:,G1INPSD1) = GluR1Sd1(:,G1INPSD1)+(SAPFmx1(m));
 GluR1Sd2(:,G1INPSD2) = GluR1Sd2(:,G1INPSD2)+(SAPFmx2(m));
@@ -6959,17 +6809,17 @@ end
 function [GluR2SP1 GluR2SP2 G2SAPLOC1 G2SAPLOC2]...
 = G2SAPPOLYGON(stepN,...
 PSD1Sxvecs,PSD1Syvecs,PSD2Sxvecs,PSD2Syvecs,...
-GluR2xyl,SAPFmx1,SAPFmx2)
+xyG2,SAPFmx1,SAPFmx2)
  
     
-GluR2Sd1 = ones(size(GluR2xyl));
+GluR2Sd1 = ones(size(xyG2));
 GluR2Sd2 = GluR2Sd1;
  
 GluR2SLOCMXa = zeros(1,size(GluR2Sd1,2));
 GluR2SLOCMXb = GluR2SLOCMXa;
  
 [m,p,n] = size(PSD1Sxvecs);
-    % currentcell = zeros(1,size(GluR2xyl,2));
+    % currentcell = zeros(1,size(xyG2,2));
 	currentcell = zeros(1,p);
 	
 for m = 1:p
@@ -6980,8 +6830,8 @@ PSD1SyvNOW = PSD1Syvecs{m};
 PSD2SxvNOW = PSD2Sxvecs{m};
 PSD2SyvNOW = PSD2Syvecs{m};
  
-G2INPSD1 = inpolygon(GluR2xyl(1,:)',GluR2xyl(2,:)',PSD1SxvNOW,PSD1SyvNOW);
-G2INPSD2 = inpolygon(GluR2xyl(1,:)',GluR2xyl(2,:)',PSD2SxvNOW,PSD2SyvNOW);
+G2INPSD1 = inpolygon(xyG2(1,:)',xyG2(2,:)',PSD1SxvNOW,PSD1SyvNOW);
+G2INPSD2 = inpolygon(xyG2(1,:)',xyG2(2,:)',PSD2SxvNOW,PSD2SyvNOW);
  
 GluR2Sd1(:,G2INPSD1) = GluR2Sd1(:,G2INPSD1)+(SAPFmx1(m));
 GluR2Sd2(:,G2INPSD2) = GluR2Sd2(:,G2INPSD2)+(SAPFmx2(m));
@@ -7035,8 +6885,8 @@ end
 % UPDATE THE DIFFUSION RATES FOR THOSE GLUR RECEPTORS THAT MADE IT INTO A SLOT
 %-------------------%
 %----SLOTS GluR1----%
-function [GluR1xyds GluR1_TdwellPSD GluR1_TdwellPERI GluR1_TdwellSPYN G1FSLOTS]...
-	= G1SLOTS(stepN,GluR1Ndots,GluR1xyds,...
+function [xysG1 GluR1_TdwellPSD GluR1_TdwellPERI GluR1_TdwellSPYN G1FSLOTS]...
+	= G1SLOTS(stepN,G1N,xysG1,...
 	GluR1_TdwellPSD,GluR1_TdwellPERI,GluR1_TdwellSPYN,...
 	GluR1SP1,GluR1SP2,SAPFmx1,SAPFmx2,G1SAPLOC1, G1SAPLOC2)
 
@@ -7169,8 +7019,8 @@ GluR1DOTSP2 = [GluR1DSP2(SLPSD2LOCkON,:) SLPSD2LOCkON G1SAPLOCD2(SLPSD2LOCkON,:)
 % NOW UPDATE THE DIFFUSION RATES FOR THOSE GLUR1 RECEPTORS
 % THAT MADE IT INTO A SLOT
 
-	GluR1xyds(:,GR1PROBPRF1) = GluR1xyds(:,GR1PROBPRF1)*(.001);
-    GluR1xyds(:,GR1PROBPRF2) = GluR1xyds(:,GR1PROBPRF2)*(.001);
+	xysG1(:,GR1PROBPRF1) = xysG1(:,GR1PROBPRF1)*(.001);
+    xysG1(:,GR1PROBPRF2) = xysG1(:,GR1PROBPRF2)*(.001);
     
 
     
@@ -7189,8 +7039,8 @@ G1FSLOTS = [G1PSD1FSLOTS G1PSD2FSLOTS 0 0];
 end
 
 %----SLOTS GluR2----%
-function [GluR2xyds GluR2_TdwellPSD GluR2_TdwellPERI GluR2_TdwellSPYN G2FSLOTS]... 
-	= G2SLOTS(stepN,GluR2Ndots,GluR2xyds,...
+function [xysG2 GluR2_TdwellPSD GluR2_TdwellPERI GluR2_TdwellSPYN G2FSLOTS]... 
+	= G2SLOTS(stepN,G2N,xysG2,...
     GluR2_TdwellPSD,GluR2_TdwellPERI,GluR2_TdwellSPYN,...
     GluR2SP1,GluR2SP2,SAPFmx1,SAPFmx2,G2SAPLOC1, G2SAPLOC2)
 
@@ -7319,8 +7169,8 @@ GluR2DOTSP2 = [GluR2DSP2(SLPSD2LOCkON,:) SLPSD2LOCkON G2SAPLOCD2(SLPSD2LOCkON,:)
 % NOW UPDATE THE DIFFUSION RATES FOR THOSE GLUR2 RECEPTORS
 % THAT MADE IT INTO A SLOT
  
-    GluR2xyds(:,GR2PROBPRF1) = GluR2xyds(:,GR2PROBPRF1)*(.001);
-    GluR2xyds(:,GR2PROBPRF2) = GluR2xyds(:,GR2PROBPRF2)*(.001);
+    xysG2(:,GR2PROBPRF1) = xysG2(:,GR2PROBPRF1)*(.001);
+    xysG2(:,GR2PROBPRF2) = xysG2(:,GR2PROBPRF2)*(.001);
     
  
     
@@ -7347,8 +7197,8 @@ end
 %{
 %===================================%
 %----PERI SLOTS GluR1----%
-function [GluR1xyds GluR1_TdwellPSD GluR1_TdwellPERI G1FSLOTS...
-	] = G1PERISLOTS(stepN,GluR1Ndots,GluR1xyds,...
+function [xysG1 GluR1_TdwellPSD GluR1_TdwellPERI G1FSLOTS...
+	] = G1PERISLOTS(stepN,G1N,xysG1,...
 	GluR1_TdwellPSD,GluR1_TdwellPERI,...
 	ko11,ko12,ko15,ko16,...
 	doKo5,S1sum,S2sum,SAP5)
@@ -7493,8 +7343,8 @@ GluR1DOTSP2 = [GluR1DSP2(SLPSD2LOCkON,:) SLPSD2LOCkON G1SAPLOCD2(SLPSD2LOCkON,:)
 % NOW UPDATE THE DIFFUSION RATES FOR THOSE GLUR1 RECEPTORS
 % THAT MADE IT INTO A SLOT
 
-	GluR1xyds(:,GR1PROBPRF1) = GluR1xyds(:,GR1PROBPRF1)*(.001);
-    GluR1xyds(:,GR1PROBPRF2) = GluR1xyds(:,GR1PROBPRF2)*(.001);
+	xysG1(:,GR1PROBPRF1) = xysG1(:,GR1PROBPRF1)*(.001);
+    xysG1(:,GR1PROBPRF2) = xysG1(:,GR1PROBPRF2)*(.001);
     
 
     
@@ -7537,10 +7387,10 @@ end %useSlotsPSDGR1
     SLPERI1LOCkoff = SLPERI1((SLPERI1(:,1)>(KoffSpi1PERIGR1+KonSpi1PERIGR1)),3);
     SLPERI2LOCkoff = SLPERI2((SLPERI2(:,1)>(KoffSpi2PERIGR1+KonSpi2PERIGR1)),3);
     
-    GluR1xyds(:,SLPERI1LOCkon) = GluR1xyds(:,SLPERI1LOCkon)*(.001);
-    GluR1xyds(:,SLPERI2LOCkon) = GluR1xyds(:,SLPERI2LOCkon)*(.001);
-    GluR1xyds(:,SLPERI1LOCkoff) = GluR1xyds(:,SLPERI1LOCkoff)/(.001);
-    GluR1xyds(:,SLPERI2LOCkoff) = GluR1xyds(:,SLPERI2LOCkoff)/(.001);
+    xysG1(:,SLPERI1LOCkon) = xysG1(:,SLPERI1LOCkon)*(.001);
+    xysG1(:,SLPERI2LOCkon) = xysG1(:,SLPERI2LOCkon)*(.001);
+    xysG1(:,SLPERI1LOCkoff) = xysG1(:,SLPERI1LOCkoff)/(.001);
+    xysG1(:,SLPERI2LOCkoff) = xysG1(:,SLPERI2LOCkoff)/(.001);
 
 	G1PERI1FSLOTS = numel(SLPERI1LOCkon)-numel(SLPERI1LOCkoff);
 	G1PERI2FSLOTS = numel(SLPERI2LOCkon)-numel(SLPERI2LOCkoff);
@@ -7555,8 +7405,8 @@ end %useSlotsPSDGR1
 end
 
 %----PERI SLOTS GluR2----%
-function [GluR2xyds GluR2_TdwellPSD GluR2_TdwellPERI G2FSLOTS...
-    ] = G2PERISLOTS(stepN,GluR2Ndots,GluR2xyds,...
+function [xysG2 GluR2_TdwellPSD GluR2_TdwellPERI G2FSLOTS...
+    ] = G2PERISLOTS(stepN,G2N,xysG2,...
     GluR2_TdwellPSD,GluR2_TdwellPERI,...
     ko11,ko12,ko15,ko16,...
     doKo6,S1sum,S2sum,SAP5)
@@ -7700,8 +7550,8 @@ GluR2DOTSP2 = [GluR2DSP2(SLPSD2LOCkON,:) SLPSD2LOCkON G2SAPLOCD2(SLPSD2LOCkON,:)
 % NOW UPDATE THE DIFFUSION RATES FOR THOSE GLUR2 RECEPTORS
 % THAT MADE IT INTO A SLOT
  
-    GluR2xyds(:,GR2PROBPRF1) = GluR2xyds(:,GR2PROBPRF1)*(.001);
-    GluR2xyds(:,GR2PROBPRF2) = GluR2xyds(:,GR2PROBPRF2)*(.001);
+    xysG2(:,GR2PROBPRF1) = xysG2(:,GR2PROBPRF1)*(.001);
+    xysG2(:,GR2PROBPRF2) = xysG2(:,GR2PROBPRF2)*(.001);
     
  
     
@@ -7744,10 +7594,10 @@ end %useSlotsPSDGR2
     SLPERI1LOCkoff = SLPERI1((SLPERI1(:,1)>(KoffSpi1PERIGR2+KonSpi1PERIGR2)),3);
     SLPERI2LOCkoff = SLPERI2((SLPERI2(:,1)>(KoffSpi2PERIGR2+KonSpi2PERIGR2)),3);
     
-    GluR2xyds(:,SLPERI1LOCkon) = GluR2xyds(:,SLPERI1LOCkon)*(.001);
-    GluR2xyds(:,SLPERI2LOCkon) = GluR2xyds(:,SLPERI2LOCkon)*(.001);
-    GluR2xyds(:,SLPERI1LOCkoff) = GluR2xyds(:,SLPERI1LOCkoff)/(.001);
-    GluR2xyds(:,SLPERI2LOCkoff) = GluR2xyds(:,SLPERI2LOCkoff)/(.001);
+    xysG2(:,SLPERI1LOCkon) = xysG2(:,SLPERI1LOCkon)*(.001);
+    xysG2(:,SLPERI2LOCkon) = xysG2(:,SLPERI2LOCkon)*(.001);
+    xysG2(:,SLPERI1LOCkoff) = xysG2(:,SLPERI1LOCkoff)/(.001);
+    xysG2(:,SLPERI2LOCkoff) = xysG2(:,SLPERI2LOCkoff)/(.001);
  
     G2PERI1FSLOTS = numel(SLPERI1LOCkon)-numel(SLPERI1LOCkoff);
     G2PERI2FSLOTS = numel(SLPERI2LOCkon)-numel(SLPERI2LOCkoff);
@@ -7769,8 +7619,8 @@ end
 %{
 %===================================%
 %----OLD SLOTS GluR1----%
-function [GluR1xyds GluR1_TdwellPSD GluR1_TdwellPERI G1FSLOTS...
-	] = G1SLOTSOLD(stepN,GluR1Ndots,GluR1xyds,...
+function [xysG1 GluR1_TdwellPSD GluR1_TdwellPERI G1FSLOTS...
+	] = G1SLOTSOLD(stepN,G1N,xysG1,...
 	D,t,GluR1_TdwellPSD,GluR1_TdwellPERI,...
 	ko1,ko2,ko3,ko4,ko5,ko6,ko7,ko8,ko9,ko10,ko11,ko12,ko13,ko14,ko15,ko16,...
 	doKo1,doKo2,doKo3,doKo4,doKo5,doKo6,S1sum,S2sum,SAP5,...
@@ -7927,8 +7777,8 @@ GluR1DOTSP2 = [GluR1DSP2(SLPSD2LOCkON,:) SLPSD2LOCkON G1SAPLOCD2(SLPSD2LOCkON,:)
 % NOW UPDATE THE DIFFUSION RATES FOR THOSE GLUR1 RECEPTORS
 % THAT MADE IT INTO A SLOT
 
-	GluR1xyds(:,GR1PROBPRF1) = GluR1xyds(:,GR1PROBPRF1)*(.001);
-    GluR1xyds(:,GR1PROBPRF2) = GluR1xyds(:,GR1PROBPRF2)*(.001);
+	xysG1(:,GR1PROBPRF1) = xysG1(:,GR1PROBPRF1)*(.001);
+    xysG1(:,GR1PROBPRF2) = xysG1(:,GR1PROBPRF2)*(.001);
     
 
     
@@ -7975,10 +7825,10 @@ if useSlotsPERIGR1
     SLPERI1LOCkoff = SLPERI1((SLPERI1(:,1)>(KoffSpi1PERIGR1+KonSpi1PERIGR1)),3);
     SLPERI2LOCkoff = SLPERI2((SLPERI2(:,1)>(KoffSpi2PERIGR1+KonSpi2PERIGR1)),3);
     
-    GluR1xyds(:,SLPERI1LOCkon) = GluR1xyds(:,SLPERI1LOCkon)*(.001);
-    GluR1xyds(:,SLPERI2LOCkon) = GluR1xyds(:,SLPERI2LOCkon)*(.001);
-    GluR1xyds(:,SLPERI1LOCkoff) = GluR1xyds(:,SLPERI1LOCkoff)/(.001);
-    GluR1xyds(:,SLPERI2LOCkoff) = GluR1xyds(:,SLPERI2LOCkoff)/(.001);
+    xysG1(:,SLPERI1LOCkon) = xysG1(:,SLPERI1LOCkon)*(.001);
+    xysG1(:,SLPERI2LOCkon) = xysG1(:,SLPERI2LOCkon)*(.001);
+    xysG1(:,SLPERI1LOCkoff) = xysG1(:,SLPERI1LOCkoff)/(.001);
+    xysG1(:,SLPERI2LOCkoff) = xysG1(:,SLPERI2LOCkoff)/(.001);
 
 	G1PERI1FSLOTS = numel(SLPERI1LOCkon)-numel(SLPERI1LOCkoff);
 	G1PERI2FSLOTS = numel(SLPERI2LOCkon)-numel(SLPERI2LOCkoff);
@@ -7992,8 +7842,8 @@ G1FSLOTS = [G1PSD1FSLOTS G1PSD2FSLOTS G1PERI1FSLOTS G1PERI2FSLOTS];
 end
 
 %----OLD SLOTS GluR2----%
-function [GluR2xyds GluR2_TdwellPSD GluR2_TdwellPERI G2FSLOTS...
-    ] = G2SLOTSOLD(stepN,GluR2Ndots,GluR2xyds,...
+function [xysG2 GluR2_TdwellPSD GluR2_TdwellPERI G2FSLOTS...
+    ] = G2SLOTSOLD(stepN,G2N,xysG2,...
     D,t,GluR2_TdwellPSD,GluR2_TdwellPERI,...
     ko1,ko2,ko3,ko4,ko5,ko6,ko7,ko8,ko9,ko10,ko11,ko12,ko13,ko14,ko15,ko16,...
     doKo1,doKo2,doKo3,doKo4,doKo5,doKo6,S1sum,S2sum,SAP5,...
@@ -8150,8 +8000,8 @@ GluR2DOTSP2 = [GluR2DSP2(SLPSD2LOCkON,:) SLPSD2LOCkON G2SAPLOCD2(SLPSD2LOCkON,:)
 % NOW UPDATE THE DIFFUSION RATES FOR THOSE GLUR2 RECEPTORS
 % THAT MADE IT INTO A SLOT
  
-    GluR2xyds(:,GR2PROBPRF1) = GluR2xyds(:,GR2PROBPRF1)*(.001);
-    GluR2xyds(:,GR2PROBPRF2) = GluR2xyds(:,GR2PROBPRF2)*(.001);
+    xysG2(:,GR2PROBPRF1) = xysG2(:,GR2PROBPRF1)*(.001);
+    xysG2(:,GR2PROBPRF2) = xysG2(:,GR2PROBPRF2)*(.001);
     
  
     
@@ -8199,10 +8049,10 @@ if useSlotsPERIGR2
     SLPERI1LOCkoff = SLPERI1((SLPERI1(:,1)>(KoffSpi1PERIGR2+KonSpi1PERIGR2)),3);
     SLPERI2LOCkoff = SLPERI2((SLPERI2(:,1)>(KoffSpi2PERIGR2+KonSpi2PERIGR2)),3);
     
-    GluR2xyds(:,SLPERI1LOCkon) = GluR2xyds(:,SLPERI1LOCkon)*(.001);
-    GluR2xyds(:,SLPERI2LOCkon) = GluR2xyds(:,SLPERI2LOCkon)*(.001);
-    GluR2xyds(:,SLPERI1LOCkoff) = GluR2xyds(:,SLPERI1LOCkoff)/(.001);
-    GluR2xyds(:,SLPERI2LOCkoff) = GluR2xyds(:,SLPERI2LOCkoff)/(.001);
+    xysG2(:,SLPERI1LOCkon) = xysG2(:,SLPERI1LOCkon)*(.001);
+    xysG2(:,SLPERI2LOCkon) = xysG2(:,SLPERI2LOCkon)*(.001);
+    xysG2(:,SLPERI1LOCkoff) = xysG2(:,SLPERI1LOCkoff)/(.001);
+    xysG2(:,SLPERI2LOCkoff) = xysG2(:,SLPERI2LOCkoff)/(.001);
  
     G2PERI1FSLOTS = numel(SLPERI1LOCkon)-numel(SLPERI1LOCkoff);
     G2PERI2FSLOTS = numel(SLPERI2LOCkon)-numel(SLPERI2LOCkoff);
@@ -8219,9 +8069,9 @@ end
 %===================================%
 
 
-
-%%					 SAPS & SLOTS
-%-------------##########################------------------%
+%===================================%
+%			SAPS & SLOTS
+%===================================%
 % PRE-LOOP FUNCTIONS
 %---
 % SAPSLOTSETUP
@@ -8526,7 +8376,7 @@ function [sap_mask SSPSD1 SSPSD2 GluR1SdP1 GluR1SdP2...
     GluR1SLOCMXa GluR1SLOCMXb g1polyN1 g2polyN1...
     GluR2SdP1 GluR2SdP2 GluR2SLOCMXa GluR2SLOCMXb] = SAPPREALLOCATE(...
     S1,S2,um,dot,runSAPPSD1,runSAPPSD2,PSD1Sxvecs,...
-    GluR1xyl,GluR2xyl)
+    xyG1,xyG2)
 
 
 %-------------------
@@ -8551,27 +8401,27 @@ SSPSD2 = round(SS1PSD2/2); %!! SSPSD2 MAY NOT NEED ROUNDING
 %-------------------
 % G1SAPPOLYGON
 %-------------------
-GluR1SdP1 = zeros(size(GluR1xyl));
+GluR1SdP1 = zeros(size(xyG1));
 GluR1SdP2 = GluR1SdP1;
  
 GluR1SLOCMXa = zeros(1,size(GluR1SdP1,2));
 GluR1SLOCMXb = GluR1SLOCMXa;
 
 [m,g1polyN1,n] = size(PSD1Sxvecs);
-    % currentcell = zeros(1,size(GluR1xyl,2));
+    % currentcell = zeros(1,size(xyG1,2));
 
 
 %-------------------
 % G2SAPPOLYGON
 %-------------------
-GluR2SdP1 = zeros(size(GluR2xyl));
+GluR2SdP1 = zeros(size(xyG2));
 GluR2SdP2 = GluR2SdP1;
  
 GluR2SLOCMXa = zeros(1,size(GluR2SdP1,2));
 GluR2SLOCMXb = GluR2SLOCMXa;
  
 [m,g2polyN1,n] = size(PSD1Sxvecs);
-    % currentcell = zeros(1,size(GluR2xyl,2));
+    % currentcell = zeros(1,size(xyG2,2));
 
 
 
@@ -8975,4 +8825,6 @@ end
 
 %}
 %----------------------------------%
+%}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

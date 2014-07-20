@@ -1,4 +1,4 @@
-function [varargout] = ActinMultiplex(LBR,TIME,SIZE,DOES,REVA,AMX,MSK,AMS)
+function [varargout] = ActinMulti(LBR,TIME,SIZE,DOES,REVA,AMX,MSK)
 clc, close all; scsz = get(0,'ScreenSize');
 
 
@@ -125,9 +125,6 @@ Roff = LBR(6);
 %===============================================%
 global ATs;
 global Ax;
-global AMx;
-
-AMx = AMX;
 
 loadActinTips = AMX{1};
 generateActinTips = AMX{2};
@@ -140,6 +137,7 @@ load(ATdat);
 assignin('base', 'ATs', ATs)
 assignin('base', 'Ax', Ax)
 
+
 LivePlot(Ax{1},Ax{2},Ax{3},Ax{4},Ax{5},Ax{6},Ax{7})
 end
 %----------
@@ -149,15 +147,12 @@ end
 %----------
 if generateActinTips
 ActSteps = AMX{4};
-[ActinTips AxLP] = ActinMainStage2(ActSteps,AMX,AMS);
+[ActinTips AxLP] = ActinMainStage2(ActSteps,AMX);
 
 assignin('base', 'ATs', ActinTips)
 ATs = evalin('base', 'ATs');
 assignin('base', 'Ax', AxLP)
 Ax = evalin('base', 'Ax');
-
-assignin('base', 'AMx', AMx)
-AMx = evalin('base', 'AMx');
 
 savetipdir(AMX,2)
 %save('ATdata.mat', 'ATs')
@@ -166,7 +161,6 @@ end
 if ~loadActinTips
 	ATs = evalin('base', 'ATs');
 	Ax = evalin('base', 'Ax');
-	AMx = evalin('base', 'AMx');
 end
 %----------
 
@@ -351,219 +345,312 @@ end % end main function
 %							ACTIN MAIN STAGE
 %
 %####################################################################%
-function [varargout] = ActinMainStage2(ActSteps,AMX,AMS,varargin)
+function [varargout] = ActinMainStage2(ActSteps,AMX,varargin)
 
 BTs = [];
 Nsteps = ActSteps;
-dT = AMX{47};
-
-LivePlotMod = AMS{1};
+dT = 1/1000;
+% LivePlotMod = 500;
+LivePlotMod = 400;
 SaveTipsAfter = AMX{19};
 SaveTipsRate = AMX{20};
-
-doActCounts = AMX{35};
-
-doDelOrig = AMX{39};
-doDelOrigT = AMX{40};
-
-
-
-
-
-
+GaSize = 1;							% 5.1 / 2;	% Actin Size
+Ga2RealRato = 5.1/2/GaSize;			% Ratio of simulated G-actin size to real actin size
 
 %---------------------------------------------%
 %				ANGLE SETUP
 %---------------------------------------------%
 % unitsratio('rad', 'deg')
-d2r = 1/(180/pi);
+rad2dg = 180/pi;
+dg2rad = 1/(180/pi);
 Ov = [2.0 29.7 57.4 85.1 112.8 140.5 168.2 195.8 223.5 251.2 278.9 306.6 334.3];
-Ov = Ov * d2r;
+Ov = Ov * dg2rad;
 
 %----------------------------------------
 % Spine Dimensions
 %----------------------------------------
-%GaSz = 1;						% Actin size (5/2)
-%Ga2RR = 5.1/2/GaSz;			% Ratio of sim to real
+SPYneckXY = round(AMX{10} / GaSize);
+SPYheadZN = round(AMX{11} / GaSize); % North Z dim
+SPYheadZS = round(AMX{12} / GaSize); % South Z dim
+SPYheadX = round(AMX{13} / GaSize); % X dim
+SPYheadY = round(AMX{14} / GaSize); % Y dim
 
-SPYnXY = AMX{10};	% Spy neck XY
-SPYhZN = AMX{11};	% Spy head north
-SPYhZS = AMX{12};	% Spy head south
-SPYhX = AMX{13};	% Spy head X
-SPYhY = AMX{14};	% Spy head Y
+PSDproxy = round(AMX{15} / GaSize);
+inPSD = SPYheadZN - PSDproxy;
 
-PSDproxy = AMX{15};
-PSDproxyXY = AMX{27};
-inPSD = SPYhZN - PSDproxy;
+SPYH = [SPYheadX SPYheadY];
+AcMx = zeros(SPYheadY*2,SPYheadX*2);
 
-SPYH = [SPYhX SPYhY];
-AcMx = zeros(SPYhY*2,SPYhX*2);
-
-dims = [SPYnXY SPYhZN SPYhZS SPYhX SPYhY PSDproxy inPSD PSDproxyXY];
+dims = [SPYneckXY SPYheadZN SPYheadZS SPYheadX SPYheadY PSDproxy...
+	inPSD AMX{27}];
 %----------------------------------------
 
+%----------------------------------------------------------------------------%
+							Actin = zeros(9,12);
+%[Nact	Xang	Xorg	Xtip	Yang	Yorg	Ytip	Zang	Zorg	Ztip	NoO		OrO ]%
+%[1		2		3		4		5		6		7		8		9		10		11		12	]%
+%----------------------------------------------------------------------------%
 
-%		INITIALIZE AND TAG STARTING FILAMENTS
-%-----------------------------------------------------------%
-NStFils = AMX{42};      Actin = zeros(NStFils,18);          
-%   N  Xa  Xo  Xt  Ya  Yo  Yt  Za  Zo  Zt  MomID  ID  Fkd Born Died Lif MaxL MeanL sdL
-%   1  2   3   4   5   6   7   8   9   10  11     12  13  14   15   16  17   18    19
-%-----------------------------------------------------------%
-TagN = numel(Actin(:,1));
-Actin(:,12) = 1:TagN;
-TagN = TagN+1;
-%--------------------------------------------------------%
+StartMonos = floor(AMX{11}/GaSize);		% Number of monomers in starting filaments
+Actin(:,1) = StartMonos;				% N monomers in 5 Starting Filaments
+Actin(:,11) = Actin(:,1);				% Length of 5 Starting Filaments
 
-% Starting Length Loc & Angles
-StartMonos = AMX{41};
-fXYo = AMX{45};
-fZo = AMX{43};
-fXYa = AMX{46};
-fZa = AMX{44};
+% MATH TIDBITS
+%{
+% (90 deg = pi/2) (70: 7*pi/18) (60: pi/3) (45: pi/4) (30: pi/6)
+TPi = (pi/2);
+% TPi = (7*pi/18);
+PPi = 0;
+ArpX = 70;
+ArpY = 13;
+ArpZ = 0;
 
+% Act = struct([]);
+Act.Nm = 0;
+
+
+%=============================================================================%
+Po = [1.5;.5;.5];
+Pt = [2;-1.5;1.5];
+Dv = Pt-Po;
+% Pr = Pt+(Veq.*sign(Pt+Si));
+%----------------------------------------------------------------------------%
+Nfils = 1;
+for fN = 1:Nfils; 
+	Act(fN).Nm = 270;
+	Act(fN).Nm = Act(fN).Nm .* GaSize;
+	Act(fN).Tta = TPi;
+	Act(fN).Phi = PPi;
+	Act(fN).ArpX = ArpX; 
+	Act(fN).ArpY = ArpY; 
+	Act(fN).ArpZ = ArpZ;
+	Act(fN).Po = [1.5;.5;.5];
+	Act(fN).Pt = [2;-1.5;1.5];
+	Act(fN).Dv = Act(fN).Pt - Act(fN).Po;
+	Act(fN).Pr = [0;0;0];
+	Act(fN).Pe = [0;0;0];	
+	Act(fN).Dr = zeros(3,14);
+end;
+%----------------------------------------------------------------------------%
+TL0 = sqrt(sum((Pt - Po).^2));
+Txyz = (Pt - Po) ./ TL0;
+TL = sqrt(sum((Txyz).^2));
+Ttta = acos(Txyz(3)/TL) + TPi;
+Tphi = atan(Txyz(2)/Txyz(1)) + PPi;
+LTx = (TL) * sin(Ttta) * cos(Tphi);
+LTy = (TL) * sin(Ttta) * sin(Tphi);
+LTz = (TL) * cos(Ttta);
+
+Pe = [LTx;LTy;LTz]+Pt;
+Pr = Pe;
+
+for fN = 1:Nfils; 
+Act(fN).Pe = Pe;
+Act(fN).Pr = Pr;
+end
+
+
+fPo = Act(fN).Po;
+fPt = Act(fN).Pt;
+fPr = Act(fN).Pr;
+fDv = Act(fN).Dv;
+fDr = [];
+
+%----------------------------------------------------------------------------%
+% TPi = (pi/2);
+TPi = (7*pi/18);
+PPi = 0;
+%----------------------------------------------------------------------------%
+for nLp = 1:3
+Nfils = 50;
+%=============================================================================%
+for fN = 1:Nfils;
+%=============================================================================%
+
+
+Fdots = 14;
+for Fbranch = 1:Fdots
+	%Rmono = ceil(200 * rand);		% Random monomer along segment
+	%Rmono13 = mod(Rmono,13)+1;		% Get monomer repeat among the 13 rotational axis angles
+	Rmono13 = mod(Fbranch,13)+1;			% Get monomer repeat among the 13 rotational axis angles
+	tta = Ovec(Rmono13);			% Rotational angle of new branch
+	fDr(:,Fbranch) = RotateVertex(fPr(1),fPr(2),fPr(3),fPt(1),fPt(2),fPt(3),fPo(1),fPo(2),fPo(3),...
+								  fDv(1),fDv(2),fDv(3),tta);
+	Act(fN).Dr(:,Fbranch) = fDr(:,Fbranch);
+end
+%----------------------------------------------------------------------------%
+	Act(fN).Po = fPo;
+	Act(fN).Pt = fPt;
+	Act(fN).Pr = fPr;
+	Act(fN).Dv = fDv;
+	Act(fN).Dr = fDr;
+
+	%---------------------------------------------%
+	Rfil = ceil(200 * rand);
+	Pfil = mod(Rfil,Fdots)+1;
+	%-----
+	fPo = fPt;
+	fPt = fDr(:,Pfil); % fPt = fPr;
+	fDv = fPt-fPo;
+	%---------------------------------------------%
+	TL0 = sqrt(sum((fPt - fPo).^2));
+	Txyz = (fPt - fPo) ./ TL0;
+	TL = sqrt(sum((Txyz).^2));
+	Ttta = acos(Txyz(3)/TL) + TPi;
+	Tphi = atan2(Txyz(2),Txyz(1)) + PPi;
+	TL=2;
+	LTx = (TL) * sin(Ttta) * cos(Tphi);
+	LTy = (TL) * sin(Ttta) * sin(Tphi);
+	LTz = (TL) * cos(Ttta);
+	Pe = [LTx;LTy;LTz]+fPt;
+	%-----
+	fPr = Pe;
+	%---------------------------------------------%
+
+%=============================================================================%
+end
+%=============================================================================%
+
+
+
+
+%---------------------------------------------%
+%				FIGURE SETUP
+%---------------------------------------------%
+sz = [2.5e-3 2.5e-3 1.6 1.2];
+fpos = [.05 .05 .95 .95];
+Fh25 = FigSetup2(25,sz,fpos);
+%---------------------------------------------%
+
+[QZQ FilN] = size(Act);
+for PLoop = 1:FilN-1
+	
+Po = Act(PLoop).Po;
+Pt = Act(PLoop).Pt;
+Pr = Act(PLoop).Pr;
+Dv = Act(PLoop).Dv;
+Dr = Act(PLoop).Dr;
+
+
+
+
+
+
+%---------------------------------------------%
+%		PLOT ORIGIN->TIP LINE
+%---------------------------------------------%
+figure(Fh25);
+[XMx YMx ZMx] = plot3prep({Pt},{Po});
+hA1 = plot3(XMx,YMx,ZMx,'LineWidth',2,'MarkerSize',10);
+%----------------
+hold on
+set(hA1,{'Color'},{'r'}')
+grid on;
+xlabel('X');ylabel('Y');zlabel('Z');
+axis equal
+hold on;
+%---------------------------------------------%
+% axvals = {[-10 10 -10 10 -10 10]./2};
+axvals = {[-10 10 -10 10 -10 10].*2};
+addaxis(axvals);
+axis(axvals{1})
+%---------------------------------------------%
+
+
+
+
+
+%---------------------------------------------%
+%		PLOT ORIGIN->TIP LINE
+%---------------------------------------------%
+figure(Fh25);
+[XMx YMx ZMx] = plot3prep({Pt Pr},{Po Pt});
+hA1 = plot3(XMx,YMx,ZMx,'LineWidth',2,'MarkerSize',10);
+%----------------
+hold on
+set(hA1,{'Color'},{'r','b'}')
+grid on;
+xlabel('X');ylabel('Y');zlabel('Z');
+axis equal
+hold on;
+%---------------------------------------------%
+% axvals = {[-10 10 -10 10 -10 10]./2};
+axvals = {[-10 10 -10 10 -10 10]};
+addaxis(axvals);
+axis(axvals{1})
+%---------------------------------------------%
+
+%---------------------------------------------%
+%	LINE: Pr-Pt Circle to Point
+%---------------------------------------------%
+PtMx = repmat(Pt,1,Fdots);
+PtPrMxX = [PtMx(1,:); Dr(1,:)];
+PtPrMxY = [PtMx(2,:); Dr(2,:)];
+PtPrMxZ = [PtMx(3,:); Dr(3,:)];
+
+hA2 = plot3(PtPrMxX,PtPrMxY,PtPrMxZ,'c');
+% FMx.Fdots = {.5};
+% set(hA2,{'LineWidth'},repmat(FMx.Fdots,1,Fdots)');
+% hold on;
+%---------------------------------------------%
+
+
+end
+
+end
+
+keyboard
+%}
 % Branching Angles
-TPi = d2r*AMX{9};
+BranchAngle = AMX{9} * dg2rad;
+TPi = BranchAngle;
 PPi = 0;
 
+% % Angle of 1st-5th Starting Filaments
+% Actin(:,2) = 0;	% X angle
+% Actin(:,5) = 0;	% Y angle
+% Actin(1,8) = 1*dg2rad;	% Z angle
+% Actin(2,8) = 2*dg2rad;	% Z angle
+% Actin(3,8) = -1*dg2rad;	% Z angle
+% Actin(4,8) = 3*dg2rad;	% Z angle
+% Actin(5,8) = -4*dg2rad;	% Z angle
 
-% FIL-1
-%--
-Actin(1,1) = StartMonos;
-Actin(1,2) = 0;				% Xa
-Actin(1,5) = 0;				% Ya
-Actin(1,8) = 0;				% Za
-Actin(1,3) = 0;				% Xo
-Actin(1,6) = 0;				% Yo
-Actin(1,9) = 0;				% Zo
-%--
-
-% FIL-2
-%--
-Actin(2,1) = StartMonos;
-Actin(2,2) = -45;				% Xa
-Actin(2,5) = 45;				% Ya
-Actin(2,8) = d2r*-fZa;		% Za
-Actin(2,3) = fXYo;			% Xo
-Actin(2,6) = fXYo;			% Yo
-Actin(2,9) = 0;				% Zo
-%--
-
-% FIL-3
-%--
-Actin(3,1) = StartMonos;
-Actin(3,2) = 45;			% Xa
-Actin(3,5) = -45;				% Ya
-Actin(3,8) = d2r*fZa;		% Za
-Actin(3,3) = fXYo;			% Xo
-Actin(3,6) = -fXYo;			% Yo
-Actin(3,9) = 0;				% Zo
-%--
-
-% FIL-4
-%--
-Actin(4,1) = StartMonos;
-Actin(4,2) = 45;				% Xa
-Actin(4,5) = 0;				% Ya
-Actin(4,8) = d2r*-fZa;		% Za
-Actin(4,3) = -fXYo;			% Xo
-Actin(4,6) = fXYo;			% Yo
-Actin(4,9) = 0;				% Zo
-%--
-
-% FIL-5
-%--
-Actin(5,1) = StartMonos;
-Actin(5,2) = 0;				% Xa
-Actin(5,5) = 45;				% Ya
-Actin(5,8) = d2r*fZa;		% Za
-Actin(5,3) = -fXYo;			% Xo
-Actin(5,6) = -fXYo;			% Yo
-Actin(5,9) = 0;				% Zo
-%--
+% Angle of 1st-5th Starting Filaments
+Actin(:,2) = 0;	% X angle
+Actin(:,5) = 0;	% Y angle
+Actin(1,8) = 0;	% Z angle
+Actin(2,8) = 0;	% Z angle
+Actin(3,8) = 0;	% Z angle
+Actin(4,8) = 0;	% Z angle
+Actin(5,8) = 0;	% Z angle
 
 
+% Origin of 1st-5th Starting Filaments
+FXYZo = 5;
+Actin(2,3) = FXYZo;		% X origin
+Actin(2,6) = FXYZo;		% Y origin
+Actin(2,9) = 1;			% z origin
+Actin(3,3) = FXYZo;		% X origin
+Actin(3,6) = -FXYZo;	% Y origin
+Actin(3,9) = 1;			% z origin
+Actin(4,3) = -FXYZo;	% X origin
+Actin(4,6) = FXYZo;		% Y origin
+Actin(4,9) = 1;			% z origin
+Actin(5,3) = -FXYZo;	% X origin
+Actin(5,6) = -FXYZo;	% Y origin
+Actin(5,9) = 1;			% z origin
 
 
-% 6th-9th Starting Filaments
-Actin(6:9,1)=round(SPYhZN-SPYhZS-2);
-
-% FIL-6
-%--
-Actin(6,2) = 225*d2r;		% Xa
-Actin(6,5) = 0*d2r;			% Ya
-Actin(6,8) = 45*d2r;		% Za
-Actin(6,3) = (SPYhX/2)-10;	% Xo
-Actin(6,6) = (SPYhY/2)-10;	% Yo
-Actin(6,9) = SPYhZS+1;		% Zo
-
-% FIL-7
-%--
-Actin(7,2) = 45*d2r;		% Xa
-Actin(7,5) = 0*d2r;			% Ya
-Actin(7,8) = 45*d2r;		% Za
-Actin(7,3) = 10-(SPYhX/2);	% Xo
-Actin(7,6) = 10-(SPYhY/2);	% Yo
-Actin(7,9) = SPYhZS+1;		% Zo
-
-
-% % FIL-8
-% %--
-% Actin(8,2) = 315*d2r;		% Xa
-% Actin(8,5) = 0*d2r;			% Ya
-% Actin(8,8) = 45*d2r;		% Za
-% Actin(8,3) = 10-(SPYhX/2);	% Xo
-% Actin(8,6) = (SPYhY/2)-10;	% Yo
-% Actin(8,9) = SPYhZS+1;		% Zo
-
-% FIL-9
-%--
-% Actin(7,2) = 135*d2r;		% Xa
-% Actin(7,5) = 0*d2r;			% Ya
-% Actin(7,8) = 45*d2r;		% Za
-% Actin(7,3) = (SPYhX/2)-10;	% Xo
-% Actin(7,6) = 10-(SPYhY/2);	% Yo
-% Actin(7,9) = SPYhZS+1;		% Zo
-
-
-
-%----------------------------------------
 % TRIG: branch XYZ tip coordinates
 Actin(:,4) = Actin(:,1) .* sin(Actin(:,8)) .* cos(Actin(:,2)) + Actin(:,3);
 Actin(:,7) = Actin(:,1) .* sin(Actin(:,8)) .* sin(Actin(:,2)) + Actin(:,6);
 Actin(:,10) = Actin(:,1) .* cos(Actin(:,8)) + Actin(:,9);
-%----------------------------------------
-
-ACTs = Actin;
-oActin = Actin;
 
 
 
 %----------------------------------------
-% SPINE VOLUME
-% A typical spine volume is <= 0.1 um^3 or 1e-16 L
-
-Vneck = pi * SPYnXY^2 * SPYhZS;
-Vhead = pi * SPYhX^2 * (SPYhZN-SPYhZS);
-SpyV = (Vneck+Vhead) * 1e-22;	%dim inputs are in .1um^3 units, conver to L
-
-
-% MATH - Spine Volume
+% Quantitative Values & MATH TIDBITS
 %{
-
-This spine has a neck volume equivalent to a cylendar of dimensions: 
-50d x 200
-
-And a head volume equivalent to a 3D disk with dimensions:
-100d x 100
-
-
-% Units
-mol = 6e23;		% in N
-mM = 1e-3;
-uM = 1e-6;
-upM = 1e3;
-dnM = 1e-3;
-
 % 1 cm^3 = 1 mL
 % SI units conversion from m^3 to L are:
 % 1 cm^3 = 1 mL
@@ -621,30 +708,37 @@ Act_mM = Act_N/SpyV * (1/6e23) * (1000/1);	% 1.6e-10
 % Act_N = Act_N / SpyVu / mol;
 Act_PR = 12 * Act_mM * dT;
 Act_DR = 2 * dT;
-
-volume of cylinder
-V = pi * r^2 * h
-
-volume of a sphere
-V = (4*pi*r^3)/3
 %}
+
+% Units
+mol = 6e23;		% in N
+mM = 1e-3;
+uM = 1e-6;
+upM = 1e3;
+dnM = 1e-3;
+
+% Spine volume (0.1 um^3) in L and uL
+SpyV = 1e-16;	% in L
+SpyVu = .1e-9;	% in uL
+%----------------------------------------
+
+
+
 %----------------------------------------
 % Actin Variables (GActin & FActin)
 %----------------------------------------
-mM_Act = AMX{16};							% Actin mM
-GActinN0 = mM_Act * (1/1000) * SpyV * 6e23;	% t0 N Gactin monomer units (6e4)
-Act_mM = GActinN0/SpyV *(1/6e23)*(1000/1);	% Check mM_Act == Act_mM (1.6e-10)
+molAct = AMX{16};							% Actin starting mols
+Act_N = molAct * (1/1000) * SpyV * 6e23;	% 6e3 monomer units
+Act_mM = Act_N/SpyV * (1/6e23) * (1000/1);	% 1.6e-10 
 
 Nfi = numel(Actin(:,1));		% current number of branches
 FActinN = sum(Actin(:,1));		% current number FActins
-GActinN = GActinN0 - FActinN;	% current number GActins
+GActinN = Act_N - FActinN;		% current number GActins
+FActinN0 = FActinN;				% starting number FActins
+GActinN0 = GActinN;				% starting number GActins
 
 Act_PR = 12 * Act_mM * dT;		% empirical actin poly rate
-Act_DR = 2 * dT;				% empirical actin tip depoly rate
-Act_DRo = 8 * dT;				% empirical actin origin depoly rate
-
-%FActinN0 = FActinN;				% t0 number FActins
-%Act_PR0 = Act_PR;				% t0 poly rate
+Act_DR = 2 * dT;				% empirical actin depoly rate
 %----------------------------------------
 
 
@@ -652,10 +746,9 @@ Act_DRo = 8 * dT;				% empirical actin origin depoly rate
 %----------------------------------------
 % Cofilin Variables
 %----------------------------------------
-CofR = AMX{18}* dT; % cofilin activity rate
+CofR = AMX{18}; % cofilin activity rate
 CofN = AMX{30}; % cofilin delete Nunits
 CofS = AMX{34}; % cofilin delete Nunits
-delOr =AMX{52}* dT; % delete from origin rate
 %----------------------------------------
 
 
@@ -663,39 +756,29 @@ delOr =AMX{52}* dT; % delete from origin rate
 %----------------------------------------
 % Arp Variables
 %----------------------------------------
-ArpR = AMX{17}* dT;			% Arp activity rate
-ArpR0 = ArpR;			% Arp activity rate
+ArpR = AMX{17};			% Arp activity rate
 ArpScalar = AMX{21};	% Arp filament length scalar
 ArpAdd = AMX{29};		% Add X units to new branches
 ARPmax = AMX{22};		% Maximum Arp branches
 
+% Arp Branching Math
+ArpN = 1e3;
+ArpOn = AMX{31};
+ArpOff = AMX{32};
+Arp_uM = ArpN / SpyVu / mol;	% 1.6 - 16 uM
+Arp_PR = ArpOn * Arp_uM * dT;
+Arp_DR = ArpOff * dT;
 
-GArpN = AMX{33};	% G-Arp free monomer num
-FArpN = NStFils;	% F-Arp in filaments num
-
-
-% MATH - Arp Branching
-%{
-%ArpN = 1e3;
-%ArpOn = 5;
-%ArpOff = 1;
-%Arp_uM = ArpN / SpyVu / mol;	% 1.6 - 16 uM
-%Arp_PR = ArpOn * Arp_uM * dT;
-%Arp_DR = ArpOff * dT;
-%}
+ArpR0 = ArpR;
+GArpN = AMX{33};
+FArpN = 0;
 %----------------------------------------
 
 
 
-%----------------------------------------
-% LTP related variables
 
-doActLTP = AMX{36};
-ActLTPstart = AMX{37};
-ActLTPend = AMX{38};
-ArpRLTP = ArpR*AMX{31};
 
-%----------------------------------------
+
 
 
 
@@ -713,7 +796,8 @@ global sjc;
 global sjd;
 
 sja=AMX{23};
-sjb=StartMonos*AMX{24};
+sjb=AMX{24};
+sjb=StartMonos;
 sjc=AMX{25};
 sjd=AMX{26};
 
@@ -723,13 +807,12 @@ global ska;
 global skb;
 global skc;
 global skd;
-ska=AMX{48};
-skb=StartMonos*AMX{49};
-skc=AMX{50};
-skd=AMX{51};
+ska=0;
+skb=StartMonos;
+skc=-5;
+skd=5;
 
-sigsc = @(jx) (1/(1+ exp(-((skc*(1-(jx-ska)/(skb-ska)) + skd*((jx-ska)/(skb-ska)))))));
-
+sigsc = @(jx) (1/(1+ exp(-((skc*(1-(jx-ska)/(skb-sja)) + skd*((jx-ska)/(skb-ska)))))));
 
 
 % miscfun = @(xyz,tta) ([1 0 0; 0 cos(tta) sin(tta); 0 -sin(tta) cos(tta)] * xyz);
@@ -739,26 +822,21 @@ sigsc = @(jx) (1/(1+ exp(-((skc*(1-(jx-ska)/(skb-ska)) + skd*((jx-ska)/(skb-ska)
 
 keyboard
 
+Actin
 
-close all
 clear ArpCurve1
 rbg1=.01;rbg2=.99;rbg3=.01;
+sja= 0;
+sjb= 300;
+sjc= -5;
+sjd= 5;
 
-ska=0;
-skb=170;
-skc=-7;
-skd=7;
-
-sigsc = @(jx) (1/(1+ exp(-((skc*(1-(jx-ska)/(skb-ska)) + skd*((jx-ska)/(skb-ska)))))));
-
-
-figure(44)
-for ArpScalr = 30:10:80
+figure(43)
+for Asc = 0:5:50
 
 	nn = 1;
-	for Flength = 0:1:StartMonos
-	%ArpCurve1(nn) = ArpR * sigsc(Flength+ArpScalr);
-	ArpCurve1(nn) = ArpR * (1/(exp(1/170*(1190-14*(Flength+ArpScalr)))+1));
+	for FLEG = 0:1:300
+	ArpCurve1(nn) = ArpR * sigsc(FLEG+Asc);
 	nn=nn+1;
 	end
 
@@ -767,42 +845,17 @@ set(ph,'Color',[rbg1 rbg2 rbg3])
 rbg1=rbg1+.08;
 rbg2=rbg2-.08;
 rbg3=rbg3+.08;
-drawnow; pause(.2);
 end
 
-% (ArpR * (1/(exp(1/170*(1190-14*(Flength+ArpScalr)))+1))) > rv(2) && ...
+
 
 
 
 %-------------------------------------------%
 
-clear ArpCurve1
-close all;
-rbg1=.01;rbg2=.99;rbg3=.01;
-sja=0;
-sjb=300*1;
-sjc=0;
-sjd=1;
-linsc = @(jx) (sjc*(1-(jx-sja)/(sjb-sja)) + sjd*((jx-sja)/(sjb-sja)));
 
-figure(44)
-for CofSc = -30:10:30
 
-	nn = 1;
-	for Flength = 0:1:StartMonos
-	ArpCurve1(nn) = CofR * exp(linsc(Flength-CofSc));
-	nn=nn+1;
-	end
 
-ph=plot(ArpCurve1); hold on;
-set(ph,'Color',[rbg1 rbg2 rbg3])
-rbg1=rbg1+.08;
-rbg2=rbg2-.08;
-rbg3=rbg3+.08;
-drawnow; pause(.5);
-end
-
-%-------------------------------------------%
 clear ArpCurve1
 
 
@@ -1002,83 +1055,16 @@ rot1 = rot0;
 azel0 = [-32 12];
 sz = [2.5e-3 2.5e-3 1.5 1.4];
 Fh2Live = FigSetup(2,sz);
-set(gcf,'Color',[1,1,1])
-AxLims = [-dims(4) dims(4) -dims(5) dims(5) 0 dims(2)].*1.2;
-%--------------------
-%{
-%--------------------
-ActinTips = [Actin(:,4) Actin(:,7) Actin(:,10)];
-[Zrow1,Zcol1] = find(ActinTips(:,3) > inPSD);
-PSDTips = ActinTips(Zrow1,:);
-[Zrow2,Zcol2] = find(ActinTips(:,3) < inPSD);
-SPYTips = ActinTips(Zrow2,:);
-%--------------------
-
-nT=1;
-Fh2L = FigSetup(2,sz);
-AxLims = [-dims(4) dims(4) -dims(5) dims(5) 0 dims(2)].*1.2;
-azel = [-32 12];
-rot=[0 0];
-
-
-%--------------------
-figure(Fh2L)
-subplot('Position',[.7 .55 .28 .38]), 
-ph12a = scatter3([SPYTips(:,1)]', [SPYTips(:,2)]', [SPYTips(:,3)]',7,'ob');
-	hold on;
-ph12b = scatter3([PSDTips(:,1)]', [PSDTips(:,2)]', [PSDTips(:,3)]',7,'or');
-	axis(AxLims)
-	view([0 90])
-	grid off
-	set(gca,'Color',[1,1,1])
-	set(ph12a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
-	set(ph12b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
-	%hold on;
-%--------------------
-set(gca,'XTickLabel', sprintf('%.1f|',nT),'FontSize',10)
-hold off;
-%--------------------
-figure(Fh2L)
-subplot('Position',[.03 .03 .65 .95]), 
-
-ph11a = scatter3([SPYTips(:,1)]', [SPYTips(:,2)]', [SPYTips(:,3)]',7,'ob');
-	axis(AxLims); axis vis3d;
-	view(azel+rot)
-	xlabel('X');ylabel('Y');zlabel('Z');
-	set(gcf,'Color',[1,1,1])
-	grid off
-	hold on;
-ph11b = scatter3([PSDTips(:,1)]', [PSDTips(:,2)]', [PSDTips(:,3)]',7,'or');
-	axis(AxLims)
-	set(ph11a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
-	set(ph11b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
-	hold on;
-ph11c = plot3([Actin(:,3) Actin(:,4)]', [Actin(:,6) Actin(:,7)]', [Actin(:,9) Actin(:,10)]');
-	axis(AxLims); axis vis3d;
-	view(azel+rot)
-	set(ph11c,'LineStyle','-','Color',[.7 .7 .7],'LineWidth',.1);
-	hold on;
-
-
-PhCx = {ph11c,ph11a,ph11b,ph12a,ph12b};
-
-LiveAPlot(PhCx,nT,Actin,PSDTips,SPYTips,rot1,azel0,Fh2L);
-rot1 = rot1 + rot0;
-%}
 %----------------------------------------
 
 
-doProfile=0;
-if doProfile
-	profile on
-end
+
+
 
 %===============================================================%
 %						MAIN OUTER LOOP
 for nT = 1:Nsteps
 %---------------------------------------------------------------%
-
-
 
 	Nfi = numel(Actin(:,1));	% Current number of Filaments (mature >= 1000 filaments)
 	if (mod(nT,LivePlotMod)==0); disp(Nfi); end;
@@ -1090,13 +1076,13 @@ for nT = 1:Nsteps
 	% radial distance to spine shaft membrane
 	ActinXYh = sqrt(Actin(:,4).^2 + Actin(:,7).^2);
 
-	Xspi = ActinXYh > SPYnXY;			% Logical array of filaments beyond SPYnXY
-	Yspi = ActinXYh > SPYnXY;			% Logical array of filaments beyond SPYnXY
-	Zspi = (abs(Actin(:,10)) > SPYhZN);	% Logical array of filaments beyond SPYhZN
+	Xspi = ActinXYh > SPYneckXY;			% Logical array of filaments beyond SPYneckXY
+	Yspi = ActinXYh > SPYneckXY;			% Logical array of filaments beyond SPYneckXY
+	Zspi = (abs(Actin(:,10)) > SPYheadZN);	% Logical array of filaments beyond SPYheadZN
 
-	Xhed = ActinXYh >= SPYhX;
-	Yhed = ActinXYh >= SPYhY;
-	Zhed = (abs(Actin(:,10)) <= SPYhZN) & (abs(Actin(:,10)) >= SPYhZS);
+	Xhed = ActinXYh >= SPYheadX;
+	Yhed = ActinXYh >= SPYheadY;
+	Zhed = (abs(Actin(:,10)) <= SPYheadZN) & (abs(Actin(:,10)) >= SPYheadZS);
 		
 	ActMem = [Xspi Yspi Zspi Xhed Yhed Zhed];
 	
@@ -1124,7 +1110,9 @@ for nT = 1:Nsteps
 			(~Xhed(aN) && ~Yhed(aN))
 		%----------------------------------------
 		
-			Actin(aN,1) = Actin(aN,1) + 1;
+			Actin(aN,1) = Actin(aN,1) + ceil(Act_PR);
+			
+			Act_N = Act_N - ceil(Act_PR);
 			
 			ACTpoly = ACTpoly + ceil(Act_PR);
 			
@@ -1139,10 +1127,10 @@ for nT = 1:Nsteps
 		%=================================================================%
 		% BRANCHING
 		
-		%(ArpR * sigsc(Actin(aN,1)+ArpScalar)) > rv(2) && ...
+		%( ArpR * exp(linsc(Actin(aN,1)-ArpScalar)) ) > rv(2) && ...
 		
 		if  (Nfi < ARPmax) && ...
-			(ArpR * (1/(exp(1/170*(1190-14*(Actin(aN,1)+ArpScalar)))+1))) > rv(2) && ...
+			(ArpR * sigsc(Actin(aN,1)+ArpScalar)) > rv(2) && ...
 			((~sum(ActMem(aN,:)) && Act0(aN)) || Zhed(aN)) && ...
 			(~Xhed(aN) && ~Yhed(aN))
 		%----------------------------------------
@@ -1150,11 +1138,6 @@ for nT = 1:Nsteps
 		%-------------------
 			
 			Actin(fNf,1) = ArpAdd;		% create branch: add N(ArpAdd) subunits to new branch
-			Actin(fNf,11)=Actin(aN,12);	% tag branch with MomID
-			Actin(fNf,12) = TagN;		% tag branch with ID
-			Actin(fNf,14) = nT;			% tag branch with Born time (nT)
-			TagN = TagN+1;
-			
 			Nmono = Actin(aN,1);		% N monomers in mother filament
 			Rmm = ceil(Nmono * rand);	% Random mother monomer (== vector_length) along segment
 						
@@ -1186,7 +1169,8 @@ for nT = 1:Nsteps
 			%-------------------
 			
 			Otta = Ov(randi(13,1));		% Random rotational angle (theta)
-			
+			Actin(fNf,12) = Otta;		% Store this rotational angle
+
 			Pn = RotateVertex(Pr(1),Pr(2),Pr(3),Pt(1),Pt(2),Pt(3),Po(1),Po(2),Po(3),...
 						 Pv(1),Pv(2),Pv(3),Otta);
 
@@ -1204,15 +1188,20 @@ for nT = 1:Nsteps
 			Actin(fNf,2) = tPhi2;
 			Actin(fNf,8) = tTheta2;
 			
+			
 			% New branch Origin
 			Actin(fNf,3) = Po2(1);
 			Actin(fNf,6) = Po2(2);
 			Actin(fNf,9) = Po2(3);
 			
 			% New branch Tip
-			Actin(fNf,4) = (ArpAdd) * sin(tTheta2) * cos(tPhi2) + Po2(1);
-			Actin(fNf,7) = (ArpAdd) * sin(tTheta2) * sin(tPhi2) + Po2(2);
-			Actin(fNf,10) = (ArpAdd) * cos(tTheta2) + Po2(3);
+			Pt3x = (ArpAdd) * sin(tTheta2) * cos(tPhi2) + Po2(1);
+			Pt3y = (ArpAdd) * sin(tTheta2) * sin(tPhi2) + Po2(2);
+			Pt3z = (ArpAdd) * cos(tTheta2) + Po2(3);
+			Actin(fNf,4) = Pt3x;
+			Actin(fNf,7) = Pt3y;
+			Actin(fNf,10) = Pt3z;
+			
 			
 			
 			%---------------------------------------------%
@@ -1229,128 +1218,121 @@ for nT = 1:Nsteps
 		%=================================================================%
 		% ACTIN PASSIVE DEPOLYMERIZATION
 		
-		if (Act_DR > rv(3))
+		if (Act_DR > rv(3)) || (Actin(aN,11) == 666)
 		%----------------------------------------
-			Actin(aN,1) = Actin(aN,1)-1;
-			ACTdepoly = ACTdepoly + 1;
+			Actin(aN,1) = Actin(aN,1)-ceil(Act_DR) .* (Actin(aN,1)>0);
+			
+			Act_N = Act_N + ceil(Act_DR);
+			
+			ACTdepoly = ACTdepoly + ceil(Act_DR);
 		%----------------------------------------
 		end
-		
-		
 		
 		
 		%=================================================================%
 		% COFILIN ASSISTED DEPOLYMERIZATION
 		
-		%if  ( CofR * exp(linsc(Actin(aN,1)-CofS)) ) > rv(4)
-		if  ( CofR * exp((Actin(aN,1)-CofS)/200) ) > rv(4)
-		%----------
-			
+		if  ( CofR * exp(linsc(Actin(aN,1)-CofS)) ) > rv(4)
+		%----------------------------------------
 			Actin(aN,1) = Actin(aN,1)-CofN;
 		
-			% Depoly from origin (Tag)
-			if rv(5) < delOr
-			Actin(aN,13) = 1;
+			%Actin(aN,1) = Actin(aN,1) .* (Actin(aN,1)>0);
+			
+			% New origin coordinates
+			if rv(4) > .2
+			Actin(aN,1) = Actin(aN,1)-CofN*3;
+			Actin(aN,11) = 666;
+			
+			Actin(aN,3) = Actin(aN,1) .* sin(Actin(aN,8)) .* cos(Actin(aN,2)) - Actin(aN,4);
+			Actin(aN,6) = Actin(aN,1) .* sin(Actin(aN,8)) .* sin(Actin(aN,2)) - Actin(aN,7);
+			Actin(aN,9) = Actin(aN,1) .* cos(Actin(aN,8)) - Actin(aN,10);
 			end
 			
 			COFdepoly = COFdepoly + CofN;
-		%----------
-		end
-		
-		%-----------------------------------
-		if Actin(aN,13) && (Act_DRo > rv(6))
-		%----------
-			Actin(aN,1) = Actin(aN,1)-1;
-			ACTdepoly = ACTdepoly + 1;
-		%----------
+		%----------------------------------------
 		end
 		%=================================================================%
+		
+		
+		
+		
+		
+		%=================================================================%
+		% ADJUST RATE VALUES
+		
+		FArpN = Nfi;					% Current number of branch filaments
+		FActinN = sum(Actin(:,1));		% Current number FActins
+		GActinN = GActinN0 - FActinN;	% Current number GActins
+		
+		ArpR = ((GArpN-FArpN)/GArpN)*ArpR0;
+		
+		Act_mM = GActinN/SpyV * (1/6e23) * (1000/1);
+		Act_PR = 12e2 * (Act_mM * dT);
+		
+		%=================================================================%
+		
 
-		
-		
-		
-	
+
 	%-----------------------------------------------------------------------------%
 	end
 	%						MAIN INNER LOOP
 	%=============================================================================%
 	
-	
-	%=================================================================%
-	% ADJUST RATE VALUES
-	%----------------------
-	FArpN = Nfi;					% Current number of branch filaments
-	FActinN = sum(Actin(:,1));		% Current number FActins
-	GActinN = GActinN0 - FActinN;	% Current number GActins
-
-	ArpR = ((GArpN-FArpN)/GArpN)*ArpR0;
-
-	Act_mM = GActinN/SpyV * (1/6e23) * (1000/1);
-	Act_PR = 12 * (Act_mM * dT);
-
-	%----------------------
-	% LTP ADJUSTMENTS
-	%----------------------
-	if doActLTP
-	if (nT >= ActLTPstart) && (nT <= ActLTPend)
-		ArpR = ArpRLTP;
-	end
-	end
-	
-	%----------------------
-	% DELETE ORIGINAL FILAMENTS
-	%----------------------
-	if doDelOrig
-	if (nT == doDelOrigT)
-		Actin(1:NStFils,:) = [];
-	end
-	end
-	%=================================================================%
-	
-
-	
-	%==================================================%
-	%	PROCESS STORE AND REMOVE DEL BRANCHES
-	%--------------------------------------------------%
-	
-	Actin(:,16) = Actin(:,16) + 1; %Lifetime
-	
-	MaxL = Actin(:,1) > Actin(:,17);
-	Actin(MaxL,17) = Actin(MaxL,1); %Longest Ever Length
-	
-	
-	% Mean Length
-	Actin(:,18) = (Actin(:,18).*(Actin(:,16)-1) + Actin(:,1))./Actin(:,16);
-	
 	delFi = (Actin(:,1)<2);
-	Actin(delFi,15) = nT;
-	ACTs = cat(1,ACTs,Actin(delFi,:));
 	Actin(delFi,:) = [];
-	%--------------------------------------------------%
 	
+
+	% MATH TIDBITS
+	%{
 	
-	%==================================================%
-	%	USE ANGLES TO COMPUTE TIP LOCATION
-	%--------------------------------------------------%
+	%NoAct = find(Actin(:,1)<1);
+	%Actin(NoAct,:) = [];
+ 	%if numel(NoAct); 
+ 	%	ArpR = ArpR + (ArpR*ArpDec*numel(NoAct)); 
+ 	%end;
+	%Actin(:,1) = Actin(:,1);	% Length of Factin segments
+	
+% 	%=================================================%
+% 	NFact = numel(Actin(:,1));
+% 	for NFa = 1:NFact
+% 	%---------------------------------------------%
+% 	fPo = [Actin(NFact,3);Actin(NFact,6);Actin(NFact,9)];
+% 	fPt = [Actin(NFact,4);Actin(NFact,7);Actin(NFact,10)];
+% 	%---------------------------------------------%
+% 	TL0 = sqrt(sum((fPt - fPo).^2));
+% 	Txyz = (fPt - fPo) ./ TL0;
+% 	TL = sqrt(sum((Txyz).^2));
+% 	Ttta = acos(Txyz(3)/TL);
+% 	Tphi = atan2(Txyz(2),Txyz(1));
+% 	TL1 = Actin(NFa,1).*GaSize;
+% 	LTx = (TL1) * sin(Ttta) * cos(Tphi);
+% 	LTy = (TL1) * sin(Ttta) * sin(Tphi);
+% 	LTz = (TL1) * cos(Ttta);
+% 	Pe = [LTx;LTy;LTz]+fPo;
+% 	%-----
+% 	fPr = Pe;
+% 	%---------------------------------------------%
+% 	end
+% 	%=================================================%
+	%}
+	
 	% MATH - branch XYZ tip coordinates
 	Actin(:,4) = Actin(:,1) .* sin(Actin(:,8)) .* cos(Actin(:,2)) + Actin(:,3);
 	Actin(:,7) = Actin(:,1) .* sin(Actin(:,8)) .* sin(Actin(:,2)) + Actin(:,6);
 	Actin(:,10) = Actin(:,1) .* cos(Actin(:,8)) + Actin(:,9);
-	%--------------------------------------------------%
 	
-	
+	% ActAngs = [Actin(:,2) Actin(:,5) Actin(:,8)];
 
 	
 	%==================================================%
 	%				LIVE PLOT
 	%--------------------------------------------------%
 	if mod(nT,LivePlotMod) == 0
-				
-		LivePlot(Fh2Live,nT,Actin,inPSD,rot1,azel0,AxLims);
+		LivePlot(Fh2Live,nT,Actin,inPSD,rot1,azel0,dims);
 		rot1 = rot1 + rot0;
+		% disp(nT); disp(Act_N);disp(Act_PR);disp(Act_mM);
 	end
 	%--------------------------------------------------%
-	
 	
 	%==================================================%
 	%				SAVE TipMatrix
@@ -1362,29 +1344,16 @@ for nT = 1:Nsteps
 	end
 	end
 	%--------------------------------------------------%
+	% if mod(nT,SaveTipsAfter*10) == 0; keyboard; end;
 	
+	NumFils(nT) = Nfi;						% Number of branch filaments
+	NumFAct(nT) = sum(Actin(:,1));			% Number FActins
+	NumGAct(nT) = GActinN0 - FActinN;		% Number GActins
+	NumCOFACT(nT) = COFdepoly+ACTdepoly;	% Number of Depoly events
+	NumARPACT(nT) = ACTpoly+ARPpoly;		% Number of Poly events
+	NumdelFi(nT) = sum(delFi);
 	
-	
-	%==================================================%
-	%				Counters
-	%--------------------------------------------------%
-	if doActCounts
-		
-		NumFils(nT) = Nfi;						% Number of branch filaments
-		NumFAct(nT) = FActinN;					% Number FActins
-		NumGAct(nT) = GActinN;					% Number GActins
-		NumCOFACT(nT) = COFdepoly+ACTdepoly;	% Number of Depoly events
-		NumARPACT(nT) = ACTpoly+ARPpoly;		% Number of Poly events
-		NumdelFi(nT) = sum(delFi);
-		
-		NumArpR(nT) = ArpR;
-		NumAct_mM(nT) = Act_mM;
-		NumAct_PR(nT) = Act_PR;
-		
-	end
-	%--------------------------------------------------%
-	
-%if nT == 5000; keyboard; end;
+
 %{
 % ActData(nT,:) = [Act_mM, Act_PR, Act_N];
 % DePData(nT,:) = DePSum;
@@ -1396,150 +1365,13 @@ end
 %						MAIN OUTER LOOP
 %=============================================================================%
 
-if doProfile
-profile viewer
-end
-
-% Lifetime of remaining filaments
-Actin(:,15) = (nT - Actin(:,14))*2;
-Actin(:,16) = (Actin(:,15) - Actin(:,14));
-ACTs = cat(1,ACTs,Actin);
-
-remove0 = (ACTs(:,16)<2);
-ACTs(remove0,:) = [];
+keyboard
 
 
-
-%==================================================%
-%		Counter Crunch and Plot
-%--------------------------------------------------%
-if doActCounts
-%--------------
-
-
-
-
-%The plot shows the probability for each nonnegative integer when ? = 5.
-%--------------------
-%----------------------------
-% Filament Lifetime CDF
-%----------------------------
-Filament_Lifetime = ACTs(:,16) .* dT;
-muFlif = mean(Filament_Lifetime);
-Flast = max(Filament_Lifetime);
-[coECDF_Lif, coX_Lif] = ecdf(Filament_Lifetime);
-XLmax = 3.6e3;
-%------
-	cdfexit = figure(69);
-	set(cdfexit,'Color',[1,1,1])
-	set(cdfexit,'OuterPosition',[400,100,600,700])
-axes('Position',[.08 .48 .86 .48]);
-PmeanFlif = cdfplot(Filament_Lifetime);
-	set(gca,'XLim', [0 XLmax],'YLim', [0 1.1])
-	axT = axis;
-	xt = (get(gca,'XTick'))./60;
-	set(gca,'XTickLabel', sprintf('%.0f|',xt))
-	text((axT(2)/2.5),.05,'Minutes Existed','FontSize',12)
-	set(PmeanFlif,'color',[1 0 1])
-	rectangle('Position',[Flast,1,nT,.001],'EdgeColor',[1 0 1],'LineStyle','--')
-	CDFtitle = title([...
-	'    Empirical CDF of Filament lifetime (mean lifetime was:' int2str(muFlif/60) ' min)']);
-	set(CDFtitle,'FontSize',12);
-	set(PmeanFlif,'LineStyle','-','Color', [.9 .2 .2],'LineWidth',2);
-axes('Position',[.12 .06 .78 .32]);
-ecdfhist(coECDF_Lif, coX_Lif, 50)
-	axis([0 XLmax/2 0 100]); axis 'auto y'; title('Lifetime ECDF Histogram');
-	xt = (get(gca,'XTick'))./60; set(gca,'XTickLabel', sprintf('%.0f|',xt))
-	xlabel('minutes'); ylabel('CDF hist  (range 0-1) ');
-%----------------------------
-Filament_Lifetimes = sort(Filament_Lifetime);
-%dfittool(Filament_Lifetimes)
-
-% Prepare figure
-figure(70)
-set(gcf,'Color',[1,1,1])
-hold on;
-LegHandles = []; LegText = {};
-% --- Plot data originally in dataset "meanlife data"
-[CdfY,CdfX,CdfLower,CdfUpper] = ecdf(Filament_Lifetimes,...
-	'Function','survivor','alpha',1e-10);  % compute empirical function
-hLine = stairs(CdfX,CdfY,'Color',[.3 0 .6],'LineStyle','-', 'LineWidth',1.5);
-[StairsXlower,StairsYlower] = stairs(CdfX,CdfLower);
-[StairsXupper,StairsYupper] = stairs(CdfX,CdfUpper);
-hBounds = plot([StairsXlower(:); NaN; StairsXupper(:)], [StairsYlower(:); NaN; StairsYupper(:)],...
-	'Color',[.9 .2 .2],'LineStyle','-.', 'LineWidth',1);
-xlabel('CDF Survivor (seconds)');
-ylabel('Survivor function')
-LegHandles(end+1) = hLine;
-LegText{end+1} = 'Filament Lifetime';
-LegHandles(end+1) = hBounds;
-LegText{end+1} = '99.99% confidence bounds';
-set(gca,'XLim',[-100 3600]);
-box on;
-grid on;
-hLegend = legend(LegHandles,LegText,'Orientation', 'vertical', 'Location', 'NorthEast');
-set(hLegend,'Interpreter','none');
-%----------------------------
-
-%{
-meanFlif = ACTs(:,16) .* dT;
-muFlif = mean(meanFlif);
-Flast = max(meanFlif);
-[coECDF_Lif, coX_Lif] = ecdf(meanFlif);
-XLmax = 2e3;
-%------
-	cdfexit = figure(69);
-	set(cdfexit,'OuterPosition',[400,100,700,800])
-axes('Position',[.06 .55 .90 .40]);
-PmeanFlif = cdfplot(meanFlif);
-	set(gca,'XLim', [0 XLmax],'YLim', [0 1.1])
-	axT = axis;
-	xt = (get(gca,'XTick'))./60;
-	set(gca,'XTickLabel', sprintf('%.0f|',xt))
-	text((axT(2)/2.1),.05,'Minutes Existed','FontSize',12)
-	set(PmeanFlif,'color',[1 0 1])
-	rectangle('Position',[Flast,1,nT,.001],'EdgeColor',[1 0 1],'LineStyle','--')
-	CDFtitle = title([...
-	'    Empirical CDF of Filament lifetime (mean lifetime was:' int2str(muFlif/60) ' min)']);
-	set( CDFtitle,'FontSize',12,'FontWeight','bold');
-axes('Position',[.06 .30 .40 .20]);
-plot(sort(meanFlif),1:numel(meanFlif));
-	axis([0 XLmax 0 100]); axis 'auto y'; title('Filament Lifetimes');
-	xt = (get(gca,'XTick'))./60; set(gca,'XTickLabel', sprintf('%.0f|',xt))
-axes('Position',[.55 .30 .40 .20]);
-ecdfhist(coECDF_Lif, coX_Lif)
-	axis([0 XLmax 0 100]); axis 'auto y'; title('Lifetime ECDF Histogram');
-	xt = (get(gca,'XTick'))./60; set(gca,'XTickLabel', sprintf('%.0f|',xt))
-axes('Position',[.06 .04 .40 .20]);
-plot(sort(meanFlif),1:numel(meanFlif));
-	axis([0 XLmax 0 100]); axis 'auto y'; title('Filament Lifetimes');
-	xt = (get(gca,'XTick'))./60; set(gca,'XTickLabel', sprintf('%.0f|',xt))
-axes('Position',[.55 .04 .40 .20]);
-hist(meanFlif);%ecdfhist(coX_G1, coX_G1)
-	axis([0 XLmax 0 100]); axis 'auto y'; title('Lifetime CDF Histogram');
-	xt = (get(gca,'XTick'))./60; set(gca,'XTickLabel', sprintf('%.0f|',xt))
-%----------------------------
-%}
-
-% Ratio of all Tags generated to current number of Tags
-AcTags = Actin(:,12);
-AT2TNratio = numel(AcTags)/TagN;
-close all
-figure
-plot(AcTags)
-title('New Branch Tag Generation Rate');
-
-% ArpR, Act_mM, Act_PR
-figure
-plot(NumArpR)
-title('Arp Branching Rate');
-
-figure
-plot(NumAct_mM,'b')
-hold on
-plot(NumAct_PR,'r')
-legend('Conc. mM','Poly Rate (12*mM*dT)');
-title('Actin Polymerization');
+SNumFAct = sum(NumFAct) / nT;
+SNumGAct = sum(NumGAct) / nT;
+SNumCOFACT = sum(NumCOFACT);
+SNumARPACT = sum(NumARPACT);
 
 % FilTurnover is the ratio between the average number of
 % filaments throughout the simulation, and the number of
@@ -1552,12 +1384,12 @@ SNumFils = sum(NumFils) / nT;
 SNumdelFi = sum(NumdelFi);
 FilTurnover = SNumFils / SNumdelFi;
 
+close all
 figure
-plot(NumGAct,'b')
+plot(NumFAct,'b')
 hold on
-plot(NumFAct,'r')
-legend('G-actin','F-actin');
-title('Monomeric and Filamentous Actin');
+plot(NumGAct,'r')
+
 
 CompressN = 100;
 subsCOFACT = floor(linspace(1,CompressN+1,numel(NumCOFACT)));
@@ -1572,17 +1404,13 @@ AcArARPACT = accumarray(subsARPACT',NumARPACT) ./ Ncomp;
 CumSumARPACT = cumsum(AcArARPACT);
 
 figure
-plot(AcArARPACT,'b')
-hold on
 plot(AcArCOFACT,'r')
-legend('On_{poly}','Off_{depoly}');
-title('Average monomers On vs Off');
+hold on
+plot(AcArARPACT,'b')
 
 
 
-%------------
-end
-%--------------------------------------------------%
+
 
 
 
@@ -1611,9 +1439,9 @@ SPYTips = ActinTips(Zrow2,:);
 %--------------------------------------------------%
 PSDXYZ = [PSDTips(:,1) PSDTips(:,2) PSDTips(:,3)];
 PSDXY = round([PSDTips(:,1) PSDTips(:,2)]);
-PSDactMx = zeros(SPYhY+100,SPYhX+100);
+PSDactMx = zeros(SPYheadY+100,SPYheadX+100);
 for mxp = 1:numel(PSDXY(:,1))
-PSDactMx(PSDXY(mxp,2)+SPYhY+10, PSDXY(mxp,1)+SPYhX+10) = 1;
+PSDactMx(PSDXY(mxp,2)+SPYheadY+10, PSDXY(mxp,1)+SPYheadX+10) = 1;
 end
 ActMask=[1 1 1 1 1 1 1; 1 1 1 1 1 1 1; 1 1 1 1 1 1 1];
 ActMx = convn(PSDactMx,ActMask,'same');
@@ -1754,7 +1582,7 @@ AxLP = {Fh2Live,nT,Actin,inPSD,rot1,azel0,dims};
 Ax = {Fh2Live,nT,Actin,dims,AcMx,SPYH,rot1,azel0};
 
 
-
+keyboard
 
 varargout = {BTs,AxLP,Ax};
 
@@ -1801,8 +1629,33 @@ end
 %==================================================%
 %					LIVE PLOT
 %--------------------------------------------------%
-function LivePlot(Fh,nT,Actin,inPSD,rot,azel,AxLims)
+function [varargout] = LivePlot(Fh,nT,Actin,inPSD,varargin)
 
+
+scsz = get(0,'ScreenSize');
+basepos = scsz./[2.5e-3 2.5e-3 1.5 2];
+baseazel = [-32 12];
+baserot=[0 0];
+
+if nargin >= 3
+	rot=varargin{1};
+	azel=varargin{2};
+	dims=varargin{3};
+elseif nargin == 2 
+	rot=varargin{1};
+	azel=varargin{2};
+	dims = [60   400   280   160   160    40   360];
+elseif nargin == 1 
+	rot=varargin{1};
+	azel = baseazel;
+	dims = [60   400   280   160   160    40   360];
+else
+	rot=baserot;
+	azel = baseazel;
+	dims = [60   400   280   160   160    40   360];
+end
+
+AxLims = [-dims(4) dims(4) -dims(5) dims(5) 0 dims(2)].*1.2;
 
 %--------------------
 ActinTips = [Actin(:,4) Actin(:,7) Actin(:,10)];
@@ -1815,14 +1668,21 @@ figure(Fh)
 subplot('Position',[.03 .03 .65 .95]), 
 ph11c = plot3([Actin(:,3) Actin(:,4)]', [Actin(:,6) Actin(:,7)]', [Actin(:,9) Actin(:,10)]');
 axis(AxLims); axis vis3d;
+set(gcf,'Color',[1,1,1])
+xlabel('X');ylabel('Y');zlabel('Z');
 view(azel)
 grid off
+set(gca,'Color',[1,1,1])
 hold on;
 ph11a = scatter3([SPYTips(:,1)]', [SPYTips(:,2)]', [SPYTips(:,3)]',7,'ob');
 hold on;
 ph11b = scatter3([PSDTips(:,1)]', [PSDTips(:,2)]', [PSDTips(:,3)]',7,'or');
-%xlabel('X');ylabel('Y');zlabel('Z');
+axis(AxLims)
+set(gcf,'Color',[1,1,1])
+xlabel('X');ylabel('Y');zlabel('Z');
 view(azel+rot)
+grid off
+set(gca,'Color',[1,1,1])
 set(ph11a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
 set(ph11b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
 set(ph11c,'LineStyle','-','Color',[.7 .7 .7],'LineWidth',.1);
@@ -1836,6 +1696,7 @@ ph12b = scatter3([PSDTips(:,1)]', [PSDTips(:,2)]', [PSDTips(:,3)]',7,'or');
 axis(AxLims)
 view([0 90])
 grid off
+set(gca,'Color',[1,1,1])
 set(ph12a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
 set(ph12b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
 %--------------------
@@ -1843,44 +1704,58 @@ set(gca,'XTickLabel', sprintf('%.1f|',nT),'FontSize',10)
 hold off;
 %--------------------
 
+
+%{
+%==================================================%
+if nargin >= 3
+dims=varargin{3};
+%-----------------------------------%
+% Spine Dimensions
+SPYneckXY = dims(1);
+SPYheadZN = dims(2);
+SPYheadZS = dims(3);
+SPYheadX = dims(4);
+SPYheadY = dims(5);
+PSDproxy = dims(6);
+inPSD = dims(7);
+%-----------------------------------%
+ActinTips = [Actin(:,4) Actin(:,7) Actin(:,10)];
+[Zrow1,Zcol1] = find(ActinTips(:,3) > inPSD);
+PSDTips = ActinTips(Zrow1,:);
+[Zrow2,Zcol2] = find(ActinTips(:,3) < inPSD);
+SPYTips = ActinTips(Zrow2,:);
+%-----------------------------------%
+PSDXYZ = [PSDTips(:,1) PSDTips(:,2) PSDTips(:,3)];
+PSDXY = round([PSDTips(:,1) PSDTips(:,2)]);
+PSDactMx = zeros(SPYheadY+100,SPYheadX+100);
+for mxp = 1:numel(PSDXY(:,1))
+PSDactMx(PSDXY(mxp,2)+SPYheadY+10, PSDXY(mxp,1)+SPYheadX+10) = 1;
+end
+ActMask=[1 1 1 1 1 1 1; 1 1 1 1 1 1 1; 1 1 1 1 1 1 1];
+ActMx = convn(PSDactMx,ActMask,'same');
+ActMx = (ActMx>0).*1.0;
+%===================================%
+%				FIGURE
+%-----------------------------------%
+figure(Fh)
+subplot('Position',[.6 .1 .38 .38]), 
+imagesc(ActMx)
+colormap(bone)
+hold on
+% subplot('Position',[.55 .05 .40 .40]), 
+subplot('Position',[.6 .1 .38 .38]), 
+scatter(PSDXY(:,1),PSDXY(:,2), 'r')
+hold off
+%-----------------------------------%
+
 end
 %==================================================%
+if nT >40000; keyboard; end
+%}
 
-
-%==================================================%
-%					LIVE PLOT
-%--------------------------------------------------%
-function LiveAPlot(Ph,nT,Ac,PT,ST,rot,azel,Fh)
-
-%Ac34 = [Ac(:,3) Ac(:,4)]';
-%Ac67 = [Ac(:,6) Ac(:,7)]';
-%Ac91 = [Ac(:,9) Ac(:,10)]';
-
-%set(get(gca))
-
-
-
-%for nPh = 1:numel(Ph{1})
-%set(Ph{1}(nPh),'XData',Ac34(:,nPh),'YData',Ac67(:,nPh),'ZData',Ac91(:,nPh));
-%end
-
-set(Ph{4},'XData',ST(:,1)','YData',ST(:,2)','ZData',ST(:,3)');
-set(Ph{5},'XData',PT(:,1)','YData',PT(:,2)','ZData',PT(:,3)');
-view([0 90])
-%set(gca,'XTickLabel', sprintf('%.1f|',nT),'FontSize',10)
-
-set(Ph{2},'XData',ST(:,1)','YData',ST(:,2)','ZData',ST(:,3)');
-set(Ph{3},'XData',PT(:,1)','YData',PT(:,2)','ZData',PT(:,3)');
-view(azel+rot)
-drawnow
-ph11c = plot3([Ac(:,3) Ac(:,4)]', [Ac(:,6) Ac(:,7)]', [Ac(:,9) Ac(:,10)]');
-set(ph11c,'LineStyle','-','Color',[.7 .7 .7],'LineWidth',.1);
-
-
-
+varargout = {Fh};
 end
 %==================================================%
-
 
 
 %==================================================%
@@ -2005,11 +1880,10 @@ ActMx = AcMx;
 %===================================%
 %				FIGURE
 %-----------------------------------%
-clrmap = [1 1 1; .9 .2 .2];
 figure(Fh)
 subplot('Position',[.7 .1 .28 .38]), 
 imagesc(ActMx)
-colormap(clrmap);
+colormap(bone)
 hold on
 subplot('Position',[.7 .1 .28 .38]), 
 scatter(PSDX,PSDY, 'r')
@@ -2518,11 +2392,11 @@ if nargin >= 3
 dims=varargin{3};
 %-----------------------------------%
 % Spine Dimensions
-SPYnXY = dims(1);
-SPYhZN = dims(2);
-SPYhZS = dims(3);
-SPYhX = dims(4);
-SPYhY = dims(5);
+SPYneckXY = dims(1);
+SPYheadZN = dims(2);
+SPYheadZS = dims(3);
+SPYheadX = dims(4);
+SPYheadY = dims(5);
 PSDproxy = dims(6);
 inPSD = dims(7);
 %-----------------------------------%
@@ -2534,9 +2408,9 @@ SPYTips = ActinTips(Zrow2,:);
 %-----------------------------------%
 PSDXYZ = [PSDTips(:,1) PSDTips(:,2) PSDTips(:,3)];
 PSDXY = round([PSDTips(:,1) PSDTips(:,2)]);
-PSDactMx = zeros(SPYhY+100,SPYhX+100);
+PSDactMx = zeros(SPYheadY+100,SPYheadX+100);
 for mxp = 1:numel(PSDXY(:,1))
-PSDactMx(PSDXY(mxp,2)+SPYhY+10, PSDXY(mxp,1)+SPYhX+10) = 1;
+PSDactMx(PSDXY(mxp,2)+SPYheadY+10, PSDXY(mxp,1)+SPYheadX+10) = 1;
 end
 ActMask=[1 1 1 1 1 1 1; 1 1 1 1 1 1 1; 1 1 1 1 1 1 1];
 ActMx = convn(PSDactMx,ActMask,'same');
@@ -2645,9 +2519,9 @@ hold off;
 
 %==================================================%
 % Spine Dimensions
-% SPYnXY = dims(1);
-% SPYhZN = dims(2);
-% SPYhZS = dims(3);
+% SPYneckXY = dims(1);
+% SPYheadZN = dims(2);
+% SPYheadZS = dims(3);
 % PSDproxy = dims(6);
 HX = dims(4);
 HY = dims(5);
@@ -2674,7 +2548,7 @@ PSDY(PSDY<1) = 1;
 
 % mxpv = 10;
 for mxp = 1:numel(PSDXY(:,1))
-% PSDactMx(PSDXY(mxp,2)+SPYhY+mxpv, PSDXY(mxp,1)+SPYhX+mxpv) = 1;
+% PSDactMx(PSDXY(mxp,2)+SPYheadY+mxpv, PSDXY(mxp,1)+SPYheadX+mxpv) = 1;
 AcMx(PSDY(mxp), PSDX(mxp)) = 1;
 end
 ActMask=[1 1 1 1 1 1 1; 1 1 1 1 1 1 1; 1 1 1 1 1 1 1];

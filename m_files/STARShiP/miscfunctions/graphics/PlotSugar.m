@@ -2186,3 +2186,808 @@ hold on
 end
 
 
+
+
+
+
+
+
+for mm = 1:6
+xdataw(:,mm) = Qr(mm)*sin(t);
+ydataw(:,mm) = Qr(mm)*cos(t);
+end
+for mm = 1:5
+xdatw(:,mm) = [xdataw(:,mm+1); flipud(xdataw(:,mm))];
+ydatw(:,mm) = [ydataw(:,mm+1); flipud(ydataw(:,mm))];
+end
+patch(xdatw,ydatw,w);
+hold on
+
+
+
+clear all
+clear xdata ydata cdata fdata vdata t xdat ydat cdat
+
+t = linspace(0,2*pi,10);
+for mm = 1:6
+xdata(:,mm) = (mm-1)*sin(t);
+ydata(:,mm) = (mm-1)*cos(t);
+end
+
+for mm = 1:5
+xdat(:,mm) = [xdata(:,mm+1); flipud(xdata(:,mm))];
+ydat(:,mm) = [ydata(:,mm+1); flipud(ydata(:,mm))];
+end
+
+hsz = numel(t);
+sz = size(xdat);
+
+cdat = repmat((1:sz(2))',1,sz(1))';
+cdat(1:hsz,:) = cdat(1:hsz,:)+1;
+
+figure(43)
+p = patch(xdat,ydat,'w');
+set(p,'FaceColor','interp',...
+'CDataMapping','scaled',...
+'EdgeColor','interp',...
+'LineWidth',5)
+
+
+
+
+
+
+
+clear all
+clear xdata ydata cdata fdata vdata t xdat ydat cdat
+
+t = linspace(0,2*pi,10);
+t(end+1) = 0;
+
+for mm = 1:6
+xdata(:,mm) = (mm-1)*sin(t) + 10;
+ydata(:,mm) = (mm-1)*cos(t) + 10;
+end
+
+for mm = 2
+xdat(:,1) = [xdata(:,mm+1); flipud(xdata(:,mm))];
+ydat(:,1) = [ydata(:,mm+1); flipud(ydata(:,mm))];
+end
+
+hsz = numel(t);
+sz = size(xdat);
+
+cdat = repmat((1:sz(2))',1,sz(1))';
+cdat(1:hsz,:) = cdat(1:hsz,:)+1;
+
+figure(43)
+p = patch(xdat,ydat,'w');
+
+figure(43)
+p = patch(xdat,ydat,cdat);
+set(p,'FaceColor','interp',...
+'FaceVertexCData',cdat,...
+'EdgeColor','interp',...
+'LineWidth',5)
+
+
+
+verts = [2 4; ...
+        2 8; ...
+        8 4; ...
+        8 0; ...
+        0 4; ...
+        2 6; ...
+        2 2; ...
+        4 2; ...
+        4 0; ...
+        5 2; ...
+        5 0 ];
+faces = [1  2  3; ...
+         1  3  4; ...
+         5  6  1; ...
+         7  8  9; ...
+         11 10 4];
+p = patch('Faces',faces,'Vertices',verts,'FaceColor','b');
+
+clear cdata 
+cdata = [0 0 1; 
+         0 1 0;
+         0 1 1;
+         1 0 0;
+         1 0 1;
+         1 1 0;
+         0 0 0;
+         0.2 0.2 0.2;
+         0.4 0.4 0.4;
+         0.6 0.6 0.6;
+         0.8 0.8 0.8];
+set(p,'FaceColor','interp',...
+'FaceVertexCData',cdata,...
+'EdgeColor','interp',...
+'LineWidth',5)
+
+
+
+
+
+
+
+
+xverts = [0 0 2]';
+yverts = [0 2 0]';
+verts = [xverts yverts];
+faces = [1  2  3];
+cdata = [0 0 1; 0 1 0; 0 1 1];
+p = patch('Faces',faces,'Vertices',verts,'FaceColor','b');
+set(p,'FaceColor','interp',...
+'FaceVertexCData',cdata,...
+'EdgeColor','interp',...
+'LineWidth',5)
+
+
+
+
+clear all
+clear xdata ydata cdata fdata vdata t xdat ydat cdat
+
+t = linspace(0,2*pi,8);
+t(end+1) = 0;
+
+for mm = 1:3
+xdata(:,mm) = (mm-1)*sin(t) + 10;
+ydata(:,mm) = (mm-1)*cos(t) + 10;
+end
+
+for mm = 2
+xdat(:,1) = [xdata(:,mm+1); flipud(xdata(:,mm))];
+ydat(:,1) = [ydata(:,mm+1); flipud(ydata(:,mm))];
+end
+
+xverts = xdat;
+yverts = ydat;
+verts = [xverts yverts];
+faces = [1:numel(xverts)];
+Adatc = repmat([0 0 1], size(xdata,1), 1);
+Bdatc = repmat([1 0 1], size(xdata,1), 1);
+cdata = [Adatc; Bdatc];
+
+p = patch('Faces',faces,'Vertices',verts,'FaceColor','b');
+set(p,'FaceColor','interp',...
+'FaceVertexCData',cdata,...
+'EdgeColor','interp',...
+'LineWidth',5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+clear all
+clear xdata ydata cdata fdata vdata t xdat ydat cdat
+
+t = linspace(0,2*pi,8);
+% t(end+1) = 0;
+
+for mm = 1:3
+xdata(:,mm) = (mm-1)*sin(t);
+ydata(:,mm) = (mm-1)*cos(t);
+end
+xdata(xdata<0.000001 & xdata>-0.000001)=0;
+ydata(ydata<0.000001 & ydata>-0.000001)=0;
+for mm = 2
+xdat(:,1) = [xdata(:,mm+1); flipud(xdata(:,mm))];
+ydat(:,1) = [ydata(:,mm+1); flipud(ydata(:,mm))];
+end
+
+xverts = xdat;
+yverts = ydat;
+verts = [xverts yverts];
+
+faces = [1:numel(xverts)];
+Adatc = repmat([0 0 1], size(xdata,1), 1);
+Bdatc = repmat([1 0 1], size(xdata,1), 1);
+cdata = [Adatc; Bdatc];
+
+p = patch('Faces',faces,'Vertices',verts,'FaceColor','b');
+set(p,'FaceColor','interp',...
+'FaceVertexCData',cdata,...
+'EdgeColor','interp',...
+'LineWidth',5,...
+'EdgeLighting','flat',...
+'FaceLighting','flat',...
+'BackFaceLighting','lit')
+hold on
+material shiny
+axis vis3d off
+%light('Position',[.5 0 1]);
+
+
+
+
+
+
+%--------------------------
+[x,y,z] = sphere;
+figure(1)
+axis square
+daspect([1 1 1])
+hold on
+surf(x.*.8,y.*.8,z.*.1+.5)
+shading interp
+hold on
+surf(x.*.5,y.*.5,z.*.2+1.1)
+shading interp
+hold on
+surf(x.*.01,y.*.01,z.*.01+2)
+shading interp
+hold on
+%--------------------------
+
+
+
+
+
+
+
+clear all
+clear xdata ydata cdata fdata vdata t xdat ydat cdat
+
+nverts = 50;
+t = linspace(0,2*pi,nverts);
+
+for mm = 1:3
+xdata(:,mm) = (mm-1)*sin(t);
+ydata(:,mm) = (mm-1)*cos(t);
+end
+xdata(xdata<0.000001 & xdata>-0.000001)=0;
+ydata(ydata<0.000001 & ydata>-0.000001)=0;
+
+for mm = 2
+xdat(:,1) = [xdata(:,mm+1); (xdata(:,mm))];
+ydat(:,1) = [ydata(:,mm+1); (ydata(:,mm))];
+end
+
+xverts = xdat; yverts = ydat;
+verts = [xverts yverts];
+
+fvals = [1 2 (nverts+2) (nverts+1)];
+fvals = repmat(fvals,nverts-1,1);
+for mm = 1:(nverts-2); fvals(mm+1,:) = fvals(mm+1,:)+mm; end
+faces = fvals;
+
+%faces = [1:numel(xverts)];
+Adatc = repmat([0 0 1], size(xdata,1), 1);
+Bdatc = repmat([1 0 1], size(xdata,1), 1);
+cdata = [Adatc; Bdatc];
+
+p = patch('Faces',faces,'Vertices',verts,'FaceColor','b');
+set(p,'FaceColor','interp','FaceVertexCData',cdata,...
+'EdgeColor','interp','LineWidth',5,...
+'EdgeLighting','flat','FaceLighting','flat',...
+'BackFaceLighting','lit')
+hold on; material shiny; axis vis3d off;
+
+
+
+
+
+
+
+
+
+
+
+%{
+clear all
+clear xdata ydata cdata fdata vdata t xdat ydat cdat
+
+nverts = 50;
+nvert = nverts-1;
+t = linspace(0,2*pi,nverts);
+
+for mm = 1:5
+xdata(:,mm) = (2*mm-1)*sin(t);
+ydata(:,mm) = (2*mm-1)*cos(t);
+end
+xdata(xdata<0.000001 & xdata>-0.000001)=0;
+ydata(ydata<0.000001 & ydata>-0.000001)=0;
+
+mnms = 4;
+for mm = 1:mnms
+xdat(:,mm) = [xdata(:,mm+1); (xdata(:,mm))];
+ydat(:,mm) = [ydata(:,mm+1); (ydata(:,mm))];
+end
+
+xverts = xdat(:); yverts = ydat(:);
+verts = [xverts yverts];
+
+fvals = [1 2 (nverts+2) (nverts+1)];
+fvals = repmat(fvals,nverts,1);
+for mm = 1:(nverts-1); fvals(mm+1,:) = fvals(mm+1,:)+mm; end
+fvs = repmat(fvals,mnms*2,1);
+
+for mm = 1:mnms*2-1
+	fvs(mm*nvert:mm*nvert+nvert,:) = fvs(mm*nvert:mm*nvert+nvert,:) + mm*nverts;
+end
+
+faces = fvs';
+
+%faces = [1:numel(xverts)];
+Adatc = repmat([0 0 1], size(xdata,1), 1);
+Bdatc = repmat([1 0 1], size(xdata,1), 1);
+cdata = [Adatc; Bdatc];
+
+p = patch('Faces',faces,'Vertices',verts,'FaceColor','b');
+set(p,'FaceColor','interp','FaceVertexCData',cdata,...
+'EdgeColor','interp','LineWidth',5,...
+'EdgeLighting','flat','FaceLighting','flat',...
+'BackFaceLighting','lit')
+hold on; material shiny; axis vis3d off;
+%}
+
+clear all
+
+% Rank 1 color
+Rank1c = [1 0 0];
+Rank2c = [1 1 0];
+Rank3c = [0 1 0];
+Rank4c = [0 1 1];
+Rank5c = [0 0 1];
+CRank = {Rank1c, Rank2c, Rank3c, Rank4c, Rank5c};
+Qr = [0   22.3607   31.6228   38.7298   44.7214   50.0000];
+QsRank = [1 2 3 4 5];
+QcRank = [1 2 3 4 5];
+
+for Nx = 1:4
+	QsR = QsRank(Nx);
+	QcR = QcRank(Nx);
+	clear xverts yverts verts faces Adatc Bdatc fvals xdata ydata cdata t xdat ydat cdat
+	nverts = 50;
+	t = linspace(0,2*pi,nverts);	
+	xdata(:,1) = Qr(QsR)*sin(t);
+	ydata(:,1) = Qr(QsR)*cos(t);
+	xdata(:,2) = Qr(QsR+1)*sin(t);
+	ydata(:,2) = Qr(QsR+1)*cos(t);
+	
+	xdata(xdata<0.000001 & xdata>-0.000001)=0;
+	ydata(ydata<0.000001 & ydata>-0.000001)=0;
+	xdat(:,1) = [xdata(:,2); (xdata(:,1))];
+	ydat(:,1) = [ydata(:,2); (ydata(:,1))];
+	xverts = xdat; yverts = ydat;
+	verts = [xverts yverts];
+	fvals = [1 2 (nverts+2) (nverts+1)];
+	fvals = repmat(fvals,nverts-1,1);
+	for mm = 1:(nverts-2); fvals(mm+1,:) = fvals(mm+1,:)+mm; end
+	faces = fvals;
+	Adatc = repmat(CRank{QcR+1}, size(xdata,1), 1);
+	Bdatc = repmat(CRank{QcR}, size(xdata,1), 1);
+	cdata = [Adatc; Bdatc];
+
+	Qfaces(Nx) = {faces};
+	Qverts(Nx) = {verts};
+	Qcdata(Nx) = {cdata};
+end
+
+
+for Ntx = 1:4
+figure(700)
+p = patch('Faces',Qfaces{Ntx},'Vertices',Qverts{Ntx},'FaceColor','b');
+set(p,'FaceColor','interp','FaceVertexCData',Qcdata{Ntx},...
+'EdgeColor','interp','LineWidth',1,...
+'EdgeLighting','flat','FaceLighting','flat',...
+'BackFaceLighting','lit')
+hold on; material shiny; axis vis3d off;
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%
+clear all
+
+[clrmap1 CRank] = ClrMap1;
+Qr = [0   22.3607   31.6228   38.7298   44.7214   50.0000];
+QsRank = [1 2 3 4 5];
+
+QcRankA = [4 1 3 2 5];
+QcRankB =  circshift(QcRankA,[0 -1]);
+
+for Nx = 1:4
+	QsR = QsRank(Nx);
+	QcA = QcRankA(Nx);
+	QcB = QcRankB(Nx);
+	clear xverts yverts verts faces Adatc Bdatc fvals xdata ydata cdata t xdat ydat cdat
+	nverts = 50;
+	t = linspace(0,2*pi,nverts);	
+	xdata(:,1) = Qr(QsR)*sin(t);
+	ydata(:,1) = Qr(QsR)*cos(t);
+	xdata(:,2) = Qr(QsR+1)*sin(t);
+	ydata(:,2) = Qr(QsR+1)*cos(t);
+	
+	xdata(xdata<0.000001 & xdata>-0.000001)=0;
+	ydata(ydata<0.000001 & ydata>-0.000001)=0;
+	xdat(:,1) = [xdata(:,2); (xdata(:,1))];
+	ydat(:,1) = [ydata(:,2); (ydata(:,1))];
+	xverts = xdat; yverts = ydat;
+	verts = [xverts yverts];
+	fvals = [1 2 (nverts+2) (nverts+1)];
+	fvals = repmat(fvals,nverts-1,1);
+	for mm = 1:(nverts-2); fvals(mm+1,:) = fvals(mm+1,:)+mm; end
+	faces = fvals;
+	Adatc = repmat(CRank{QcB}, size(xdata,1), 1);
+	Bdatc = repmat(CRank{QcA}, size(xdata,1), 1);
+	cdata = [Adatc; Bdatc];
+
+	Qfaces(Nx) = {faces};
+	Qverts(Nx) = {verts};
+	Qcdata(Nx) = {cdata};
+end
+
+
+figure1 = figure('Colormap',clrmap1);
+axes1 = axes('Visible','off');
+hold(axes1,'all');
+
+for Ntx = 1:4
+figure(figure1)
+p = patch('Faces',Qfaces{Ntx},'Vertices',Qverts{Ntx},'FaceColor','b');
+set(p,'FaceColor','interp','FaceVertexCData',Qcdata{Ntx},...
+'EdgeColor','interp','LineWidth',1,...
+'EdgeLighting','flat','FaceLighting','flat',...
+'BackFaceLighting','lit')
+hold on; material shiny; axis vis3d off;
+end
+
+colorbar('peer',axes1,'YTickLabel',{'Low','-','-','-','-','Mid','-','-','-','-','Hi'},'LineWidth',1);
+
+
+%%
+
+
+
+
+
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%					SPINE RADIAL DISTANCE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%{S1G1CvL, S2G1CvL, S1G2CvL, S2G2CvL,G1P1r, G1P2r, G2P1r, G2P2r};
+
+%--------------------------------------
+% Make concentric circle annulus
+%--------------------------------------
+S1r = round(S1rad);
+Qhr = S1r/2;
+Qx = linspace(0,S1r,6);
+QxL = Qx - Qhr;
+yL = sqrt(Qhr.^2 - QxL.^2);
+Qr = sqrt(Qx.^2 + yL.^2);	% Concentric circles
+
+%--------------------------------------
+% Tally GluRs in each spine annulus
+%--------------------------------------
+for qq = 1:4
+Q0=0;Q1=0;Q2=0;Q3=0;Q4=0;Q5=0;Qnan=0;
+for mm = 1:numel(SGr)
+	QD1 = (SGr{mm}{qq}(SGr{mm}{qq+4}(:)));
+	for Nin=1:numel(QD1)
+		if	   QD1(Nin) <= Qr(1)
+			Q0 = Q0+1;
+		elseif QD1(Nin) <= Qr(2)
+			Q1 = Q1+1;
+		elseif QD1(Nin) <= Qr(3)
+			Q2 = Q2+1;
+		elseif QD1(Nin) <= Qr(4)
+			Q3 = Q3+1;
+		elseif QD1(Nin) <= Qr(5)
+			Q4 = Q4+1;
+		elseif QD1(Nin) <= Qr(6)
+			Q5 = Q5+1;
+		elseif QD1(Nin) > Qr(7)
+			Qnan = Qnan+1;
+		end
+	end
+end
+Qqs(qq,:) = [Q1 Q2 Q3 Q4 Q5] ./(stepN/DATARATE);
+end
+
+%--------------------------------------
+% Parse out G1 G2 in SPY1 SPY2
+%--------------------------------------
+% Qqs =   
+%  anullus 1  2  3  4  5
+% G1-SPY1: N  N  N  N  N
+% G1-SPY2: N  N  N  N  N
+% G2-SPY1: N  N  N  N  N 
+% G2-SPY2: N  N  N  N  N
+
+% Raw
+G12SPY12 = Qqs;
+G12SPY1 = [Qqs(1,:) ; Qqs(3,:)];
+G12SPY2 = [Qqs(2,:) ; Qqs(4,:)];
+G1SPY12 = [Qqs(1,:) ; Qqs(2,:)];
+G2SPY12 = [Qqs(3,:) ; Qqs(4,:)];
+
+% Means
+G12SPY12m = mean(G12SPY12);
+G12SPY1m = mean(G12SPY1);
+G12SPY2m = mean(G12SPY2);
+G1SPY12m = mean(G1SPY12);
+G2SPY12m = mean(G2SPY12);
+
+% Sums
+G12SPY12s = sum(G12SPY12);
+G12SPY1s = sum(G12SPY1);
+G12SPY2s = sum(G12SPY2);
+G1SPY12s = sum(G1SPY12);
+G2SPY12s = sum(G2SPY12);
+
+Qs = G12SPY1s;
+
+
+%--------------------------------------
+% Interpolate Annulus Patch Densities
+%--------------------------------------
+[clrmap1 CRank] = ClrMap2;
+[QsortVal, QsortInd] = sort(Qs, 2);
+QcRankA = [fliplr(QsortInd) 6];
+QcRankB =  circshift(QcRankA,[0 -1]);
+
+for Nx = 1:5
+clear xverts yverts verts faces Adatc Bdatc fvals xdata ydata cdata t xdat ydat cdat
+	QcA = QcRankA(Nx);
+	QcB = QcRankB(Nx);
+	nverts = 50;
+	t = linspace(0,2*pi,nverts);	
+	%xdata(:,1) = Qr(Nx)*sin(t);
+	%ydata(:,1) = Qr(Nx)*cos(t);
+	%xdata(:,2) = Qr(Nx+1)*sin(t);
+	%ydata(:,2) = Qr(Nx+1)*cos(t);
+	
+	xdat = [(Qr(Nx+1)*sin(t)) (Qr(Nx)*sin(t))]';
+	ydat = [(Qr(Nx+1)*cos(t)) (Qr(Nx)*cos(t))]';
+	
+	
+	%xdat(:,1) = [xdata(:,2); (xdata(:,1))];
+	%ydat(:,1) = [ydata(:,2); (ydata(:,1))];
+	xverts = xdat; yverts = ydat;
+	verts = [xverts yverts];
+	fvals = [1 2 (nverts+2) (nverts+1)];
+	fvals = repmat(fvals,nverts-1,1);
+	for mm = 1:(nverts-2); fvals(mm+1,:) = fvals(mm+1,:)+mm; end
+	faces = fvals;
+	Adatc = repmat(CRank{QcB}, nverts, 1);
+	Bdatc = repmat(CRank{QcA}, nverts, 1);
+	cdata = [Adatc; Bdatc];
+
+	Qfaces(Nx) = {faces};
+	Qverts(Nx) = {verts};
+	Qcdata(Nx) = {cdata};
+end
+
+
+figure1 = figure('Colormap',clrmap1);
+axes1 = axes('Visible','off');
+hold(axes1,'all');
+
+for Ntx = 1:5
+figure(figure1)
+p = patch('Faces',Qfaces{Ntx},'Vertices',Qverts{Ntx},'FaceColor','b');
+set(p,'FaceColor','interp','FaceVertexCData',Qcdata{Ntx},...
+'EdgeColor','interp','LineWidth',.1,...
+'EdgeLighting','flat','FaceLighting','flat',...
+'BackFaceLighting','lit')
+hold on; material shiny; axis vis3d off;
+end
+
+colorbar('peer',axes1,'YTickLabel',{num2str(QsortVal(1), '% 10.2f'),...
+'-','-','-','-',num2str(QsortVal(3), '% 10.2f'),...
+'-','-','-','-',num2str(QsortVal(end), '% 10.2f')},...
+'LineWidth',1);
+hold on;			  
+
+
+%-------------------------------------
+CQRall = [];
+figure(figure1)
+for mm = 200:2:numel(SGr)
+QPh2 = scatter(SGr{mm}{9}(1,:),SGr{mm}{9}(2,:));
+set(QPh2,'Marker','o','SizeData',20,'LineWidth',.5,...
+	'MarkerFaceColor',[.2 1 1],'MarkerEdgeColor',[0 .4 .4])
+%pause(.2)
+CQRall = cat(2,CQRall,[SGr{mm}{9}(1,:);SGr{mm}{9}(2,:)]);
+end
+hold on
+
+[PSDY,PSDX] = find(ACTINp1);
+S1Ph2 = scatter(PSDX-50,PSDY-50);
+set(S1Ph2,'Marker','o','SizeData',60,'LineWidth',.5,...
+	'MarkerFaceColor',[.8 .2 .2],'MarkerEdgeColor',[.4 0 0])
+hold on
+
+
+%--------
+for mm = 2:5
+rectangle('Position',[-Qr(mm),-Qr(mm),Qr(mm)*2,Qr(mm)*2],'Curvature',[1,1])
+hold on;
+end
+%--------
+
+
+
+%===========================================================
+% Alternative Anullus Plots:
+%{
+TQs = [PSDY PSDX]'-50;
+TQRz = sqrt(sum(TQs)).*0+1;
+CQRz = sqrt(sum(CQRall.^2)).*0+2;
+figure2 = figure('XVisual','');
+axes2 = axes('Parent',figure2,'PlotBoxAspectRatio',[0.555555555555556 0.555555555555556 1],...
+	'OuterPosition',[0 0 1 1],...
+	'DataAspectRatio',[10 10 1],...
+	'CameraViewAngle',4.36580191767115);
+view(axes2,[50.5 40]);
+grid(axes2,'on');
+hold(axes2,'all');
+PhS3a = scatter3(TQs(1,:),TQs(2,:),TQRz,50, [.8 .2 .2],'filled');
+set(PhS3a,'Marker','s')
+hold on
+PhS3b = scatter3(CQRall(1,:),CQRall(2,:),CQRz,10, [.2 .7 .0],'filled');
+set(PhS3b,'Marker','o')
+hold off
+%}
+%{
+
+QallTG = cat(2,CQRall,TQs);
+QallTGz = cat(2,CQRz,TQRz);
+
+Qallz = cat(1,QallTG,QallTGz);
+spinesurf2(Qallz(1,:)', Qallz(2,:)', Qallz(3,:)')
+sftool(Qallz(1,:)', Qallz(2,:)', Qallz(3,:)')
+
+%--------------------------------------
+CQRz = sqrt(sum(CQRall.^2));
+sja=0;
+sjb=max(CQRz);
+sjc=2;
+sjd=1;
+linsc = @(jx) (sjc*(1-(jx-sja)/(sjb-sja)) + sjd*((jx-sja)/(sjb-sja)));
+for mm = 1:numel(CQRz)
+	CQRz(mm) = linsc(CQRz(mm));
+end
+Qallz = cat(1,CQRall,CQRz);
+spinesurf2(Qallz(1,:)', Qallz(2,:)', Qallz(3,:)')
+sftool(Qallz(1,:)', Qallz(2,:)', Qallz(3,:)')
+%}
+%{
+
+%-------------------------------------
+%Generate values from the uniform distribution on the interval [a, b]:
+% r = a + (b-a).*rand(100,1);
+clear pxr pyr Qpr
+for mm = 1:(numel(Qr)-1)
+clear pxr pyr
+	Qr1 = Qr(mm+1); Qr2 = Qr(mm); 
+	for nn = 1:Qs(mm)*8e3 % <------- multiplier
+		theta = 2*pi*rand;
+		r = sqrt(rand*(Qr1^2-Qr2^2)+Qr2^2);
+		pxr(nn) = r*cos(theta); 
+		pyr(nn) = r*sin(theta);
+	end
+	Qpr{mm} = [pxr; pyr];
+end
+
+% figure
+% scatter(Qpr{1}(1,:), Qpr{1}(2,:),3,[1 0 0],'filled')
+% hold on
+% scatter(Qpr{2}(1,:), Qpr{2}(2,:),3,[.8 .9 .1],'filled')
+% hold on
+% scatter(Qpr{3}(1,:), Qpr{3}(2,:),3,[.6 .5 0],'filled')
+% hold on
+% scatter(Qpr{4}(1,:), Qpr{4}(2,:),3,[.4 .9 .9],'filled')
+% hold on
+% scatter(Qpr{5}(1,:), Qpr{5}(2,:),3,[.2 0 1],'filled')
+% hold on
+
+%-------------------------------------
+QA1 = round([Qpr{1}(1,:); Qpr{1}(2,:)]+51);
+QA2 = round([Qpr{2}(1,:); Qpr{2}(2,:)]+51);
+QA3 = round([Qpr{3}(1,:); Qpr{3}(2,:)]+51);
+QA4 = round([Qpr{4}(1,:); Qpr{4}(2,:)]+51);
+QA5 = round([Qpr{5}(1,:); Qpr{5}(2,:)]+51);
+G1xy = zeros(100,100);
+for xy = 1:numel(QA1(1,:));G1xy(QA1(1,xy),QA1(2,xy)) = Qs(1);end
+for xy = 1:numel(QA2(1,:));G1xy(QA2(1,xy),QA2(2,xy)) = Qs(2);end
+for xy = 1:numel(QA3(1,:));G1xy(QA3(1,xy),QA3(2,xy)) = Qs(3);end
+for xy = 1:numel(QA4(1,:));G1xy(QA4(1,xy),QA4(2,xy)) = Qs(4);end
+for xy = 1:numel(QA5(1,:));G1xy(QA5(1,xy),QA5(2,xy)) = Qs(5);end
+
+G1xy(101:end,:) = [];
+G1xy(:,101:end) = [];
+
+GN=[4, .18, 9, .1];
+ccMask = CircMask(GN);
+ccMask = ccMask -.2;
+G1xy(G1xy<min(Qs))=min(Qs)*.3;
+G1Cv = convn(G1xy,ccMask,'same');
+
+figure
+imagesc(G1xy)
+colormap(jet)
+colorbar
+
+figure
+imagesc(G1Cv)
+colormap(jet)
+colorbar
+
+%-------------------------------------
+pxr=0; pyr=0; Qpr={0};
+for mm = 1:(numel(Qr)-1)
+clear pxr pyr
+	Qr1 = Qr(mm+1); Qr2 = Qr(mm); 
+	for nn = 1:round(20^(sqrt(Qs(mm))))
+		theta = 2*pi*rand;
+		r = sqrt(rand*(Qr1^2-Qr2^2)+Qr2^2);
+		pxr(nn) = r*cos(theta); 
+		pyr(nn) = r*sin(theta);
+	end
+	Qpr{mm} = [pxr; pyr];
+end
+
+Qall = [Qpr{1}(1,:) Qpr{2}(1,:) Qpr{3}(1,:) Qpr{4}(1,:) Qpr{5}(1,:);
+		Qpr{1}(2,:) Qpr{2}(2,:) Qpr{3}(2,:) Qpr{4}(2,:) Qpr{5}(2,:)];
+
+Qzz =	[(.8 + (.3).*rand(1,numel(Qpr{1}(1,:)))) ...
+		(.6 + (.3).*rand(1,numel(Qpr{2}(1,:)))) ...
+		(.4 + (.3).*rand(1,numel(Qpr{3}(1,:)))) ...
+		(.2 + (.3).*rand(1,numel(Qpr{4}(1,:)))) ...
+		(0 + (.3).*rand(1,numel(Qpr{5}(1,:))))];
+Qallz = cat(1,Qall,Qzz);
+Qallz(isinf(Qallz)) = 0;
+Qallz(isnan(Qallz)) = 0;
+
+spinesurf2(Qallz(1,:)', Qallz(2,:)', Qallz(3,:)')
+%sftool(Qallz(1,:)', Qallz(2,:)', Qallz(3,:)')
+%-------------------------------------
+%}
+%===========================================================
+
+
+
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
