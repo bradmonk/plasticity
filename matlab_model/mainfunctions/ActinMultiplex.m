@@ -1384,7 +1384,7 @@ for nT = 1:Nsteps
 	end
 	%--------------------------------------------------%
 	
-%if nT == 5000; keyboard; end;
+%if nT == 30000; keyboard; end;
 %{
 % ActData(nT,:) = [Act_mM, Act_PR, Act_N];
 % DePData(nT,:) = DePSum;
@@ -1414,16 +1414,15 @@ ACTs(remove0,:) = [];
 %		Counter Crunch and Plot
 %--------------------------------------------------%
 if doActCounts
-%--------------
-
-
-
-
+%%
+%----------------------------------------------------------------------%
+c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6]; c5= [.01 .9 .01];
+c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7]; c55=[.01 .9 .01];
+%----------------------------------------------------------------------%
 %The plot shows the probability for each nonnegative integer when ? = 5.
-%--------------------
-%----------------------------
+%------------------------------------------%
 % Filament Lifetime CDF
-%----------------------------
+%------------------------------------------%
 Filament_Lifetime = ACTs(:,16) .* dT;
 muFlif = mean(Filament_Lifetime);
 Flast = max(Filament_Lifetime);
@@ -1451,23 +1450,30 @@ ecdfhist(coECDF_Lif, coX_Lif, 50)
 	axis([0 XLmax/2 0 100]); axis 'auto y'; title('Lifetime ECDF Histogram');
 	xt = (get(gca,'XTick'))./60; set(gca,'XTickLabel', sprintf('%.0f|',xt))
 	xlabel('minutes'); ylabel('CDF hist  (range 0-1) ');
-%----------------------------
+%------------------------------------------%
 Filament_Lifetimes = sort(Filament_Lifetime);
 %dfittool(Filament_Lifetimes)
 
 % Prepare figure
-figure(70)
+F70 = figure(70);
+set(F70,'OuterPosition',[400,100,600,700])
 set(gcf,'Color',[1,1,1])
-hold on;
 LegHandles = []; LegText = {};
 % --- Plot data originally in dataset "meanlife data"
+axes('Position',[.08 .48 .86 .48]);
+pause(.5)
 [CdfY,CdfX,CdfLower,CdfUpper] = ecdf(Filament_Lifetimes,...
 	'Function','survivor','alpha',1e-10);  % compute empirical function
 hLine = stairs(CdfX,CdfY,'Color',[.3 0 .6],'LineStyle','-', 'LineWidth',1.5);
+hold on
 [StairsXlower,StairsYlower] = stairs(CdfX,CdfLower);
+hold on
 [StairsXupper,StairsYupper] = stairs(CdfX,CdfUpper);
+hold on
 hBounds = plot([StairsXlower(:); NaN; StairsXupper(:)], [StairsYlower(:); NaN; StairsYupper(:)],...
 	'Color',[.9 .2 .2],'LineStyle','-.', 'LineWidth',1);
+hold on
+
 xlabel('CDF Survivor (seconds)');
 ylabel('Survivor function')
 LegHandles(end+1) = hLine;
@@ -1479,8 +1485,33 @@ box on;
 grid on;
 hLegend = legend(LegHandles,LegText,'Orientation', 'vertical', 'Location', 'NorthEast');
 set(hLegend,'Interpreter','none');
-%----------------------------
 
+% Ratio of all Tags generated to current number of Tags
+AcTags = Actin(:,12);
+AT2TNratio = numel(AcTags)/TagN;
+%---
+axes('Position',[.12 .08 .78 .30]);
+[ph1] = plot(AcTags,'b');
+leg1 = legend(ph1,'Arp Rate');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+set(legend,'Location','SouthEast');
+%------------------------------------------%
+MS1 = 5;
+set(ph1,'LineStyle','-','Color',c1,'LineWidth',1,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
+hTitle  = title('Arp Branching Rate');
+hXLabel = xlabel('Time (min)');
+hYLabel = ylabel('Branching Events');
+set(gca,'FontName','Helvetica');
+set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
+set([hXLabel, hYLabel],'FontSize',10);
+set(hTitle,'FontSize',12);
+set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
+'XMinorTick','on','YMinorTick','on','YGrid','on', ...
+'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
+%------------------------------------------%
+% NOTES
 %{
 meanFlif = ACTs(:,16) .* dT;
 muFlif = mean(meanFlif);
@@ -1519,27 +1550,6 @@ hist(meanFlif);%ecdfhist(coX_G1, coX_G1)
 	axis([0 XLmax 0 100]); axis 'auto y'; title('Lifetime CDF Histogram');
 	xt = (get(gca,'XTick'))./60; set(gca,'XTickLabel', sprintf('%.0f|',xt))
 %----------------------------
-%}
-
-% Ratio of all Tags generated to current number of Tags
-AcTags = Actin(:,12);
-AT2TNratio = numel(AcTags)/TagN;
-close all
-figure
-plot(AcTags)
-title('New Branch Tag Generation Rate');
-
-% ArpR, Act_mM, Act_PR
-figure
-plot(NumArpR)
-title('Arp Branching Rate');
-
-figure
-plot(NumAct_mM,'b')
-hold on
-plot(NumAct_PR,'r')
-legend('Conc. mM','Poly Rate (12*mM*dT)');
-title('Actin Polymerization');
 
 % FilTurnover is the ratio between the average number of
 % filaments throughout the simulation, and the number of
@@ -1548,16 +1558,11 @@ title('Actin Polymerization');
 % if this ratio is less than 1, there is a possibility that
 % all original filaments were eliminated.
 % The smaller this ratio, the greater the likelihood
+%}
+
 SNumFils = sum(NumFils) / nT;
 SNumdelFi = sum(NumdelFi);
 FilTurnover = SNumFils / SNumdelFi;
-
-figure
-plot(NumGAct,'b')
-hold on
-plot(NumFAct,'r')
-legend('G-actin','F-actin');
-title('Monomeric and Filamentous Actin');
 
 CompressN = 100;
 subsCOFACT = floor(linspace(1,CompressN+1,numel(NumCOFACT)));
@@ -1571,19 +1576,263 @@ subsARPACT(numel(NumARPACT)) = CompressN;
 AcArARPACT = accumarray(subsARPACT',NumARPACT) ./ Ncomp;
 CumSumARPACT = cumsum(AcArARPACT);
 
-figure
-plot(AcArARPACT,'b')
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%					FINAL OUTPUT (SPLINE) FIGURE 1 OF 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------------------%
+fig21 = figure(21);
+set(21,'Units','pixels');scnsize = get(0,'ScreenSize');
+pos1 = [scnsize(3)/3  scnsize(4)/5  scnsize(3)/1.5  scnsize(4)/1.5];
+set(fig21,'OuterPosition',pos1)
+set(gcf,'Color',[.9,.9,.9])
+%----------------------------------------------------------------------%
+c1= [.9 .2 .2]; c2= [.2 .4 .6]; c3= [.4 .8 .4]; c4= [.6 .6 .6]; c5= [.01 .9 .01];
+c11=[.9 .3 .3]; c22=[.3 .5 .7]; c33=[.5 .9 .5]; c44=[.7 .7 .7]; c55=[.01 .9 .01];
+pause(1);
+%===========================================================%
+% FIG1 TOP LEFT: Poly & Depoly Events
+%===========================================================%
+sbpos = [.07 .57 .4 .38];
+subplot('Position',sbpos);
+[ph1] = plot(AcArARPACT,'b');
+leg1 = legend(ph1,'On_{poly}');
+[LEGH,OBJH,OUTH,OUTM] = legend;
 hold on
-plot(AcArCOFACT,'r')
-legend('On_{poly}','Off_{depoly}');
-title('Average monomers On vs Off');
+subplot('Position',sbpos);
+[ph2] = plot(AcArCOFACT,'r');
+legend([OUTH;ph2],OUTM{:},'Off_{depoly}');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%------------------------------------------%
+xt = (get(gca,'XTick'));
+xt = linspace(0,Nsteps,numel(xt)).* dT./60;
+set(gca,'XTickLabel', sprintf('%.0f|',xt))
+set(legend,'Location','SouthEast');
+%------------------------------------------%
+MS1 = 5; MS2 = 2;
+set(ph1,'LineStyle','-','Color',c1,'LineWidth',1,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
+set(ph2,'LineStyle','-','Color',c2,'LineWidth',1,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
+hTitle  = title('Actin Polymerization & Depolymerization Events');
+hXLabel = xlabel('Time (min)');
+hYLabel = ylabel('Poly & Depoly Events');
+set(gca,'FontName','Helvetica');
+set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
+set([hXLabel, hYLabel],'FontSize',10);
+set(hTitle,'FontSize',12);
+set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
+'XMinorTick','on','YMinorTick','on','YGrid','on', ...
+'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
+haxes=axis;
+% ylim([0 haxes(4)*1.2 ]);
+% xlim([0 (haxes(2)*.9)]);
+%===========================================================%
+
+
+%===========================================================%
+% FIG1 TOP RIGHT: Monomeric vs Filamentous Actin
+%===========================================================%
+sbpos = [.55 .57 .38 .38];
+subplot('Position',sbpos);
+[ph1] = plot(NumGAct,'b');
+leg1 = legend(ph1,'G-actin');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+subplot('Position',sbpos);
+[ph2] = plot(NumFAct,'r');
+legend([OUTH;ph2],OUTM{:},'F-actin');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%------------------------------------------%
+xt = (get(gca,'XTick')).* dT./60;
+set(gca,'XTickLabel', sprintf('%.0f|',xt))
+set(legend,'Location','SouthEast');
+%------------------------------------------%
+MS1 = 5; MS2 = 2;
+set(ph1,'LineStyle','-','Color',c1,'LineWidth',1,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
+set(ph2,'LineStyle','-','Color',c2,'LineWidth',1,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
+hTitle  = title('Monomeric vs Filamentous Actin');
+hXLabel = xlabel('Time (min)');
+hYLabel = ylabel('Actin Molecules');
+set(gca,'FontName','Helvetica');
+set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
+set([hXLabel, hYLabel],'FontSize',10);
+set(hTitle,'FontSize',12);
+set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
+'XMinorTick','on','YMinorTick','on','YGrid','on', ...
+'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
+%===========================================================%
 
 
 
+%===========================================================%
+% FIG1 BOTTOM LEFT: Actin Concentration (mM)
+%===========================================================%
+sbpos = [.07 .09 .4 .35];
+subplot('Position',sbpos);
+[ph1] = plot(NumAct_mM,'b');
+leg1 = legend(ph1,'Conc. mM');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+subplot('Position',sbpos);
+[ph2] = plot(NumAct_PR,'r');
+legend([OUTH;ph2],OUTM{:},'Poly Rate (12*mM*dT)');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+hold on
+%------------------------------------------%
+xt = (get(gca,'XTick')).* dT./60;
+set(gca,'XTickLabel', sprintf('%.0f|',xt))
+set(legend,'Location','NorthEast');
+%------------------------------------------%
+MS1 = 5; MS2 = 2;
+set(ph1,'LineStyle','-','Color',c1,'LineWidth',1,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
+set(ph2,'LineStyle','-','Color',c2,'LineWidth',1,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
+hTitle  = title('Actin Polymerization');
+hXLabel = xlabel('Time (min)');
+hYLabel = ylabel('Actin Concentration (mM)');
+set(gca,'FontName','Helvetica');
+set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
+set([hXLabel, hYLabel],'FontSize',10);
+set(hTitle,'FontSize',12);
+set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
+'XMinorTick','on','YMinorTick','on','YGrid','on', ...
+'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
+%===========================================================%
+
+
+
+
+%===========================================================%
+% FIG1 BOTTOM RIGHT: Branching Events
+%===========================================================%
+%----------------------------
+% Dual Axis Plot
+%----------------------------
+sbpos = [.55 .09 .38 .35];
+subplot('Position',sbpos);
+[ph1] = plot(NumArpR,'r');
+leg1 = legend(ph1,'Arp Rate');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+set(legend,'Location','SouthEast');
+haxes1 = gca; % handle to axes
+%set(haxes1,'XColor','r','YColor','r')
+hold on
+haxes1_pos = get(haxes1,'Position'); % store position of first axes
+haxes2 = axes('Position',haxes1_pos,...
+              'XAxisLocation','top',...
+              'YAxisLocation','right',...
+              'Color','none');
+%subplot('Position',sbpos);
+[ph2] = line(1:numel(AcTags),AcTags,'Parent',haxes2,'Color','k');
+LGh1 = legend([OUTH;ph2],OUTM{:},'Actin Tags');
+[LEGH,OBJH,OUTH,OUTM] = legend;
+set(LGh1,'Location','SouthEast');
+hold on
+%------------------------------------------%
+xt = (get(haxes1,'XTick')).* dT./60;
+set(haxes1,'XTickLabel', sprintf('%.0f|',xt))
+%------------------------------------------%
+MS1 = 5; MS2 = 2;
+set(ph1,'LineStyle','-','Color',c1,'LineWidth',1,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c1,'MarkerFaceColor',c11);
+set(ph2,'LineStyle','-','Color',c2,'LineWidth',1,...
+'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',c2,'MarkerFaceColor',c22);
+%hTitle  = title('Arp Branching Rate');
+%hXLabel = xlabel('Time (min)');
+hYLabel = ylabel('Branching Events');
+set(gca,'FontName','Helvetica');
+set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
+set([hXLabel, hYLabel],'FontSize',10);
+set(hTitle,'FontSize',12);
+set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
+'XMinorTick','on','YMinorTick','on','YGrid','on', ...
+'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
+%===========================================================%
+
+
+
+
+%{
+% %===========================================================%
+% % FIG3 TOP RIGHT: Synapse Particle Counts
+% %===========================================================%
+% sbpos = [.55 .57 .4 .38]; ptype = 4;
+% cOLOR = [c1; c2; c3; c4];
+% cOLOR = repmat(cOLOR,15,1);
+% %------------------------------------------%
+% itemN = 16; 
+% [ph1 hax1 mu1] = CIplot(reDATAGluRdata,applered,5,sbpos,itemN,1);
+% legend(ph1,'G2-PSA1');
+% [LEGH,OBJH,OUTH,OUTM] = legend;
+% hold on
+% %ph1 = plot(mu1);
+% %hold on
+% %---
+% itemN = 17; 
+% [ph2 hax2 mu2] = CIplot(reDATAGluRdata,oceanblue,5,sbpos,itemN,1);
+% legend([OUTH;ph2],OUTM{:},'G2-PSA2');
+% [LEGH,OBJH,OUTH,OUTM] = legend;
+% hold on
+% %ph2 = plot(mu2);
+% %hold on
+% %---
+% itemN = 18; 
+% [ph3 hax3 mu3] = CIplot(reDATAGluRdata,neongreen,5,sbpos,itemN,1);
+% legend([OUTH;ph3],OUTM{:},'G2-PSD1');
+% [LEGH,OBJH,OUTH,OUTM] = legend;
+% hold on
+% %ph3 = plot(mu3);
+% %hold on
+% %---
+% itemN = 19; 
+% [ph4 hax4 mu4] = CIplot(reDATAGluRdata,hotpink,5,sbpos,itemN,1);
+% legend([OUTH;ph4],OUTM{:},'G2-PSD2');
+% [LEGH,OBJH,OUTH,OUTM] = legend;
+% hold on
+% %ph4 = plot(mu4);
+% %hold on
+% %------------------------------------------%
+% xt = (get(gca,'XTick'))*100;
+% set(gca,'XTickLabel', sprintf('%.0f|',xt))
+% %------------------------------------------%
+% MS1 = 5; LnW=1;
+% set(ph1,'LineStyle','-','Color',applered,'LineWidth',LnW,...
+% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',applered,'MarkerFaceColor',applered);
+% set(ph2,'LineStyle','-','Color',oceanblue,'LineWidth',LnW,...
+% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',oceanblue,'MarkerFaceColor',oceanblue);
+% set(ph3,'LineStyle',':','Color',neongreen,'LineWidth',LnW,...
+% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',neongreen,'MarkerFaceColor',neongreen);
+% set(ph4,'LineStyle',':','Color',hotpink,'LineWidth',LnW,...
+% 'Marker','o','MarkerSize',MS1,'MarkerEdgeColor',hotpink,'MarkerFaceColor',hotpink);
+% 
+% hTitle  = title('Distribution of Particles with Brownian Motion');
+% hXLabel = xlabel('Time');
+% hYLabel = ylabel('Particles (+/- SEM)');
+% set(gca,'FontName','Helvetica');
+% set([hTitle, hXLabel, hYLabel],'FontName','AvantGarde');
+% set([hXLabel, hYLabel],'FontSize',10);
+% set( hTitle,'FontSize',12);
+% set(gca,'Box','off','TickDir','out','TickLength',[.02 .02], ...
+% 'XMinorTick','on','YMinorTick','on','YGrid','on', ...
+% 'XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1);
+% haxes=axis;
+% %ylim([0 haxes(4)*1.2 ]);
+% % xlim([0 (haxes(2)*.9)]);
+% %======================================================================%
+%%
+%}
+
+%%
 %------------
 end
 %--------------------------------------------------%
-
+keyboard
 
 
 %--------------------------------------------------%
