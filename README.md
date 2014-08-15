@@ -53,6 +53,9 @@
 <a href="http://bradleymonk.com/media/vid6/steadystate.mov" target="_blank"><img src="http://bradleymonk.com/media/vid6/steadystate.png" 
 alt="Video on diffusion to steadystate" width="400" border="10" /></a>
 
+### Analytical proof for steadystate distribution of particles
+<a href="http://bradleymonk.com/media/figs/SSproof1.png" target="_blank"><img src="http://bradleymonk.com/media/figs/SSproof1.png" width="650" border="10" /></a>
+<a href="http://bradleymonk.com/media/figs/SSproof2.png" target="_blank"><img src="http://bradleymonk.com/media/figs/SSproof2.png" width="650" border="10" /></a>
 
 #### Example animation rendered from "particle_diffusion_on_mesh.py"
 <a href="http://bradleymonk.com/media/vid6/3dDiffusion.html" target="_blank"><img src="http://bradleymonk.com/media/vid6/3dDiffusion.png" 
