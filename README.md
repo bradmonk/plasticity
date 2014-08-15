@@ -1,6 +1,12 @@
 
 ## Project Summary
 
+#### Fig 0. Model Overview
+<a href="http://bradleymonk.com/media/figs/FIG1_ABC.png" target="_blank">
+<img src="http://bradleymonk.com/media/figs/FIG1_ABC.png" width="600" border="10" /></a>
+* Fig. 0: Overview of modeling environment. (A) Membrane diffusion of AMPAR was simulated on a 3D surface-mesh representing a short dendritic segment with several spines. Geometric values for surface components included dendrite segment length and diameter, density and distance between spines, and dimensions of spine head and neck. AMPAR diffused laterally along these surfaces with Brownian motion; rates were matched to empirical values. (B) Actin scaffolding dynamics were simulated inside the spine-protrusions. Components of the scaffold and their interactin with surface receptors is illustrated in (C).
+
+
 #### Fig 1. Cluster model diagrams and synopsis
 <a href="http://bradleymonk.com/media/figs/FIG1.png" target="_blank">
 <img src="http://bradleymonk.com/media/figs/FIG1.png" width="600" border="10" /></a>
