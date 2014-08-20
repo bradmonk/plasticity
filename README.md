@@ -73,7 +73,7 @@ alt="3d actin network" width="400" border="10" /></a>
 
 
 #### Example rendering dynamic actin network from "ActinNetwork.m"
-<a href="http://bradleymonk.com/media/vid11/flow/" target="_blank"><img src="http://bradleymonk.com/media/vid11/flow/actinflow.png" 
+<a href="https://www.youtube.com/watch?v=t9Vzcvne40w" target="_blank"><img src="http://bradleymonk.com/media/vid11/flow/actinflow.png" 
 alt="3d actin network" width="400" border="10" /></a>
 
 
