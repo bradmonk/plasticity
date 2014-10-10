@@ -7,6 +7,64 @@
 * Fig. 0: Overview of modeling environment. (A) Membrane diffusion of AMPAR was simulated on a 3D surface-mesh representing a short dendritic segment with several spines. Geometric values for surface components included dendrite segment length and diameter, density and distance between spines, and dimensions of spine head and neck. AMPAR diffused laterally along these surfaces with Brownian motion; rates were matched to empirical values. (B) Actin scaffolding dynamics were simulated inside the spine-protrusions. Components of the scaffold and their interactin with surface receptors is illustrated in (C).
 
 
+
+## Media
+#### Model Overview
+<a href="http://youtu.be/9ipFHrxqLWc" target="_blank"><img src="http://camk2.com/pix/yt4.png" 
+alt="3d actin network" width="400" border="10" /></a>
+
+
+
+#### Spine Actin Dynamics (various model outputs)
+<a href="http://youtu.be/QBx8F_5_y0g" target="_blank"><img src="http://camk2.com/pix/yt1.png" 
+alt="3d actin network" width="400" border="10" /></a>
+
+
+
+#### Spine Actin Dynamics (various model outputs)
+<a href="http://youtu.be/QBx8F_5_y0g" target="_blank"><img src="http://camk2.com/pix/yt1.png" 
+alt="3d actin network" width="400" border="10" /></a>
+
+
+
+#### Spine Actin Dynamics (various model outputs)
+<a href="http://youtu.be/JH-hGjzhEFQ" target="_blank"><img src="http://camk2.com/pix/yt2.png" 
+alt="3d actin network" width="400" border="10" /></a>
+
+
+
+#### Spine Actin Dynamics (various model outputs)
+<a href="http://youtu.be/t9Vzcvne40w" target="_blank"><img src="http://camk2.com/pix/yt3.png" 
+alt="3d actin network" width="400" border="10" /></a>
+
+
+#### Diffusion to steadystate
+<a href="http://bradleymonk.com/media/vid6/steadystate.mov" target="_blank"><img src="http://bradleymonk.com/media/vid6/steadystate.png" 
+alt="Video on diffusion to steadystate" width="400" border="10" /></a>
+
+### Analytical proof for steadystate distribution of particles
+<a href="http://bradleymonk.com/media/figs/SSproof1.png" target="_blank"><img src="http://bradleymonk.com/media/figs/SSproof1.png" width="650" border="10" /></a>
+<a href="http://bradleymonk.com/media/figs/SSproof2.png" target="_blank"><img src="http://bradleymonk.com/media/figs/SSproof2.png" width="650" border="10" /></a>
+
+#### Example animation rendered from "particle_diffusion_on_mesh.py"
+<a href="http://bradleymonk.com/media/vid6/3dDiffusion.html" target="_blank"><img src="http://bradleymonk.com/media/vid6/3dDiffusion.png" 
+alt="3d Diffusion Animation in dolfin" width="400" border="10" /></a>
+
+
+#### Dendritic surface diffusion (on 3D mesh) from "particle_diffusion_on_mesh.py"
+<a href="http://bradleymonk.com/media/vid9/Dendritic_Diffusion_3D.mp4" target="_blank"><img src="http://bradleymonk.com/media/vid9/Dendritic_Diffusion_3D.png" 
+alt="Dendritic surface diffusion" width="400" border="10" /></a>
+
+
+#### Example rendering dynamic actin network from "bran_actin_geo_xyz.spi"
+<a href="http://bradleymonk.com/media/vid8/RenderActin.mp4" target="_blank"><img src="http://bradleymonk.com/media/vid8/SPiMactin.png" 
+alt="3d actin network" width="400" border="10" /></a>
+
+
+
+
+
+
 #### Fig 1. Cluster model diagrams and synopsis
 <a href="http://bradleymonk.com/media/figs/FIG1.png" target="_blank">
 <img src="http://bradleymonk.com/media/figs/FIG1.png" width="600" border="10" /></a>
@@ -41,40 +99,19 @@
 
 
 #### Fig 6. Actin network constrained to spine
-<a href="http://bradleymonk.com/media/figs/Actin2.png" target="_blank">
-<img src="http://bradleymonk.com/media/figs/Actin2.png" width="500" border="10" /></a>
+<a href="http://camk2.com/pix/yt5.png" target="_blank">
+<img src="http://camk2.com/pix/yt5.png" width="500" border="10" /></a>
 * Fig 6. Actin network constrained to spine surface mesh. This actin filament network was grown stochastically from the dendritic shaft into the spine. Network structure is dependent on the relative availabilities of G-actin monomers (necessary for polymerization), cofilin (promotes depolymerization and remodeling), and Arp2/3 (induces branching at 70 degree angles). It appears that a postsynaptic density forms naturally under these conditions, with scaffold note packing tightly at the center of the spine head submembrane. Actin branches near the surface will act as scaffolding for scaffold-associated proteins (SAPs) which can cluster around these nodes and tether diffusing surface receptors.
 
 
 
 
-## Media
-#### Diffusion to steadystate
-<a href="http://bradleymonk.com/media/vid6/steadystate.mov" target="_blank"><img src="http://bradleymonk.com/media/vid6/steadystate.png" 
-alt="Video on diffusion to steadystate" width="400" border="10" /></a>
-
-### Analytical proof for steadystate distribution of particles
-<a href="http://bradleymonk.com/media/figs/SSproof1.png" target="_blank"><img src="http://bradleymonk.com/media/figs/SSproof1.png" width="650" border="10" /></a>
-<a href="http://bradleymonk.com/media/figs/SSproof2.png" target="_blank"><img src="http://bradleymonk.com/media/figs/SSproof2.png" width="650" border="10" /></a>
-
-#### Example animation rendered from "particle_diffusion_on_mesh.py"
-<a href="http://bradleymonk.com/media/vid6/3dDiffusion.html" target="_blank"><img src="http://bradleymonk.com/media/vid6/3dDiffusion.png" 
-alt="3d Diffusion Animation in dolfin" width="400" border="10" /></a>
 
 
-#### Dendritic surface diffusion (on 3D mesh) from "particle_diffusion_on_mesh.py"
-<a href="http://bradleymonk.com/media/vid9/Dendritic_Diffusion_3D.mp4" target="_blank"><img src="http://bradleymonk.com/media/vid9/Dendritic_Diffusion_3D.png" 
-alt="Dendritic surface diffusion" width="400" border="10" /></a>
 
 
-#### Example rendering dynamic actin network from "bran_actin_geo_xyz.spi"
-<a href="http://bradleymonk.com/media/vid8/RenderActin.mp4" target="_blank"><img src="http://bradleymonk.com/media/vid8/SPiMactin.png" 
-alt="3d actin network" width="400" border="10" /></a>
 
 
-#### Example rendering dynamic actin network from "ActinNetwork.m"
-<a href="https://www.youtube.com/watch?v=t9Vzcvne40w" target="_blank"><img src="http://bradleymonk.com/media/vid11/flow/actinflow.png" 
-alt="3d actin network" width="400" border="10" /></a>
 
 
 
