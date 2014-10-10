@@ -22,12 +22,6 @@ alt="3d actin network" width="400" border="10" /></a>
 
 
 #### Spine Actin Dynamics (various model outputs)
-<a href="http://youtu.be/QBx8F_5_y0g" target="_blank"><img src="http://camk2.com/pix/yt1.png" 
-alt="3d actin network" width="400" border="10" /></a>
-
-
-
-#### Spine Actin Dynamics (various model outputs)
 <a href="http://youtu.be/JH-hGjzhEFQ" target="_blank"><img src="http://camk2.com/pix/yt2.png" 
 alt="3d actin network" width="400" border="10" /></a>
 
