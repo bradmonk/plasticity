@@ -149,7 +149,7 @@ pip install networkx
 * [mmbios.org - National Center for Multiscale Modeling of Biological Systems](http://mmbios.org/index.php/software)
 * [ppm.org - particle mesh library](http://www.ppm-library.org/)
 * [Max Plank Mosaic Group (creators of PPM)](http://mosaic.mpi-cbg.de/?q=research/gallery)
-* [Brownian motion simulation basics](http://www.advancedlab.org/mediawiki/index.php/Simulating_Brownian_Motion)
+* [Brownian motion simulation basics](http://bradleymonk.com/Brownian_Motion)
 * [Shouval cluster model article](http://www.pnas.org/content/102/40/14440.full)
 * [Computational Geometry Algorithm Library](http://www.cgal.org/)
 * [Kinetic Monte Carlo Simulations](http://www.roentzsch.org/SurfDiff/index.html)
