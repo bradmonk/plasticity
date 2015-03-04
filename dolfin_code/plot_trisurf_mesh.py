@@ -7,7 +7,7 @@ from particle_diffusion_on_mesh import Mesh
 
 
 resolution = 96
-serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
+serialized_mesh_filename = 'data/serialized_mesh_res_%d.npz' % resolution
 mesh_wrapper = Mesh.from_file(serialized_mesh_filename)
 
 x = mesh_wrapper.all_vertices[:, 0]

@@ -59,7 +59,7 @@ def main():
   #       not stored in the XML file. See
   #           http://fenicsproject.org/qa/3233
   #       for details.
-  exterior_face_filename = 'exterior_faces_res_%d_full.npz' % resolution
+  exterior_face_filename = 'data/exterior_faces_res_%d_full.npz' % resolution
   print '=' * 60
   print 'Saving to file:', exterior_face_filename
   print '%d exterior faces out of %d total faces.' % (
@@ -74,14 +74,14 @@ def main():
   face_index_matrix = np.vstack(
       [face.entities(0) for face in vertical_normal_faces])
 
-  faces_full_filename = 'faces_top_res_%d_full.npz' % resolution
+  faces_full_filename = 'data/faces_top_res_%d_full.npz' % resolution
   print '=' * 60
   print 'Saving to file:', faces_full_filename
   print '=' * 60
   np.savez(faces_full_filename, face_index_matrix)
 
   # Save the indices of the facets on the top.
-  top_indices_filename = 'faces_top_indices_res_%d_full.npz' % resolution
+  top_indices_filename = 'data/faces_top_indices_res_%d_full.npz' % resolution
   print '=' * 60
   print 'Saving to file:', top_indices_filename
   print '=' * 60

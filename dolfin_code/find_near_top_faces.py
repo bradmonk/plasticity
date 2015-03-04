@@ -46,7 +46,7 @@ def main():
   component_facets = [facets_by_index[index] for index in component]
 
   # All exterior indices should be allowed.
-  exterior_face_filename = 'exterior_faces_res_%d_full.npz' % resolution
+  exterior_face_filename = 'data/exterior_faces_res_%d_full.npz' % resolution
   exterior_face_indices = np.load(exterior_face_filename)
   exterior_face_indices = set(exterior_face_indices)
 

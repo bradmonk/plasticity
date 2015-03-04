@@ -67,7 +67,7 @@ def get_data(resolution):
 
 
 def get_top_facets(facets, resolution):
-  top_indices_filename = 'faces_top_indices_res_%d_full.npz' % resolution
+  top_indices_filename = 'data/faces_top_indices_res_%d_full.npz' % resolution
   top_indices = np.load(top_indices_filename)
   top_indices = set(top_indices)
 

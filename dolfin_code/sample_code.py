@@ -28,13 +28,13 @@ def save_serialized_mesh():
     initial_point = np.array((STARTING_X, STARTING_Y, STARTING_Z))
     mesh_wrapper = Mesh.from_mesh(mesh_3d, initial_point, STARTING_K)
 
-    serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
+    serialized_mesh_filename = 'data/serialized_mesh_res_%d.npz' % resolution
     mesh_wrapper.serialize_mesh(serialized_mesh_filename)
 
 
 def sample_code():
     resolution = 96
-    serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
+    serialized_mesh_filename = 'data/serialized_mesh_res_%d.npz' % resolution
     mesh_wrapper = Mesh.from_file(serialized_mesh_filename)
 
     points = [Point(mesh_wrapper) for _ in xrange(10)]
@@ -55,7 +55,8 @@ def test_accurary_on_face(mesh_wrapper=None, num_steps=1000):
     if mesh_wrapper is None:
         resolution = 96
 
-        serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
+        serialized_mesh_filename = ('data/serialized_mesh_res_%d.npz' %
+                                    (resolution,))
         mesh_wrapper = Mesh.from_file(serialized_mesh_filename)
 
     point = Point(mesh_wrapper)
@@ -98,7 +99,7 @@ def plot_custom():
         return 'g'
 
     resolution = 96
-    serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
+    serialized_mesh_filename = 'data/serialized_mesh_res_%d.npz' % resolution
     mesh_wrapper = Mesh.from_file(serialized_mesh_filename)
     mesh_wrapper.k = 6.0
 
@@ -120,7 +121,7 @@ def run_custom():
     num_points = 10
 
     resolution = 96
-    serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
+    serialized_mesh_filename = 'data/serialized_mesh_res_%d.npz' % resolution
     mesh_wrapper = Mesh.from_file(serialized_mesh_filename)
     # k == Diffusion rate.
     mesh_wrapper.k = 6.0
