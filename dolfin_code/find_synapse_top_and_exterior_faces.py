@@ -59,13 +59,13 @@ def main():
   #       not stored in the XML file. See
   #           http://fenicsproject.org/qa/3233
   #       for details.
-  exterior_face_filename = 'exterior_faces_res_%d_full.npy' % resolution
+  exterior_face_filename = 'exterior_faces_res_%d_full.npz' % resolution
   print '=' * 60
   print 'Saving to file:', exterior_face_filename
   print '%d exterior faces out of %d total faces.' % (
       len(exterior_face_indices), num_faces)
   print '=' * 60
-  np.save(exterior_face_filename, np.array(exterior_face_indices))
+  np.savez(exterior_face_filename, np.array(exterior_face_indices))
 
   if vertical_normal_faces != all_top_coords_faces:
     raise ValueError('Top face classifications disagree.')
@@ -74,19 +74,19 @@ def main():
   face_index_matrix = np.vstack(
       [face.entities(0) for face in vertical_normal_faces])
 
-  faces_full_filename = 'faces_top_res_%d_full.npy' % resolution
+  faces_full_filename = 'faces_top_res_%d_full.npz' % resolution
   print '=' * 60
   print 'Saving to file:', faces_full_filename
   print '=' * 60
-  np.save(faces_full_filename, face_index_matrix)
+  np.savez(faces_full_filename, face_index_matrix)
 
   # Save the indices of the facets on the top.
-  top_indices_filename = 'faces_top_indices_res_%d_full.npy' % resolution
+  top_indices_filename = 'faces_top_indices_res_%d_full.npz' % resolution
   print '=' * 60
   print 'Saving to file:', top_indices_filename
   print '=' * 60
   top_indices = [facet.index() for facet in vertical_normal_faces]
-  np.save(top_indices_filename, np.array(top_indices))
+  np.savez(top_indices_filename, np.array(top_indices))
 
 
 if __name__ == '__main__':
