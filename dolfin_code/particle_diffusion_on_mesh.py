@@ -446,3 +446,18 @@ def plot_simulation(num_points, mesh_wrapper, plot_boundary,
   else:
     # Could also use plt.draw() for interactive work, not for 3D though.
     plt.show(block=False)
+
+
+# This is a version of `plot_simulation` above with no plotting.
+def run_simulation(num_points, mesh_wrapper, num_steps=200,
+                   print_frequency=None):
+  points = [Point(mesh_wrapper) for _ in xrange(num_points)]
+
+  for step_num in xrange(1, num_steps + 1):
+    if print_frequency is not None and step_num % print_frequency == 0:
+      print 'Step Number:', step_num
+
+    for pt in points:
+      pt.move()
+
+  return points
