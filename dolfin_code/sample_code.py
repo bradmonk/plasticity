@@ -4,6 +4,7 @@ from particle_diffusion_on_mesh import Mesh
 from particle_diffusion_on_mesh import PlotBoundary
 from particle_diffusion_on_mesh import Point
 from particle_diffusion_on_mesh import plot_simulation
+from particle_diffusion_on_mesh import run_simulation
 
 
 def save_serialized_mesh():
@@ -113,3 +114,21 @@ def plot_custom():
                     color_function=custom_color_function,
                     num_frames=500, print_frequency=20, show_mesh=True,
                     filename='10points_500steps_bigger_k.gif')
+
+
+def run_custom():
+    num_points = 10
+
+    resolution = 96
+    serialized_mesh_filename = 'serialized_mesh_res_%d.npz' % resolution
+    mesh_wrapper = Mesh.from_file(serialized_mesh_filename)
+    # k == Diffusion rate.
+    mesh_wrapper.k = 6.0
+
+    run_simulation(num_points, mesh_wrapper, num_steps=500,
+                   print_frequency=20)
+
+
+
+if __name__ == '__main__':
+    run_custom()
