@@ -49,3 +49,23 @@ The scripts can be divided into two purposes:
     ```
     sample_code.py
     ```
+
+### Issues
+
+The `dolfin` library depends on `ScientificPython` (a very old library that
+built off of `numpy` **long ago**). This dependency is broken by
+`numpy>=1.9`.
+
+Danny [suggested][1] (and has [deployed][2]) a hack to work-around this
+versioning issue.
+
+**CGAL** is no longer supported in `dolfin` and many of the old scripts
+stopped working. A [quote][3] (mailing list) from November 2014:
+
+> Yes, CGAL support was disabled in favor of `mshr`:
+>
+>     https://bitbucket.org/benjamik/mshr/wiki/Home
+
+[1]: https://bitbucket.org/khinsen/scientificpython/issue/13/
+[2]: https://gist.github.com/dhermes/38d8ff05267e861a4b01
+[3]: http://fenicsproject.org/pipermail/fenics-support/2014-November/000961.html
