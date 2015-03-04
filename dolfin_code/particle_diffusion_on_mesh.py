@@ -255,6 +255,12 @@ class Mesh(object):
         return self.current_point_index
 
     def serialize_mesh(self, filename):
+        """Serializes current Mesh object to NPZ file.
+
+        This allows faster loading on subsequent use and
+        independence from dolfin. See an example usage in
+        sample_code.save_serialized_mesh().
+        """
         print 'Saving mesh to', filename
         if self.current_point_index != -1:
             print 'Points on mesh will not be serialized.'
@@ -267,11 +273,18 @@ class Mesh(object):
 
     @classmethod
     def from_mesh(cls, mesh, initial_point, k):
+        """Create a Mesh object (this class) from a dolfin mesh."""
+        # Import here to prevent cyclic import since `dolfin_mesh_utils`
+        # imports this `Mesh` class
         import dolfin_mesh_utils
         return dolfin_mesh_utils.from_mesh(cls, mesh, initial_point, k)
 
     @classmethod
     def from_file(cls, filename):
+        """Create a mesh from a previously serialized Mesh object.
+
+        Serialization occurs via the serialize_mesh() method above.
+        """
         print 'Loading mesh data from NPZ file', filename
         npzfile = np.load(filename)
 
@@ -295,6 +308,12 @@ class Mesh(object):
 
 
 def get_random_components(k):
+    """Compute length and angle of random vector.
+
+    The vector is random with N(0, k^2) (normal mean 0, std. dev. k)
+    components. Each of the x, y components are indenpently
+    distributed N(0, k^2).
+    """
     x_rand = k * np.random.randn()
     y_rand = k * np.random.randn()
     L = np.linalg.norm([x_rand, y_rand])
@@ -310,9 +329,11 @@ class Point(object):
         #       will also hold this value.
         self.mesh_wrapper = mesh_wrapper
 
-        # Start with Null `Face` object.
+        # Start with null `Face` object. This is required because `change_face`
+        # will check the value (here in the constructor and on subsequent
+        # calls as the Point moves).
         self.face = None
-
+        # Set the (previously null) `Face` object.
         self.change_face(mesh_wrapper.initial_face)
         self.point = np.array(mesh_wrapper.initial_point)
 
@@ -353,12 +374,16 @@ class Point(object):
         self.face.add_point(self)
 
     def _move(self, L, theta):
+        # L_new will be 0 if the point finished moving on the
+        # face it was already on. If not, it needs to change faces
+        # and keep moving (and L_new > 0).
         next_face, next_point, L_new, theta_new = self.face.move(
             self.point, L, theta)
         self.point = next_point
         if next_face != self.face.face_index:
             self.change_face(self.mesh_wrapper.faces[next_face])
-            # Continue to move until we stay on the same face.
+            # Continue to move until we stay on the same face by
+            # calling this method recursively.
             self._move(L_new, theta_new)
 
     def move(self):
