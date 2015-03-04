@@ -64,7 +64,7 @@ stopped working. A [quote][3] (mailing list) from November 2014:
 
 > Yes, CGAL support was disabled in favor of `mshr`:
 >
->     https://bitbucket.org/benjamik/mshr/wiki/Home
+> https://bitbucket.org/benjamik/mshr/wiki/Home
 
 [1]: https://bitbucket.org/khinsen/scientificpython/issue/13/
 [2]: https://gist.github.com/dhermes/38d8ff05267e861a4b01
