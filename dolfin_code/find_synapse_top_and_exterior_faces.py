@@ -6,7 +6,7 @@ import full_dendrite_mesh
 
 def main():
   resolution = 96  # 32 * 3
-  mesh_full_filename = 'mesh_res_%d_full.xml' % resolution
+  mesh_full_filename = 'data/mesh_res_%d_full.xml' % resolution
   mesh_3d_full = dolfin.Mesh(mesh_full_filename)
   print 'Calling mesh.init() to compute faces / edges / etc.'
   print '=' * 60

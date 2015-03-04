@@ -13,7 +13,7 @@ def save_serialized_mesh():
     print 'Done importing dolfin.'
 
     resolution = 96
-    mesh_full_filename = 'mesh_res_%d_full.xml' % resolution
+    mesh_full_filename = 'data/mesh_res_%d_full.xml' % resolution
     mesh_3d = dolfin.Mesh(mesh_full_filename)
 
     # NOTE: This is temporary. These are parameters of the mesh (when it was
@@ -113,7 +113,7 @@ def plot_custom():
     plot_simulation(10, mesh_wrapper, plot_boundary,
                     color_function=custom_color_function,
                     num_frames=500, print_frequency=20, show_mesh=True,
-                    filename='10points_500steps_bigger_k.gif')
+                    filename='plots/10points_500steps_bigger_k.gif')
 
 
 def run_custom():
