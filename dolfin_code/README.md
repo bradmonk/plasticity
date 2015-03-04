@@ -28,6 +28,7 @@ The re-usable modules are
 ```
 dolfin_mesh_utils.py
 particle_diffusion_on_mesh.py
+particle_diffusion_plot_utils.py
 ```
 
 The scripts can be divided into two purposes:

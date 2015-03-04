@@ -1,10 +1,10 @@
 import numpy as np
 
 from particle_diffusion_on_mesh import Mesh
-from particle_diffusion_on_mesh import PlotBoundary
 from particle_diffusion_on_mesh import Point
-from particle_diffusion_on_mesh import plot_simulation
 from particle_diffusion_on_mesh import run_simulation
+from particle_diffusion_plot_utils import PlotBoundary
+from particle_diffusion_plot_utils import plot_simulation
 
 
 def save_serialized_mesh():
