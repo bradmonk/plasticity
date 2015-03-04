@@ -1,7 +1,8 @@
 
-
+<!--
+suspend this for now...
 # MOVING PROJECT TO: <a href="https://github.com/subroutines/NEURALPLASTICITY" target="_blank">subroutines/NEURALPLASTICITY</a>
-
+-->
 
 ## Project Summary
 
