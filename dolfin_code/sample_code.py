@@ -32,26 +32,13 @@ def save_serialized_mesh():
     mesh_wrapper.serialize_mesh(serialized_mesh_filename)
 
 
-def sample_code():
-    resolution = 96
-    serialized_mesh_filename = 'data/serialized_mesh_res_%d.npz' % resolution
-    mesh_wrapper = Mesh.from_file(serialized_mesh_filename)
-
-    points = [Point(mesh_wrapper) for _ in xrange(10)]
-
-    for i in xrange(5):
-        points[0].move()
-
-    return points
-
-
 def error_off_plane(face, point):
     # Built so that cross(x, y) == z
     n = np.cross(face.w1, face.w2)
     return np.dot(point - face.a, n)
 
 
-def test_accurary_on_face(mesh_wrapper=None, num_steps=1000):
+def test_accuracy_on_face(mesh_wrapper=None, num_steps=1000):
     if mesh_wrapper is None:
         resolution = 96
 
