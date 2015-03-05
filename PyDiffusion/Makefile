@@ -7,6 +7,7 @@ help:
 cython_interface:
 	cython -o _cython_interface.c _cython_interface.pyx
 	gcc -shared -pthread -fPIC -fwrapv -O2 -Wall -fno-strict-aliasing \
-	-I/usr/include/python2.7 -o _cython_interface.so _cython_interface.c
+	-I/usr/include/python2.7 -o _cython_interface.so _cython_interface.c \
+	-lpython2.7
 
 .PHONY: cython_interface help

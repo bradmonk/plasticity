@@ -1,6 +1,6 @@
 import numpy as np
 
-from _speedup import advance_one_step
+from _cython_interface import advance_one_step
 from particle_diffusion_on_mesh import Mesh
 from particle_diffusion_on_mesh import Point
 from particle_diffusion_on_mesh import run_simulation
