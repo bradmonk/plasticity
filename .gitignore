@@ -10,3 +10,5 @@ Rakefile
 PyDiffusion/_cython_interface.c
 PyDiffusion/_cython_interface.h
 PyDiffusion/_cython_interface.so
+PyDiffusion/advance_one_step.mexa64
+PyDiffusion/libadvanceonestep.so
