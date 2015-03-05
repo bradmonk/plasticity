@@ -1,0 +1,5 @@
+# Local gitignore
+foo.c
+foo.h
+libfoo.so
+test
