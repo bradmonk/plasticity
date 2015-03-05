@@ -10,7 +10,7 @@
  * The calling syntax is:
  *
  *     outMatrix = arrayProduct(multiplier, inMatrix, xyz_loc, ...
- *                              face_indices)
+ *                              face_indices, k)
  *
  *========================================================
  */
@@ -45,8 +45,8 @@ void mexFunction( int nlhs, mxArray *plhs[],
     double *outMatrix;              /* output matrix */
 
     /* check for proper number of arguments */
-    if(nrhs!=4) {
-        mexErrMsgIdAndTxt("advance_one_step:nrhs","Four inputs required.");
+    if(nrhs!=5) {
+        mexErrMsgIdAndTxt("advance_one_step:nrhs","Five inputs required.");
     }
     if(nlhs!=1) {
         mexErrMsgIdAndTxt("advance_one_step:nlhs","One output required.");
@@ -90,6 +90,14 @@ void mexFunction( int nlhs, mxArray *plhs[],
     if( !mxIsInt64(prhs[3]) ) {
         mexErrMsgIdAndTxt("advance_one_step:notLong",
                           "face_indices must be type long.");
+    }
+
+    /* make sure k is scalar double */
+    if( !mxIsDouble(prhs[4]) ||
+         mxIsComplex(prhs[4]) ||
+         mxGetNumberOfElements(prhs[4])!=1 ) {
+        mexErrMsgIdAndTxt("advance_one_step:notScalarDouble",
+                          "k must be a scalar double.");
     }
 
     /* get the value of the scalar input  */
