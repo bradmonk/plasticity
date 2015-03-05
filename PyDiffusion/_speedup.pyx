@@ -53,6 +53,8 @@ def advance_one_step(double[:, ::1] xyz_loc, long[:, ::1] face_indices,
     Returns:
         Returns two arrays, the updated version of xyz_loc and face_indices.
     """
+    cdef int M = xyz_loc.shape[0]
+
     mesh_wrapper = Mesh(k, np.asarray(initial_point), initial_face_index,
                         np.asarray(all_vertices), np.asarray(triangles),
                         np.asarray(face_local_bases),
@@ -68,6 +70,12 @@ def advance_one_step(double[:, ::1] xyz_loc, long[:, ::1] face_indices,
     for pt in points:
         pt.move()
 
-    xyz_loc_after = np.vstack([pt.point for pt in points])
-    face_indices_after = np.vstack([[pt.face.face_index] for pt in points])
+    cdef double[:, ::1] xyz_loc_after = np.empty((M, 3), dtype=np.float64)
+    cdef long[:, ::1] face_indices_after = np.empty((M, 1), dtype=np.int64)
+    cdef int i
+    for i, pt in enumerate(points):
+        xyz_loc_after[i, 0] = pt.point[0]
+        xyz_loc_after[i, 1] = pt.point[1]
+        xyz_loc_after[i, 2] = pt.point[2]
+        face_indices_after[i, 0] = pt.face.face_index
     return xyz_loc_after, face_indices_after
