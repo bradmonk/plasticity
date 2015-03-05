@@ -102,7 +102,6 @@ void mexFunction( int nlhs, mxArray *plhs[],
         mexErrMsgIdAndTxt("advance_one_step:notColVector",
                           "face_indices must have 1 column.");
     }
-    /* NOTE: We don't check that rows(face_indices) == rows(xyz_loc). */
     if( !mxIsInt64(prhs[1]) ) {
         mexErrMsgIdAndTxt("advance_one_step:notLong",
                           "face_indices must be type long.");
@@ -160,7 +159,6 @@ void mexFunction( int nlhs, mxArray *plhs[],
         mexErrMsgIdAndTxt("advance_one_step:notFaceBases",
                           "face_local_bases must have 6 columns.");
     }
-    /* NOTE: We don't check that rows(face_local_bases) == rows(triangles). */
     if( !mxIsDouble(prhs[7]) ||
          mxIsComplex(prhs[7])) {
         mexErrMsgIdAndTxt("advance_one_step:notDouble",
@@ -172,7 +170,6 @@ void mexFunction( int nlhs, mxArray *plhs[],
         mexErrMsgIdAndTxt("advance_one_step:notNeighborIndices",
                           "neighbor_faces must have 3 columns.");
     }
-    /* NOTE: We don't check that rows(neighbor_faces) == rows(triangles). */
     if( !mxIsInt64(prhs[8]) ) {
         mexErrMsgIdAndTxt("advance_one_step:notLong",
                           "neighbor_faces must be type long.");
@@ -189,9 +186,38 @@ void mexFunction( int nlhs, mxArray *plhs[],
     num_vertices = mxGetM(prhs[5]);
     num_triangles = mxGetM(prhs[6]);
 
+    /* Check rows that should match:
+     *     rows(face_indices) == rows(xyz_loc)
+     *     rows(face_local_bases) == rows(triangles)
+     *     rows(neighbor_faces) == rows(triangles)
+     */
+    if(mxGetN(prhs[1])!=num_points) {
+        mexErrMsgIdAndTxt("advance_one_step:mismatchRows",
+                          "face_indices and xyz_loc must have same # rows.");
+    }
+    if(mxGetN(prhs[7])!=num_triangles) {
+        mexErrMsgIdAndTxt(
+            "advance_one_step:mismatchRows",
+            "face_local_bases and xyz_loc must have same # rows.");
+    }
+    if(mxGetN(prhs[8])!=num_triangles) {
+        mexErrMsgIdAndTxt(
+            "advance_one_step:mismatchRows",
+            "neighbor_faces and triangles must have same # rows.");
+    }
+
     /* get scalar values */
     k = mxGetScalar(prhs[2]);
     initial_face_index = mxGetScalar(prhs[4]);
+
+    /* get matrix values */
+    xyz_loc = mxGetPr(plhs[0]);
+    face_indices = mxGetPr(plhs[1]);
+    initial_point = mxGetPr(plhs[3]);
+    all_vertices = mxGetPr(plhs[5]);
+    triangles = mxGetPr(plhs[6]);
+    face_local_bases = mxGetPr(plhs[7]);
+    neighbor_faces = mxGetPr(plhs[8]);
 
     /* get dimensions of the input matrix */
     ncols = mxGetN(prhs[10]);
