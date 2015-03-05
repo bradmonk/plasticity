@@ -7,14 +7,19 @@ happily.
 
 import itertools
 import numpy as np
+cimport cython
 
 from particle_diffusion_on_mesh import Mesh
 from particle_diffusion_on_mesh import Point
 
 
-def advance_one_step(xyz_loc, face_indices, k, initial_point,
-                     initial_face_index, all_vertices, triangles,
-                     face_local_bases, neighbor_faces):
+@cython.boundscheck(False)
+@cython.wraparound(False)
+def advance_one_step(double[:, ::1] xyz_loc, long[:, ::1] face_indices,
+                     double k, double[::1] initial_point,
+                     long initial_face_index, double[:, ::1] all_vertices,
+                     long[:, ::1] triangles, double[:, ::1] face_local_bases,
+                     long[:, ::1] neighbor_faces):
     """Custom method for advancing simulation by one-step.
 
     This is a bare-bones method which accepts and returns only simple types
@@ -48,8 +53,10 @@ def advance_one_step(xyz_loc, face_indices, k, initial_point,
     Returns:
         Returns two arrays, the updated version of xyz_loc and face_indices.
     """
-    mesh_wrapper = Mesh(k, initial_point, initial_face_index, all_vertices,
-                        triangles, face_local_bases, neighbor_faces)
+    mesh_wrapper = Mesh(k, np.asarray(initial_point), initial_face_index,
+                        np.asarray(all_vertices), np.asarray(triangles),
+                        np.asarray(face_local_bases),
+                        np.asarray(neighbor_faces))
     # NOTE: We assume but don't check that xyz_loc and face_indices
     #       have the same number of rows.
     points = []
