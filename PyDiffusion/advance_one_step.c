@@ -189,6 +189,10 @@ void mexFunction( int nlhs, mxArray *plhs[],
     num_vertices = mxGetM(prhs[5]);
     num_triangles = mxGetM(prhs[6]);
 
+    /* get scalar values */
+    k = mxGetScalar(prhs[2]);
+    initial_face_index = mxGetScalar(prhs[4]);
+
     /* get dimensions of the input matrix */
     ncols = mxGetN(prhs[10]);
 
