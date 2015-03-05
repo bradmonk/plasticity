@@ -1,5 +1,7 @@
 import numpy as np
+import os
 import random
+import scipy.io
 
 
 def find_intersection(center0, direction0, center1, direction1):
@@ -280,20 +282,8 @@ class Mesh(object):
 
         Serialization occurs via the serialize_mesh() method above.
         """
-        print 'Loading mesh data from NPZ file', filename
-        npzfile = np.load(filename)
-
-        k = npzfile['k'].item()
-        initial_point = npzfile['initial_point']
-        initial_face_index = npzfile['initial_face_index'].item()
-
-        all_vertices = npzfile['all_vertices']
-        triangles = npzfile['triangles']
-        face_local_bases = npzfile['face_local_bases']
-        neighbor_faces = npzfile['neighbor_faces']
-
-        return cls(k, initial_point, initial_face_index,
-                   all_vertices, triangles, face_local_bases, neighbor_faces)
+        constructor_args = _load_serialized_mesh(filename)
+        return cls(*constructor_args)
 
     def __str__(self):
         return 'Mesh(num_faces=%d)' % len(self.faces)
@@ -406,3 +396,42 @@ def run_simulation(num_points, mesh_wrapper, num_steps=200,
             pt.move()
 
     return points
+
+
+def _load_serialized_mesh(filename):
+    """Loads a previously serialized Mesh object."""
+    print 'Loading mesh data from NPZ file', filename
+    npzfile = np.load(filename)
+
+    k = npzfile['k'].item()
+    initial_point = npzfile['initial_point']
+    initial_face_index = npzfile['initial_face_index'].item()
+
+    all_vertices = npzfile['all_vertices']
+    triangles = npzfile['triangles']
+    face_local_bases = npzfile['face_local_bases']
+    neighbor_faces = npzfile['neighbor_faces']
+
+    return [k, initial_point, initial_face_index,
+            all_vertices, triangles, face_local_bases, neighbor_faces]
+
+
+def convert_mesh_to_matlab(mesh_filename):
+    """Loads a previously serialized Mesh object and stores in MATLAB file."""
+    (k, initial_point, initial_face_index,
+     all_vertices, triangles,
+     face_local_bases, neighbor_faces) = _load_serialized_mesh(mesh_filename)
+    data = {
+        'k': k,
+        'initial_point': initial_point,
+        'initial_face_index': initial_face_index,
+        'all_vertices': all_vertices,
+        'triangles': triangles,
+        'face_local_bases': face_local_bases,
+        'neighbor_faces': neighbor_faces,
+    }
+
+    root, ext = os.path.splitext(mesh_filename)
+    matlab_filename = root + '.mat'
+    scipy.io.savemat(matlab_filename, data)
+    print 'Saved', matlab_filename

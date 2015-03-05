@@ -3,6 +3,7 @@ import numpy as np
 from _cython_interface import advance_one_step
 from particle_diffusion_on_mesh import Mesh
 from particle_diffusion_on_mesh import Point
+from particle_diffusion_on_mesh import _load_serialized_mesh
 from particle_diffusion_on_mesh import run_simulation
 from particle_diffusion_plot_utils import PlotBoundary
 from particle_diffusion_plot_utils import plot_simulation
@@ -118,24 +119,6 @@ def run_custom():
                    print_frequency=20)
 
 
-def _matrices_only_helper(filename):
-    """Loads a previously serialized Mesh object."""
-    print 'Loading mesh data from NPZ file', filename
-    npzfile = np.load(filename)
-
-    k = npzfile['k'].item()
-    initial_point = npzfile['initial_point']
-    initial_face_index = npzfile['initial_face_index'].item()
-
-    all_vertices = npzfile['all_vertices']
-    triangles = npzfile['triangles']
-    face_local_bases = npzfile['face_local_bases']
-    neighbor_faces = npzfile['neighbor_faces']
-
-    return [k, initial_point, initial_face_index,
-            all_vertices, triangles, face_local_bases, neighbor_faces]
-
-
 def run_with_matrices_only():
     num_points = 10
     num_steps = 500
@@ -143,7 +126,7 @@ def run_with_matrices_only():
 
     resolution = 96
     serialized_mesh_filename = 'data/serialized_mesh_res_%d.npz' % resolution
-    constructor_args = _matrices_only_helper(serialized_mesh_filename)
+    constructor_args = _load_serialized_mesh(serialized_mesh_filename)
     constructor_args[0] = 6.0  # Override k.
 
     initial_point, initial_face_index = constructor_args[1:3]
