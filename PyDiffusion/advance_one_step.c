@@ -111,7 +111,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
     /* make sure k is scalar double */
     if( !mxIsDouble(prhs[2]) ||
          mxIsComplex(prhs[2]) ||
-         mxGetNumberOfElements(prhs[4])!=1 ) {
+         mxGetNumberOfElements(prhs[2])!=1 ) {
         mexErrMsgIdAndTxt("advance_one_step:notScalarDouble",
                           "k must be a scalar double.");
     }
@@ -183,6 +183,11 @@ void mexFunction( int nlhs, mxArray *plhs[],
 
     /* create a pointer to the real data in the input matrix  */
     inMatrix = mxGetPr(prhs[10]);
+
+    /* get dimensions of the inputs */
+    num_points = mxGetM(prhs[0]);
+    num_vertices = mxGetM(prhs[5]);
+    num_triangles = mxGetM(prhs[6]);
 
     /* get dimensions of the input matrix */
     ncols = mxGetN(prhs[10]);
