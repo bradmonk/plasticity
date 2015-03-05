@@ -78,3 +78,16 @@ def advance_one_step(double[:, ::1] xyz_loc, long[:, ::1] face_indices,
         xyz_loc[i, 2] = pt.point[2]
         # Update the face indices in place.
         face_indices[i, 0] = pt.face.face_index
+
+
+@cython.boundscheck(False)
+@cython.wraparound(False)
+cdef public void advance_one_step_c(
+        double[:, ::1] xyz_loc, long[:, ::1] face_indices,
+        double k, double[::1] initial_point,
+        long initial_face_index, double[:, ::1] all_vertices,
+        long[:, ::1] triangles, double[:, ::1] face_local_bases,
+        long[:, ::1] neighbor_faces):
+    advance_one_step(xyz_loc, face_indices, k, initial_point,
+                     initial_face_index, all_vertices, triangles,
+                     face_local_bases, neighbor_faces)
