@@ -26,10 +26,16 @@ plots/
 The re-usable modules are
 
 ```
+_cython_interface.pyx
 dolfin_mesh_utils.py
 particle_diffusion_on_mesh.py
 particle_diffusion_plot_utils.py
 ```
+
+In particular `_cython_interface.pyx` generates a Python importable shared
+object file `_cython_interface.so` when `make cython_interface` is called.
+This shared object file can / will also be used in a MEX file to call
+the Python code from MATLAB.
 
 The scripts can be divided into two purposes:
 
