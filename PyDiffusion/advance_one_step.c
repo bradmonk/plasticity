@@ -9,10 +9,10 @@
  *
  * The calling syntax is:
  *
- *     outMatrix = arrayProduct(xyz_loc, face_indices, k, initial_point, ...
- *                              initial_face_index, all_vertices, ...
- *                              triangles, face_local_bases, ...
- *                              neighbor_faces, multiplier, inMatrix)
+ *     outMatrix = advance_one_step(xyz_loc, face_indices, k, initial_point, ...
+ *                                  initial_face_index, all_vertices, ...
+ *                                  triangles, face_local_bases, ...
+ *                                  neighbor_faces, multiplier, inMatrix)
  *
  *========================================================
  */
@@ -89,22 +89,22 @@ void mexFunction( int nlhs, mxArray *plhs[],
     /* make sure xyz_loc is double array (of correct shape) */
     if(mxGetN(prhs[0])!=3) {
         mexErrMsgIdAndTxt("advance_one_step:notXYZCoords",
-                          "xyz_loc must have 3 columns.");
+                          "xyz_loc (arg 1) must have 3 columns.");
     }
     if( !mxIsDouble(prhs[0]) ||
          mxIsComplex(prhs[0])) {
         mexErrMsgIdAndTxt("advance_one_step:notDouble",
-                          "xyz_loc must be type double.");
+                          "xyz_loc (arg 1) must be type double.");
     }
 
     /* make sure face_indices is long array (of correct shape) */
     if(mxGetN(prhs[1])!=1) {
         mexErrMsgIdAndTxt("advance_one_step:notColVector",
-                          "face_indices must have 1 column.");
+                          "face_indices (arg 2) must have 1 column.");
     }
     if( !mxIsInt64(prhs[1]) ) {
         mexErrMsgIdAndTxt("advance_one_step:notLong",
-                          "face_indices must be type long.");
+                          "face_indices (arg 2) must be type long.");
     }
 
     /* make sure k is scalar double */
@@ -112,67 +112,67 @@ void mexFunction( int nlhs, mxArray *plhs[],
          mxIsComplex(prhs[2]) ||
          mxGetNumberOfElements(prhs[2])!=1 ) {
         mexErrMsgIdAndTxt("advance_one_step:notScalarDouble",
-                          "k must be a scalar double.");
+                          "k (arg 3) must be a scalar double.");
     }
 
     /* make sure initial_point is double 1x3 array */
     if(mxGetN(prhs[3])!=3 || mxGetM(prhs[3])!=1) {
         mexErrMsgIdAndTxt("advance_one_step:notXYZVec",
-                          "initial_point must be 1x3.");
+                          "initial_point (arg 4) must be 1x3.");
     }
     if( !mxIsDouble(prhs[3]) ||
          mxIsComplex(prhs[3])) {
         mexErrMsgIdAndTxt("advance_one_step:notDouble",
-                          "initial_point must be type double.");
+                          "initial_point (arg 4) must be type double.");
     }
 
     /* make sure initial_face_index is a scalar long */
     if( !mxIsInt64(prhs[4]) ||
          mxGetNumberOfElements(prhs[4])!=1 ) {
         mexErrMsgIdAndTxt("advance_one_step:notScalar",
-                          "initial_face_index must be a scalar long.");
+                          "initial_face_index (arg 5) must be a scalar long.");
     }
 
     /* make sure all_vertices is double array (of correct shape) */
     if(mxGetN(prhs[5])!=3) {
         mexErrMsgIdAndTxt("advance_one_step:notXYZCoords",
-                          "all_vertices must have 3 columns.");
+                          "all_vertices (arg 6) must have 3 columns.");
     }
     if( !mxIsDouble(prhs[5]) ||
          mxIsComplex(prhs[5])) {
         mexErrMsgIdAndTxt("advance_one_step:notDouble",
-                          "all_vertices must be type double.");
+                          "all_vertices (arg 6) must be type double.");
     }
 
     /* make sure triangles is long array (of correct shape) */
     if(mxGetN(prhs[6])!=3) {
         mexErrMsgIdAndTxt("advance_one_step:notVertexIndices",
-                          "triangles must have 3 columns.");
+                          "triangles (arg 7) must have 3 columns.");
     }
     if( !mxIsInt64(prhs[6]) ) {
         mexErrMsgIdAndTxt("advance_one_step:notLong",
-                          "triangles must be type long.");
+                          "triangles (arg 7) must be type long.");
     }
 
     /* make sure face_local_bases is double array (of correct shape) */
     if(mxGetN(prhs[7])!=6) {
         mexErrMsgIdAndTxt("advance_one_step:notFaceBases",
-                          "face_local_bases must have 6 columns.");
+                          "face_local_bases (arg 8) must have 6 columns.");
     }
     if( !mxIsDouble(prhs[7]) ||
          mxIsComplex(prhs[7])) {
         mexErrMsgIdAndTxt("advance_one_step:notDouble",
-                          "face_local_bases must be type double.");
+                          "face_local_bases (arg 8) must be type double.");
     }
 
     /* make sure neighbor_faces is long array (of correct shape) */
     if(mxGetN(prhs[8])!=3) {
         mexErrMsgIdAndTxt("advance_one_step:notNeighborIndices",
-                          "neighbor_faces must have 3 columns.");
+                          "neighbor_faces (arg 9) must have 3 columns.");
     }
     if( !mxIsInt64(prhs[8]) ) {
         mexErrMsgIdAndTxt("advance_one_step:notLong",
-                          "neighbor_faces must be type long.");
+                          "neighbor_faces (arg 9) must be type long.");
     }
 
     /* get the value of the scalar input  */
@@ -192,18 +192,19 @@ void mexFunction( int nlhs, mxArray *plhs[],
      *     rows(neighbor_faces) == rows(triangles)
      */
     if(mxGetN(prhs[1])!=num_points) {
-        mexErrMsgIdAndTxt("advance_one_step:mismatchRows",
-                          "face_indices and xyz_loc must have same # rows.");
+        mexErrMsgIdAndTxt(
+            "advance_one_step:mismatchRows",
+            "face_indices (arg 2) and xyz_loc (arg 0) must have same # rows.");
     }
     if(mxGetN(prhs[7])!=num_triangles) {
         mexErrMsgIdAndTxt(
             "advance_one_step:mismatchRows",
-            "face_local_bases and xyz_loc must have same # rows.");
+            "face_local_bases (arg 8) and triangles (arg 7) must have same # rows.");
     }
     if(mxGetN(prhs[8])!=num_triangles) {
         mexErrMsgIdAndTxt(
             "advance_one_step:mismatchRows",
-            "neighbor_faces and triangles must have same # rows.");
+            "neighbor_faces (arg 9) and triangles (arg 7) must have same # rows.");
     }
 
     /* get scalar values */
