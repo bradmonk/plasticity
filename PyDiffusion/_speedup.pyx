@@ -70,12 +70,11 @@ def advance_one_step(double[:, ::1] xyz_loc, long[:, ::1] face_indices,
     for pt in points:
         pt.move()
 
-    cdef double[:, ::1] xyz_loc_after = np.empty((M, 3), dtype=np.float64)
-    cdef long[:, ::1] face_indices_after = np.empty((M, 1), dtype=np.int64)
     cdef int i
     for i, pt in enumerate(points):
-        xyz_loc_after[i, 0] = pt.point[0]
-        xyz_loc_after[i, 1] = pt.point[1]
-        xyz_loc_after[i, 2] = pt.point[2]
-        face_indices_after[i, 0] = pt.face.face_index
-    return xyz_loc_after, face_indices_after
+        # Update the xyz locations in place.
+        xyz_loc[i, 0] = pt.point[0]
+        xyz_loc[i, 1] = pt.point[1]
+        xyz_loc[i, 2] = pt.point[2]
+        # Update the face indices in place.
+        face_indices[i, 0] = pt.face.face_index

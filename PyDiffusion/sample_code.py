@@ -154,8 +154,8 @@ def run_with_matrices_only():
         if print_frequency is not None and step_num % print_frequency == 0:
             print 'Step Number:', step_num
 
-        xyz_loc, face_indices = advance_one_step(xyz_loc, face_indices,
-                                                 *constructor_args)
+        # Update the XYZ locations and face_indices in place.
+        advance_one_step(xyz_loc, face_indices, *constructor_args)
 
 
 if __name__ == '__main__':
