@@ -150,15 +150,12 @@ def run_with_matrices_only():
     xyz_loc = np.vstack([initial_point.copy() for _ in xrange(num_points)])
     face_indices = initial_face_index * np.ones((num_points, 1), dtype=np.int64)
 
-    initial_point_copy = initial_point.copy()
     for step_num in xrange(1, num_steps + 1):
         if print_frequency is not None and step_num % print_frequency == 0:
             print 'Step Number:', step_num
 
         # Update the XYZ locations and face_indices in place.
         advance_one_step(xyz_loc, face_indices, *constructor_args)
-        raise ValueError('initial_point was:', initial_point_copy,
-                         'initial_point has become:', initial_point)
 
 
 if __name__ == '__main__':
