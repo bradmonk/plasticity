@@ -10,7 +10,7 @@
  * The calling syntax is:
  *
  *     outMatrix = arrayProduct(multiplier, inMatrix, xyz_loc, ...
- *                              face_indices, k)
+ *                              face_indices, k, initial_point)
  *
  *========================================================
  */
@@ -45,8 +45,8 @@ void mexFunction( int nlhs, mxArray *plhs[],
     double *outMatrix;              /* output matrix */
 
     /* check for proper number of arguments */
-    if(nrhs!=5) {
-        mexErrMsgIdAndTxt("advance_one_step:nrhs","Five inputs required.");
+    if(nrhs!=6) {
+        mexErrMsgIdAndTxt("advance_one_step:nrhs","Six inputs required.");
     }
     if(nlhs!=1) {
         mexErrMsgIdAndTxt("advance_one_step:nlhs","One output required.");
@@ -98,6 +98,17 @@ void mexFunction( int nlhs, mxArray *plhs[],
          mxGetNumberOfElements(prhs[4])!=1 ) {
         mexErrMsgIdAndTxt("advance_one_step:notScalarDouble",
                           "k must be a scalar double.");
+    }
+
+    /* make sure initial_point is double 1x3 array */
+    if(mxGetN(prhs[5])!=3 || mxGetM(prhs[5])!=1) {
+        mexErrMsgIdAndTxt("advance_one_step:notXYZVec",
+                          "initial_point must be 1x3.");
+    }
+    if( !mxIsDouble(prhs[5]) ||
+         mxIsComplex(prhs[5])) {
+        mexErrMsgIdAndTxt("advance_one_step:notDouble",
+                          "initial_point must be type double.");
     }
 
     /* get the value of the scalar input  */
