@@ -8,6 +8,7 @@ happily.
 import itertools
 import numpy as np
 cimport cython
+from cython cimport view
 
 from particle_diffusion_on_mesh import Mesh
 from particle_diffusion_on_mesh import Point
@@ -87,16 +88,8 @@ cdef public void advance_one_step_c(
         long initial_face_index, double[:, ::1] all_vertices,
         long[:, ::1] triangles, double[:, ::1] face_local_bases,
         long[:, ::1] neighbor_faces):
-    cdef long[:, ::1] py_face_indices = np.empty((num_points, 1),
-                                                 dtype=np.int64)
-    cdef double[:, ::1] py_xyz_loc = np.empty((num_points, 3),
-                                              dtype=np.float64)
-    for i in xrange(num_points):
-        py_face_indices[i, 0] = face_indices[i]
-        # Assumes row-wise (C) ordering.
-        py_xyz_loc[i, 0] = xyz_loc[3 * i]
-        py_xyz_loc[i, 1] = xyz_loc[3 * i + 1]
-        py_xyz_loc[i, 3] = xyz_loc[3 * i + 2]
+    cdef view.array py_face_indices = <long[:num_points, :1]> face_indices
+    cdef view.array py_xyz_loc = <double[:num_points, :3]> xyz_loc
     advance_one_step(py_xyz_loc, py_face_indices, k, initial_point,
                      initial_face_index, all_vertices, triangles,
                      face_local_bases, neighbor_faces)
