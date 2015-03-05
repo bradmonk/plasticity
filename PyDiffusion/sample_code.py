@@ -1,8 +1,8 @@
 import numpy as np
 
+from _speedup import advance_one_step
 from particle_diffusion_on_mesh import Mesh
 from particle_diffusion_on_mesh import Point
-from particle_diffusion_on_mesh import advance_one_step
 from particle_diffusion_on_mesh import run_simulation
 from particle_diffusion_plot_utils import PlotBoundary
 from particle_diffusion_plot_utils import plot_simulation

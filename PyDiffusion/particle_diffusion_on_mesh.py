@@ -1,4 +1,3 @@
-import itertools
 import numpy as np
 import random
 
@@ -407,57 +406,3 @@ def run_simulation(num_points, mesh_wrapper, num_steps=200,
             pt.move()
 
     return points
-
-
-def advance_one_step(xyz_loc, face_indices, k, initial_point,
-                     initial_face_index, all_vertices, triangles,
-                     face_local_bases, neighbor_faces):
-    """Custom method for advancing simulation by one-step.
-
-    This is a bare-bones method which accepts and returns only simple types
-    (matrices) to avoid surfacing Python OOP in it's interface.
-
-    The main values being advanced are the points and faces corresponding to
-    those points. In addition, the remaining (7) arguments are used to
-    construct a `Mesh` object.
-
-    Args:
-        xyz_loc: An Mx3 array (2D) of point locations.
-        face_indices: An Mx1 vector (2D so MATLAB is happy) of face indices
-                      corresponding to each point in `xyz_loc`.
-        k: Float, the "global" diffusion rate in the mesh.
-        initial_point: A 3-vector (1D) of floats containing the initial starting
-                       point on the mesh.
-        initial_face_index: Integer. The face containing `initial_point`.
-        all_vertices: A Vx3 matrix of floats containing all the vertices in
-                      the mesh.
-        triangles: A Tx3 matrix of integers containing the vertex indices of
-                   each triple of vertices in a mesh triangle exterior face.
-        face_local_bases: A Tx6 matrix of floats containing a pre-computed
-                          orthogonal basis of the plane going through each
-                          triangle. (The rows of `face_local_bases` correspond
-                          to the rows of `triangles`).
-        neighbor_faces: A Tx3 matrix of integers containing indices of the
-                        neighbors of each face in `triangles`. A triangle has 3
-                        sides hence 3 neighbors. (The rows of `neighbor_faces`
-                        correspond to the rows of `triangles`).
-
-    Returns:
-        Returns two arrays, the updated version of xyz_loc and face_indices.
-    """
-    mesh_wrapper = Mesh(k, initial_point, initial_face_index, all_vertices,
-                        triangles, face_local_bases, neighbor_faces)
-    # NOTE: We assume but don't check that xyz_loc and face_indices
-    #       have the same number of rows.
-    points = []
-    for pt, face_index in itertools.izip(xyz_loc, face_indices):
-        face_index, = face_index  # Unpacking a row of an Mx1 matrix.
-        points.append(Point(mesh_wrapper, point=pt, face_index=face_index))
-
-    # After all points are set, we are OK to move them.
-    for pt in points:
-        pt.move()
-
-    xyz_loc_after = np.vstack([pt.point for pt in points])
-    face_indices_after = np.vstack([[pt.face.face_index] for pt in points])
-    return xyz_loc_after, face_indices_after

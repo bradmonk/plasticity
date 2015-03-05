@@ -5,3 +5,7 @@ Rakefile
 *.aux
 *.log
 *.out
+
+# Files generated for/from Cython
+PyDiffusion/_speedup.so
+PyDiffusion/_speedup.c
