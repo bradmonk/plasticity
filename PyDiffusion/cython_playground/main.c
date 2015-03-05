@@ -7,7 +7,7 @@ int main(void)
     Py_Initialize();
     initfoo();
     foo_stream(stderr);
-    // foo_direct();
+    foo_direct();
     Py_Finalize();
     return 0;
 }
