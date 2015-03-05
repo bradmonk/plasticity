@@ -212,13 +212,13 @@ void mexFunction( int nlhs, mxArray *plhs[],
     initial_face_index = mxGetScalar(prhs[4]);
 
     /* get matrix values */
-    xyz_loc = mxGetPr(plhs[0]);
-    face_indices = mxGetPr(plhs[1]);
-    initial_point = mxGetPr(plhs[3]);
-    all_vertices = mxGetPr(plhs[5]);
-    triangles = mxGetPr(plhs[6]);
-    face_local_bases = mxGetPr(plhs[7]);
-    neighbor_faces = mxGetPr(plhs[8]);
+    xyz_loc = mxGetPr(prhs[0]);
+    face_indices = mxGetPr(prhs[1]);
+    initial_point = mxGetPr(prhs[3]);
+    all_vertices = mxGetPr(prhs[5]);
+    triangles = mxGetPr(prhs[6]);
+    face_local_bases = mxGetPr(prhs[7]);
+    neighbor_faces = mxGetPr(prhs[8]);
 
     /* get dimensions of the input matrix */
     ncols = mxGetN(prhs[10]);
