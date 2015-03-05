@@ -5,6 +5,12 @@
  *       of functionality to ensure that the Cython generated file
  *       can be compiled with MEX.
  *
+ * This is a MEX-file for MATLAB.
+ *
+ * The calling syntax is:
+ *
+ *     outMatrix = arrayProduct(multiplier, inMatrix, xyz_loc)
+ *
  *========================================================
  */
 
@@ -38,28 +44,40 @@ void mexFunction( int nlhs, mxArray *plhs[],
     double *outMatrix;              /* output matrix */
 
     /* check for proper number of arguments */
-    if(nrhs!=2) {
-        mexErrMsgIdAndTxt("MyToolbox:arrayProduct:nrhs","Two inputs required.");
+    if(nrhs!=3) {
+        mexErrMsgIdAndTxt("advance_one_step:nrhs","Two inputs required.");
     }
     if(nlhs!=1) {
-        mexErrMsgIdAndTxt("MyToolbox:arrayProduct:nlhs","One output required.");
+        mexErrMsgIdAndTxt("advance_one_step:nlhs","One output required.");
     }
+
     /* make sure the first input argument is scalar */
     if( !mxIsDouble(prhs[0]) ||
          mxIsComplex(prhs[0]) ||
          mxGetNumberOfElements(prhs[0])!=1 ) {
-        mexErrMsgIdAndTxt("MyToolbox:arrayProduct:notScalar","Input multiplier must be a scalar.");
+        mexErrMsgIdAndTxt("advance_one_step:notScalar","Input multiplier must be a scalar.");
     }
 
     /* make sure the second input argument is type double */
     if( !mxIsDouble(prhs[1]) ||
          mxIsComplex(prhs[1])) {
-        mexErrMsgIdAndTxt("MyToolbox:arrayProduct:notDouble","Input matrix must be type double.");
+        mexErrMsgIdAndTxt("advance_one_step:notDouble","Input matrix must be type double.");
     }
 
     /* check that number of rows in second input argument is 1 */
     if(mxGetM(prhs[1])!=1) {
-        mexErrMsgIdAndTxt("MyToolbox:arrayProduct:notRowVector","Input must be a row vector.");
+        mexErrMsgIdAndTxt("advance_one_step:notRowVector","Input must be a row vector.");
+    }
+
+    /* make sure xyz_loc is double array (of correct shape) */
+    if(mxGetN(prhs[2])!=3) {
+        mexErrMsgIdAndTxt("advance_one_step:notXYZCoords",
+                          "xyz_loc must have 3 columns.");
+    }
+    if( !mxIsDouble(prhs[2]) ||
+         mxIsComplex(prhs[2])) {
+        mexErrMsgIdAndTxt("advance_one_step:notDouble",
+                          "xyz_loc must be type double.");
     }
 
     /* get the value of the scalar input  */
