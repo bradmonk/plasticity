@@ -17,16 +17,16 @@ Dynamic changes to the signaling efficacy between neurons is thought to underlie
 ## Media
 
 <a href="http://youtu.be/9ipFHrxqLWc" target="_blank"><img src="http://camk2.com/pix/yt4.png" 
-alt="3d actin network" width="400" border="10" /></a> <a href="http://youtu.be/QBx8F_5_y0g" target="_blank"><img src="http://camk2.com/pix/yt1.png" alt="3d actin network" width="400" border="10" /></a>
+alt="3d actin network" width="300" border="10" /></a> <a href="http://youtu.be/QBx8F_5_y0g" target="_blank"><img src="http://camk2.com/pix/yt1.png" alt="3d actin network" width="300" border="10" /></a>
 
 
 <a href="http://youtu.be/JH-hGjzhEFQ" target="_blank"><img src="http://camk2.com/pix/yt2.png" 
-alt="3d actin network" width="400" border="10" /></a> <a href="http://youtu.be/t9Vzcvne40w" target="_blank"><img src="http://camk2.com/pix/yt3.png" alt="3d actin network" width="400" border="10" /></a> 
+alt="3d actin network" width="300" border="10" /></a> <a href="http://youtu.be/t9Vzcvne40w" target="_blank"><img src="http://camk2.com/pix/yt3.png" alt="3d actin network" width="300" border="10" /></a> 
 
 
 <a href="http://bradleymonk.com/media2/vid6/3dDiffusion.html" target="_blank"><img src="http://bradleymonk.com/media2/vid6/3dDiffusion.png" 
-alt="3d Diffusion Animation in dolfin" width="400" border="10" /></a> <a href="http://bradleymonk.com/media2/vid9/Dendritic_Diffusion_3D.mp4" target="_blank"><img src="http://bradleymonk.com/media2/vid9/Dendritic_Diffusion_3D.png" 
-alt="Dendritic surface diffusion" width="400" border="10" /></a>
+alt="3d Diffusion Animation in dolfin" width="300" border="10" /></a> <a href="http://bradleymonk.com/media2/vid9/Dendritic_Diffusion_3D.mp4" target="_blank"><img src="http://bradleymonk.com/media2/vid9/Dendritic_Diffusion_3D.png" 
+alt="Dendritic surface diffusion" width="300" border="10" /></a>
 
 
 
