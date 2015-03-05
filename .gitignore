@@ -7,5 +7,6 @@ Rakefile
 *.out
 
 # Files generated for/from Cython
-PyDiffusion/_speedup.so
-PyDiffusion/_speedup.c
+PyDiffusion/_cython_interface.c
+PyDiffusion/_cython_interface.h
+PyDiffusion/_cython_interface.so
