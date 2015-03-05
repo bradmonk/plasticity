@@ -11,7 +11,8 @@
  *
  *     outMatrix = arrayProduct(multiplier, inMatrix, xyz_loc, ...
  *                              face_indices, k, initial_point, ...
- *                              initial_face_index, all_vertices)
+ *                              initial_face_index, all_vertices, ...
+ *                              triangles)
  *
  *========================================================
  */
@@ -46,8 +47,8 @@ void mexFunction( int nlhs, mxArray *plhs[],
     double *outMatrix;              /* output matrix */
 
     /* check for proper number of arguments */
-    if(nrhs!=8) {
-        mexErrMsgIdAndTxt("advance_one_step:nrhs","Eight inputs required.");
+    if(nrhs!=9) {
+        mexErrMsgIdAndTxt("advance_one_step:nrhs","Nine inputs required.");
     }
     if(nlhs!=1) {
         mexErrMsgIdAndTxt("advance_one_step:nlhs","One output required.");
@@ -128,6 +129,16 @@ void mexFunction( int nlhs, mxArray *plhs[],
          mxIsComplex(prhs[7])) {
         mexErrMsgIdAndTxt("advance_one_step:notDouble",
                           "all_vertices must be type double.");
+    }
+
+    /* make sure triangles is long array (of correct shape) */
+    if(mxGetN(prhs[8])!=3) {
+        mexErrMsgIdAndTxt("advance_one_step:notVertexIndices",
+                          "triangles must have 3 columns.");
+    }
+    if( !mxIsInt64(prhs[8]) ) {
+        mexErrMsgIdAndTxt("advance_one_step:notLong",
+                          "triangles must be type long.");
     }
 
     /* get the value of the scalar input  */
