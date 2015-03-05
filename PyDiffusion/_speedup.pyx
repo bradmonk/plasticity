@@ -79,17 +79,20 @@ def advance_one_step(double[:, ::1] xyz_loc, long[:, ::1] face_indices,
         face_indices[i, 0] = pt.face.face_index
 
 
-@cython.boundscheck(False)
-@cython.wraparound(False)
 cdef public void advance_one_step_c(
         int num_points, int num_vertices, int num_triangles,
-        double* xyz_loc, long* face_indices,
-        double k, double[::1] initial_point,
-        long initial_face_index, double[:, ::1] all_vertices,
-        long[:, ::1] triangles, double[:, ::1] face_local_bases,
-        long[:, ::1] neighbor_faces):
+        double* xyz_loc, long* face_indices, double k, double* initial_point,
+        long initial_face_index, double* all_vertices,
+        long* triangles, double* face_local_bases, long* neighbor_faces):
     cdef view.array py_face_indices = <long[:num_points, :1]> face_indices
     cdef view.array py_xyz_loc = <double[:num_points, :3]> xyz_loc
-    advance_one_step(py_xyz_loc, py_face_indices, k, initial_point,
-                     initial_face_index, all_vertices, triangles,
-                     face_local_bases, neighbor_faces)
+    cdef view.array py_initial_point = <double[:3]> initial_point
+    cdef view.array py_all_vertices = <double[:num_vertices, :3]> all_vertices
+    cdef view.array py_triangles = <long[:num_triangles, :3]> triangles
+    cdef view.array py_face_local_bases = \
+        <double[:num_triangles, :6]> face_local_bases
+    cdef view.array py_neighbor_faces = \
+        <long[:num_triangles, :3]> neighbor_faces
+    advance_one_step(py_xyz_loc, py_face_indices, k, py_initial_point,
+                     initial_face_index, py_all_vertices, py_triangles,
+                     py_face_local_bases, py_neighbor_faces)
