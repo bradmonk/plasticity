@@ -53,8 +53,6 @@ def advance_one_step(double[:, ::1] xyz_loc, long[:, ::1] face_indices,
     Returns:
         Returns two arrays, the updated version of xyz_loc and face_indices.
     """
-    cdef int M = xyz_loc.shape[0]
-
     mesh_wrapper = Mesh(k, np.asarray(initial_point), initial_face_index,
                         np.asarray(all_vertices), np.asarray(triangles),
                         np.asarray(face_local_bases),
@@ -83,11 +81,22 @@ def advance_one_step(double[:, ::1] xyz_loc, long[:, ::1] face_indices,
 @cython.boundscheck(False)
 @cython.wraparound(False)
 cdef public void advance_one_step_c(
-        double[:, ::1] xyz_loc, long[:, ::1] face_indices,
+        int num_points, int num_vertices, int num_triangles,
+        double* xyz_loc, long* face_indices,
         double k, double[::1] initial_point,
         long initial_face_index, double[:, ::1] all_vertices,
         long[:, ::1] triangles, double[:, ::1] face_local_bases,
         long[:, ::1] neighbor_faces):
-    advance_one_step(xyz_loc, face_indices, k, initial_point,
+    cdef long[:, ::1] py_face_indices = np.empty((num_points, 1),
+                                                 dtype=np.int64)
+    cdef double[:, ::1] py_xyz_loc = np.empty((num_points, 3),
+                                              dtype=np.float64)
+    for i in xrange(num_points):
+        py_face_indices[i, 0] = face_indices[i]
+        # Assumes row-wise (C) ordering.
+        py_xyz_loc[i, 0] = xyz_loc[3 * i]
+        py_xyz_loc[i, 1] = xyz_loc[3 * i + 1]
+        py_xyz_loc[i, 3] = xyz_loc[3 * i + 2]
+    advance_one_step(py_xyz_loc, py_face_indices, k, initial_point,
                      initial_face_index, all_vertices, triangles,
                      face_local_bases, neighbor_faces)
