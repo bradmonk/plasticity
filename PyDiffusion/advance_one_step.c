@@ -12,7 +12,8 @@
  *     outMatrix = arrayProduct(multiplier, inMatrix, xyz_loc, ...
  *                              face_indices, k, initial_point, ...
  *                              initial_face_index, all_vertices, ...
- *                              triangles, face_local_bases)
+ *                              triangles, face_local_bases, ...
+ *                              neighbor_faces)
  *
  *========================================================
  */
@@ -47,8 +48,8 @@ void mexFunction( int nlhs, mxArray *plhs[],
     double *outMatrix;              /* output matrix */
 
     /* check for proper number of arguments */
-    if(nrhs!=10) {
-        mexErrMsgIdAndTxt("advance_one_step:nrhs","Ten inputs required.");
+    if(nrhs!=11) {
+        mexErrMsgIdAndTxt("advance_one_step:nrhs","Eleven inputs required.");
     }
     if(nlhs!=1) {
         mexErrMsgIdAndTxt("advance_one_step:nlhs","One output required.");
@@ -151,6 +152,16 @@ void mexFunction( int nlhs, mxArray *plhs[],
          mxIsComplex(prhs[9])) {
         mexErrMsgIdAndTxt("advance_one_step:notDouble",
                           "face_local_bases must be type double.");
+    }
+    /* make sure neighbor_faces is long array (of correct shape) */
+    if(mxGetN(prhs[10])!=3) {
+        mexErrMsgIdAndTxt("advance_one_step:notNeighborIndices",
+                          "neighbor_faces must have 3 columns.");
+    }
+    /* NOTE: We don't check that rows(neighbor_faces) == rows(triangles). */
+    if( !mxIsInt64(prhs[10]) ) {
+        mexErrMsgIdAndTxt("advance_one_step:notLong",
+                          "neighbor_faces must be type long.");
     }
 
     /* get the value of the scalar input  */
