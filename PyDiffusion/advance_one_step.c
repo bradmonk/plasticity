@@ -191,17 +191,17 @@ void mexFunction( int nlhs, mxArray *plhs[],
      *     rows(face_local_bases) == rows(triangles)
      *     rows(neighbor_faces) == rows(triangles)
      */
-    if(mxGetN(prhs[1])!=num_points) {
+    if(mxGetM(prhs[1])!=num_points) {
         mexErrMsgIdAndTxt(
             "advance_one_step:mismatchRows",
             "face_indices (arg 2) and xyz_loc (arg 0) must have same # rows.");
     }
-    if(mxGetN(prhs[7])!=num_triangles) {
+    if(mxGetM(prhs[7])!=num_triangles) {
         mexErrMsgIdAndTxt(
             "advance_one_step:mismatchRows",
             "face_local_bases (arg 8) and triangles (arg 7) must have same # rows.");
     }
-    if(mxGetN(prhs[8])!=num_triangles) {
+    if(mxGetM(prhs[8])!=num_triangles) {
         mexErrMsgIdAndTxt(
             "advance_one_step:mismatchRows",
             "neighbor_faces (arg 9) and triangles (arg 7) must have same # rows.");
