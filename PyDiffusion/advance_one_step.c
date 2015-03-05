@@ -9,7 +9,8 @@
  *
  * The calling syntax is:
  *
- *     outMatrix = arrayProduct(multiplier, inMatrix, xyz_loc)
+ *     outMatrix = arrayProduct(multiplier, inMatrix, xyz_loc, ...
+ *                              face_indices)
  *
  *========================================================
  */
@@ -44,8 +45,8 @@ void mexFunction( int nlhs, mxArray *plhs[],
     double *outMatrix;              /* output matrix */
 
     /* check for proper number of arguments */
-    if(nrhs!=3) {
-        mexErrMsgIdAndTxt("advance_one_step:nrhs","Two inputs required.");
+    if(nrhs!=4) {
+        mexErrMsgIdAndTxt("advance_one_step:nrhs","Four inputs required.");
     }
     if(nlhs!=1) {
         mexErrMsgIdAndTxt("advance_one_step:nlhs","One output required.");
@@ -78,6 +79,17 @@ void mexFunction( int nlhs, mxArray *plhs[],
          mxIsComplex(prhs[2])) {
         mexErrMsgIdAndTxt("advance_one_step:notDouble",
                           "xyz_loc must be type double.");
+    }
+
+    /* make sure face_indices is long array (of correct shape) */
+    if(mxGetN(prhs[3])!=1) {
+        mexErrMsgIdAndTxt("advance_one_step:notColVector",
+                          "face_indices must have 1 column.");
+    }
+    /* NOTE: We don't check that rows(face_indices) == rows(xyz_loc). */
+    if( !mxIsInt64(prhs[3]) ) {
+        mexErrMsgIdAndTxt("advance_one_step:notLong",
+                          "face_indices must be type long.");
     }
 
     /* get the value of the scalar input  */
