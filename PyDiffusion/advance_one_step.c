@@ -220,6 +220,12 @@ void mexFunction( int nlhs, mxArray *plhs[],
     face_local_bases = mxGetPr(prhs[7]);
     neighbor_faces = (long *)mxGetData(prhs[8]);
 
+    advance_one_step_c((int) num_points, (int) num_vertices,
+                       (int) num_triangles,
+                       xyz_loc, face_indices, k, initial_point,
+                       initial_face_index, all_vertices, triangles,
+                       face_local_bases, neighbor_faces);
+
     /* get dimensions of the input matrix */
     ncols = mxGetN(prhs[10]);
 

@@ -6,6 +6,7 @@ help:
 	@echo 'Usage:                                                               '
 	@echo '   make cython_interface   builds cython_interface shared object file'
 	@echo '   make build_mex          builds MEX file which uses Cython code    '
+	@echo '   make test_mex           tests the newly built MEX file       e    '
 
 cython_interface:
 	cython -o _cython_interface.c _cython_interface.pyx
@@ -15,8 +16,11 @@ cython_interface:
 
 build_mex:
 	cp _cython_interface.so libadvanceonestep.so
-	mex -I/usr/include/python2.7 -L/home/dhermes/plasticity/PyDiffusion \
+	mex -v -I/usr/include/python2.7 -L/home/dhermes/plasticity/PyDiffusion \
 	CFLAGS="-fPIC -Wl,-rpath=/home/dhermes/plasticity/PyDiffusion -Wall" \
 	-ladvanceonestep -lpython2.7 advance_one_step.c
 
-.PHONY: help cython_interface build_mex
+test_mex:
+	LD_LIBRARY_PATH=$(PWD) matlab -nojvm -nodisplay -nosplash -r 'test_mex'
+
+.PHONY: help cython_interface build_mex test_mex
