@@ -47,6 +47,20 @@ void mexFunction( int nlhs, mxArray *plhs[],
     size_t ncols;                   /* size of matrix */
     double *outMatrix;              /* output matrix */
 
+    size_t num_points;              /* size of xyz_loc */
+    size_t num_vertices;            /* size of all_vertices */
+    size_t num_triangles;           /* size of triangles */
+
+    double *xyz_loc;                /* 2. Mx3 input matrix */
+    long *face_indices;             /* 3. Mx1 input matrix */
+    double k;                       /* 4. input scalar */
+    double *initial_point;          /* 5. 1x3 input matrix */
+    long initial_face_index;        /* 6. input scalar */
+    double *all_vertices;           /* 7. Vx3 input matrix */
+    long *triangles;                /* 8. Tx3 input matrix */
+    double *face_local_bases;       /* 9. Tx6 input matrix */
+    long *neighbor_faces;           /* 10. Tx3 input matrix */
+
     /* check for proper number of arguments */
     if(nrhs!=11) {
         mexErrMsgIdAndTxt("advance_one_step:nrhs","Eleven inputs required.");
