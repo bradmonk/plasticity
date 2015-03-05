@@ -11,7 +11,7 @@
  *
  *     outMatrix = arrayProduct(multiplier, inMatrix, xyz_loc, ...
  *                              face_indices, k, initial_point, ...
- *                              initial_face_index)
+ *                              initial_face_index, all_vertices)
  *
  *========================================================
  */
@@ -46,8 +46,8 @@ void mexFunction( int nlhs, mxArray *plhs[],
     double *outMatrix;              /* output matrix */
 
     /* check for proper number of arguments */
-    if(nrhs!=7) {
-        mexErrMsgIdAndTxt("advance_one_step:nrhs","Seven inputs required.");
+    if(nrhs!=8) {
+        mexErrMsgIdAndTxt("advance_one_step:nrhs","Eight inputs required.");
     }
     if(nlhs!=1) {
         mexErrMsgIdAndTxt("advance_one_step:nlhs","One output required.");
@@ -117,6 +117,17 @@ void mexFunction( int nlhs, mxArray *plhs[],
          mxGetNumberOfElements(prhs[6])!=1 ) {
         mexErrMsgIdAndTxt("advance_one_step:notScalar",
                           "initial_face_index must be a scalar long.");
+    }
+
+    /* make sure all_vertices is double array (of correct shape) */
+    if(mxGetN(prhs[7])!=3) {
+        mexErrMsgIdAndTxt("advance_one_step:notXYZCoords",
+                          "all_vertices must have 3 columns.");
+    }
+    if( !mxIsDouble(prhs[7]) ||
+         mxIsComplex(prhs[7])) {
+        mexErrMsgIdAndTxt("advance_one_step:notDouble",
+                          "all_vertices must be type double.");
     }
 
     /* get the value of the scalar input  */
