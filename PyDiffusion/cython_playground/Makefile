@@ -25,7 +25,7 @@ test: libfoo.so main.c
 	-o test main.c -lfoo -lpython2.7
 
 run_test: test
-	./test
+	PYTHONPATH='$${PYTHONPATH}:$(PWD)' ./test
 
 clean:
 	rm -f bar.pyc foo.c foo.h libfoo.so test
