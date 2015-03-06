@@ -20,12 +20,11 @@ libfoo.so: foo.c
 
 test: libfoo.so main.c
 	gcc -I/usr/include/python2.7 \
-	-L$(PWD) \
-	-Wl,-rpath=$(PWD) -Wall \
+	-L$(PWD) -Wall \
 	-o test main.c -lfoo -lpython2.7
 
 run_test: test
-	PYTHONPATH='$${PYTHONPATH}:$(PWD)' ./test
+	PYTHONPATH='$${PYTHONPATH}:$(PWD)' LD_LIBRARY_PATH=$(PWD) ./test
 
 clean:
 	rm -f bar.pyc foo.c foo.h libfoo.so test
