@@ -3,3 +3,4 @@ foo.c
 foo.h
 libfoo.so
 test
+foo_mex.mexa64
