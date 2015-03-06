@@ -3,14 +3,16 @@ PWD=$(shell pwd)
 help:
 	@echo 'Makefile for Cython code                                           '
 	@echo '                                                                   '
-	@echo 'Usage:                                                             '
+	@echo 'Primary Targets:                                                   '
+	@echo '   make run_test         runs test C binary that uses Python       '
+	@echo '   make test_mex         tests MEX file that uses Python           '
+	@echo '   make matlab           runs matlab with the MEX/Python paths set '
+	@echo '                                                                   '
+	@echo 'Other Build Targets:                                               '
 	@echo '   make foo.c            builds cython_interface C file            '
 	@echo '   make libfoo.so        builds cython_interface shared object file'
 	@echo '   make test             builds test binary                        '
-	@echo '   make run_test         runs test binary                          '
 	@echo '   make foo_mex.mexa64   builds MATLAB mex file                    '
-	@echo '   make test_mex         tests the newly built MEX file            '
-	@echo '   make matlab           runs matlab with the correct paths set    '
 	@echo '   make clean            cleans all generated outputs              '
 
 foo.c: foo.pyx

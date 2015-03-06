@@ -9,18 +9,7 @@ void call_py(double *zap, size_t zap_size, size_t zap_rows)
     void* handle = dlopen("libpython2.7.so", RTLD_LAZY | RTLD_GLOBAL);
     Py_Initialize();
     initfoo();
-    foo_stream(stderr);
-    foo_direct();
-    from_bar();
-
-    int i;
-    for (i = 0; i < zap_size; i++) {
-      printf("zap[%d] before: %f\n", i, zap[i]);
-    }
     from_waldo(zap, zap_rows);
-    for (i = 0; i < zap_size; i++) {
-      printf("zap[%d] after: %f\n", i, zap[i]);
-    }
     Py_Finalize();
     dlclose(handle);
 }
