@@ -8,6 +8,7 @@ int main(void)
     initfoo();
     foo_stream(stderr);
     foo_direct();
+    from_bar();
     Py_Finalize();
     return 0;
 }
