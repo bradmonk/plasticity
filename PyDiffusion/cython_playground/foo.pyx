@@ -10,16 +10,16 @@ from bar import qux
 
 
 cdef public void foo_stream(FILE *stream):
-    fprintf(stderr, "STREAM: EMILIO %d\n", 0);
+    fprintf(stderr, "  STREAM: EMILIO %d\n", 0);
 
 
 cdef public void foo_direct():
-    fprintf(stderr, "DIRECT: EMILIO %d\n", 0);
+    fprintf(stderr, "  DIRECT: EMILIO %d\n", 0);
 
 
 cdef public void from_bar():
     cdef double x = qux()
-    fprintf(stderr, "FRMBAR: EMILIO %f\n", x);
+    fprintf(stderr, "FROM BAR: EMILIO %f\n", x);
 
 
 cdef public void from_waldo(double* zap, size_t zap_size):
