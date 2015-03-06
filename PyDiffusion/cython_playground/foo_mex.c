@@ -17,7 +17,6 @@ void call_py(double *zap, size_t zap_size, size_t zap_rows)
 void mexFunction( int nlhs, mxArray *plhs[],
                   int nrhs, const mxArray *prhs[])
 {
-    double *zap;
     double *out_matrix;
     size_t zap_size;
     size_t zap_rows;
@@ -36,16 +35,9 @@ void mexFunction( int nlhs, mxArray *plhs[],
     zap_size = mxGetN(prhs[0]);
     /* TODO: Is there a better way to get a size_t scalar? */
     zap_rows = mxGetScalar(prhs[1]);
-    zap = mxGetPr(prhs[0]);
 
-    plhs[0] = mxCreateDoubleMatrix(1, (mwSize)zap_size, mxREAL);
+    /* Create a copy of input to be modified. */
+    plhs[0] = mxDuplicateArray(prhs[0]);
     out_matrix = mxGetPr(plhs[0]);
-    /* Create a copy of zap to be modified. Without copying,
-     * a segfault occurs when the memory is freed.
-     */
-    int i;
-    for (i = 0; i < zap_size; i++) {
-      out_matrix[i] = zap[i];
-    }
     call_py(out_matrix, zap_size, zap_rows);
 }
