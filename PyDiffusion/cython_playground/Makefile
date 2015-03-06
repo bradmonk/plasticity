@@ -1,5 +1,11 @@
 PWD=$(shell pwd)
 
+# On OS X, we need to do a little extra work for the MEX linker.
+UNAME=$(shell uname -s)
+ifeq ($(UNAME), Darwin)
+	MEX_EXTRA="-L/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config"
+endif
+
 help:
 	@echo 'Makefile for Cython code                                           '
 	@echo '                                                                   '
@@ -31,7 +37,7 @@ run_test: test
 	PYTHONPATH="$${PYTHONPATH}:$(PWD)" LD_LIBRARY_PATH=$(PWD) ./test
 
 foo_mex.mexa64: foo_mex.c libfoo.so
-	mex -L$(PWD) -I/usr/include/python2.7 -lpython2.7 -lfoo -ldl foo_mex.c
+	mex -L$(PWD) $(MEX_EXTRA) -I/usr/include/python2.7 -lpython2.7 -lfoo -ldl foo_mex.c
 
 test_mex: foo_mex.mexa64
 	PYTHONPATH="$${PYTHONPATH}:$(PWD)" LD_LIBRARY_PATH=$(PWD) matlab -nojvm -nodisplay -nosplash -r 'test_mex; exit;'
