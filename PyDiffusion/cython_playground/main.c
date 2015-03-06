@@ -1,9 +1,11 @@
-#include <stdio.h>
+#include <dlfcn.h>
 #include <Python.h>
+#include <stdio.h>
 #include "foo.h"
 
 int main(void)
 {
+    void* handle = dlopen("libpython2.7.so", RTLD_LAZY | RTLD_GLOBAL);
     Py_Initialize();
     initfoo();
     double zap[7] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0};
@@ -20,5 +22,6 @@ int main(void)
         printf("zap[%d] after: %f\n", i, zap[i]);
     }
     Py_Finalize();
+    dlclose(handle);
     return 0;
 }
