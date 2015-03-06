@@ -10,6 +10,7 @@ help:
 	@echo '   make run_test         runs test binary                          '
 	@echo '   make foo_mex.mexa64   builds MATLAB mex file                    '
 	@echo '   make test_mex         tests the newly built MEX file            '
+	@echo '   make matlab           runs matlab with the correct paths set    '
 	@echo '   make clean            cleans all generated outputs              '
 
 foo.c: foo.pyx
@@ -34,7 +35,10 @@ foo_mex.mexa64: foo_mex.c libfoo.so
 test_mex: foo_mex.mexa64
 	PYTHONPATH="$${PYTHONPATH}:$(PWD)" LD_LIBRARY_PATH=$(PWD) matlab -nojvm -nodisplay -nosplash -r 'test_mex; exit;'
 
+matlab: foo_mex.mexa64
+	PYTHONPATH="$${PYTHONPATH}:$(PWD)" LD_LIBRARY_PATH=$(PWD) matlab
+
 clean:
 	rm -f bar.pyc foo.c foo.h libfoo.so test foo_mex.mexa64
 
-.PHONY: help run_test clean test_mex
+.PHONY: help run_test clean test_mex matlab
