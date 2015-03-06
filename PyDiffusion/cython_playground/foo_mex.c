@@ -1,10 +1,12 @@
-#include <stdio.h>
+#include <dlfcn.h>
 #include <Python.h>
+#include <stdio.h>
 #include "foo.h"
 #include "mex.h"
 
 void call_py(double *zap, size_t zap_size, size_t zap_rows)
 {
+    void* handle = dlopen("libpython2.7.so", RTLD_LAZY | RTLD_GLOBAL);
     Py_Initialize();
     initfoo();
     foo_stream(stderr);
@@ -20,6 +22,7 @@ void call_py(double *zap, size_t zap_size, size_t zap_rows)
       printf("zap[%d] after: %f\n", i, zap[i]);
     }
     Py_Finalize();
+    dlclose(handle);
 }
 
 void mexFunction( int nlhs, mxArray *plhs[],
