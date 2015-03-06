@@ -8,6 +8,7 @@ help:
 	@echo '   make libfoo.so    builds cython_interface shared object file'
 	@echo '   make test         builds test binary                        '
 	@echo '   make run_test     runs test binary                          '
+	@echo '   make clean        cleans all generated outputs              '
 
 foo.c: foo.pyx
 	cython -o foo.c foo.pyx
@@ -26,4 +27,7 @@ test: libfoo.so main.c
 run_test: test
 	./test
 
-.PHONY: help run_test
+clean:
+	rm -f bar.pyc foo.c foo.h libfoo.so test
+
+.PHONY: help run_test clean
