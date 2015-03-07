@@ -9,10 +9,11 @@
  *
  * The calling syntax is:
  *
- *     outMatrix = advance_one_step(xyz_loc, face_indices, k, initial_point, ...
- *                                  initial_face_index, all_vertices, ...
- *                                  triangles, face_local_bases, ...
- *                                  neighbor_faces, multiplier, inMatrix)
+ *     [outMatrix, xyz_loc, face_indices] = advance_one_step(...
+ *         xyz_loc, face_indices, k, initial_point, ...
+ *         initial_face_index, all_vertices, ...
+ *         triangles, face_local_bases, ...
+ *         neighbor_faces, multiplier, inMatrix)
  *
  *========================================================
  */
@@ -44,8 +45,8 @@ void mexFunction( int nlhs, mxArray *plhs[],
     size_t num_vertices;            /* size of all_vertices */
     size_t num_triangles;           /* size of triangles */
 
-    double *xyz_loc;                /* 0. Mx3 input matrix */
-    long *face_indices;             /* 1. Mx1 input matrix */
+    double *xyz_loc;                /* 0. Mx3 input/output matrix */
+    long *face_indices;             /* 1. Mx1 input/output matrix */
     double k;                       /* 2. input scalar */
     double *initial_point;          /* 3. 1x3 input matrix */
     long initial_face_index;        /* 4. input scalar */
@@ -206,13 +207,20 @@ void mexFunction( int nlhs, mxArray *plhs[],
     initial_face_index = mxGetScalar(prhs[4]);
 
     /* get matrix values */
-    xyz_loc = mxGetPr(prhs[0]);
-    face_indices = (long *)mxGetData(prhs[1]);
     initial_point = mxGetPr(prhs[3]);
     all_vertices = mxGetPr(prhs[5]);
     triangles = (long *)mxGetData(prhs[6]);
     face_local_bases = mxGetPr(prhs[7]);
     neighbor_faces = (long *)mxGetData(prhs[8]);
+
+    /* Copy xyz_loc and face_indices before editing. (If
+     * not copied, will cause segfault.)
+     */
+    plhs[1] = mxDuplicateArray(prhs[0]);
+    plhs[2] = mxDuplicateArray(prhs[1]);
+
+    xyz_loc = mxGetPr(pls[1]);
+    face_indices = (long *)mxGetData(plhs[2]);
 
     advance_one_step_c((mwSize) num_points, (mwSize) num_vertices,
                        (mwSize) num_triangles,
