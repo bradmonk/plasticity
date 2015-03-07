@@ -80,7 +80,7 @@ def advance_one_step(double[:, ::1] xyz_loc, long[:, ::1] face_indices,
 
 
 cdef public void advance_one_step_c(
-        int num_points, int num_vertices, int num_triangles,
+        size_t num_points, size_t num_vertices, size_t num_triangles,
         double* xyz_loc, long* face_indices, double k, double* initial_point,
         long initial_face_index, double* all_vertices,
         long* triangles, double* face_local_bases, long* neighbor_faces):

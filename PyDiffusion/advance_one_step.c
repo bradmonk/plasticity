@@ -21,12 +21,6 @@
 #include "_cython_interface.h"
 #include "mex.h"
 
-extern void advance_one_step_c(
-    int num_points, int num_vertices, int num_triangles, double *xyz_loc,
-    long *face_indices, double k, double *initial_point,
-    long initial_face_index, double *all_vertices, long *triangles,
-    double *face_local_bases, long *neighbor_faces);
-
 /* The computational routine */
 void arrayProduct(double x, double *y, double *z, mwSize n)
 {
@@ -220,8 +214,8 @@ void mexFunction( int nlhs, mxArray *plhs[],
     face_local_bases = mxGetPr(prhs[7]);
     neighbor_faces = (long *)mxGetData(prhs[8]);
 
-    advance_one_step_c((int) num_points, (int) num_vertices,
-                       (int) num_triangles,
+    advance_one_step_c((mwSize) num_points, (mwSize) num_vertices,
+                       (mwSize) num_triangles,
                        xyz_loc, face_indices, k, initial_point,
                        initial_face_index, all_vertices, triangles,
                        face_local_bases, neighbor_faces);
