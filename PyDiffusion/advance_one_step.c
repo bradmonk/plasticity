@@ -18,7 +18,9 @@
  *========================================================
  */
 
+#include <dlfcn.h>
 #include <Python.h>
+#include <stdio.h>
 #include "_cython_interface.h"
 #include "mex.h"
 
@@ -222,11 +224,16 @@ void mexFunction( int nlhs, mxArray *plhs[],
     xyz_loc = mxGetPr(plhs[1]);
     face_indices = (long *)mxGetData(plhs[2]);
 
+    void* handle = dlopen("libpython2.7.so", RTLD_LAZY | RTLD_GLOBAL);
+    Py_Initialize();
+    init_cython_interface();
     advance_one_step_c((mwSize) num_points, (mwSize) num_vertices,
                        (mwSize) num_triangles,
                        xyz_loc, face_indices, k, initial_point,
                        initial_face_index, all_vertices, triangles,
                        face_local_bases, neighbor_faces);
+    Py_Finalize();
+    dlclose(handle);
 
     /* get dimensions of the input matrix */
     ncols = mxGetN(prhs[10]);
