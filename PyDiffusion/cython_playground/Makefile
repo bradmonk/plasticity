@@ -26,7 +26,7 @@ foo.c: foo.pyx
 
 libfoo.so: foo.c
 	gcc -shared -pthread -fPIC -fwrapv -O2 -Wall -fno-strict-aliasing \
-	-I/usr/include/python2.7 -o libfoo.so foo.c -lpython2.7 \
+	-I/usr/include/python2.7 -o libfoo.so foo.c -lpython2.7
 
 test: libfoo.so main.c
 	gcc -I/usr/include/python2.7 \
