@@ -219,7 +219,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
     plhs[1] = mxDuplicateArray(prhs[0]);
     plhs[2] = mxDuplicateArray(prhs[1]);
 
-    xyz_loc = mxGetPr(pls[1]);
+    xyz_loc = mxGetPr(plhs[1]);
     face_indices = (long *)mxGetData(plhs[2]);
 
     advance_one_step_c((mwSize) num_points, (mwSize) num_vertices,

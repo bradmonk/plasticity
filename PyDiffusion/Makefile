@@ -14,6 +14,7 @@ help:
 	@echo '   make libadvanceonestep.so      builds cython_interface shared object file'
 	@echo '   make advance_one_step.mexa64   builds MEX file which uses Cython code    '
 	@echo '   make test_mex                  tests the newly built MEX file            '
+	@echo '   make clean                     cleans all generated outputs              '
 
 _cython_interface.c: _cython_interface.pyx
 	cython -o _cython_interface.c _cython_interface.pyx
@@ -28,6 +29,11 @@ advance_one_step.mexa64: advance_one_step.c libadvanceonestep.so
 	-ladvanceonestep -lpython2.7 -ldl advance_one_step.c
 
 test_mex: advance_one_step.mexa64
-	PYTHONPATH="$${PYTHONPATH}:$(PWD)" LD_LIBRARY_PATH=$(PWD) matlab -nojvm -nodisplay -nosplash -r 'test_mex; exit;'
+	PYTHONPATH="$${PYTHONPATH}:$(PWD)" LD_LIBRARY_PATH=$(PWD) matlab \
+	-nojvm -nodisplay -nosplash -r 'test_mex; exit;'
 
-.PHONY: help test_mex
+clean:
+	rm -f _cython_interface.c _cython_interface.h libadvanceonestep.so \
+	 advance_one_step.mexa64
+
+.PHONY: help test_mex clean
