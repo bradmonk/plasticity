@@ -9,11 +9,10 @@
  *
  * The calling syntax is:
  *
- *     [outMatrix, xyz_loc, face_indices] = advance_one_step(...
+ *     [xyz_loc, face_indices] = advance_one_step(...
  *         xyz_loc, face_indices, k, initial_point, ...
  *         initial_face_index, all_vertices, ...
- *         triangles, face_local_bases, ...
- *         neighbor_faces, multiplier, inMatrix)
+ *         triangles, face_local_bases, neighbor_faces)
  *
  *========================================================
  */
@@ -24,25 +23,10 @@
 #include "_cython_interface.h"
 #include "mex.h"
 
-/* The computational routine */
-void arrayProduct(double x, double *y, double *z, mwSize n)
-{
-    mwSize i;
-    /* multiply each element y by x */
-    for (i=0; i<n; i++) {
-        z[i] = x * y[i];
-    }
-}
-
 /* The gateway function */
 void mexFunction( int nlhs, mxArray *plhs[],
                   int nrhs, const mxArray *prhs[])
 {
-    double multiplier;              /* input scalar */
-    double *inMatrix;               /* 1xN input matrix */
-    size_t ncols;                   /* size of matrix */
-    double *outMatrix;              /* output matrix */
-
     size_t num_points;              /* size of xyz_loc */
     size_t num_vertices;            /* size of all_vertices */
     size_t num_triangles;           /* size of triangles */
@@ -58,33 +42,15 @@ void mexFunction( int nlhs, mxArray *plhs[],
     long *neighbor_faces;           /* 8. Tx3 input matrix */
 
     /* check for proper number of arguments */
-    if(nrhs!=11) {
-        mexErrMsgIdAndTxt("advance_one_step:nrhs","Eleven inputs required.");
+    if (nrhs != 9) {
+        mexErrMsgIdAndTxt("advance_one_step:nrhs", "Nine inputs required.");
     }
-    if(nlhs!=1) {
-        mexErrMsgIdAndTxt("advance_one_step:nlhs","One output required.");
-    }
-
-    /* make sure the first input argument is scalar */
-    if( !mxIsDouble(prhs[9]) ||
-         mxIsComplex(prhs[9]) ||
-         mxGetNumberOfElements(prhs[9])!=1 ) {
-        mexErrMsgIdAndTxt("advance_one_step:notScalar","Input multiplier must be a scalar.");
-    }
-
-    /* make sure the second input argument is type double */
-    if( !mxIsDouble(prhs[10]) ||
-         mxIsComplex(prhs[10])) {
-        mexErrMsgIdAndTxt("advance_one_step:notDouble","Input matrix must be type double.");
-    }
-
-    /* check that number of rows in second input argument is 1 */
-    if(mxGetM(prhs[10])!=1) {
-        mexErrMsgIdAndTxt("advance_one_step:notRowVector","Input must be a row vector.");
+    if (nlhs != 2) {
+        mexErrMsgIdAndTxt("advance_one_step:nlhs", "Two outputs required.");
     }
 
     /* make sure xyz_loc is double array (of correct shape) */
-    if(mxGetN(prhs[0])!=3) {
+    if (mxGetN(prhs[0]) != 3) {
         mexErrMsgIdAndTxt("advance_one_step:notXYZCoords",
                           "xyz_loc (arg 1) must have 3 columns.");
     }
@@ -172,12 +138,6 @@ void mexFunction( int nlhs, mxArray *plhs[],
                           "neighbor_faces (arg 9) must be type long.");
     }
 
-    /* get the value of the scalar input  */
-    multiplier = mxGetScalar(prhs[9]);
-
-    /* create a pointer to the real data in the input matrix  */
-    inMatrix = mxGetPr(prhs[10]);
-
     /* get dimensions of the inputs */
     num_points = mxGetM(prhs[0]);
     num_vertices = mxGetM(prhs[5]);
@@ -218,11 +178,11 @@ void mexFunction( int nlhs, mxArray *plhs[],
     /* Copy xyz_loc and face_indices before editing. (If
      * not copied, will cause segfault.)
      */
-    plhs[1] = mxDuplicateArray(prhs[0]);
-    plhs[2] = mxDuplicateArray(prhs[1]);
+    plhs[0] = mxDuplicateArray(prhs[0]);
+    plhs[1] = mxDuplicateArray(prhs[1]);
 
-    xyz_loc = mxGetPr(plhs[1]);
-    face_indices = (long *)mxGetData(plhs[2]);
+    xyz_loc = mxGetPr(plhs[0]);
+    face_indices = (long *)mxGetData(plhs[1]);
 
     void* handle = dlopen("libpython2.7.so", RTLD_LAZY | RTLD_GLOBAL);
     Py_Initialize();
@@ -234,16 +194,4 @@ void mexFunction( int nlhs, mxArray *plhs[],
                        face_local_bases, neighbor_faces);
     Py_Finalize();
     dlclose(handle);
-
-    /* get dimensions of the input matrix */
-    ncols = mxGetN(prhs[10]);
-
-    /* create the output matrix */
-    plhs[0] = mxCreateDoubleMatrix(1,(mwSize)ncols,mxREAL);
-
-    /* get a pointer to the real data in the output matrix */
-    outMatrix = mxGetPr(plhs[0]);
-
-    /* call the computational routine */
-    arrayProduct(multiplier,inMatrix,outMatrix,(mwSize)ncols);
 }
