@@ -5,6 +5,7 @@ Rakefile
 *.aux
 *.log
 *.out
+*.mexmaci64
 
 # Files generated for/from Cython
 PyDiffusion/_cython_interface.c
