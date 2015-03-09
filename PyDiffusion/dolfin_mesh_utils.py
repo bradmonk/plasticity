@@ -16,8 +16,8 @@ def get_face(point, mesh, cell_list):
   exterior_facets = [facet for facet in dolfin.facets(matched_cell)
                      if facet.exterior()]
   if len(exterior_facets) != 1:
-    raise ValueError('Number of facets on cell marked exterior != 1.')
     print 'exterior_facets:', exterior_facets
+    raise ValueError('Number of facets on cell marked exterior != 1.')
 
   return exterior_facets[0].index()
 
