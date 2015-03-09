@@ -27,6 +27,9 @@ libadvanceonestep.so: _cython_interface.c
 	-I/usr/include/python2.7 -o libadvanceonestep.so _cython_interface.c \
 	-lpython2.7
 
+_cython_interface.so: libadvanceonestep.so
+	cp libadvanceonestep.so _cython_interface.so
+
 advance_one_step.mexa64: advance_one_step.c libadvanceonestep.so
 	mex -L$(PWD) $(MEX_EXTRA) -I/usr/include/python2.7 \
 	-ladvanceonestep -lpython2.7 -ldl advance_one_step.c
@@ -41,6 +44,6 @@ matlab: foo_mex.mexa64
 
 clean:
 	rm -f _cython_interface.c _cython_interface.h libadvanceonestep.so \
-	 advance_one_step.mexa64
+	 advance_one_step.mexa64 _cython_interface.so
 
 .PHONY: help test_mex matlab clean
