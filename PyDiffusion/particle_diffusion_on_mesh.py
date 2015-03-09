@@ -28,7 +28,15 @@ def find_intersection(center0, direction0, center1, direction1):
     # [-d0, d1] [t,s]^T = delta
     A = np.array([-direction0, direction1]).T
     delta = center0 - center1
-    t, s = np.linalg.solve(A.T.dot(A), A.T.dot(delta))
+    # Unpack M = A^T * A:
+    # [[a, b],
+    #  [c, d]]
+    (a, b), (c, d) = A.T.dot(A)
+    # Inverse of M:
+    # 1/ det(M) [[ d, -b],
+    #            [-c,  a]]
+    M_inv = np.array([[d, -b], [-c, a]]) / (a * d - b * c)
+    t, s = M_inv.dot(A.T.dot(delta))
     return t, s
 
 
