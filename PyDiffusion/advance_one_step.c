@@ -187,11 +187,11 @@ void mexFunction( int nlhs, mxArray *plhs[],
     void* handle = dlopen("libpython2.7.so", RTLD_LAZY | RTLD_GLOBAL);
     Py_Initialize();
     init_cython_interface();
-    advance_one_step_c((mwSize) num_points, (mwSize) num_vertices,
-                       (mwSize) num_triangles,
-                       xyz_loc, face_indices, k, initial_point,
-                       initial_face_index, all_vertices, triangles,
-                       face_local_bases, neighbor_faces);
+    advance_one_step_matlab((mwSize) num_points, (mwSize) num_vertices,
+                            (mwSize) num_triangles,
+                            xyz_loc, face_indices, k, initial_point,
+                            initial_face_index, all_vertices, triangles,
+                            face_local_bases, neighbor_faces);
     Py_Finalize();
     dlclose(handle);
 }
