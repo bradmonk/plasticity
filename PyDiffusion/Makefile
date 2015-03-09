@@ -16,6 +16,7 @@ help:
 	@echo 'Other Build Targets:                                                        '
 	@echo '   make _cython_interface.c       builds cython_interface C file            '
 	@echo '   make libadvanceonestep.so      builds cython_interface shared object file'
+	@echo '   make _cython_interface.so      builds C library importable from Python   '
 	@echo '   make advance_one_step.mexa64   builds MEX file which uses Cython code    '
 	@echo '   make clean                     cleans all generated outputs              '
 
@@ -38,7 +39,7 @@ test_mex: advance_one_step.mexa64
 	PYTHONPATH="$${PYTHONPATH}:$(PWD)" LD_LIBRARY_PATH=$(PWD) matlab \
 	-nojvm -nodisplay -nosplash -r 'test_mex; exit;'
 
-matlab: foo_mex.mexa64
+matlab: advance_one_step.mexa64
 	PYTHONPATH="$${PYTHONPATH}:$(PWD)" LD_LIBRARY_PATH=$(PWD) matlab \
 	-nojvm -nodisplay -nosplash
 
