@@ -9,13 +9,16 @@ def find_intersection(center0, direction0, center1, direction1):
 
     Solves
         c0 + d0 t = c1 + d1 s
-    and returns (t, s). If the lines do not cross then returns (None, None).
+    and returns (t, s).
 
     Args:
         center0: 1D NumPy are with 3 elements.
         direction0: 1D NumPy are with 3 elements.
         center1: 1D NumPy are with 3 elements.
         direction1: 1D NumPy are with 3 elements.
+
+    Raises:
+        np.linalg.LinAlgError: If the matrix is not full rank.
 
     Returns:
         Two real values s and t.
@@ -25,10 +28,7 @@ def find_intersection(center0, direction0, center1, direction1):
     # [-d0, d1] [t,s]^T = delta
     A = np.array([-direction0, direction1]).T
     delta = center0 - center1
-    (t, s), residue, rank, _ = np.linalg.lstsq(A, delta)
-    if not (rank == 2 and np.allclose(residue, 0)):
-        raise ValueError('Solution not unique')
-
+    t, s = np.linalg.solve(A.T.dot(A), A.T.dot(delta))
     return t, s
 
 
