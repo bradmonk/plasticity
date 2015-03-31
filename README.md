@@ -16,6 +16,9 @@ Dynamic changes to the signaling efficacy between neurons is thought to underlie
 
 ## Media
 
+
+<img src="http://camk2.com/pix/alphaShape.png" alt="alphaShape" width="600" border="10" />
+
 <a href="http://youtu.be/9ipFHrxqLWc" target="_blank"><img src="http://camk2.com/pix/yt4.png" 
 alt="3d actin network" width="300" border="10" /></a> <a href="http://youtu.be/QBx8F_5_y0g" target="_blank"><img src="http://camk2.com/pix/yt1.png" alt="3d actin network" width="300" border="10" /></a>
 
