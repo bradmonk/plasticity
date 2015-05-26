@@ -32,13 +32,6 @@ alt="3d Diffusion Animation in matlab" width="300" border="10" /></a> <a href="h
 alt="Dendritic surface diffusion" width="300" border="10" /></a>
 
 
-
-### Analytical proof for steadystate distribution of particles
-<a href="http://bradleymonk.com/media2/figs/SSproof1.png" target="_blank"><img src="http://bradleymonk.com/media2/figs/SSproof1.png" width="650" border="10" /></a>
-<a href="http://bradleymonk.com/media2/figs/SSproof2.png" target="_blank"><img src="http://bradleymonk.com/media2/figs/SSproof2.png" width="650" border="10" /></a>
-
-
-
 ## Resources
 * [djhbrm github.io site](http://subroutines.github.io/djhbrm/)
 * [neuroml.org - neuron model/mesh library](http://www.neuroml.org/tool_support.php)
