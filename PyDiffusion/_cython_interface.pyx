@@ -111,7 +111,7 @@ def advance_one_step(double[:, ::1] _xyz_loc, long[:, ::1] _face_indices,
         face_indices[i, 0] = pt.face.face_index
 
 
-cdef public void advance_one_step_matlab(
+cdef public void advance_one_step_c(
         size_t num_points, size_t num_vertices, size_t num_triangles,
         double* xyz_loc, long* face_indices, double k, double* initial_point,
         long initial_face_index, double* all_vertices,

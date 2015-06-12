@@ -1,6 +1,9 @@
 PWD=$(shell pwd)
 
+# Fenics must be disabled
+# Use Canopy python
 # On OS X, we need to do a little extra work for the MEX linker.
+
 UNAME=$(shell uname -s)
 ifeq ($(UNAME), Darwin)
 	MEX_EXTRA="-L/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config"
@@ -37,12 +40,11 @@ advance_one_step.mexa64: advance_one_step.c libadvanceonestep.so
 
 test_mex: advance_one_step.mexa64
 	PYTHONPATH="$${PYTHONPATH}:$(PWD)" LD_LIBRARY_PATH=$(PWD) matlab \
-	-nojvm -r 'test_mex; exit;'
-    # -nojvm -nodisplay -nosplash -r 'test_mex; exit;'
+    -nojvm -nodisplay -nosplash -r 'test_mex; exit;'
 
 matlab: advance_one_step.mexa64
 	PYTHONPATH="$${PYTHONPATH}:$(PWD)" LD_LIBRARY_PATH=$(PWD) matlab \
-    # -nojvm -nodisplay -nosplash
+    -nojvm -nodisplay -nosplash -r 'exit;'
 
 clean:
 	rm -f _cython_interface.c _cython_interface.h libadvanceonestep.so \
