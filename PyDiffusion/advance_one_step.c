@@ -23,10 +23,53 @@
 #include "_cython_interface.h"
 #include "mex.h"
 
+
+
+/*
+// static FILE  *fp=NULL;
+void *handle = 0;
+
+static void OpenStream(void)
+{
+	mexPrintf("Py_Initialize() in OpenStream.\n");
+	Py_Initialize();
+    init_cython_interface();
+}
+
+
+// Here is the exit function, which gets run when the MEX-file is cleared and when
+// the user exits MATLAB. The mexAtExit function should always be declared as static.
+static void CloseStream(void)
+{
+	// mexPrintf("Py_Finalize() in CloseStream.\n");
+	Py_Finalize();
+    dlclose(handle);
+  	// fclose(fp);
+}
+*/
+
+/*
+nlhs : Number of expected output mxArrays
+plhs : Array of pointers to the expected output mxArrays
+nrhs : Number of input mxArrays
+prhs : Array of pointers to the input mxArrays. Do not modify any prhs values in your MEX-file.
+       Changing the data in these read-only mxArrays can produce undesired side effects.
+*/
+
+
+
 /* The gateway function */
 void mexFunction( int nlhs, mxArray *plhs[],
                   int nrhs, const mxArray *prhs[])
 {
+
+	// mexPrintf("handle is %d\n", handle); mexAtExit(CloseStream);
+
+	void *handle = dlopen("libpython2.7.so", RTLD_LAZY | RTLD_GLOBAL);
+    Py_Initialize();
+	init_cython_interface();
+
+
     size_t num_points;              /* size of xyz_loc */
     size_t num_vertices;            /* size of all_vertices */
     size_t num_triangles;           /* size of triangles */
@@ -175,23 +218,17 @@ void mexFunction( int nlhs, mxArray *plhs[],
     face_local_bases = mxGetPr(prhs[7]);
     neighbor_faces = (long *)mxGetData(prhs[8]);
 
-    /* Copy xyz_loc and face_indices before editing. (If
-     * not copied, will cause segfault.)
-     */
+    // Copy xyz_loc and face_indices before editing. (If not copied, will cause segfault.)
     plhs[0] = mxDuplicateArray(prhs[0]);
     plhs[1] = mxDuplicateArray(prhs[1]);
 
     xyz_loc = mxGetPr(plhs[0]);
     face_indices = (long *)mxGetData(plhs[1]);
 
-    void* handle = dlopen("libpython2.7.so", RTLD_LAZY | RTLD_GLOBAL);
-    Py_Initialize();
-    init_cython_interface();
     advance_one_step_c((mwSize) num_points, (mwSize) num_vertices,
                        (mwSize) num_triangles,
                        xyz_loc, face_indices, k, initial_point,
                        initial_face_index, all_vertices, triangles,
                        face_local_bases, neighbor_faces);
-    Py_Finalize();
-    dlclose(handle);
+
 }
