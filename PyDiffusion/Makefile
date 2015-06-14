@@ -40,14 +40,14 @@ advance_one_step.mexa64: advance_one_step.c libadvanceonestep.so
 
 test_mex: advance_one_step.mexa64
 	PYTHONPATH="$${PYTHONPATH}:$(PWD)" LD_LIBRARY_PATH=$(PWD) matlab \
-    -nojvm -nodisplay -nosplash -r 'test_mex; exit;'
+    -nojvm -nodisplay -nosplash -r 'test_mex;' # 'test_mex; exit;'
 
 matlab: advance_one_step.mexa64
 	PYTHONPATH="$${PYTHONPATH}:$(PWD)" LD_LIBRARY_PATH=$(PWD) matlab \
-    -nojvm -nodisplay -nosplash -r 'exit;'
+    -nojvm -nodisplay -nosplash -r # 'exit;'
 
 clean:
 	rm -f _cython_interface.c _cython_interface.h libadvanceonestep.so \
-	 advance_one_step.mexa64 _cython_interface.so
+	 advance_one_step.mexa64 advance_one_step.mexmaci64 _cython_interface.so
 
 .PHONY: help test_mex matlab clean
