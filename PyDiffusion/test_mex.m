@@ -15,18 +15,22 @@ end
 load('serialized_mesh_res_96.mat');
 
 k = 2.0;  % Override k.
-xyz_loc = initial_point;
-face_indices = initial_face_index;
+xyz_loc = initial_point;                % [0 0 50]
+face_indices = initial_face_index;      % 12419
 
-sp1 = sprintf('\r %s : %s \r','k',class(k));
-sp2 = sprintf('\r %s : %s \r','initial_point',class(initial_point));
-sp3 = sprintf('\r %s : %s \r','xyz_loc',class(xyz_loc));
-sp4 = sprintf('\r %s : %s \r','initial_face_index',class(initial_face_index));
-sp5 = sprintf('\r %s : %s \r','face_indices',class(face_indices));
-sp6 = sprintf('\r %s : %s \r','all_vertices',class(all_vertices));
-sp7 = sprintf('\r %s : %s \r','triangles',class(triangles));
-sp8 = sprintf('\r %s : %s \r','face_local_bases',class(face_local_bases));
-sp9 = sprintf('\r %s : %s \r','neighbor_faces',class(neighbor_faces));
+% k = double([2.0; 1.0]);
+% xyz_loc = double([0 0 50; 0 0 50]);
+% face_indices = int64([12419; 12419]);
+
+sp1 = sprintf('\r %s : %s \r','k',class(k));                                    % double
+sp2 = sprintf('\r %s : %s \r','initial_point',class(initial_point));            % double [0 0 50]
+sp3 = sprintf('\r %s : %s \r','xyz_loc',class(xyz_loc));                        % double [0 0 50]
+sp4 = sprintf('\r %s : %s \r','initial_face_index',class(initial_face_index));  % int64  12419
+sp5 = sprintf('\r %s : %s \r','face_indices',class(face_indices));              % int64  12419
+sp6 = sprintf('\r %s : %s \r','all_vertices',class(all_vertices));              % double
+sp7 = sprintf('\r %s : %s \r','triangles',class(triangles));                    % int64
+sp8 = sprintf('\r %s : %s \r','face_local_bases',class(face_local_bases));      % double
+sp9 = sprintf('\r %s : %s \r','neighbor_faces',class(neighbor_faces));          % int64
 disp([sp1 sp2 sp3 sp4 sp5 sp6 sp7 sp8 sp9])
 clear sp1 sp2 sp3 sp4 sp5 sp6 sp7 sp8 sp9
 
@@ -45,23 +49,3 @@ disp(sp1); disp(sp2);
 
 pause(.1)
 end
-
-
-%{
-clear sp1 sp2
-
-disp(['[xyz_loc, face_indices] = advance_one_step(xyz_loc,face_indices,',...
-      'k, initial_point, initial_face_index, all_vertices,',...
-      'triangles, face_local_bases, neighbor_faces)'])
-
-
-disp(inmem); clear mex; clear all; exit;
-[xyz_loc, face_indices] = advance_one_step(...
-    xyz_loc, face_indices, k, initial_point, initial_face_index, ...
-    all_vertices, triangles, face_local_bases, neighbor_faces)
-
-% clc;
-% [M,X,C] = inmem('-completenames'); disp(C); disp(X);
-% clear functions; clear classes; clear import;
-%}
-
