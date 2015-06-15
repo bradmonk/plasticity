@@ -28,8 +28,8 @@ The generated data and images are stored in their own subdirectories:
 data/
     data_archive/
 
-make_advance_one_step/
-    make_advance_one_step_clean/
+advance_one_step_mex/
+    advance_one_step_mex_clean/
 
 misc/
     dendrite_components/
