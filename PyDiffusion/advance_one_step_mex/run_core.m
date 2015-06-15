@@ -23,14 +23,27 @@ end
 
 
 %% LOAD SERIALIZED MESH AND PARTICLE DIFFUSION DATA
-load('dendritic_mesh_serialized.mat');
-% load('serialized_mesh_res_34.mat');
-% load('serialized_mesh_res_96.mat');
 
-Nsteps = 100;
-k = 3.0;  % Override k.
+load('dendritic_mesh_serialized.mat');
+
+
+%% ---------------- USER-ENTERED PARAMETERS ----------------
+
+
+Nsteps = 1000;      % NUMBER OF DIFFUSION STEPS TO GENERATE
+Nparticles = 10;    % NUMBER OF PARTICLES TO DIFFUSE ON MESH
+k = 3.0;            % STDEV OF DIFFUSION RATE STEP-SIZE DISTRIBUTION
+
+
+% ----------------------------------------------------------
+
+
+
+%% GENERATE MULTIPLE PARTICLES USING REPMAT
 xyz = initial_point;
 face = initial_face_index;
+xyz = repmat(xyz, Nparticles, 1);
+face = repmat(face, Nparticles, 1);
 
 
 
