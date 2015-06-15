@@ -192,15 +192,7 @@ class Face(object):
         # We expect to travel in the direction of either 1 or 2 sides (if
         # we are moving in the direction of a vertex).
         if num_choices != 2:
-            if num_choices > 2:
-                print 'More than 2 possible moves: ', num_choices
-                return random.choice(move_choices)
-            else:
-                print 'No possible moves: ', num_choices
-
-                # return (1, np.array([1, 1, 1 ]), None, None)
-                return (183, np.array([ 123.39898643,  -45.13138592,  -69.16558593]), None, None)
-            # raise ValueError('Unexpected number of possible moves on face.')
+            raise ValueError('Unexpected number of possible moves on face.')
 
         first_choice, second_choice = move_choices
         no_move_first = np.allclose(first_choice[1], point)
@@ -215,7 +207,7 @@ class Face(object):
             #       and `L_new` should be identical for all tuples in
             #       `move_choices`, but don't check this here.
             # BEGIN: Temporary statements to show issues with `random.choice`.
-            print 'Used random.choice', random.choice(move_choices)
+            print 'Used random.choice'
             # END: Temporary statements to show issues with `random.choice`.
             # The goal in the case of a tie is to correctly determine which face
             # to go into *through* the vertex. We can do this by taking each

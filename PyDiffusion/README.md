@@ -1,12 +1,18 @@
 ## Pipeline for Running Diffusion Simulation
 
-1. Create a mesh for the points to travel on (`dolfin`)
-   and save to an XML file
-1. Convert the Dolfin-generated mesh into just the parts we
-   need for the surface geometry (e.g. `sample_code.save_serialized_mesh()`
-1. Use the serialized mesh (no `dolfin` required) in
-   `particle_diffusion_on_mesh.run_simulation` (or via
-   `Mesh.from_file` directly)
+1. FILE: generate_mesh.py
+    Creates mesh for points to travel on (`dolfin`) and save as XML file
+1. FILE: serialize_mesh.py
+    Converts full mesh to serialized mesh.
+    Saves only the necessary surface geometry from Dolfin-generated mesh
+1. FILE: Makefile
+    RUN: $make test_mex
+    MAKES: advance_one_step.mexmaci64
+   This file is necessary to generate the particle diffusion steps in...
+1. FILE: generate_diffusion_paths.py
+    Uses advance_one_step.mexmaci64 (no `dolfin` required) to generate paths
+    (serialize mesh file can be used directly in python to generate paths)
+
 
 ### Directory Contents
 
@@ -20,7 +26,15 @@ The generated data and images are stored in their own subdirectories:
 
 ```
 data/
-plots/
+    data_archive/
+
+make_advance_one_step/
+    make_advance_one_step_clean/
+
+misc/
+    dendrite_components/
+    k_array/
+    plots/
 ```
 
 The re-usable modules are
