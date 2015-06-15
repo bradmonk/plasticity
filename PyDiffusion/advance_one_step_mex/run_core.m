@@ -7,7 +7,12 @@
 % IMPORTANT! DO NOT USE 'clear all' 
 % OTHERWISE MATLAB WILL CLEAR MEX FILES AND CRASH
 clc; close all; clear
-% this=fileparts(which('run_core.m')); addpath(this); cd(this);
+
+
+% IMPORTANT! THIS FILE (run_core.m) MUST BE IN THE SAME DIRECTORY AS:
+% libadvanceonestep.so & advance_one_step.mexmaci64
+% AND MUST BE THE ROOT-LEVEL WORKING DIRECTORY TO RUN
+this=fileparts(which('run_core.m')); addpath(this); cd(this);
 
 
 %% LOAD PYTHON AND ADD TO PATH
@@ -18,13 +23,14 @@ end
 
 
 %% LOAD SERIALIZED MESH AND PARTICLE DIFFUSION DATA
-
-load('serialized_mesh_res_34.mat');
+load('dendritic_mesh_serialized.mat');
+% load('serialized_mesh_res_34.mat');
 % load('serialized_mesh_res_96.mat');
 
+Nsteps = 100;
 k = 3.0;  % Override k.
-xyz_loc = initial_point;
-face_indices = initial_face_index;
+xyz = initial_point;
+face = initial_face_index;
 
 
 
@@ -70,29 +76,28 @@ hts1 = trisurf(FBtri,FBpoints(:,1),FBpoints(:,2),FBpoints(:,3), ...
 
 % PLOT PARTICLE STARTING LOCATIONS
     set(f1,'CurrentAxes',hax2);
-p2 = scatter3(hax2, xyz_loc(:,1), xyz_loc(:,2), xyz_loc(:,3),...
+p2 = scatter3(hax2, xyz(:,1), xyz(:,2), xyz(:,3),...
         90,'filled','MarkerEdgeColor','none','MarkerFaceColor',[.2 .5 .7]);
         xlim(lim.x); ylim(lim.y); zlim(lim.z); view(lim.v);
 
 
 %% --- GENERATE STEPS USING advance_one_step.mexmaci64 AND PLOT
 
-for nn = 1:200
+for nn = 1:Nsteps
 
     % GENERATE PARTICLE STEPS
-    [xyz_loc, face_indices] = advance_one_step(...
-        xyz_loc, face_indices, k, initial_point, initial_face_index, ...
+    [xyz, face] = advance_one_step(...
+        xyz, face, k, initial_point, initial_face_index, ...
         all_vertices, triangles, face_local_bases, neighbor_faces);
 
     % PRINT STEP TO CONSOLE
-    fprintf('\r xyz_loc : % 5.5g % 5.5g % 5.5g \n face_indices % 5.5g \n',...
-        xyz_loc(:), face_indices);
+    fprintf('\rxyz: % 4.4g % 4.4g % 4.4g\nface: % 4.4g\n',xyz(:), face);
 
     % PLOT PARTICLES
-    scatter3(hax2, xyz_loc(:,1), xyz_loc(:,2), xyz_loc(:,3),...
+    scatter3(hax2, xyz(:,1), xyz(:,2), xyz(:,3),...
         90,'filled','MarkerEdgeColor','none','MarkerFaceColor',[.2 .5 .7]);
         xlim(lim.x); ylim(lim.y); zlim(lim.z); view(lim.v);
-        drawnow; pause(.01)
+        drawnow;
 end
 
 
