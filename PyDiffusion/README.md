@@ -1,20 +1,5 @@
-## Pipeline for Running Diffusion Simulation
-
-1. FILE: generate_mesh.py
-    Creates mesh for points to travel on (`dolfin`) and save as XML file
-1. FILE: serialize_mesh.py
-    Converts full mesh to serialized mesh.
-    Saves only the necessary surface geometry from Dolfin-generated mesh
-1. FILE: Makefile
-    RUN: $make test_mex
-    MAKES: advance_one_step.mexmaci64
-   This file is necessary to generate the particle diffusion steps in...
-1. FILE: generate_diffusion_paths.py
-    Uses advance_one_step.mexmaci64 (no `dolfin` required) to generate paths
-    (serialize mesh file can be used directly in python to generate paths)
-
-
-### Directory Contents
+# Directory Contents
+----
 
 This library contains mostly scripts, but has some utility modules
 which can be re-used.
@@ -25,19 +10,36 @@ and/or generate images.
 The generated data and images are stored in their own subdirectories:
 
 ```
-data/
-    data_archive/
+DIFFUSION-RELATED UTILS FOUND IN:
+    advance_one_step_mex/
 
-advance_one_step_mex/
-    advance_one_step_mex_clean/
-
-misc/
-    dendrite_components/
-    k_array/
-    plots/
+MESH GENERATION UTILS FOUND IN:
+    build_mesh/
 ```
 
-The re-usable modules are
+
+#### Subdirectory Contents: advance_one_step_mex/ 
+
+1. FILE: Makefile
+    RUN: $make test_mex
+    MAKES: advance_one_step.mexmaci64
+   This file is necessary to generate the particle diffusion steps in...
+1. FILE: generate_diffusion_paths.py
+    Uses advance_one_step.mexmaci64 (no `dolfin` required) to generate paths
+    (serialize mesh file can be used directly in python to generate paths)
+
+
+#### Subdirectory Contents: build_mesh/
+1. FILE: generate_mesh.py
+    Creates mesh for points to travel on (`dolfin`) and save as XML file
+1. FILE: serialize_mesh.py
+    Converts full mesh to serialized mesh.
+    Saves only the necessary surface geometry from Dolfin-generated mesh
+
+
+----
+# Reusable Modules
+----
 
 ```
 _cython_interface.pyx
@@ -50,6 +52,9 @@ In particular `_cython_interface.pyx` generates a Python importable shared
 object file `_cython_interface.so` when `make cython_interface` is called.
 This shared object file can / will also be used in a MEX file to call
 the Python code from MATLAB.
+
+
+#### Module Notes
 
 The scripts can be divided into two purposes:
 
@@ -70,8 +75,9 @@ The scripts can be divided into two purposes:
     ```
     sample_code.py
     ```
-
-### Issues
+----
+## Issues
+----
 
 The `dolfin` library depends on `ScientificPython` (a very old library that
 built off of `numpy` **long ago**). This dependency is broken by
