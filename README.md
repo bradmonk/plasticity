@@ -30,7 +30,7 @@ alt="3d actin network" width="300" border="10" /></a> <a href="http://youtu.be/t
 
 
 <a href="https://youtu.be/TGG_1ypuA4I" target="_blank"><img src="http://camk2.com/pix/3DS_diffusion.png" 
-alt="3d Diffusion Animation in matlab" width="300" border="10" /></a> <a href="http://bradleymonk.com/media2/vid9/Dendritic_Diffusion_3D.mp4" target="_blank"><img src="http://bradleymonk.com/media2/vid9/Dendritic_Diffusion_3D.png" 
+alt="3d Diffusion Animation in matlab" width="300" border="10" /></a> <a href="https://youtu.be/tDKUU0SqbSA" target="_blank"><img src="http://camk2.com/pix/cythlab2.png" 
 alt="Dendritic surface diffusion" width="300" border="10" /></a>
 
 
