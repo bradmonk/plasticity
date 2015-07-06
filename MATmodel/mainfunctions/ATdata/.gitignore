@@ -1,0 +1,20 @@
+.DS_Store
+*.pyc
+Rakefile
+
+*.aux
+*.log
+*.out
+
+*.mexmaci64
+PyDiffusion/Makefile
+
+# Files generated for/from Cython
+PyDiffusion/_cython_interface.c
+PyDiffusion/_cython_interface.h
+PyDiffusion/_cython_interface.so
+PyDiffusion/libadvanceonestep.so
+PyDiffusion/advance_one_step.mexa64
+
+*.m~  # temporary MATLAB files
+*.mat  # MATLAB data files
