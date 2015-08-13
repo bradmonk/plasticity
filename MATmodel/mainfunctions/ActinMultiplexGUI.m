@@ -155,19 +155,19 @@ AMX10  = str2double(get(handles.SPYneckXY,'String'));
 AMX11  = str2double(get(handles.SPYheadZN,'String'));
 AMX12  = str2double(get(handles.SPYheadZS,'String'));
 AMX13  = str2double(get(handles.SPYheadX,'String'));
-AMX14  = str2double(get(handles.SPYheadY,'String'));
+AMX14  = str2double(get(handles.delOrate,'String'));
 AMX15  = str2double(get(handles.PSDproxy,'String'));
 AMX16  = str2double(get(handles.molAct,'String'));
 AMX17  = str2double(get(handles.ArpBR,'String'));
 AMX18  = str2double(get(handles.CofR,'String'));
 AMX19  = str2double(get(handles.SaveTipsAfter,'String'));
 AMX20  = str2double(get(handles.SaveTipsRate,'String'));
-AMX21  = str2double(get(handles.ARPsc,'String'));
+AMX21  = str2double(get(handles.CofS,'String'));
 AMX22  = str2double(get(handles.ARPmax,'String'));
-AMX23  = str2double(get(handles.Asja,'String'));
-AMX24  = str2double(get(handles.Asjb,'String'));
-AMX25  = str2double(get(handles.Asjc,'String'));
-AMX26  = str2double(get(handles.Asjd,'String'));
+AMX23  = str2double(get(handles.BeKa,'String'));
+AMX24  = str2double(get(handles.BeKd,'String'));
+AMX25  = get(handles.SvTpMx,'Value');
+AMX26  = str2double(get(handles.CofSMax,'String'));
 AMX27  = str2double(get(handles.PSDproxyXY,'String'));
 AMX28  = get(handles.doClustering,'Value');
 AMX29  = str2double(get(handles.ACTadd2new,'String'));
@@ -175,7 +175,9 @@ AMX30  = str2double(get(handles.ACTdelCofN,'String'));
 AMX31  = str2double(get(handles.ArpON,'String'));
 AMX32  = str2double(get(handles.ArpOFF,'String'));
 AMX33  = str2double(get(handles.GArpN,'String'));
-AMX34  = str2double(get(handles.CofScalar,'String'));
+%-----
+AMX34  = str2double(get(handles.TriHullMod,'String'));
+%-----
 AMX35  = get(handles.doActCounts,'Value');
 AMX36  = get(handles.doActLTP,'Value');
 AMX37  = str2double(get(handles.AcLTPs,'String'));
@@ -189,25 +191,81 @@ AMX44  = str2double(get(handles.fZa,'String'));
 AMX45  = str2double(get(handles.fXYo,'String'));
 AMX46  = str2double(get(handles.fXYa,'String'));
 AMX47  = str2double(get(handles.AdT,'String'));
-AMX48  = str2double(get(handles.Aska,'String'));
-AMX49  = str2double(get(handles.Askb,'String'));
-AMX50  = str2double(get(handles.Askc,'String'));
-AMX51  = str2double(get(handles.Askd,'String'));
-AMX52  = str2double(get(handles.delOrate,'String'));
+AMX48  = get(handles.doActT,'Value');
+AMX49  = get(handles.doArpT,'Value');
+AMX50  = str2double(get(handles.T1s,'String'));
+AMX51  = str2double(get(handles.T2s,'String'));
+AMX52  = str2double(get(handles.T3s,'String'));
+AMX53  = str2double(get(handles.T4s,'String'));
+AMX54  = str2double(get(handles.T1pct,'String'));
+AMX55  = str2double(get(handles.T2pct,'String'));
+AMX56  = str2double(get(handles.T3pct,'String'));
+AMX57  = str2double(get(handles.T4pct,'String'));
+AMX58  = str2double(get(handles.PeKa,'String'));
+AMX59  = str2double(get(handles.PeKd,'String'));
+
+AMX60  = str2double(get(handles.BeKaATP,'String'));
+AMX61  = str2double(get(handles.BeKaADPP,'String'));
+AMX62  = str2double(get(handles.BeKaADP,'String'));
+AMX63  = str2double(get(handles.BeKdATP,'String'));
+AMX64  = str2double(get(handles.BeKdADPP,'String'));
+AMX65  = str2double(get(handles.BeKdADP,'String'));
+AMX66  = str2double(get(handles.PeKaATP,'String'));
+AMX67  = str2double(get(handles.PeKaADPP,'String'));
+AMX68  = str2double(get(handles.PeKaADP,'String'));
+AMX69  = str2double(get(handles.PeKdATP,'String'));
+AMX70  = str2double(get(handles.PeKdADPP,'String'));
+AMX71  = str2double(get(handles.PeKdADP,'String'));
+AMX72  = get(handles.doKez,'Value');
+AMX73  = str2double(get(handles.uM_Thymosin,'String'));
+AMX74  = str2double(get(handles.ThymBoundFrac,'String'));
+AMX75  = str2double(get(handles.Ka_Thymosin,'String'));
+AMX76  = str2double(get(handles.Kd_Thymosin,'String'));
+AMX77  = str2double(get(handles.Ka_Thymosin_LTP,'String'));
+AMX78  = str2double(get(handles.Kd_Thymosin_LTP,'String'));
+AMX79  = get(handles.modThym,'Value');
+AMX80  = str2double(get(handles.Ka_Thymosin_LTD,'String'));
+AMX81  = str2double(get(handles.Kd_Thymosin_LTD,'String'));
+AMX82  = str2double(get(handles.uM_Cofilin,'String'));
+AMX83  = str2double(get(handles.Ka_Cofilin,'String'));
+AMX84  = str2double(get(handles.Ka_Cofilin_LTP,'String'));
+AMX85  = str2double(get(handles.Ka_Cofilin_LTD,'String'));
 %---
 AMX = {AMX1, AMX2, AMX3, AMX4, AMX5, AMX6, AMX7, AMX8, AMX9, AMX10,...
 	   AMX11, AMX12, AMX13, AMX14, AMX15, AMX16, AMX17, AMX18, AMX19,...
 	   AMX20, AMX21, AMX22, AMX23, AMX24, AMX25, AMX26, AMX27, AMX28,...
 	   AMX29, AMX30, AMX31, AMX32, AMX33, AMX34, AMX35, AMX36, AMX37,...
 	   AMX38, AMX39, AMX40, AMX41, AMX42, AMX43, AMX44, AMX45, AMX46,...
-	   AMX47, AMX48, AMX49, AMX50, AMX51, AMX52};
+	   AMX47, AMX48, AMX49, AMX50, AMX51, AMX52, AMX53, AMX54, AMX55,...
+	   AMX56, AMX57, AMX58, AMX59, AMX60, AMX61, AMX62, AMX63, AMX64,...
+	   AMX65, AMX66, AMX67, AMX68, AMX69, AMX70, AMX71, AMX72,...
+       AMX73, AMX74, AMX75, AMX76, AMX77, AMX78, AMX79, AMX80, AMX81,...
+       AMX82, AMX83, AMX84, AMX85};
 %-------
 
 
+
+
+
+
+
+
+
+
 %-------
-AMS1  = str2double(get(handles.LivePlotM,'String'));
+AMS1  = get(handles.doLiveTipPlot,'Value');
+AMS2  = get(handles.doLiveHullPlot,'Value');
+AMS3  = str2double(get(handles.LiveTipMod,'String'));
+AMS4  = str2double(get(handles.LiveHullMod,'String'));
+AMS5  = get(handles.runTest,'Value');
+AMS6  = str2double(get(handles.LivePlotM,'String'));
+AMS7  = str2double(get(handles.TriHullMod,'String'));
+AMS8  = get(handles.doNdel,'Value');
+AMS9  = str2double(get(handles.nDelSteps,'String'));
+AMS10  = get(handles.doLiveLinePlot,'Value');
+AMS11  = str2double(get(handles.LinePlotMod,'String'));
 %--
-AMS = {AMS1};
+AMS = {AMS1, AMS2, AMS3, AMS4, AMS5, AMS6, AMS7, AMS8, AMS9, AMS10, AMS11};
 %-------
 
 
@@ -222,13 +280,9 @@ MSK = {MSK1, MSK2, MSK3, MSK4, MSK5, MSK6};
 %-------
 
 
-
-
-
-
-% handles.output = ActinMultiplex(LBR,TIME,SIZE,MODS,DOES,REVA,GLU,GT,GTab,doTs,AMX,MSK);
-handles.output = ActinMultiplex(LBR,TIME,SIZE,DOES,REVA,AMX,MSK,AMS);
-
+% handles.output = ActinMultiplex2(LBR,TIME,SIZE,MODS,DOES,REVA,GLU,GT,GTab,doTs,AMX,MSK);
+% handles.output = ActinMultiplex2(LBR,TIME,SIZE,DOES,REVA,AMX,MSK,AMS);
+handles.output = ActinMultiplex(AMX,AMS)
 
 
 %=========================================================%
@@ -256,9 +310,55 @@ delete(handles.figure1)
 %=========================================================%
 
 
-
-
-
+%--------------Main Plot Callbacks--------------%
+function TriHullMod(hObject, eventdata, handles)
+TriHullMod = get(hObject, 'Value');
+ 
+handles.guidata.TriHullMod = TriHullMod;
+guidata(hObject,handles)
+%---
+function LivePlotM(hObject, eventdata, handles)
+LivePlotM = get(hObject, 'Value');
+ 
+handles.guidata.LivePlotM = LivePlotM;
+guidata(hObject,handles)
+%---
+function doLiveTipPlot(hObject, eventdata, handles)
+doLiveTipPlot = get(hObject, 'Value');
+ 
+handles.guidata.doLiveTipPlot = doLiveTipPlot;
+guidata(hObject,handles)
+%---
+function doLiveHullPlot(hObject, eventdata, handles)
+doLiveHullPlot = get(hObject, 'Value');
+ 
+handles.guidata.doLiveHullPlot = doLiveHullPlot;
+guidata(hObject,handles)
+%---
+function LiveTipMod(hObject, eventdata, handles)
+LiveTipMod = get(hObject, 'Value');
+ 
+handles.guidata.LiveTipMod = LiveTipMod;
+guidata(hObject,handles)
+%---
+function LiveHullMod(hObject, eventdata, handles)
+LiveHullMod = get(hObject, 'Value');
+ 
+handles.guidata.LiveHullMod = LiveHullMod;
+guidata(hObject,handles)
+%---
+function doLiveLinePlot(hObject, eventdata, handles)
+doLiveLinePlot = get(hObject, 'Value');
+ 
+handles.guidata.doLiveLinePlot = doLiveLinePlot;
+guidata(hObject,handles)
+%---
+function LinePlotMod(hObject, eventdata, handles)
+LinePlotMod = get(hObject, 'Value');
+ 
+handles.guidata.LinePlotMod = LinePlotMod;
+guidata(hObject,handles)
+%---
 
 %----------Gaussian MSK  Callbacks--------------%
 function GNpk(hObject, eventdata, handles)
@@ -299,6 +399,87 @@ guidata(hObject,handles)
 %----------
 
 
+
+
+%--------PeKa BeKa ATP ADPP ADP Callbacks--------%
+function BeKaATP(hObject, eventdata, handles)
+BeKaATP = get(hObject, 'Value');
+ 
+handles.guidata.BeKaATP = BeKaATP;
+guidata(hObject,handles)
+%---
+function BeKaADPP(hObject, eventdata, handles)
+BeKaADPP = get(hObject, 'Value');
+ 
+handles.guidata.BeKaADPP = BeKaADPP;
+guidata(hObject,handles)
+%---
+function BeKaADP(hObject, eventdata, handles)
+BeKaADP = get(hObject, 'Value');
+ 
+handles.guidata.BeKaADP = BeKaADP;
+guidata(hObject,handles)
+%---
+function BeKdATP(hObject, eventdata, handles)
+BeKdATP = get(hObject, 'Value');
+ 
+handles.guidata.BeKdATP = BeKdATP;
+guidata(hObject,handles)
+%---
+function BeKdADPP(hObject, eventdata, handles)
+BeKdADPP = get(hObject, 'Value');
+ 
+handles.guidata.BeKdADPP = BeKdADPP;
+guidata(hObject,handles)
+%---
+function BeKdADP(hObject, eventdata, handles)
+BeKdADP = get(hObject, 'Value');
+ 
+handles.guidata.BeKdADP = BeKdADP;
+guidata(hObject,handles)
+%---
+function PeKaATP(hObject, eventdata, handles)
+PeKaATP = get(hObject, 'Value');
+ 
+handles.guidata.PeKaATP = PeKaATP;
+guidata(hObject,handles)
+%---
+function PeKaADPP(hObject, eventdata, handles)
+PeKaADPP = get(hObject, 'Value');
+ 
+handles.guidata.PeKaADPP = PeKaADPP;
+guidata(hObject,handles)
+%---
+function PeKaADP(hObject, eventdata, handles)
+PeKaADP = get(hObject, 'Value');
+ 
+handles.guidata.PeKaADP = PeKaADP;
+guidata(hObject,handles)
+%---
+function PeKdATP(hObject, eventdata, handles)
+PeKdATP = get(hObject, 'Value');
+ 
+handles.guidata.PeKdATP = PeKdATP;
+guidata(hObject,handles)
+%---
+function PeKdADPP(hObject, eventdata, handles)
+PeKdADPP = get(hObject, 'Value');
+ 
+handles.guidata.PeKdADPP = PeKdADPP;
+guidata(hObject,handles)
+%---
+function PeKdADP(hObject, eventdata, handles)
+PeKdADP = get(hObject, 'Value');
+ 
+handles.guidata.PeKdADP = PeKdADP;
+guidata(hObject,handles)
+%---
+function doKez(hObject, eventdata, handles)
+doKez = get(hObject, 'Value');
+ 
+handles.guidata.doKez = doKez;
+guidata(hObject,handles)
+%---
 
 
 %----------Actin Multiplex Callbacks--------------%
@@ -422,40 +603,34 @@ SaveTipsRate = get(hObject, 'Value');
 handles.guidata.SaveTipsRate = SaveTipsRate;
 guidata(hObject,handles)
 %---
+function SvTpMx(hObject, eventdata, handles)
+SvTpMx = get(hObject, 'Value');
+ 
+handles.guidata.SvTpMx = SvTpMx;
+guidata(hObject,handles)
+%---
+function CofSMax(hObject, eventdata, handles)
+CofSMax = get(hObject, 'Value');
+ 
+handles.guidata.CofSMax = CofSMax;
+guidata(hObject,handles)
+%---
 function ARPsc(hObject, eventdata, handles)
 ARPsc = get(hObject, 'Value');
  
 handles.guidata.ARPsc = ARPsc;
 guidata(hObject,handles)
 %---
+function CofS(hObject, eventdata, handles)
+CofS = get(hObject, 'Value');
+ 
+handles.guidata.CofS = CofS;
+guidata(hObject,handles)
+%---
 function ARPmax(hObject, eventdata, handles)
 ARPmax = get(hObject, 'Value');
  
 handles.guidata.ARPmax = ARPmax;
-guidata(hObject,handles)
-%---
-function Asja(hObject, eventdata, handles)
-Asja = get(hObject, 'Value');
- 
-handles.guidata.Asja = Asja;
-guidata(hObject,handles)
-%---
-function Asjb(hObject, eventdata, handles)
-Asjb = get(hObject, 'Value');
- 
-handles.guidata.Asjb = Asjb;
-guidata(hObject,handles)
-%---
-function Asjc(hObject, eventdata, handles)
-Asjc = get(hObject, 'Value');
- 
-handles.guidata.Asjc = Asjc;
-guidata(hObject,handles)
-%---
-function Asjd(hObject, eventdata, handles)
-Asjd = get(hObject, 'Value');
- 
-handles.guidata.Asjd = Asjd;
 guidata(hObject,handles)
 %---
 function PSDproxyXY(hObject, eventdata, handles)
@@ -498,12 +673,6 @@ function GArpN(hObject, eventdata, handles)
 GArpN = get(hObject, 'Value');
  
 handles.guidata.GArpN = GArpN;
-guidata(hObject,handles)
-%---
-function CofScalar(hObject, eventdata, handles)
-CofScalar = get(hObject, 'Value');
- 
-handles.guidata.CofScalar = CofScalar;
 guidata(hObject,handles)
 %---
 function doActCounts(hObject, eventdata, handles)
@@ -614,69 +783,93 @@ delOrate = get(hObject, 'Value');
 handles.guidata.delOrate = delOrate;
 guidata(hObject,handles)
 %---
-function LivePlotM(hObject, eventdata, handles)
-LivePlotM = get(hObject, 'Value');
+function doActT(hObject, eventdata, handles)
+doActT = get(hObject, 'Value');
  
-handles.guidata.LivePlotM = LivePlotM;
+handles.guidata.doActT = doActT;
+guidata(hObject,handles)
+%---
+function doArpT(hObject, eventdata, handles)
+doArpT = get(hObject, 'Value');
+ 
+handles.guidata.doArpT = doArpT;
+guidata(hObject,handles)
+%---
+function T1s(hObject, eventdata, handles)
+T1s = get(hObject, 'Value');
+ 
+handles.guidata.T1s = T1s;
+guidata(hObject,handles)
+%---
+function T2s(hObject, eventdata, handles)
+T2s = get(hObject, 'Value');
+ 
+handles.guidata.T2s = T2s;
+guidata(hObject,handles)
+%---
+function T3s(hObject, eventdata, handles)
+T3s = get(hObject, 'Value');
+ 
+handles.guidata.T3s = T3s;
+guidata(hObject,handles)
+%---
+function T4s(hObject, eventdata, handles)
+T4s = get(hObject, 'Value');
+ 
+handles.guidata.T4s = T4s;
+guidata(hObject,handles)
+%---
+function T1pct(hObject, eventdata, handles)
+T1pct = get(hObject, 'Value');
+ 
+handles.guidata.T1pct = T1pct;
+guidata(hObject,handles)
+%---
+function T2pct(hObject, eventdata, handles)
+T2pct = get(hObject, 'Value');
+ 
+handles.guidata.T2pct = T2pct;
+guidata(hObject,handles)
+%---
+function T3pct(hObject, eventdata, handles)
+T3pct = get(hObject, 'Value');
+ 
+handles.guidata.T3pct = T3pct;
+guidata(hObject,handles)
+%---
+function T4pct(hObject, eventdata, handles)
+T4pct = get(hObject, 'Value');
+ 
+handles.guidata.T4pct = T4pct;
 guidata(hObject,handles)
 %---
 
 
-
-
-%{
-
-LivePlotM
-
-function XXXXX(hObject, eventdata, handles)
-XXXXX = get(hObject, 'Value');
+%----------Actin Polymerization Callbacks--------------%
+function BeKa(hObject, eventdata, handles)
+BeKa = get(hObject, 'Value');
  
-handles.guidata.XXXXX = XXXXX;
+handles.guidata.BeKa = BeKa;
 guidata(hObject,handles)
 %---
-
-
-
-function XXXXX(hObject, eventdata, handles)
-XXXXX = get(hObject, 'Value');
+function BeKd(hObject, eventdata, handles)
+BeKd = get(hObject, 'Value');
  
-handles.guidata.XXXXX = XXXXX;
+handles.guidata.BeKd = BeKd;
 guidata(hObject,handles)
 %---
-
-
-
-
-function XXXXX(hObject, eventdata, handles)
-XXXXX = get(hObject, 'Value');
+function PeKa(hObject, eventdata, handles)
+PeKa = get(hObject, 'Value');
  
-handles.guidata.XXXXX = XXXXX;
+handles.guidata.PeKa = PeKa;
 guidata(hObject,handles)
 %---
-
-
-
-function XXXXX(hObject, eventdata, handles)
-XXXXX = get(hObject, 'Value');
+function PeKd(hObject, eventdata, handles)
+PeKd = get(hObject, 'Value');
  
-handles.guidata.XXXXX = XXXXX;
+handles.guidata.PeKd = PeKd;
 guidata(hObject,handles)
 %---
-
-%}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -742,7 +935,25 @@ do1yT = get(hObject, 'Value');
  
 handles.guidata.do1yT = do1yT;
 guidata(hObject,handles)
-
+%---
+function doNdel(hObject, eventdata, handles)
+doNdel = get(hObject, 'Value');
+ 
+handles.guidata.doNdel = doNdel;
+guidata(hObject,handles)
+%---
+function nDelSteps(hObject, eventdata, handles)
+nDelSteps = get(hObject, 'Value');
+ 
+handles.guidata.nDelSteps = nDelSteps;
+guidata(hObject,handles)
+%---
+function modThym(hObject, eventdata, handles)
+modThym = get(hObject, 'Value');
+ 
+handles.guidata.modThym = modThym;
+guidata(hObject,handles)
+%---
 
 %----------Numeric Value Callbacks--------------%
 function GTon(hObject, eventdata, handles)
@@ -1038,8 +1249,102 @@ doRev = get(hObject, 'Value');
 handles.guidata.doRev = doRev;
 guidata(hObject,handles)
 %---
-
+function runTest(hObject, eventdata, handles)
+runTest = get(hObject, 'Value');
  
+handles.guidata.runTest = runTest;
+guidata(hObject,handles)
+%---
+function uM_Thymosin(hObject, eventdata, handles)
+uM_Thymosin = get(hObject, 'Value');
+ 
+handles.guidata.uM_Thymosin = uM_Thymosin;
+guidata(hObject,handles)
+%---
+function ThymBoundFrac(hObject, eventdata, handles)
+ThymBoundFrac = get(hObject, 'Value');
+ 
+handles.guidata.ThymBoundFrac = ThymBoundFrac;
+guidata(hObject,handles)
+%---
+function Ka_Thymosin(hObject, eventdata, handles)
+Ka_Thymosin = get(hObject, 'Value');
+ 
+handles.guidata.Ka_Thymosin = Ka_Thymosin;
+guidata(hObject,handles)
+%---
+function Kd_Thymosin(hObject, eventdata, handles)
+Kd_Thymosin = get(hObject, 'Value');
+ 
+handles.guidata.Kd_Thymosin = Kd_Thymosin;
+guidata(hObject,handles)
+%---
+function Ka_Thymosin_LTP(hObject, eventdata, handles)
+Ka_Thymosin_LTP = get(hObject, 'Value');
+ 
+handles.guidata.Ka_Thymosin_LTP = Ka_Thymosin_LTP;
+guidata(hObject,handles)
+%---
+function Kd_Thymosin_LTP(hObject, eventdata, handles)
+Kd_Thymosin_LTP = get(hObject, 'Value');
+ 
+handles.guidata.Kd_Thymosin_LTP = Kd_Thymosin_LTP;
+guidata(hObject,handles)
+%---
+
+
+function uM_Cofilin(hObject, eventdata, handles)
+uM_Cofilin = get(hObject, 'Value');
+ 
+handles.guidata.uM_Cofilin = uM_Cofilin;
+guidata(hObject,handles)
+%---
+
+function Ka_Cofilin(hObject, eventdata, handles)
+Ka_Cofilin = get(hObject, 'Value');
+ 
+handles.guidata.Ka_Cofilin = Ka_Cofilin;
+guidata(hObject,handles)
+%---
+
+function Ka_Cofilin_LTP(hObject, eventdata, handles)
+Ka_Cofilin_LTP = get(hObject, 'Value');
+ 
+handles.guidata.Ka_Cofilin_LTP = Ka_Cofilin_LTP;
+guidata(hObject,handles)
+%---
+
+function Kd_Thymosin_LTD(hObject, eventdata, handles)
+Kd_Thymosin_LTD = get(hObject, 'Value');
+ 
+handles.guidata.Kd_Thymosin_LTD = Kd_Thymosin_LTD;
+guidata(hObject,handles)
+%---
+
+function Ka_Thymosin_LTD(hObject, eventdata, handles)
+Ka_Thymosin_LTD = get(hObject, 'Value');
+ 
+handles.guidata.Ka_Thymosin_LTD = Ka_Thymosin_LTD;
+guidata(hObject,handles)
+%---
+
+function Ka_Cofilin_LTD(hObject, eventdata, handles)
+Ka_Cofilin_LTD = get(hObject, 'Value');
+ 
+handles.guidata.Ka_Cofilin_LTD = Ka_Cofilin_LTD;
+guidata(hObject,handles)
+%---
+
+
+
+
+
+
+
+
+
+
+
 %----------Logical Callbacks--------------%
 %{
 function doSpike(hObject, eventdata, handles)

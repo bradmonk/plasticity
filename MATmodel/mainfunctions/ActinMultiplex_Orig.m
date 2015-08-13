@@ -1,4 +1,5 @@
-function [varargout] = ActinMultiplex(AMX,AMS,varargin)
+function [varargout] = ActinMultiplex_Orig(LBR,TIME,SIZE,DOES,REVA,AMX,MSK,AMS)
+%% ActinMultiplex
 
 clc, close all; scsz = get(0,'ScreenSize');
 
@@ -7,20 +8,381 @@ if (~isdeployed); cd(fileparts(which(mfilename))); end
 
 %% -- WELCOME TO THE ActinMultiplex TOOLBOX
 
-    if exist('AMX','var') && nargin > 0
+    if exist('LBR','var') && nargin > 0
         fprintf('RUNNING ActinMultiplex TOOLBOX VERSION 1.3 \n');
     else
         fprintf('DEPLOYING GUI: ActinMultiplexGUI.m \n');
-        ActinMultiplexGUI
-        varargout={};
+        ActinMultiplexGUI()
       return
     end
 
 
+%%
+%-------------------------------%
+% Timing-Related Parameters
+%-------------------------------%
+dT = TIME(2);
+datarate = TIME(3);
+viewTime = TIME(4);
+%-------------------------------%
+% PSD Cluster Size
+%-------------------------------%
+PSDsz = SIZE(1);
+PSAsz = SIZE(2);
+SN0 = PSDsz^2;
+SYNsz = PSDsz+(PSAsz*2);
+S=padarray(ones(PSDsz),[PSAsz PSAsz], 0);
+S0=S;
 
-%% ---	ACTIN MULTIPLEX TIP DATA
 
+%-------------------------------%
+% doItems
+%-------------------------------%
+doGaussianMask = 1;
+doRev = REVA(1);
+doPlot = DOES(1);
+doFluorPlot=DOES(3);
+doNoff = 0; 
+
+%-------------------------------%
+% Revolving Particle Entry
+%-------------------------------%
+MuT = LBR(6) * dT;
+Rev = REVA(2);	
+if doRev
+dT = dT*Rev;
+MuT = LBR(6)*dT*Rev;
+end
+
+
+
+%===============================================%
+%				AMPAR STUFF
+%===============================================%
+%{
+doAMPARs = GLU(1);
+% amparate = GLU(3);
+AMPARN = GLU(4);
+
+GhkMask=GTab;
+GTon = GT(1);
+GToff = GT(2);
+LTPv = GT(3);
+
+if doAMPARs
+Fh3 = figure(13);
+set(Fh3,'OuterPosition',(scsz./[2e-1 .2 4 4]))
+Ph3 = imagesc(S0);
+end
+%}
+%------------
+% if doAMPARs (goes in loop)
+%{
+%====================================%
+if doAMPARs; %if mod(stepN, amparate) == 0;
+%-------------------------------%
+SG1oc = zeros(SYNsz);
+%-------------------------------%
+GRPOS=randi([1 (SYNsz*SYNsz)],1,AMPARN);
+SG1oc(GRPOS)=1;
+GRhk = convn(SG1oc,GhkMask,'same');
+GRk=(GRhk.*GTon); GSk=(GRhk.*GToff);
+%-------------------------------%
+Gon = Pkon+(GRk.*(Pkon+LTPv));
+Goff = Pkoff+(GSk.*Pkoff);
+
+Son = (Gon>Pmx);
+Soff = (Goff>Pmx);
+
+if doPlot;	if mod(stepN, 500) == 0
+set(Ph3,'CData',GRk);
+drawnow
+end;		end;
+%-------------------------------%
+end; %end;
+%====================================%
+%}
+%------------
+% MASKS
+%{
+% imagesc(ActinTips{140})
+%-------------------------------%
+% hkMask=[0 1 0; 1 0 1; 0 1 0];
+AMask=ones(AMX{5});
+hkMask=ones(AMX{6});
+% ActinBranches = 50;
+% ActinSlotsV = 2;
+% ACTINpos = zeros(PSDsz);
+% ACTINrand=randi([1 (PSDsz*PSDsz)],1,ActinBranches);
+% ACTINpos(ACTINrand)=ActinSlotsV;
+% ACTINp=padarray(ACTINpos,[PSAsz PSAsz], 0);
+%-------------------------------%
+%===============================================%
+%}
+%------------
+%-------------------------------%
+
+
+%===============================================%
+%				RATE PARAMETERS
+%===============================================%
+Lon = LBR(1);
+Loff = LBR(2);
+Bon = LBR(3);
+Boff = LBR(4);
+Ron = LBR(5);
+Roff = LBR(6);
+%--------
+
+
+
+%===============================================%
+%	ACTIN MULTIPLEX TIP DATA
+%===============================================%
+global ATs;
+global Ax;
+global AMx;
+global AFMx;
+
+AMx = AMX;
+
+loadActinTips = AMX{1};
+generateActinTips = AMX{2};
+
+%----------
+if loadActinTips
+savetipdir(AMX)
+ATdat = which(AMX{3});
+load(ATdat);
+assignin('base', 'ATs', ATs)
+assignin('base', 'Ax', Ax)
+
+LivePlot(Ax{1},Ax{2},Ax{3},Ax{4},Ax{5},Ax{6},Ax{7})
+end
+%----------
+
+
+
+%----------
+if generateActinTips
 ActSteps = AMX{4};
+[ActinTips, AxLP, Ax, AFMx] = ActinMainStage2(ActSteps,AMX,AMS);
+
+varargout={0};
+return
+%----------
+if AMS{5} || ~AMX{25}
+varargout={0};
+return; 
+end
+%----------
+
+assignin('base', 'ATs', ActinTips)
+ATs = evalin('base', 'ATs');
+assignin('base', 'Ax', AxLP)
+Ax = evalin('base', 'Ax');
+
+assignin('base', 'AMx', AMx)
+AMx = evalin('base', 'AMx');
+
+assignin('base', 'AFMx', AFMx)
+AFMx = evalin('base', 'AFMx');
+
+
+savetipdir(AMX,2)
+%save('ATdata.mat', 'ATs')
+end
+
+if ~loadActinTips
+	ATs = evalin('base', 'ATs');
+	Ax = evalin('base', 'Ax');
+	AMx = evalin('base', 'AMx');
+end
+%----------
+
+
+%------------
+% SHRINK MX
+%{
+% doActMxShrink = 1;
+% SkTo = 150;
+% if doActMxShrink
+% 	ATn = ATs{1};
+% 	Asz = size(ATn);
+% 	Ash = Asz - SkTo;
+% 	Adel = round(linspace(1,Asz(1),Ash(1)));
+% 	for n = 1:numel(ATs)
+% 		ATn = ATs{n};
+% 		ATn(Adel,:) = [];
+% 		ATn(:,Adel) = [];
+% 		ATs(n) = {ATn};
+% 	end
+% end
+
+
+% for n = 1:numel(ATs)	
+% 	SkTo = 150;
+% 	ATn = ATs{n};
+% 	Asz = size(ATn,1);
+% 	TipsN = nnz(ATn);
+% 	Tdc = sum(ATn,1);
+% 	Tdr = sum(ATn,2);
+% 	Tdcv = Tdc > 0;
+% 	Tdrv = Tdr > 0;
+% 	TdCR = [Tdcv' Tdrv];
+% 	TdCRv = sum(TdCR,2);
+% 	Tdf = find(TdCRv);
+% 	while Asz > SkTo
+% 		ARc = randi([1,Asz],1);
+% 		ARok = sum(Tdf == ARc);
+% 		ARok = ARok<1;
+% 		if ARok
+% 			ATn(ARc,:) = [];
+% 			ATn(:,ARc) = [];
+% 		end
+% 		Asz = size(ATn,1);
+% 	end
+% 	ATs(n) = {ATn};
+% end
+%}
+%------------
+
+
+%------------
+ActinTips = ATs;
+TipCellN = numel(ActinTips);
+TipCellA = TipCellN - AMX{7};
+NumTipCells = TipCellN - TipCellA;
+%------------
+TrimActMx = size(ATs{1},1)+1;
+ACTINp = ActinTips{TipCellA};
+ACTINp(:,TrimActMx:end) = [];
+ACTINp(TrimActMx:end,:) = [];
+%------------
+%-------------------------------%
+% Mask Setup
+%-------------------------------%
+[hkMask dT LBR] = MaskFun(S,dT,LBR,doGaussianMask,PSAsz,scsz,AMX,MSK);
+%hkMask=ones(AMX{6});
+
+
+AMask=ones(AMX{5});
+Ahk = convn(ACTINp,AMask,'same');
+S = (Ahk>0).*1.0;
+%------------
+
+%-------------------------
+% DEDUCE NSteps
+%-------------------------
+ActUpdate = AMX{8};
+NSteps = ActUpdate * NumTipCells - ActUpdate - 1;
+%-------------------------
+
+
+%================================================%
+%				RUN CLUSTERING
+%------------------------------------------------%
+
+doClustering = AMX{28};
+if ~doClustering
+	varargout = {AMX,MSK,LBR};
+	return
+end
+
+
+
+
+
+%================================================%
+%				FIGURE SETUP
+%------------------------------------------------%
+if doPlot
+%--------
+sz = [2.5e-3 2.5e-3 1.6 1.2];
+Fh1 = FigSetup(11,sz);
+Ph1 = imagesc(S);
+colormap('bone')
+hold on;
+%--------
+[PSDY,PSDX] = find(ACTINp);
+Ph2 = scatter(PSDX,PSDY,100, [.9 .08 .24],'filled');
+hold off
+%--------
+end
+%------------------------------------------------%
+
+% RGB/255
+% [255 20 147] ./ 255
+
+%====================================================================%
+%						MAIN CLUSTERING LOOP
+%====================================================================%
+for stepN = 1:NSteps
+%--------------------------------------------------------------------%
+
+%------------
+if mod(stepN,ActUpdate) == 0
+TipCellA = TipCellA+1;
+ACTINp = ActinTips{TipCellA};
+ACTINp = convn(ACTINp,AMask,'same');
+end
+%------------
+
+
+%------------
+Pmx = rand(size(S));
+Soc = (S>0);
+Sno = ~Soc;
+%---
+Ah = convn(ACTINp,hkMask,'same');
+%------------
+APon = 1 ./ (1+exp((Ah-Lon).*(-Bon)));
+APkon = Sno .* ( Ron * dT * APon );
+%---
+Son = (APkon>Pmx);
+%------------
+APoff = 1 ./ (1+exp(((-Ah)+Loff).*(-Boff)));
+APkoff = Soc .* ( Roff * dT * APoff );
+%---
+Soff = (APkoff>Pmx);
+%------------
+
+S = (Soc-Soff) + Son;
+
+% if doPlot
+if mod(stepN, viewTime) == 0
+set(Ph1,'CData',S);
+drawnow
+%--------
+[PSDY,PSDX] = find(ACTINp);
+set(Ph2,'XData',PSDX,'YData',PSDY);
+drawnow;
+%--------
+end
+% end
+
+%--------------------------------------------------------------------%
+end % end main clustering loop
+%====================================================================%
+
+
+
+varargout = {AMX,MSK,LBR};
+%====================================================================%
+end % end main function
+%####################################################################%
+
+
+
+
+
+%####################################################################%
+%
+%							ACTIN MAIN STAGE
+%
+%####################################################################%
+function [varargout] = ActinMainStage2(ActSteps,AMX,AMS,varargin)
+scsz = get(0,'ScreenSize');
 
 BTs = [];
 AFMx = [];
@@ -36,7 +398,7 @@ doDelOrig = AMX{39};
 doDelOrigT = AMX{40};
 
 %-- LIVE PLOTS --
-doLive3DActinPlot = AMS{1};
+doLiveTipPlot = AMS{1};
 doLiveHullPlot = AMS{2};
 LiveTipMod = AMS{3};
 LiveHullMod = AMS{4};
@@ -54,7 +416,7 @@ if runTest
     SaveTipsAfter = 26000;
     SaveTipsRate = 10;
     doLiveHullPlot = 0;
-    doLive3DActinPlot = 0;
+    doLiveTipPlot = 0;
 end
 
 
@@ -326,10 +688,9 @@ uM_Act = AMX{16};                           % Actin uM
 GActinN0 = uM_Act / 1e6 * MOL * SpyV;       % t0 N Gactin monomer units (6e4)
 Act_uM = GActinN0 / SpyV *(1/MOL)*1e6;      % Check uM_Act == Act_uM
 
+Nfi = numel(Actin(:,1));                    % current number of branches
 FActinN = sum(Actin(:,1));                  % current number FActins
 GActinN = ceil(GActinN0) - FActinN;         % current number GActins
-
-Nfi = numel(Actin(:,1));                    % current number of branches
 
 
 %% ---- ACTIN POLYMERIZATION & DEPOLYMERIZATION RATES ----
@@ -396,59 +757,28 @@ fKd = TKd * dT;				% Kd Fil OFF-Rate
 
 
 
-%% ----  THYMOSIN ACTIN-SEQUESTERING VARIABLES ----
-
-uM0_Thymosin     = AMX{73};      % Thymosin concentration (uM) total
-N0_Thymosin = uM0_Thymosin / 1e6 * MOL * SpyV;    % Thymosin count in spine (N)
-Thymosin_uM = N0_Thymosin / SpyV *(1/MOL)*1e6;    % Thymosin concentration in spine (uM)
 
 
-ThymBoundFrac   = AMX{74}/100;  % Thymosin fraction bound to Actin
-THYM_uM     = Thymosin_uM * (1-ThymBoundFrac);      % Thymosin        monomers (uM)
-THYM_ACT_uM = Thymosin_uM * ThymBoundFrac;          % Thymosin-Actin  dimers (uM)
-THYM_N      = round(THYM_uM / 1e6 * MOL * SpyV);    % Thymosin        monomers (N)
-THYM_ACT_N  = round(THYM_ACT_uM / 1e6 * MOL * SpyV); % Thymosin-Actin  dimers (N)
-       
-% -------
-% THYMOSIN REACTION RATE NOTES
+
+
+%% ----  COFILIN & GENERAL DEPOLYMERIZATION VARIABLES ----
+% NOTES
 %{
-The Law of Mass Action (*LMA) describes the rate at which chemicals collide
-and interact to form different chemical combinations. When two different
-chemicals can collide to form a dimer product, and the dimer can dissociate
-reversably back into the individual component reactants, is described as:
 
-        Ka>
-T + A <---->  TA
-       <Kd  
-
-Where
-    T : thymosin                (thymosin monomers)
-    A : actin                   (Gactin monomers)
-    TA: thymosin-actin          (thymosin-actin dimers)
-    Ka: forward rate constant
-    Kd: backward rate constant
-
-
-dTA/dt = Ka[T][A] - Kd[TA]      (LMA forward reaction: TA accumulation)
-dA/dt  = Kd[TA] - Ka[T][A]      (LMA reverse reaction: A accumulation)
-dT/dt  = Kd[TA] - Ka[T][A]      (LMA reverse reaction: T accumulation)
+NA
 
 %}
 %-------
+fdKd = fKd*10;				% Depoly rate when Fil is Fkd
 
-Ka_Thymosin     = AMX{75};      % Thymosin Ka (basal)
-Kd_Thymosin     = AMX{76};      % Thymosin Kd (basal)
-Ka_Thymosin_LTP = AMX{77};      % Thymosin Ka (LTP)
-Kd_Thymosin_LTP = AMX{78};      % Thymosin Kd (LTP)
-Ka_Thymosin_LTD = AMX{80};      % Thymosin Ka (LTD)
-Kd_Thymosin_LTD = AMX{81};      % Thymosin Kd (LTD)
+CofR = AMX{18}* dT; % cofilin activity rate
+CofS = AMX{21}; % cofilin delete Nunits
+CofN = AMX{30}; % cofilin delete Nunits
+delOr =AMX{14}* dT; % delete from origin rate
 
-KaThy = (dT*Ka_Thymosin * THYM_uM * Act_uM); % Thymosin+Actin Association
-KdThy = (dT*Kd_Thymosin * THYM_ACT_uM);      % Thymosin+Actin Dissociation
-
-%% ----------------------------------------
-
-
+CofSMax = AMX{26};
+TheoMaxFact = ceil(SPYhZN / nm_per_p);
+ScFil = ceil(TheoMaxFact/CofSMax);
 
 
 
@@ -534,44 +864,67 @@ ArpBRT = Arp_Sc * ((Arp_uM/1000) .* (Tnmmf/1000));	% Arp rate scalar    (total)
 
 
 
-%% ----  COFILIN & GENERAL DEPOLYMERIZATION VARIABLES ----
 
-fdKd = fKd*10;			% Depoly rate when Fil is Fkd
+%% ----  THYMOSIN ACTIN-SEQUESTERING VARIABLES ----
+% CONCENTRATION NOTES
+%{
 
-CofR = AMX{18}* dT;     % cofilin activity rate
-CofS = AMX{21};         % cofilin delete Nunits
-CofN = AMX{30};         % cofilin delete Nunits
-delOr =AMX{14}* dT;     % delete from origin rate
+%---
+%}
+%-------
 
-CofSMax = AMX{26};
-TheoMaxFact = ceil(SPYhZN / nm_per_p);
-ScFil = ceil(TheoMaxFact/CofSMax);
-
-%% ----
-
-uM0_Cofilin     = AMX{82};      % Cofilin concentration (uM) total
-N0_Cofilin = uM0_Cofilin / 1e6 * MOL * SpyV;    % Cofilin count in spine (N)
-Cofilin_uM = N0_Cofilin / SpyV *(1/MOL)*1e6;    % Cofilin concentration in spine (uM)
+uM0_Thymosin     = AMX{73};      % Thymosin concentration (uM) total
+N0_Thymosin = uM0_Thymosin / 1e6 * MOL * SpyV;    % Thymosin count in spine (N)
+Thymosin_uM = N0_Thymosin / SpyV *(1/MOL)*1e6;    % Thymosin concentration in spine (uM)
 
 
-Ka_Cofilin     = AMX{83};      % Cofilin Ka (basal)
-Ka_Cofilin_LTP = AMX{84};      % Cofilin Ka (LTP)
-Ka_Cofilin_LTD = AMX{85};      % Cofilin Ka (LTD)
+ThymBoundFrac   = AMX{74}/100;  % Thymosin fraction bound to Actin
+THYM_uM     = Thymosin_uM * (1-ThymBoundFrac);  % Thymosin        monomers (uM)
+THYM_ACT_uM = Thymosin_uM * ThymBoundFrac;      % Thymosin-Actin  dimers (uM)
+THYM_N      = THYM_uM / 1e6 * MOL * SpyV;       % Thymosin        monomers (N)
+THYM_ACT_N  = THYM_ACT_uM / 1e6 * MOL * SpyV;   % Thymosin-Actin  dimers (N)
+       
+% -------
+% THYMOSIN REACTION RATE NOTES
+%{
+The Law of Mass Action (*LMA) describes the rate at which chemicals collide
+and interact to form different chemical combinations. When two different
+chemicals can collide to form a dimer product, and the dimer can dissociate
+reversably back into the individual component reactants, is described as:
 
-FAct_uM = FActinN / SpyV *(1/MOL)*1e6;	% FActin uM
-KaCof = (dT * Ka_Cofilin * FAct_uM); % Cofilin+Actin Association
+        Ka>
+T + A <---->  TA
+       <Kd  
+
+Where
+    T : thymosin                (thymosin monomers)
+    A : actin                   (Gactin monomers)
+    TA: thymosin-actin          (thymosin-actin dimers)
+    Ka: forward rate constant
+    Kd: backward rate constant
+
+
+dTA/dt = Ka[T][A] - Kd[TA]      (LMA forward reaction: TA accumulation)
+dA/dt  = Kd[TA] - Ka[T][A]      (LMA reverse reaction: A accumulation)
+dT/dt  = Kd[TA] - Ka[T][A]      (LMA reverse reaction: T accumulation)
+
+%}
+%-------
+
+Ka_Thymosin     = AMX{75};      % Thymosin Ka (basal)
+Kd_Thymosin     = AMX{76};      % Thymosin Kd (basal)
+Ka_Thymosin_LTP = AMX{77};      % Thymosin Ka (LTP)
+Kd_Thymosin_LTP = AMX{78};      % Thymosin Kd (LTP)
+
+KaThy = (dT*Ka_Thymosin * THYM_uM * Act_uM); % Thymosin+Actin Association
+KdThy = (dT*Kd_Thymosin * THYM_ACT_uM);      % Thymosin+Actin Dissociation
+
 %% ----------------------------------------
 
 
 
-
-
-
-
-
-
 %----------------------------------------
-% ADVANCED PARAMETERS (DO NOT DELETE)
+% ADVANCED PARAMETERS
 %----------------------------------------
 %{
 
@@ -769,40 +1122,22 @@ FRB: Arp2/3 associated with filament with no bound actins (fil terminates at ARP
 
 
 
-%% GET TOTAL PROTEIN COUNTS IN CLOSED SYSTEM
-
-
-TOTAL_ACTIN = GActinN + FActinN + THYM_ACT_N;
-
-TOTAL_THYMOSIN = THYM_N + THYM_ACT_N;
-
-TOTAL_ARP = GArpN + FArpN;
-
-TOTAL_COFILIN = N0_Cofilin;
 
 
 
 
-%% LTP related variables
+
+%----------------------------------------
+% LTP related variables
+
+doActLTP = AMX{36};
+ActLTPstart = AMX{37};
+ActLTPend = AMX{38};
+ArpRLTP = ArpBR*AMX{31};
+%-------
 
 doActT = AMX{48};
 doArpT = AMX{49};
-doThymT = AMX{79};
-
-
-T0_TOTAL_ACTIN = GActinN + FActinN + THYM_ACT_N;
-T2_TOTAL_ACTIN = AMX{54} * GActinN + FActinN + THYM_ACT_N;
-T3_TOTAL_ACTIN = AMX{55} * GActinN + FActinN + THYM_ACT_N;
-T4_TOTAL_ACTIN = AMX{56} * GActinN + FActinN + THYM_ACT_N;
-T5_TOTAL_ACTIN = AMX{57} * GActinN + FActinN + THYM_ACT_N;
-
-KdThymT2 = Kd_Thymosin_LTP;
-KdThymT3 = Kd_Thymosin;
-
-GArpT2 = GArpN0 * AMX{54};
-GArpT3 = GArpN0 * AMX{55};
-GArpT4 = GArpN0 * AMX{56};
-GArpT5 = GArpN0 * AMX{57};
 
 
 T2start = AMX{50};
@@ -810,9 +1145,46 @@ T3start = AMX{51};
 T4start = AMX{52};
 T5start = AMX{53};
 
+GActT2 = GActinN0 * AMX{54};
+GArpT2 = GArpN0 * AMX{54};
+GActT3 = GActinN0 * AMX{55};
+GArpT3 = GArpN0 * AMX{55};
+GActT4 = GActinN0 * AMX{56};
+GArpT4 = GArpN0 * AMX{56};
+GActT5 = GActinN0 * AMX{57};
+GArpT5 = GArpN0 * AMX{57};
+
+doThymT = 1;
+KaThymT2 = Ka_Thymosin_LTP;
+KdThymT2 = Kd_Thymosin_LTP;
+KaThymT3 = Ka_Thymosin;
+KdThymT3 = Kd_Thymosin;
+
+%{
+doActT = 0;
+doArpT = 0;
+T2start = 40000;
+T3start = 80000;
+T4start = 120000;
+T5start = 140000;
+
+GActT2 = GActinN0 + (GActinN0 / 4);
+GArpT2 = GArpN0 + (GArpN0 / 4);
+
+GActT3 = GActinN0;
+GArpT3 = GArpN0;
+
+GActT4 = GActinN0 - (GActinN0 / 4);
+GArpT4 = GArpN0 - (GArpN0 / 8);
+
+GActT5 = GActinN0 - (GActinN0 / 2);
+GArpT5 = GArpN0 - (GArpN0 / 4);
+%}
+%----------------------------------------
 
 
-%% PREALLOCATE COUNTERS
+%----------------------------------------
+% PREALLOCATE COUNTERS
 nT = 1:Nsteps;
 NumFils = nT;	% Number of branch filaments
 NumFAct = nT;	% Number FActins
@@ -833,17 +1205,15 @@ NumHullV = zeros(3,round(Nsteps/LivePlotMod));
 Num_nmmf = nT;
 NumFded = nT;
 
-NumGFActinN = nT;	% Number Unbound Actins
+NumGActinN0 = nT;	% Number Unbound Actins
 NumTHYM = nT;       % Number Unbound Thymosin
 NumTHYMACT = nT;	% Number Thymosin+GActins
-NumKaTHYM = nT;     % Ka Thymosin
-NumKdTHYM = nT;     % Kd Thymosin
 %----------------------------------------
 
 
 
 %-------------------------------------------%
-%% Linear Range Transformation
+% Linear Range Transformation
 %-------------------------------------------%
 % Equation to linear transform range
 % [a b] to range [c d] and solve for [x]:
@@ -1213,280 +1583,168 @@ http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2518053/
 
 
 
-
-%%	  ANIMATED REAL-TIME FIGURE SETUP
-close all
-
-    doLiveLinePlot = AMS{10}; 
-    LiveLinePlotMod = AMS{11};
-
-% GET SCREEN SIZE AND CALCULATE DIMS FOR FIGURE
-ssz = get(groot,'ScreenSize');
-pos = [30 100 ssz(3)-100 ssz(4)-200];
-
-% CREATE FIGURE 'f1'
-fh1 = figure(1); 
-    set(fh1,'OuterPosition',pos,'Color',[1 1 1]);
-
-% CREATE AXES 'hax1' FOR MAIN ACTIN FILAMENT PLOT
-hax1 = axes('Position',[.02 .04 .38 .60],'Color','none','NextPlot','replacechildren');
-    rot0 = [5 0]; rota = rot0; azel = [-32 12]; vLim = [-32 12];
-    AxLim = [-dims(4) dims(4) -dims(5) dims(5) 0 dims(2)].*1.2;
-    axis(AxLim); view(vLim); axis vis3d; grid off;
-    hold on
-
-% CREATE AXES 'hax2' FOR MEMBRANE HULL PLOT
-hax2 = axes('Position',[.02 .70 .20 .29],'Color','none','NextPlot','replacechildren');
-    axis(AxLim); view(vLim); axis vis3d; grid off;
-    hold on
-
-% CREATE AXES 'hax3' FOR ACTIN LEVELS LINE PLOT
-hax3 = axes('Position',[.43 .55 .27 .42],'Color','none','NextPlot','replacechildren');
-    axis([0 Nsteps*dT/60 0 TOTAL_ACTIN]);
-    xlabel('time (min)'); ylabel('actin particles');
-    title('G-actin vs F-actin');
-    hold on
-
-% CREATE AXES 'hax4' FOR ARP2/3 LEVELS LINE PLOT
-hax4 = axes('Position',[.73 .55 .25 .42],'Color','none','NextPlot','replacechildren');
-    axis([0 Nsteps*dT/60 0 TOTAL_ARP]);
-    xlabel('time (min)'); ylabel('arp_{2/3} particles');
-    title('Mobile vs Filamentous Arp_{2/3}');
-    hold on
-
-% CREATE AXES 'hax5' FOR THYMOSIN LEVELS LINE PLOT
-hax5 = axes('Position',[.43 .05 .27 .42],'Color','none','NextPlot','replacechildren');
-    axis([0 Nsteps*dT/60 0 TOTAL_THYMOSIN]);
-    xlabel('time (min)'); ylabel('thymosin particles');
-    title('Free vs Bound Thymosin');
-    hold on
-
-% CREATE AXES 'hax6' FOR FILAMENT COUNT LINE PLOT
-hax6 = axes('Position',[.73 .05 .25 .42],'Color','none','NextPlot','replacechildren');
-    axis([0 Nsteps*dT/60 0 TOTAL_ARP]); 
-    xlabel('time (min)'); ylabel('filament count');
-    title('Number of Actin Filaments');
-    hold on
-
-% CREATE AXES 'hax7' FOR TEXT OR BAR PLOT
-hax7 = axes('Position',[.23 .70 .15 .28],'Color','none','XTick', [],'YTick',[]);
-    axis([0 4 0 100]);
-    hold on
-
-    
-    % delete(hax1.Children);
-    % axes(hax1);
-    % bar(mean(50*rand(4)))
-
-%%
-% keyboard
-%%
-
-figure(fh1)
-delete(hax7.Children);
-hax7lims = axis;
-h7y = hax7lims(4);
-
-spf1  = sprintf(' Tot Actin:  % 9.6g  ',TOTAL_ACTIN);
-spf2  = sprintf(' GActin:     % 9.6g  ',GActinN);
-spf3  = sprintf(' FActin:     % 9.6g  ',FActinN);
-spf4  = sprintf(' Thymosin:   % 9.6g  ',THYM_N);
-spf5  = sprintf(' ThymAct:    % 9.6g  ',THYM_ACT_N);
-spf6  = sprintf(' GArpN:      % 9.6g  ',GArpN);
-spf7  = sprintf(' FArpN:      % 9.6g  ',FArpN);
-spf8  = sprintf(' Ka Actin:   % 9.6g  ',fKa);
-spf9  = sprintf(' Ka Thymo:   % 9.6g  ',KaThy);
-spf10 = sprintf(' Kd Thymo:   % 9.6g  ',KdThy);
-text(.1,(h7y*.92),spf1 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-text(.1,(h7y*.84),spf2 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-text(.1,(h7y*.76),spf3 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-text(.1,(h7y*.68),spf4 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-text(.1,(h7y*.60),spf5 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-text(.1,(h7y*.52),spf6 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-text(.1,(h7y*.44),spf7 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-text(.1,(h7y*.36),spf8 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-text(.1,(h7y*.28),spf9 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-text(.1,(h7y*.20),spf10,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-
-
-%% PRE-PLOT FILAMENTS
+%----------------------------------------
+%	  ANIMATED REAL-TIME FIGURE SETUP
+%----------------------------------------
+rot0 = [5 0];
+rot1 = rot0;
+azel0 = [-32 12];
+sz = [5e-3 6e-3 1.5 1.4];
+Fh2Live = FigSetup(2,sz);
+set(gcf,'Color',[1,1,1])
+AxLims = [-dims(4) dims(4) -dims(5) dims(5) 0 dims(2)].*1.2;
 
 
 
-    ActinTips = [Actin(:,4) Actin(:,7) Actin(:,10)];
-    [Zrow1,~] = find(ActinTips(:,3) > inPSD);
-    PSDTips = ActinTips(Zrow1,:);
-    [Zrow2,~] = find(ActinTips(:,3) < inPSD);
-    SPYTips = ActinTips(Zrow2,:);
-
-    P3x = [Actin(:,3) Actin(:,4)]';
-    P3y = [Actin(:,6) Actin(:,7)]';
-    P3z = [Actin(:,9) Actin(:,10)]';
-    P3x(3,:)=NaN; P3y(3,:)=NaN; P3z(3,:)=NaN;
-
-
-    axes(hax1)
-
-ph_spyTip = scatter3(hax1,SPYTips(:,1)', SPYTips(:,2)', SPYTips(:,3)',20,'ob');
-ph_psdTip = scatter3(hax1,PSDTips(:,1)', PSDTips(:,2)', PSDTips(:,3)',20,'or');
-ph_fil = line('XData',P3x(:),'YData',P3y(:),'ZData',P3z(:),'Parent',hax1);
-
-    set(ph_spyTip,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
-    set(ph_psdTip,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
-    set(ph_fil,'LineStyle','-','Color',[.5 .5 .5],'LineWidth',1.5);
-    view(azel+rota)
-
-
-
-
-%% 2D particle stream
+%--------------------
 %{
-%%
-fh1=figure('Position',[300 300 950 600],'Color','w');
-%=================================================%
-% 3D particle internalization
-load wind
-[sx sy sz] = meshgrid(80,20:1:55,5);
-verts = stream3(x,y,z,u,v,w,sx,sy,sz);
-sl = streamline(verts);
-iverts = interpstreamspeed(x,y,z,u,v,w,verts,.025);
-axis tight; view(30,30); daspect([1 1 .125])
-camproj perspective; camva(8)
-set(gca,'DrawMode','fast')
-box on
-streamparticles(iverts,35,'animate',10,'ParticleAlignment','on')
-%=================================================%
+%--------------------
+ActinTips = [Actin(:,4) Actin(:,7) Actin(:,10)];
+[Zrow1,Zcol1] = find(ActinTips(:,3) > inPSD);
+PSDTips = ActinTips(Zrow1,:);
+[Zrow2,Zcol2] = find(ActinTips(:,3) < inPSD);
+SPYTips = ActinTips(Zrow2,:);
+%--------------------
 
-%%
-close all
-
-fh1=figure('Position',[300 300 950 600],'Color','w');
-%=================================================%
-% 2D particle stream
-
-load wind
-daspect([1 1 1]); view(2)
-[verts averts] = streamslice(x,y,z,u,v,w,[],[],[5]); 
-sl = streamline([verts averts]);
-axis tight off;
-set(sl,'Visible','off')
-iverts = interpstreamspeed(x,y,z,u,v,w,verts,.05);
-set(gca,'DrawMode','fast','Position',[0 0 1 1],'ZLim',[4.9 5.1])
-% set(gcf,'Color','black')
-streamparticles(iverts, 200,'Animate',100,'FrameRate',40,'MarkerSize',10)
-%=================================================%
+nT=1;
+Fh2L = FigSetup(2,sz);
+AxLims = [-dims(4) dims(4) -dims(5) dims(5) 0 dims(2)].*1.2;
+azel = [-32 12];
+rot=[0 0];
 
 
-clc; close all; clear all
-load wind
-[sx,sy] = meshgrid(80,20:10:50);
-streamline(stream2(x(:,:,5),y(:,:,5),u(:,:,5),v(:,:,5),sx,sy));
+%--------------------
+figure(Fh2L)
+subplot('Position',[.7 .55 .28 .38]), 
+ph12a = scatter3([SPYTips(:,1)]', [SPYTips(:,2)]', [SPYTips(:,3)]',7,'ob');
+	hold on;
+ph12b = scatter3([PSDTips(:,1)]', [PSDTips(:,2)]', [PSDTips(:,3)]',7,'or');
+	axis(AxLims)
+	view([0 90])
+	grid off
+	set(gca,'Color',[1,1,1])
+	set(ph12a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
+	set(ph12b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
+	%hold on;
+%--------------------
+set(gca,'XTickLabel', sprintf('%.1f|',nT),'FontSize',10)
+hold off;
+%--------------------
+figure(Fh2L)
+subplot('Position',[.03 .03 .65 .95]), 
+
+ph11a = scatter3([SPYTips(:,1)]', [SPYTips(:,2)]', [SPYTips(:,3)]',7,'ob');
+	axis(AxLims); axis vis3d;
+	view(azel+rot)
+	xlabel('X');ylabel('Y');zlabel('Z');
+	set(gcf,'Color',[1,1,1])
+	grid off
+	hold on;
+ph11b = scatter3([PSDTips(:,1)]', [PSDTips(:,2)]', [PSDTips(:,3)]',7,'or');
+	axis(AxLims)
+	set(ph11a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
+	set(ph11b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
+	hold on;
+ph11c = plot3([Actin(:,3) Actin(:,4)]', [Actin(:,6) Actin(:,7)]', [Actin(:,9) Actin(:,10)]');
+	axis(AxLims); axis vis3d;
+	view(azel+rot)
+	set(ph11c,'LineStyle','-','Color',[.7 .7 .7],'LineWidth',.1);
+	hold on;
 
 
-%%
-% close all
-% fh1=figure('Position',[100 200 1100 500],'Color','w');
-% hax1=axes('Position',[.07 .1 .8 .8],'Color','none');
-% 
-% plot(NumKaTHYM(10000:end))
-%     hold on
-% plot(NumKdTHYM(10000:end))
+PhCx = {ph11c,ph11a,ph11b,ph12a,ph12b};
 
+LiveAPlot(PhCx,nT,Actin,PSDTips,SPYTips,rot1,azel0,Fh2L);
+rot1 = rot1 + rot0;
 %}
+%----------------------------------------
 
-
-
-
-
-
-
-%% PRE-LOOP SETTINGS FOR MAIN LOOP
 
 doProfile=0;
+if doProfile
+	profile on
+end
+
 doTicToc=0;
-
-if doProfile; profile on;  end  % Run Code Profiling
-if doTicToc;  tic;  end         % Run tic toc timer
-
-
-doprogbar = 1;
-progbarMod = LivePlotMod;
-progressbar(0)                  % Initilize progress bar
+if doTicToc
+    tic
+end
 
 
-axes(hax1) % make axes 'hax1' top-level plot
-% if ~doLive3DActinPlot && ~doLiveLinePlot; close all; end;
-
+aN = 1;
+progressbar(0) % Initilize progress bar
+%%
 %===============================================================%
-%%						MAIN OUTER LOOP
+%						MAIN OUTER LOOP
 for nT = 1:Nsteps
 %---------------------------------------------------------------%
 
-
+	%----------------------------------------------
 	if doActT
-      if nT==T2start; TOTAL_ACTIN = T2_TOTAL_ACTIN; end;
-      if nT==T3start; TOTAL_ACTIN = T3_TOTAL_ACTIN; end;
-      if nT==T4start; TOTAL_ACTIN = T4_TOTAL_ACTIN; end;
-      if nT==T5start; TOTAL_ACTIN = T5_TOTAL_ACTIN; end;
+	if nT==T2start; GActinN0 = GActT2; end;
+	if nT==T3start; GActinN0 = GActT3; end;
+	if nT==T4start; GActinN0 = GActT4; end;
+	if nT==T5start; GActinN0 = GActT5; end;
 	end
 	if doArpT
-      if nT==T2start; GArpN0 = GArpT2; end;
-      if nT==T3start; GArpN0 = GArpT3; end;
-      if nT==T4start; GArpN0 = GArpT4; end;
-      if nT==T5start; GArpN0 = GArpT5; end;
+	if nT==T2start; GArpN0 = GArpT2; end;
+	if nT==T3start; GArpN0 = GArpT3; end;
+	if nT==T4start; GArpN0 = GArpT4; end;
+	if nT==T5start; GArpN0 = GArpT5; end;
 	end
 	if doThymT
-      if nT==T2start; Kd_Thymosin = KdThymT2; end;
-      if nT==T3start; Kd_Thymosin = KdThymT3; end;
+	if nT==T2start; Ka_Thymosin = KaThymT2; end;
+	if nT==T2start; Kd_Thymosin = KdThymT2; end;
+	if nT==T3start; Ka_Thymosin = KaThymT3; end;
+	if nT==T3start; Kd_Thymosin = KdThymT3; end;
 	end
 	
-	NFact = numel(Actin(:,1));	% Current #of Filaments 
-      %  fN - used in inner loop below as "for fN=1:NFact..."
-      %  Nfi - used in outer loop below as "Nfi = numel(Actin(:,1));"
-      %  note: do not re-compute NFact anywhere else but here
-      %  use Nfi in final counters since filaments are being added/deleted
-	
-
-	ACTdepoly = 0; COFdepoly = 0; ARPpoly = 0; ACTpoly = 0;
+	NFact = numel(Actin(:,1));	% Current #of Filaments ("Nfi" used below loop)
+	if (mod(nT,LivePlotMod)==0); disp([nT NFact]); end;
+	ACTdepoly = 0;
+	COFdepoly = 0;
+	ARPpoly = 0;
+	ACTpoly = 0;
+	%----------------------------------------------
 	
 	
 	%----------------------------------------------
-	% Ori_xyz = [Actin(:,3) Actin(:,6) Actin(:,9)];
+	Ori_xyz = [Actin(:,3) Actin(:,6) Actin(:,9)];
 	Tip_xyz = [Actin(:,4) Actin(:,7) Actin(:,10)];
 
 	% radial distance to spine shaft membrane
 	XYtipLoc = sqrt(Tip_xyz(:,1).^2 + Tip_xyz(:,2).^2);
-	% XYoriLoc = sqrt(Ori_xyz(:,1).^2 + Ori_xyz(:,2).^2);
+	XYoriLoc = sqrt(Ori_xyz(:,1).^2 + Ori_xyz(:,2).^2);
 
 	ZtipInHead = Tip_xyz(:,3) >= SPYhZS;
 	ZtipInNeck = Tip_xyz(:,3) < SPYhZS;
-	% ZoriInHead = Ori_xyz(:,3) >= SPYhZS;
-	% ZoriInNeck = Ori_xyz(:,3) < SPYhZS;
+	ZoriInHead = Ori_xyz(:,3) >= SPYhZS;
+	ZoriInNeck = Ori_xyz(:,3) < SPYhZS;
 
 	XYneckOut = XYtipLoc > SPYnXY;		% Logical array of filaments beyond SPYnXY
 	XYheadOut = XYtipLoc > SPYhXY;		% Logical array of filaments beyond SPYhXY
 	ZtopOut = Tip_xyz(:,3) > SPYhZN;	% Logical array of filaments above SPYhZN
 	ZbotOut = Tip_xyz(:,3) < 0;			% Logical array of filaments below zero
 	
-	% XYOneckOut = XYoriLoc > SPYnXY;		% Logical array of filaments beyond SPYnXY
-	% XYOheadOut = XYoriLoc > SPYhXY;		% Logical array of filaments beyond SPYhXY
-	% ZOtopOut = Ori_xyz(:,3) > SPYhZN;	% Logical array of filaments above SPYhZN
-	% ZObotOut = Ori_xyz(:,3) < 0;		% Logical array of filaments below zero
+	XYOneckOut = XYoriLoc > SPYnXY;		% Logical array of filaments beyond SPYnXY
+	XYOheadOut = XYoriLoc > SPYhXY;		% Logical array of filaments beyond SPYhXY
+	ZOtopOut = Ori_xyz(:,3) > SPYhZN;	% Logical array of filaments above SPYhZN
+	ZObotOut = Ori_xyz(:,3) < 0;		% Logical array of filaments below zero
 
 	TipOut =((XYneckOut & ZtipInNeck)+(XYheadOut & ZtipInHead)+ZtopOut+ZbotOut)>0;
-	%OriOut =((XYOneckOut & ZoriInNeck)+(XYOheadOut & ZoriInHead)+ZOtopOut+ZObotOut)>0;
+	OriOut =((XYOneckOut & ZoriInNeck)+(XYOheadOut & ZoriInHead)+ZOtopOut+ZObotOut)>0;
 
 	TipOK = ~TipOut;
 	%----------------------------------------------
 
-
     Actin(:,20) = Actin(:,1) .* nm_per_p;
 	
 
-    % assure no negative actin values
+    
+    ActNon0 = (Actin(:,1)>0);	% assures no negative actin values
 	Actin(:,1) = Actin(:,1) .* (Actin(:,1)>0);
 	Actin(:,1) = Actin(:,1) .* (Actin(:,10) > -20);
-
+	
 	
 	% MCMC requires a random filament at each decision step
 	rN1 = randi(NFact,1,NFact); % actin polymerization
@@ -1745,28 +2003,35 @@ for nT = 1:Nsteps
 		end
 		
 
-
 		aN = rN4(fN);
 		%=================================================================%
 		% COFILIN ASSISTED DEPOLYMERIZATION
-		if  KaCof > rv(4) && Actin(aN,1) > 10
+		if  ( CofR * exp((Actin(aN,1)-CofS)/ScFil) ) > rv(4)
 		%----------
-            
-            ActBoundCof = randi(Actin(aN,1));    % cofilin binds random Factin along filament
-
-            ActDelCof = Actin(aN,1)-ActBoundCof; % depoly all Factin beyond cofilin site
-
-            Actin(aN,1) = ActBoundCof;           % remaining Factin count == cofilin site
 			
-			COFdepoly = COFdepoly + ActDelCof;   % keep tally of cofilin depolymerized Factin
-
-            GActinN = GActinN + ActDelCof;       % add depoly actin to Gactin pool (temporary)
-
+			Actin(aN,1) = Actin(aN,1)-CofN;
+		
+			% Depoly from origin (Tag)
+			if rv(5) < delOr
+			Actin(aN,13) = 1;
+			end
+			
+			COFdepoly = COFdepoly + CofN;
+		%----------
+		end
+		
+        
+        aN = fN;
+		%=================================================================%
+		% RAPID DEPOLYMERIZATION
+		%-----------------------------------
+		if (Actin(aN,13) && (fdKd > rv(6))) || OriOut(aN)
+		%----------
+			Actin(aN,1) = Actin(aN,1)-1;
+			ACTdepoly = ACTdepoly + 1;
 		%----------
 		end
 		%=================================================================%
-
-
 
 		
 		%=================================================================%
@@ -1774,111 +2039,99 @@ for nT = 1:Nsteps
         if (KaThy > rv(8)) && (GActinN>1) && (THYM_N>1)
 
             THYM_N = THYM_N - 1;
+            GActinN0 = GActinN0 - 1;
             THYM_ACT_N = THYM_ACT_N + 1;
-            GActinN = GActinN - 1;
-
+            % disp(THYM_N); disp(GActinN0); disp(THYM_ACT_N)
         end
 
         % THYMOSIN+ACTIN DISSOCIATION
         if (KdThy > rv(9))  && (THYM_ACT_N>1)
 
             THYM_N = THYM_N + 1;
+            GActinN0 = GActinN0 + 1;
             THYM_ACT_N = THYM_ACT_N - 1;
-            GActinN = GActinN + 1;
-
+            % disp(THYM_N); disp(GActinN0); disp(THYM_ACT_N)
         end
 		%=================================================================%
 		
 	
-
+    %aN = fN;
 	%=================================================================%
 	%						ADJUST RATE VALUES
 	%-----------------------------------------------------------------
-	if ~mod(fN,10)
-
-    % ACTIN VALUES
+	if ~mod(aN,10)
 	FActinN = sum(Actin(:,1));				% Current #of FActins
+	GActinN = GActinN0 - FActinN;			% Current #of GActins
 
-    TactinFactin = FActinN + THYM_ACT_N;    % Current #of Thymosin/actin + Factin
-
-    GActinN = TOTAL_ACTIN - TactinFactin;   % Current #of GActins
-
-    FAct_uM = FActinN / SpyV *(1/MOL)*1e6;  % FActin uM
-	Act_uM = GActinN / SpyV *(1/MOL)*1e6;	% Gactin uM
-	fKa = TKa * Act_uM * dT;				% actin polymerization rate
+	Act_uM = GActinN / SpyV *(1/MOL)*1e6;	% Actin uM
+	fKa = TKa * Act_uM * dT;				% Ka Fil ON-Rate
     
-
-    % ARP VALUES
     FArpN = numel(Actin(:,1));              % #of F-Arp
     GArpN = GArpN0 - FArpN;                 % #of G-Arp
+                
     Arp_uM = GArpN / SpyV *(1/MOL)*1e6;    % Arp uM
-    nmmf = Actin(:,20);                                     % Length of each filament (nm)
-    %ArpBR = Arp_Sc * ((Arp_uM/1000) .* (nmmf/1000));
-    Fact_Branch_uM = Actin(:,1) ./ SpyV .* (1/MOL) .* 1e6;  % conc. of each filament (uM)
-    ArpBR = Arp_Sc * (Arp_uM/1000 .* Fact_Branch_uM);
-    % Arp Branching Rate is dependent on uM Arp and lengths of existing filaments
+    nmmf = Actin(:,20);						% Length of filaments (nm)
+    ArpBR = Arp_Sc * ((Arp_uM/1000) .* (nmmf/1000));
+	%ArpBR = 5.4e-4 * Arp_uM^3 * dT .* (nmmf>0);
 
-    % THYMOSIN VALUES
-    THYM_uM = THYM_N / SpyV *(1/MOL)*1e6;               % Thymosin uM
-    THYM_ACT_uM = THYM_ACT_N / SpyV *(1/MOL)*1e6;       % Thymosin+Actin uM
-    KaThy = (dT/NFact*Ka_Thymosin * THYM_uM * Act_uM);  % Thymosin+Actin association rate
-    KdThy = (dT/NFact*Kd_Thymosin * THYM_ACT_uM);       % Thymosin+Actin dissociation rate
-    % thymosin Ka/Kd rates scaled by dT/NFact as inner loop repeats once per filament per dT
-    
-    % COFILIN VALUES
-    KaCof = (dT/NFact * Ka_Cofilin * FAct_uM);  % Cofilin+Actin Association
+
+    THYM_uM = THYM_N / SpyV *(1/MOL)*1e6;         % Thymosin concentration in spine (uM)
+    THYM_ACT_uM = THYM_ACT_N / SpyV *(1/MOL)*1e6; % Thymosin+Actin concentration in spine (uM)
+    KaThy = (dT*Ka_Thymosin * THYM_uM * Act_uM);  % Thymosin+Actin Association
+    KdThy = (dT*Kd_Thymosin * THYM_ACT_uM);       % Thymosin+Actin Dissociation
 
 	end
 	%=================================================================%
-    
+	%%
+    % keyboard
+    %%
+	
+	
+	%if nT > 5000; keyboard; end;
 	%-----------------------------------------------------------------------------%
-	end;                      % MAIN INNER LOOP
-	%% ===========================================================================%
+	end
+	%						MAIN INNER LOOP
+	%=============================================================================%
+	%%
+	
+	
+	
+	
+	
+	
 	
 	%=================================================================%
 	%						ADJUST RATE VALUES
 	%-----------------------------------------------------------------
 
-    % ACTIN VALUES
 	FActinN = sum(Actin(:,1));				% Current #of FActins
+	GActinN = GActinN0 - FActinN;			% Current #of GActins
+		if GActinN<0;GActinN=0;end;
 
-    TactinFactin = FActinN + THYM_ACT_N;    % Current #of Thymosin/actin + Factin
-
-    GActinN = TOTAL_ACTIN - TactinFactin;   % Current #of GActins
-
-    FAct_uM = FActinN / SpyV *(1/MOL)*1e6;  % FActin uM
-	Act_uM = GActinN / SpyV *(1/MOL)*1e6;	% Gactin uM
-	fKa = TKa * Act_uM * dT;				% actin polymerization rate
+	Act_uM = GActinN / SpyV *(1/MOL)*1e6;  % Actin uM
+	fKa = TKa * Act_uM * dT;				% Ka Fil ON-Rate
     
-
-    % ARP VALUES
     FArpN = numel(Actin(:,1));              % #of F-Arp
     GArpN = GArpN0 - FArpN;                 % #of G-Arp
-    Arp_uM = GArpN / SpyV *(1/MOL)*1e6;     % Arp uM
-    nmmf = Actin(:,20);                                     % Length of each filament (nm)
-    %ArpBR = Arp_Sc * ((Arp_uM/1000) .* (nmmf/1000));
-    Fact_Branch_uM = Actin(:,1) ./ SpyV .* (1/MOL) .* 1e6;  % conc. of each filament (uM)
-    ArpBR = Arp_Sc * (Arp_uM/1000 .* Fact_Branch_uM);
-    
-    % Arp Branching Rate is dependent on uM Arp and lengths of existing filaments
-
-    % THYMOSIN VALUES
-    THYM_uM = THYM_N / SpyV *(1/MOL)*1e6;               % Thymosin uM
-    THYM_ACT_uM = THYM_ACT_N / SpyV *(1/MOL)*1e6;       % Thymosin+Actin uM
-    KaThy = (dT/NFact*Ka_Thymosin * THYM_uM * Act_uM);  % Thymosin+Actin association rate
-    KdThy = (dT/NFact*Kd_Thymosin * THYM_ACT_uM);       % Thymosin+Actin dissociation rate
-    % thymosin Ka/Kd rates scaled by dT/NFact as inner loop repeats once per filament per dT
-    
-    % COFILIN VALUES
-    KaCof = (dT/NFact * Ka_Cofilin * FAct_uM);  % Cofilin+Actin Association
+		if GArpN<0;GArpN=0;end;
+                
+    Arp_uM = GArpN / SpyV *(1/MOL)*1e6;    % Arp uM
+    nmmf = Actin(:,20);						% Length of filaments (nm)
+    ArpBR = Arp_Sc * ((Arp_uM/1000) .* (nmmf/1000));
 
 	%=================================================================%
 	
-% if nT > 10000; keyboard; end;
-
-    % DELETE ORIGINAL FILAMENTS
+	% LTP ADJUSTMENTS
+	% if doActLTP && (nT >= ActLTPstart) && (nT <= ActLTPend); ArpBR = ArpRLTP; end;
+	if doActLTP && (nT >= ActLTPstart) && (nT <= ActLTPend); 
+		keyboard
+		ArpBR = ArpRLTP; 
+	end;
+	
+	% DELETE ORIGINAL FILAMENTS
 	if doDelOrig && (nT == doDelOrigT); Actin(1:NStFils,:) = []; end; 
-
+	%=================================================================%
+	
 
 	%==================================================%
 	%	PROCESS STORE AND REMOVE DEL BRANCHES
@@ -1918,12 +2171,65 @@ for nT = 1:Nsteps
 	
 	
 
+
+
+
+
+
+
+
+    %{
+	if mod(nT,LivePlotMod) == 0
+		LivePlot(Fh2Live,nT,Actin,inPSD,rot1,azel0,AxLims);
+		TriPlot(Fh2Live,nT,Actin,inPSD,rot1,azel0,AxLims,SPYhZN,SPYhZS,SPYnXY,SPYhXY);
+		rot1 = rot1 + rot0;
+	end
+	%}
+	%==================================================%
+	%				LIVE PLOT
+	%--------------------------------------------------%
+    if doLiveTipPlot
+    if ~mod(nT,LiveTipMod)
+        MainLivePlot(Fh2Live,nT,Actin,inPSD,rot1,azel0,AxLims,...
+                    SPYhZN,SPYhZS,SPYnXY,SPYhXY,doLiveHullPlot);
+		rot1 = rot1 + rot0;
+    end
+    end
+	%--------------------------------------------------%
+	
+	%==================================================%
+	%			TriHull Spine Volume
+	%--------------------------------------------------%
+    if ~doLiveHullPlot
+	if ~mod(nT,LiveHullMod)
+		%HullV = TriHull(nT,Actin,SPYhZN,SPYhZS,SPYnXY,SPYhXY);
+		%NumHullV(:,nT/TriHullMod) = HullV;
+
+        ActArpPlot(Fh2Live,nT,Nsteps,NumGArp,NumFArp,NumFAct,NumGAct,NumfKa,ArpBRsum,Num_nmmf)
+
+	end
+    end
+	%--------------------------------------------------%
+    if ~mod(nT,LiveTipMod)
+        progressbar(nT/Nsteps)
+    end
+	
+
+
+
+
+
+
+
+
+	%if nT == 1000; pause(5); end; if nT == 5000; pause(5); end;
+
 	%==================================================%
 	%				SAVE TipMatrix
 	%--------------------------------------------------%
 	if SvTpMx && (nT >SaveTipsAfter) && (mod(nT,SaveTipsRate) == 0)
 
-		ActMx = TipMatrix(fh1,doTM,nT,Actin,dims,AcMx,SPYH,rota,azel);
+		ActMx = TipMatrix(Fh2Live,doTM,nT,Actin,dims,AcMx,SPYH,rot1,azel0);
             BTs{numel(BTs)+1} = ActMx;
             AFMx{numel(AFMx)+1} = Actin;
 
@@ -1937,101 +2243,60 @@ for nT = 1:Nsteps
 	%--------------------------------------------------%
 	if doActCounts
 		
-		NumFils(nT)     = Nfi;					% Number of branch filaments
-		NumFAct(nT)     = FActinN;				% Number FActins
-		NumGAct(nT)     = GActinN;				% Number GActins
-		NumCOFACT(nT)   = COFdepoly+ACTdepoly;	% Number of Depoly events
-		NumARPACT(nT)   = ACTpoly+ARPpoly;		% Number of Poly events
-		NumdelFi(nT)    = sum(delFi);
+		NumFils(nT) = Nfi;						% Number of branch filaments
+		NumFAct(nT) = FActinN;					% Number FActins
+		NumGAct(nT) = GActinN;					% Number GActins
+		NumCOFACT(nT) = COFdepoly+ACTdepoly;	% Number of Depoly events
+		NumARPACT(nT) = ACTpoly+ARPpoly;		% Number of Poly events
+		NumdelFi(nT) = sum(delFi);
 		
-		ArpBRsum(nT)    = sum(ArpBR);
-		NumAct_uM(nT)   = Act_uM;
-		NumfKa(nT)      = fKa;
+		ArpBRsum(nT) = sum(ArpBR);
+		NumAct_uM(nT) = Act_uM;
+		NumfKa(nT) = fKa;
 		NumFnowFtot(nT) = Nfi / Actin(end,12);
-		NumFArp(nT)     = FArpN;
-		NumGArp(nT)     = GArpN;
-		Num_nmmf(nT)    = sum(nmmf);
-		NumFded(nT)     = numel(DiedACTs(:,1));
+		NumFArp(nT) = FArpN;
+		NumGArp(nT) = GArpN;
+		Num_nmmf(nT) = sum(nmmf);
+		NumFded(nT) = numel(DiedACTs(:,1));
 
-        NumGFActinN(nT) = GActinN+FActinN;      % Number Unbound Actins
-		NumTHYM(nT)     = THYM_N;               % Number Unbound Thymosin
-		NumTHYMACT(nT)  = THYM_ACT_N;           % Number Thymosin+GActins
-        NumKaTHYM(nT)   = NFact*KaThy;          % Ka Thymosin
-		NumKdTHYM(nT)   = NFact*KdThy;          % Kd Thymosin
+        NumGActinN0(nT) = GActinN0;     % Number Unbound Actins
+		NumTHYM(nT)     = THYM_N;       % Number Unbound Thymosin
+		NumTHYMACT(nT)  = THYM_ACT_N;   % Number Thymosin+GActins
 	end
 	%--------------------------------------------------%
     
     
     
     
-	%==================================================%
-	%				LIVE PLOTS
+    %==================================================%
+	%				LIVE PLOT
 	%--------------------------------------------------%
-    if doLive3DActinPlot && ~mod(nT,LiveTipMod)
-
-        Live3DActinPlot(fh1,hax1,hax2,azel,AxLim,rota,nT,...
-              Actin,inPSD,SPYhZN,SPYhZS,SPYnXY,SPYhXY,doLiveHullPlot,...
-                ph_spyTip, ph_psdTip, ph_fil);
-		rota = rota + rot0;
-
-    end
-	
-
-    if doLiveLinePlot && ~mod(nT,LiveLinePlotMod)
-
-        LiveLinePlot(fh1,hax3,hax4,hax5,hax6,hax7,nT,dT,Nsteps,...
-            NumGAct,NumFAct,NumGArp,NumFArp,NumTHYM,NumTHYMACT,...
-            NumfKa,ArpBRsum,Num_nmmf,NumFils)
-
-    end
-	
-    
+	%{
     if ~mod(nT,LivePlotMod)
-
-        delete(hax7.Children);
-        spf1  = sprintf(' Tot Actin:  % 9.6g  ',TOTAL_ACTIN);
-        spf2  = sprintf(' GActin:     % 9.6g  ',GActinN);
-        spf3  = sprintf(' FActin:     % 9.6g  ',FActinN);
-        spf4  = sprintf(' Thymosin:   % 9.6g  ',THYM_N);
-        spf5  = sprintf(' ThymAct:    % 9.6g  ',THYM_ACT_N);
-        spf6  = sprintf(' GArpN:      % 9.6g  ',GArpN);
-        spf7  = sprintf(' FArpN:      % 9.6g  ',FArpN);
-        spf8  = sprintf(' Ka Actin:   % 9.5f  ',fKa);
-        spf9  = sprintf(' Ka Thymo:   % 9.5f  ',NFact*KaThy);
-        spf10 = sprintf(' Kd Thymo:   % 9.5f  ',NFact*KdThy);
-        text(.1,(h7y*.92),spf1 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-        text(.1,(h7y*.84),spf2 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-        text(.1,(h7y*.76),spf3 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-        text(.1,(h7y*.68),spf4 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-        text(.1,(h7y*.60),spf5 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-        text(.1,(h7y*.52),spf6 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-        text(.1,(h7y*.44),spf7 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-        text(.1,(h7y*.36),spf8 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-        text(.1,(h7y*.28),spf9 ,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-        text(.1,(h7y*.20),spf10,'FontSize',14,'FontName','FixedWidth','Parent',hax7);
-        
-    
-        spfd1 = sprintf('  nT: %1.5g  ',nT);
-        spfd2 = sprintf('  GActinN: %1.5g  ',GActinN);
-        spfd3 = sprintf('  FActinN: %1.5g  ',FActinN);
-        spfd4 = sprintf('  NFils: %1.4g  ',NFact);
-        spfd5 = sprintf('  GArpN: %1.4g  ',GArpN);
-        spfd6 = sprintf('  FArpN: %1.4g  ',FArpN);
-        spfd7 = sprintf('  ThymN: %1.4g  ',THYM_N);
-        spfd8 = sprintf('  ThymActN: %1.4g  ',THYM_ACT_N);
-    
-        disp([spfd1 spfd2 spfd3 spfd4 spfd5 spfd6 spfd7 spfd8]);
-        pause(.01)
-    end
-
-
-    if doprogbar && ~mod(nT,progbarMod); progressbar(nT/Nsteps); end;
-    %--------------------------------------------------%
+        if nT > 1000
+			
+			
+			keyboard
+			NumData = {NumFils, NumFAct, NumGAct, NumCOFACT, NumCOFACT, NumARPACT...
+				,NumdelFi, ArpBRsum, NumAct_uM, NumfKa, NumfKa, NumFnowFtot...
+				,NumFArp, NumGArp, Num_nmmf, Num_nmmf};
+			
+			
+    FilPlotAlone(Fh2Live,nT,Actin,inPSD,rot1,azel0,AxLims,SPYhZN,SPYhZS,SPYnXY,SPYhXY);
+        rot1 = rot1 + rot0;
+		%progressbar(nT/Nsteps)
+		
+	ActArpPlot(Fh2Live,nT,Nsteps,NumGArp,NumFArp,NumFAct,NumGAct,NumfKa,ArpBRsum,Num_nmmf);
+		end
+	end
+	
+	%}
+	%--------------------------------------------------%
 	
 	
 	
-
-% if nT > 10000; keyboard; end;
+	
+% if nT > 80000; keyboard; end;
 %-----------------------------------------------------------------------------%
 end
 %						MAIN OUTER LOOP
@@ -2396,7 +2661,7 @@ if doNdel
 		Num_nmmf(1:Ndel) = [];
 		NumFded(1:Ndel) = [];
 
-        NumGFActinN(1:Ndel) = [];
+        NumGActinN0(1:Ndel) = [];
 		NumTHYM(1:Ndel) = [];
 		NumTHYMACT(1:Ndel) = [];
 end
@@ -2497,12 +2762,10 @@ end
 	
 
 
-
-%% PLOT OUTPUT DATA
-doPlotFinalData = 0;
-if doPlotFinalData
-
-% clc; close all;
+%%
+keyboard
+%%
+clc; close all;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %					FINAL OUTPUT (SPLINE) FIGURE 1 OF 3
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -3351,9 +3614,9 @@ NGArp = accumarray(subs',NumGArp,[],@mean);
 %===========================================================%
 
 
-
-
-
+%%
+pause(3)
+% clc; close all;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %					CONVEX HULL VOLUME
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -3432,10 +3695,6 @@ subplot('Position',sbpos);
 	% xlim([0 (haxes(2)*.9)]);
 %}
 %===========================================================%
-
-
-pause(1)
-
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %					FINAL OUTPUT SECOND SET
@@ -3536,37 +3795,37 @@ FAct_uMa = NumFAct ./ SpyV .*(1./6e23).*1e6;  % FActin uM
 	%-----------------------
 	
 	
-% 	%[FAct Top Zoom]
-% 	%------------------------------------------%
-% 	sbtop = [.49 .53 .44 .3];
-% 	haxes4 = axes('Position',sbtop,...
-% 		'XAxisLocation','top','YAxisLocation','right','Color','none'...
-% 		,'TickDir','out','TickLength',[.01 .01],'YMinorTick','off','YGrid','off'...
-% 		,'Box','off','XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1 ...
-% 		,'XTickLabel',[],'XTick',[],'FontName','Century Gothic','FontSize',11);
-% 		hold on
-% 	
-% [ph1b] = plot(nFAct_uMa);
-% 
-% 	axis tight; ylabel('然 F-actin ');
-% 	%------------------------------------------%
-% 
-% 	
-% 	
-% 	%[GAct Bot Zoom]
-% 	%------------------------------------------%
-%         sbbot = [.49 .09 .44 .3];
-% 	haxes3 = axes('Position',sbbot,...
-% 		'XAxisLocation','bottom','YAxisLocation','right','Color','none'...
-% 		,'TickDir','out','TickLength',[.01 .01],'YMinorTick','off','YGrid','off'...
-% 		,'Box','off','XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1 ...
-% 		,'XTickLabel',[],'XTick',[],'FontName','Century Gothic','FontSize',11);
-% 		hold on
-% 	
-% [ph1b] = plot(nGAct_uMa,'r');
-% 
-% 	axis tight; ylabel('然 G-actin ');
-% 	%------------------------------------------%
+	%[FAct Top Zoom]
+	%------------------------------------------%
+	sbtop = [.49 .53 .44 .3];
+	haxes4 = axes('Position',sbtop,...
+		'XAxisLocation','top','YAxisLocation','right','Color','none'...
+		,'TickDir','out','TickLength',[.01 .01],'YMinorTick','off','YGrid','off'...
+		,'Box','off','XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1 ...
+		,'XTickLabel',[],'XTick',[],'FontName','Century Gothic','FontSize',11);
+		hold on
+	
+[ph1b] = plot(nFAct_uMa);
+
+	axis tight; ylabel('然 F-actin ');
+	%------------------------------------------%
+
+	
+	
+	%[GAct Bot Zoom]
+	%------------------------------------------%
+        sbbot = [.49 .09 .44 .3];
+	haxes3 = axes('Position',sbbot,...
+		'XAxisLocation','bottom','YAxisLocation','right','Color','none'...
+		,'TickDir','out','TickLength',[.01 .01],'YMinorTick','off','YGrid','off'...
+		,'Box','off','XColor',[.3 .3 .3],'YColor',[.3 .3 .3],'LineWidth',1 ...
+		,'XTickLabel',[],'XTick',[],'FontName','Century Gothic','FontSize',11);
+		hold on
+	
+[ph1b] = plot(nGAct_uMa,'r');
+
+	axis tight; ylabel('然 G-actin ');
+	%------------------------------------------%
 
 	%[haxes,hline1,hline2] = plotyy(t,z1,t,z2,'semilogy','plot');
 %===========================================================%
@@ -3594,7 +3853,7 @@ hax3=axes('Position',[.69 .1 .28 .8],'Color','none');
 CompressN = 200; NcT = nT / CompressN;
 subs = floor(linspace(1,CompressN+1,nT));
 subs(end) = CompressN;
-NumGAN0     = accumarray(subs',NumGFActinN,[],@mean);
+NumGAN0     = accumarray(subs',NumGActinN0,[],@mean);
 NumTHY      = accumarray(subs',NumTHYM,[],@mean);
 NumTHYACT   = accumarray(subs',NumTHYMACT,[],@mean);
 
@@ -3626,11 +3885,31 @@ NumTHYACT_uM = NumTHYACT ./ SpyV .*(1./6e23).*1e6;  % FActin uM
 %%
 
 
-end % doPlotOutputData
+
+
+
+
+%%
+keyboard
 %------------
 end
 %--------------------------------------------------%
 %%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3801,8 +4080,8 @@ set(ph12b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]
 %}
 %------------------------------------------------------------%
 
-AxLP = {fh1,nT,Actin,inPSD,rota,azel,dims};
-Ax = {0,nT,Actin,dims,AcMx,SPYH,rota,azel};
+AxLP = {Fh2Live,nT,Actin,inPSD,rot1,azel0,dims};
+Ax = {0,nT,Actin,dims,AcMx,SPYH,rot1,azel0};
 
 
 
@@ -3871,16 +4150,10 @@ cd(fileparts(which('savetipdir.m')));
 save('ActinMx.mat', 'ActinMx')
 cd(fileparts(which(mfilename)));
 
-
-
-
 %% RETURN VALUES AS VARARGOUT
 
-
-% keyboard
-
 varargout = {BTs,AxLP,Ax,AFMx,ActinMx};
-% return
+return
 
 end
 %####################################################################%
@@ -3896,217 +4169,6 @@ end
 
 
 
-
-
-%####################################################################%
-%					PLOTTING & HELPER FUNCTIONS
-%####################################################################%
-
-%==================================================%
-%					Live3DActinPlot
-%--------------------------------------------------%
-function Live3DActinPlot(fh1,hax1,hax2,azel,AxLim,rota,nT,...
-              Actin,inPSD,SPYhZN,SPYhZS,SPYnXY,SPYhXY,doLiveHullPlot,...
-                ph_spyTip, ph_psdTip, ph_fil)
-%==================================================%
-
-
-%% MAIN ACTIN FILAMENT PLOT
-
-    ActinTips = [Actin(:,4) Actin(:,7) Actin(:,10)];
-    [Zrow1,~] = find(ActinTips(:,3) > inPSD);
-    PSDTips = ActinTips(Zrow1,:);
-    [Zrow2,~] = find(ActinTips(:,3) < inPSD);
-    SPYTips = ActinTips(Zrow2,:);
-
-    P3x = [Actin(:,3) Actin(:,4)]';
-    P3y = [Actin(:,6) Actin(:,7)]';
-    P3z = [Actin(:,9) Actin(:,10)]';
-    P3x(3,:)=NaN; P3y(3,:)=NaN; P3z(3,:)=NaN;
-
-    
-
-set(ph_spyTip,'XData',SPYTips(:,1)','YData',SPYTips(:,2)','ZData',SPYTips(:,3)');
-set(ph_psdTip,'XData',PSDTips(:,1)','YData',PSDTips(:,2)','ZData',PSDTips(:,3)');
-set(ph_fil,'XData',P3x(:),'YData',P3y(:),'ZData',P3z(:));
-    view(azel+rota)
-
-% delete(hax1.Children);
-% ph11a = scatter3(hax1,SPYTips(:,1)', SPYTips(:,2)', SPYTips(:,3)',20,'ob'); 
-% ph11b = scatter3(hax1,PSDTips(:,1)', PSDTips(:,2)', PSDTips(:,3)',20,'or');
-% ph11c = line('XData',P3x(:),'YData',P3y(:),'ZData',P3z(:),'Parent',hax1);
-% % ph11c = plot3(hax1,P3x, P3y, P3z);
-%     view(azel+rota)
-%     set(ph11a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
-%     set(ph11b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
-%     set(ph11c,'LineStyle','-','Color',[.7 .7 .7],'LineWidth',.3);
-%     % set(ph11c,'LineStyle','-','Color',[.5 .5 .5],'LineWidth',1.5);
-
-
-
-%% SPINE MEMBRANE PLOT (USING: delaunayTriangulation & freeBoundary)
-
-if doLiveHullPlot
-
-    Ori_xyz = [Actin(:,3) Actin(:,6) Actin(:,9)];
-    Tip_xyz = [Actin(:,4) Actin(:,7) Actin(:,10)];
-    ATPxyz = [Ori_xyz; Tip_xyz];
-
-
-    ATPxyz(end+1,:) = 0;
-    szATP = size(ATPxyz,1);
-    ATPxyz(szATP+1,:) = [SPYnXY/2 SPYnXY/2 0];
-    ATPxyz(szATP+2,:) = [-SPYnXY/2 SPYnXY/2 0];
-    ATPxyz(szATP+3,:) = [SPYnXY/2 -SPYnXY/2 0];
-    ATPxyz(szATP+4,:) = [-SPYnXY/2 -SPYnXY/2 0];
-
-    
-    Uxyz = unique(ATPxyz,'rows');
-
-    TinHead = Uxyz(:,3) >= (SPYhZS);
-    TxyzHead = Uxyz(TinHead,:);
-
-    TinNeck = Uxyz(:,3) < (SPYhZS-5);
-    TxyzNeck = Uxyz(TinNeck,:);
-
-    TinChin = (Uxyz(:,3) >= (SPYhZS-120)) & (Uxyz(:,3) <= (SPYhZS+100));
-    TxyzChin = Uxyz(TinChin,:);
-
-    TriSZh = size(TxyzHead,1);
-    TriSZn = size(TxyzNeck,1);
-    TriSZc = size(TxyzChin,1);
-    TriSZall = TriSZn+TriSZc+TriSZh;
-
-
-    delete(hax2.Children);
-    %axes(hax2);
-
-
-    if (TriSZall>=9) && (TriSZn<24) || (TriSZc<24) || (TriSZh<24)
-
-        UTriTip = delaunayTriangulation(Uxyz);
-        [Utri,Upoints] = freeBoundary(UTriTip);
-
-      trimesh(Utri,Upoints(:,1),Upoints(:,2),Upoints(:,3), ...
-            'FaceColor',[.2 1 .2],'FaceAlpha', 0.35,'Parent', hax2);
-            hold on
-	
-    else
-
-        TriHead = delaunayTriangulation(TxyzHead);
-        [FBtHead,FBpHead] = freeBoundary(TriHead);
-
-      trimesh(FBtHead,FBpHead(:,1),FBpHead(:,2),FBpHead(:,3), ...
-            'FaceColor',[.2 1 .2],'FaceAlpha', 0.35,'Parent', hax2);
-            hold on
-
-
-        TriNeck = delaunayTriangulation(TxyzNeck);
-        [FBtNeck,FBpNeck] = freeBoundary(TriNeck);
-
-      trimesh(FBtNeck,FBpNeck(:,1),FBpNeck(:,2),FBpNeck(:,3), ...
-            'FaceColor',[.2 1 .2],'FaceAlpha', 0.35,'Parent', hax2);
-            hold on
-
-
-        TriChin = delaunayTriangulation(TxyzChin);
-        [FBtChin,FBpChin] = freeBoundary(TriChin);
-
-      trimesh(FBtChin,FBpChin(:,1),FBpChin(:,2),FBpChin(:,3), ...
-            'FaceColor',[.2 1 .2],'FaceAlpha', 0.3,'Parent', hax2);
-            hold on
-
-    end
-
-    % scatter3(hax2,Uxyz(:,1),Uxyz(:,2),Uxyz(:,3),25,'fill');
-    view(azel+rota)
-
-end; % doLiveHullPlot
-%==================================================%
-
-
-pause(.01)
-% if nT >= 10000; keyboard; end;
-end
-%==================================================%
-
-
-
-
-%==================================================%
-%					LiveLinePlot
-%--------------------------------------------------%
-function LiveLinePlot(fh1,hax3,hax4,hax5,hax6,hax7,nT,dT,Nsteps,...
-            NumGAct,NumFAct,NumGArp,NumFArp,NumTHYM,NumTHYMACT,...
-            NumfKa,ArpBRsum,Num_nmmf,NumFils)
-
-
-% if nT > 40000; keyboard; end;
-
-%%
-
-tt = round(1/dT*60);
-xax = 1:numel(NumFAct(1:tt:nT));
-delete([hax3.Children,hax4.Children,hax5.Children]);
-delete(hax6.Children); delete(hax7.Children);
-
-
-% PLOT ACTIN LEVELS
-line(xax,NumFAct(1:tt:nT),'Color',[1 0 0],'Parent',hax3);
-	hold on
-line(xax,NumGAct(1:tt:nT),'Color',[0 0 1],'Parent',hax3);
-
-
-% PLOT ARP LEVELS
-line(xax,NumFArp(1:tt:nT),'Color',[1 0 0],'Parent',hax4);
-	hold on
-line(xax,NumGArp(1:tt:nT),'Color',[0 0 1],'Parent',hax4);
-
-
-% PLOT THYMOSIN LEVELS
-
-line(xax,NumTHYM(1:tt:nT),'Color',[1 0 0],'Parent',hax5);
-	hold on
-line(xax,NumTHYMACT(1:tt:nT),'Color',[0 0 1],'Parent',hax5);
-
-
-% PLOT FILAMENT NUMBER & LENGTH
-
-line(xax,NumFils(1:tt:nT),'Color',[1 0 0],'Parent',hax6);
-
-
-
-%%
-
-% alternative way to live plot:
-%{
-    delete(hax3.Children);
-    axes(hax3);
-
-plot(NumFAct(1:tt:nT)','r');
-	hold on
-plot(NumGAct(1:tt:nT)','b');
-	%set(hax3,'XLim', [0 Nsteps])
-
-%}
-
-
-pause(.01)
-% if nT > 20000; keyboard; end
-end
-%==================================================%
-
-
-
-
-%####################################################################%
-%					UTILITIES
-%####################################################################%
-
-
-%==================================================%
-%					VCP FUNCTION
-%--------------------------------------------------%
 function [pNuM] = VCP(vol,uM,pN)
 
 % INPUTS
@@ -4147,6 +4209,297 @@ end
 
 
 end
+
+
+
+
+
+
+
+
+
+
+
+%####################################################################%
+%					PLOTTING & HELPER FUNCTIONS
+%####################################################################%
+
+
+
+
+%==================================================%
+%					MainLivePlot
+%--------------------------------------------------%
+function MainLivePlot(Fh,nT,Actin,inPSD,rot,azel,AxLims,...
+                      SPYhZN,SPYhZS,SPYnXY,SPYhXY,doLiveHullPlot)
+%==================================================%
+
+figure(Fh)
+%%
+%--------------------
+ActinTips = [Actin(:,4) Actin(:,7) Actin(:,10)];
+[Zrow1,~] = find(ActinTips(:,3) > inPSD);
+PSDTips = ActinTips(Zrow1,:);
+[Zrow2,~] = find(ActinTips(:,3) < inPSD);
+SPYTips = ActinTips(Zrow2,:);
+%--------------------
+subplot('Position',[.04 .03 .45 .95]), 
+
+P3x = [Actin(:,3) Actin(:,4)]';
+P3y = [Actin(:,6) Actin(:,7)]';
+P3z = [Actin(:,9) Actin(:,10)]';
+ph11c = plot3(P3x, P3y, P3z);
+% ph11c = plot3([Actin(:,3) Actin(:,4)]', [Actin(:,6) Actin(:,7)]', [Actin(:,9) Actin(:,10)]');
+axis(AxLims); axis vis3d;
+%view(azel)
+grid off
+hold on;
+ph11a = scatter3(SPYTips(:,1)', SPYTips(:,2)', SPYTips(:,3)',20,'ob');
+hold on;
+ph11b = scatter3(PSDTips(:,1)', PSDTips(:,2)', PSDTips(:,3)',20,'or');
+view(azel+rot)
+set(ph11a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
+set(ph11b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
+set(ph11c,'LineStyle','-','Color',[.7 .7 .7],'LineWidth',.3);
+hold off;
+%--------------------
+
+
+
+%==================================================%
+if doLiveHullPlot
+
+Ori_xyz = [Actin(:,3) Actin(:,6) Actin(:,9)];
+Tip_xyz = [Actin(:,4) Actin(:,7) Actin(:,10)];
+ATPxyz = [Ori_xyz; Tip_xyz];
+
+
+
+%{
+Ori_xyz = [Actin(:,3) Actin(:,6) Actin(:,9)];
+Tip_xyz = [Actin(:,4) Actin(:,7) Actin(:,10)];
+ATPxyz = [Ori_xyz; Tip_xyz];
+
+
+% radial distance to spine shaft membrane
+XYtipLoc = sqrt(ATPxyz(:,1).^2 + ATPxyz(:,2).^2);
+
+ZtipInHead = ATPxyz(:,3) >= SPYhZS;
+ZtipInNeck = ATPxyz(:,3) < SPYhZS;
+
+XYneckOut = XYtipLoc > (SPYnXY+5);	% Logical array of filaments beyond SPYnXY
+XYheadOut = XYtipLoc > (SPYhXY+5);  % Logical array of filaments beyond SPYhXY
+ZtopOut = ATPxyz(:,3) > (SPYhZN+5);	% Logical array of filaments above SPYhZN
+ZbotOut = ATPxyz(:,3) < 0;		% Logical array of filaments below zero
+
+TipOut = ((XYneckOut & ZtipInNeck) + (XYheadOut & ZtipInHead) + ZtopOut + ZbotOut)>0;
+
+
+ATPxyz(TipOut,:) = [];
+%}
+
+ATPxyz(end:end+4,:) = 0;
+szATP = size(ATPxyz,1);
+ATPxyz(szATP+1,:) = [SPYnXY/2 SPYnXY/2 0];
+ATPxyz(szATP+2,:) = [-SPYnXY/2 SPYnXY/2 0];
+ATPxyz(szATP+3,:) = [SPYnXY/2 -SPYnXY/2 0];
+ATPxyz(szATP+4,:) = [-SPYnXY/2 -SPYnXY/2 0];
+
+%--------------------
+AOTxyz = ATPxyz;
+minAOT = SPYhXY+20;
+AOTxyz(:,1) = AOTxyz(:,1) + minAOT;
+AOTxyz(:,2) = AOTxyz(:,2) + minAOT;
+AOTxyz(:,3) = AOTxyz(:,3);
+
+AOTxyzU = unique(AOTxyz,'rows');
+
+Uxyz = AOTxyzU;
+
+TinHead = Uxyz(:,3) >= (SPYhZS);
+TxyzHead = Uxyz(TinHead,:);
+
+TinNeck = Uxyz(:,3) < (SPYhZS-5);
+TxyzNeck = Uxyz(TinNeck,:);
+
+TinChin = (Uxyz(:,3) >= (SPYhZS-120)) & (Uxyz(:,3) <= (SPYhZS+100));
+TxyzChin = Uxyz(TinChin,:);
+
+
+
+
+%---
+%figure(Fh)
+subplot('Position',[.55 .03 .45 .95]), 
+%---
+
+TriSZh = size(TxyzHead,1);
+TriSZn = size(TxyzNeck,1);
+TriSZc = size(TxyzChin,1);
+TriSZall = TriSZn+TriSZc+TriSZh;
+
+HulVolH=0;HulVolN=0;HulVolC=0;
+
+if (TriSZall>=9)
+if (TriSZn<24) || (TriSZc<24) || (TriSZh<24)
+	UTriTip = delaunayTriangulation(Uxyz);
+	[Utri,Upoints] = freeBoundary(UTriTip);
+
+	trimesh(Utri,Upoints(:,1),Upoints(:,2),Upoints(:,3), ...
+		   'FaceColor',[.2 1 .2],'FaceAlpha', 0.35);
+	hold on
+	
+	
+% 	[HulPtsNH,HulVolNH] = convexHull(UTriTip);
+% 	HulVolN = HulVolNH / 2.1;
+% 	HulVolH = HulVolNH / 2.2;
+% 	%trisurf(cnvxH,UTriTip.Points(:,1),UTriTip.Points(:,2),UTriTip.Points(:,3))
+		
+else
+
+	TriHead = delaunayTriangulation(TxyzHead);
+	[FBtHead,FBpHead] = freeBoundary(TriHead);
+
+	trimesh(FBtHead,FBpHead(:,1),FBpHead(:,2),FBpHead(:,3), ...
+		   'FaceColor',[.2 1 .2],'FaceAlpha', 0.35);
+	hold on
+
+%---
+
+	TriNeck = delaunayTriangulation(TxyzNeck);
+	[FBtNeck,FBpNeck] = freeBoundary(TriNeck);
+
+	trimesh(FBtNeck,FBpNeck(:,1),FBpNeck(:,2),FBpNeck(:,3), ...
+		   'FaceColor',[.2 1 .2],'FaceAlpha', 0.35);
+	hold on
+
+%---
+
+	TriChin = delaunayTriangulation(TxyzChin);
+	[FBtChin,FBpChin] = freeBoundary(TriChin);
+
+	trimesh(FBtChin,FBpChin(:,1),FBpChin(:,2),FBpChin(:,3), ...
+		   'FaceColor',[.2 1 .2],'FaceAlpha', 0.3);
+	hold on
+
+%---
+
+% 	[HulPtsH,HulVolH] = convexHull(TriHead);
+% 	[HulPtsN,HulVolN] = convexHull(TriNeck);
+% 	[HulPtsC,HulVolC] = convexHull(TriChin);
+
+%---
+end
+
+% varargout = {[HulVolN;HulVolH;HulVolC]};
+
+end
+%---
+
+%scatter3(Tip_xyz(:,1),Tip_xyz(:,2),Tip_xyz(:,3),50,'fill','r')
+scatter3(AOTxyzU(:,1),AOTxyzU(:,2),AOTxyzU(:,3),25,'fill',...
+			'MarkerFaceColor',[.94 .4 .4]);
+hold off
+%---
+
+TriLim = [0 600 0 600 0 1200];
+axis(TriLim); axis vis3d;
+view(azel+rot)
+grid off
+hold off
+%%
+%drawnow;
+
+%-------------------------
+end; % doLiveHullPlot
+%==================================================%
+
+
+
+%if nT >= 15000; keyboard; end;
+end
+%==================================================%
+
+
+
+
+
+%==================================================%
+%					ActArpPlot
+%--------------------------------------------------%
+function ActArpPlot(Fh,nT,Nsteps,NumGArp,NumFArp,NumFAct,NumGAct,NumfKa,ArpBRsum,Num_nmmf)
+%---
+figure(Fh)
+%---
+
+
+
+%-------------------------
+% Arp
+	Hax1 = axes('Position',[.55 .05 .4 .4]);
+[ph1] = plot(NumFArp(1:nT)','r');
+	hold on
+[ph2] = plot(NumGArp(1:nT)','b');
+	set(Hax1,'XLim', [0 Nsteps]);
+	haxesM=axis;
+	hold on
+	
+	
+	Hax1b = axes('Position',[.55 .05 .4 .4]...
+			,'XAxisLocation','top','YAxisLocation','right','Color','none'...
+			,'XTickLabel', [],'XTick', []...
+			,'XLim', [0 Nsteps],'YLim', [0 .1]);
+			hold on;
+[ph3] = plot(ArpBRsum(1:nT)','g');
+%-------------------------	
+		
+
+
+%-------------------------
+% Actin
+	Hax2 = axes('Position',[.55 .55 .4 .4]);
+[ph4] = plot(NumFAct(1:nT)','r');
+	hold on
+[ph5] = plot(NumGAct(1:nT)','b');
+	set(Hax2,'XLim', [0 Nsteps])
+%-------------------------
+	
+	
+if nT > 10000
+	keyboard
+end
+
+
+
+
+% ALL AVAILABLE PLOTS
+%---------------
+%{
+[ph1] = plot(NumfKa,'r');
+[ph2b] = semilogy(NuBeKa);
+[ph2] = plot(HulVolHd,'r');
+[ph1] = plot(HulVolNk,'b');
+[PhBL3] = plot(Mummf,'Parent',HaxBL3,'Color',[.5 .5 .5]);
+%----------------------
+[ph1] = plot(NumGAct,'b');
+[ph2] = plot(NumFAct,'r');
+GAct_uM = NumGA ./ SpyV .*(1./6e23).*1e6;  % GActin uM
+FAct_uM = NumFA ./ SpyV .*(1./6e23).*1e6;  % FActin uM
+
+GAct_uMa = NumGAct ./ SpyV .*(1./6e23).*1e6;  % GActin uM
+FAct_uMa = NumFAct ./ SpyV .*(1./6e23).*1e6;  % FActin uM
+%----------------------
+[ph1] = plot(ArpBRsum,'r');
+[ph2] = line(1:numel(NFArp),NFArp,'Parent',haxes2,'Color','k');
+	hold on
+[ph3] = line(1:numel(NGArp),NGArp,'Parent',haxes2,'Color','k');
+%}
+%---------------
+
+end
+%==================================================%
+
+
 
 
 
@@ -4276,6 +4629,88 @@ end
 
 
 
+
+
+
+%==================================================%
+%				FigSetup FUNCTION
+%--------------------------------------------------%
+function [varargout] = FigSetup(varargin)
+
+scsz = get(0,'ScreenSize');
+
+
+if nargin == 1 
+	Fnum=varargin{1};
+	pos = scsz./[2.5e-3 2.5e-3 1.5 2];
+elseif nargin == 2
+	Fnum=varargin{1};
+	pos=scsz./varargin{2};
+else
+	Fnum=1;
+	pos = scsz./[2.5e-3 2.5e-3 1.5 2];
+end
+
+Fh = figure(Fnum);
+set(gcf,'OuterPosition',pos,'Color',[.9,.9,.9])
+varargout = {Fh};
+
+end
+%==================================================%
+
+
+%==================================================%
+%					LIVE PLOT
+%--------------------------------------------------%
+function LivePlot(Fh,nT,Actin,inPSD,rot,azel,AxLims)
+
+
+%--------------------
+ActinTips = [Actin(:,4) Actin(:,7) Actin(:,10)];
+[Zrow1,Zcol1] = find(ActinTips(:,3) > inPSD);
+PSDTips = ActinTips(Zrow1,:);
+[Zrow2,Zcol2] = find(ActinTips(:,3) < inPSD);
+SPYTips = ActinTips(Zrow2,:);
+%--------------------
+figure(Fh)
+subplot('Position',[.03 .03 .53 .95]), 
+ph11c = plot3([Actin(:,3) Actin(:,4)]', [Actin(:,6) Actin(:,7)]', [Actin(:,9) Actin(:,10)]');
+axis(AxLims); axis vis3d;
+view(azel)
+grid off
+hold on;
+ph11a = scatter3([SPYTips(:,1)]', [SPYTips(:,2)]', [SPYTips(:,3)]',7,'ob');
+hold on;
+ph11b = scatter3([PSDTips(:,1)]', [PSDTips(:,2)]', [PSDTips(:,3)]',7,'or');
+%xlabel('X');ylabel('Y');zlabel('Z');
+view(azel+rot)
+set(ph11a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
+set(ph11b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
+set(ph11c,'LineStyle','-','Color',[.7 .7 .7],'LineWidth',.1);
+hold off;
+%--------------------
+figure(Fh)
+subplot('Position',[.65 .6 .28 .38]), 
+ph12a = scatter3([SPYTips(:,1)]', [SPYTips(:,2)]', [SPYTips(:,3)]',7,'ob');
+hold on;
+ph12b = scatter3([PSDTips(:,1)]', [PSDTips(:,2)]', [PSDTips(:,3)]',7,'or');
+axis(AxLims)
+view([0 90])
+grid off
+set(ph12a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
+set(ph12b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
+%--------------------
+set(gca,'XTickLabel', sprintf('%.1f|',nT),'FontSize',10)
+hold off;
+%--------------------
+
+end
+%==================================================%
+
+
+
+
+
 %==================================================%
 %					TipMatrix
 %--------------------------------------------------%
@@ -4365,9 +4800,9 @@ SPYxy = dims(8);
 ActinTips = [Actin(:,4) Actin(:,7) Actin(:,10)];
 
 
-[Zin,~] = find(ActinTips(:,3) > SPYz);
+[Zin,Zic] = find(ActinTips(:,3) > SPYz);
 XYsq = sqrt(ActinTips(:,1).^2 + ActinTips(:,2).^2);
-[XYin,~] = find(XYsq < (HX-SPYxy));
+[XYin,XYic] = find(XYsq < (HX-SPYxy));
 XYZin = intersect(XYin, Zin);
 % XYt = intersect(Xrow1, Yrow1);
 %[tf, loc] = ismember(Xrow1, Yrow1)
@@ -4423,6 +4858,8 @@ end
 
 
 
+
+
 %----------------------------------%
 %		in3Dbox
 %----------------------------------%
@@ -4472,6 +4909,479 @@ in3db = xLo & xHi & yLo & yHi & zLo & zHi;
 end
 
 
+
+
+
+
+%==================================================%
+%			MATRIX CONVOLUTION MASK
+%--------------------------------------------------%
+function [hkMask dT LBR] = MaskFun(S,dT,LBR,doGaussianMask,PSAsz,scsz,AMX,MSK)
+
+%-------------------------------%
+%		Mask Setup
+%-------------------------------%
+hkMask=ones(AMX{6});
+%hkMask=[0 1 0; 1 0 1; 0 1 0];
+%----------------%
+if doGaussianMask
+%----------------%
+
+
+
+% %--------------------
+% A  = 2;	
+% x0 = 0; 
+% y0 = 0; 
+% sx = .2; 
+% sy = .2; 
+% res= 2; 
+% rx=sx; 
+% ry=sy;	
+% 
+% t = 0;
+% a = cos(t)^2/2/sx^2 + sin(t)^2/2/sy^2;
+% b = -sin(2*t)/4/sx^2 + sin(2*t)/4/sy^2 ;
+% c = sin(t)^2/2/sx^2 + cos(t)^2/2/sy^2;
+% 
+% [X, Y] = meshgrid((-sx*res):(rx):(sx*res), (-sy*res):(ry):(sy*res));
+% Z = A*exp( - (a*(X-x0).^2 + 2*b*(X-x0).*(Y-y0) + c*(Y-y0).^2)) ;
+% %--------------------
+
+
+
+
+
+%--------------------
+GNpk  = MSK{1};	% hight of peak
+GNx0 = MSK{2};	% x-axis peak locations
+GNy0 = MSK{3};	% y-axis peak locations
+GNsd = MSK{4};	% sigma (stdev of slope)
+
+GNnum = MSK{5};
+GNres = MSK{6};
+GNspr = ((GNnum-1)*GNres)/2;
+
+a = .5/GNsd^2;
+c = .5/GNsd^2;
+
+[X, Y] = meshgrid((-GNspr):(GNres):(GNspr), (-GNspr):(GNres):(GNspr));
+Z = GNpk*exp( - (a*(X-GNx0).^2 + c*(Y-GNy0).^2)) ;
+
+%---
+% figure(62)
+% surf(X,Y,Z);
+% view(-45,30); 
+% axis([-GNspr GNspr -GNspr GNspr 0 GNpk])
+% %shading interp; %axis equal; %axis vis3d; 
+% xlabel('x-axis');ylabel('y-axis');zlabel('z-axis')
+%--------------------
+
+
+%--------------------
+hkMask=Z;
+hk = convn(S,hkMask,'same');
+hkor = hk(PSAsz+1,PSAsz+1);
+%-----
+%LBR(1) = hkor-sqrt(GNpk); LBR(2) = hkor+sqrt(GNpk);
+%--------------------
+
+
+%----------------%
+% FIGURE: 3D Gaussian Distribution
+fh5 = figure(5); %set(fh5,'OuterPosition',(scsz./[2e-3 2e-3 2 2]))
+fh5op = get(fh5,'OuterPosition');
+set(fh5,'OuterPosition',[fh5op(1) fh5op(2) fh5op(3)*1.5 fh5op(4)*1.3]);
+%----------------%
+figure(fh5)
+subplot('Position',[.05 .55 .30 .40]); 
+	ph5 = imagesc(hkMask); 
+	axis equal;
+	%set(gca,'XTick',[],'YTick',[])
+subplot('Position',[.04 .08 .32 .42]); 
+	ph7 = surf(X,Y,Z);
+	axis equal; shading interp; view(90,90); 
+subplot('Position',[.45 .05 .50 .90]); 
+	ph7 = surf(X,Y,Z);
+	axis vis3d; shading interp;
+	view(-45,30); 
+	xlabel('x-axis');ylabel('y-axis');zlabel('z-axis')
+%----------------%
+end
+%-------------------------------%
+
+
+end
+%==================================================%
+
+%####################################################################%
+
+
+%==================================================%
+%					TriHull
+%--------------------------------------------------%
+function [varargout] = TriHull(nT,Actin,SPYhZN,SPYhZS,SPYnXY,SPYhXY)
+%==================================================%
+
+Ori_xyz = [Actin(:,3) Actin(:,6) Actin(:,9)];
+Tip_xyz = [Actin(:,4) Actin(:,7) Actin(:,10)];
+ATPxyz = [Ori_xyz; Tip_xyz];
+
+ATPxyz(end:end+4,:) = 0;
+szATP = size(ATPxyz,1);
+ATPxyz(szATP+1,:) = [SPYnXY/2 SPYnXY/2 0];
+ATPxyz(szATP+2,:) = [-SPYnXY/2 SPYnXY/2 0];
+ATPxyz(szATP+3,:) = [SPYnXY/2 -SPYnXY/2 0];
+ATPxyz(szATP+4,:) = [-SPYnXY/2 -SPYnXY/2 0];
+
+%--------------------
+AOTxyz = ATPxyz;
+minAOT = SPYhXY+20;
+AOTxyz(:,1) = AOTxyz(:,1) + minAOT;
+AOTxyz(:,2) = AOTxyz(:,2) + minAOT;
+AOTxyz(:,3) = AOTxyz(:,3);
+
+AOTxyzU = unique(AOTxyz,'rows');
+
+Uxyz = AOTxyzU;
+
+TinHead = Uxyz(:,3) >= (SPYhZS);
+TxyzHead = Uxyz(TinHead,:);
+
+TinNeck = Uxyz(:,3) < (SPYhZS-5);
+TxyzNeck = Uxyz(TinNeck,:);
+
+TinChin = (Uxyz(:,3) >= (SPYhZS-120)) & (Uxyz(:,3) <= (SPYhZS+100));
+TxyzChin = Uxyz(TinChin,:);
+
+
+%---
+
+TriSZh = size(TxyzHead,1);
+TriSZn = size(TxyzNeck,1);
+TriSZc = size(TxyzChin,1);
+TriSZall = TriSZn+TriSZc+TriSZh;
+
+HulVolH=0;HulVolN=0;HulVolC=0;
+
+if (TriSZall>=9)
+if (TriSZn<24) || (TriSZc<24) || (TriSZh<24)
+	
+	UTriTip = delaunayTriangulation(Uxyz);
+	%[Utri,Upoints] = freeBoundary(UTriTip);
+
+	[HulPtsNH,HulVolNH] = convexHull(UTriTip);
+	HulVolN = HulVolNH / 3.0;
+	HulVolH = HulVolNH / 4.0;
+		
+else
+
+	TriHead = delaunayTriangulation(TxyzHead);
+	%[FBtHead,FBpHead] = freeBoundary(TriHead);
+
+%---
+
+	TriNeck = delaunayTriangulation(TxyzNeck);
+	%[FBtNeck,FBpNeck] = freeBoundary(TriNeck);
+
+%---
+
+	TriChin = delaunayTriangulation(TxyzChin);
+	%[FBtChin,FBpChin] = freeBoundary(TriChin);
+
+%---
+
+	[HulPtsH,HulVolH] = convexHull(TriHead);
+	[HulPtsN,HulVolN] = convexHull(TriNeck);
+	[HulPtsC,HulVolC] = convexHull(TriChin);
+
+%---
+end
+
+end
+%---
+
+varargout = {[HulVolN;HulVolH;HulVolC]};
+
+%if nT >= 15000; keyboard; end;
+end
+%==================================================%
+
+
+
+%==================================================%
+%					FilPlotAlone
+%--------------------------------------------------%
+function FilPlotAlone(Fh,nT,Actin,inPSD,rot,azel,AxLims,SPYhZN,SPYhZS,SPYnXY,SPYhXY)
+%==================================================%
+
+figure(Fh)
+%%
+%--------------------
+ActinTips = [Actin(:,4) Actin(:,7) Actin(:,10)];
+[Zrow1,~] = find(ActinTips(:,3) > inPSD);
+PSDTips = ActinTips(Zrow1,:);
+[Zrow2,~] = find(ActinTips(:,3) < inPSD);
+SPYTips = ActinTips(Zrow2,:);
+%--------------------
+subplot('Position',[.04 .03 .45 .95]), 
+
+P3x = [Actin(:,3) Actin(:,4)]';
+P3y = [Actin(:,6) Actin(:,7)]';
+P3z = [Actin(:,9) Actin(:,10)]';
+ph11c = plot3(P3x, P3y, P3z);
+% ph11c = plot3([Actin(:,3) Actin(:,4)]', [Actin(:,6) Actin(:,7)]', [Actin(:,9) Actin(:,10)]');
+axis(AxLims); axis vis3d;
+%view(azel)
+grid off
+hold on;
+ph11a = scatter3(SPYTips(:,1)', SPYTips(:,2)', SPYTips(:,3)',20,'ob');
+hold on;
+ph11b = scatter3(PSDTips(:,1)', PSDTips(:,2)', PSDTips(:,3)',20,'or');
+view(azel+rot)
+set(ph11a,'Marker','o','MarkerEdgeColor',[.1 .1 .9],'MarkerFaceColor',[.1 .1 .9]);
+set(ph11b,'Marker','o','MarkerEdgeColor',[.9 .2 .2],'MarkerFaceColor',[.9 .2 .2]);
+set(ph11c,'LineStyle','-','Color',[.7 .7 .7],'LineWidth',.3);
+hold off;
+%--------------------
+
+
+
+%if nT >= 15000; keyboard; end;
+end
+%==================================================%
+
+
+
+
+%==================================================%
+%					TriPlot
+%--------------------------------------------------%
+function TriPlot(Fh,nT,Actin,inPSD,rot,azel,AxLims,SPYhZN,SPYhZS,SPYnXY,SPYhXY)
+%==================================================%
+Ori_xyz = [Actin(:,3) Actin(:,6) Actin(:,9)];
+Tip_xyz = [Actin(:,4) Actin(:,7) Actin(:,10)];
+ATPxyz = [Ori_xyz; Tip_xyz];
+
+% radial distance to spine shaft membrane
+XYtipLoc = sqrt(ATPxyz(:,1).^2 + ATPxyz(:,2).^2);
+
+ZtipInHead = (ATPxyz(:,3) <= SPYhZN) & (ATPxyz(:,3) >= SPYhZS);
+ZtipInNeck = ATPxyz(:,3) < SPYhZS;
+
+XYneckOut = XYtipLoc > SPYnXY;	% Logical array of filaments beyond SPYnXY
+XYheadOut = XYtipLoc > SPYhXY;  % Logical array of filaments beyond SPYhXY
+ZtopOut = ATPxyz(:,3) > SPYhZN;	% Logical array of filaments above SPYhZN
+ZbotOut = ATPxyz(:,3) < 0;		% Logical array of filaments below zero
+
+TipOut = ((XYneckOut & ZtipInNeck) + (XYheadOut & ZtipInHead) + ZtopOut + ZbotOut)>0;
+
+ATPxyz(TipOut,:) = [];
+
+ATPxyz(end:end+4,:) = 0;
+
+szATP = size(ATPxyz,1);
+
+ATPxyz(szATP+1,:) = [SPYnXY/2 SPYnXY/2 0];
+ATPxyz(szATP+2,:) = [-SPYnXY/2 SPYnXY/2 0];
+ATPxyz(szATP+3,:) = [SPYnXY/2 -SPYnXY/2 0];
+ATPxyz(szATP+4,:) = [-SPYnXY/2 -SPYnXY/2 0];
+
+%==================================================%
+AOTxyz = ATPxyz;
+%minAOT = -min(AOTxyz);
+minAOT = SPYhXY+20;
+AOTxyz(:,1) = AOTxyz(:,1) + minAOT;
+AOTxyz(:,2) = AOTxyz(:,2) + minAOT;
+AOTxyz(:,3) = AOTxyz(:,3);
+
+AOTxyzU = unique(AOTxyz,'rows');
+
+Uxyz = AOTxyzU;
+
+TinH = Uxyz(:,3) >= (SPYhZS);
+HTxyz = Uxyz(TinH,:);
+
+TinN = Uxyz(:,3) < (SPYhZS);
+NTxyz = Uxyz(TinN,:);
+
+TinNH = (Uxyz(:,3) >= (SPYhZS-80)) & (Uxyz(:,3) <= (SPYhZS+50));
+NHTxyz = Uxyz(TinNH,:);
+
+
+figure(Fh)
+subplot('Position',[.56 .02 .47 .55]),
+
+
+if numel(HTxyz) > 12
+DTriTip = delaunayTriangulation(HTxyz);
+[FBtri,FBpoints] = freeBoundary(DTriTip);
+
+trimesh(FBtri,FBpoints(:,1),FBpoints(:,2),FBpoints(:,3), ...
+       'FaceColor',[.2 1 .2],'FaceAlpha', 0.35);
+hold on
+end
+
+if numel(NTxyz) > 12
+NTriTip = delaunayTriangulation(NTxyz);
+[NFBtri,NFBpoints] = freeBoundary(NTriTip);
+
+trimesh(NFBtri,NFBpoints(:,1),NFBpoints(:,2),NFBpoints(:,3), ...
+       'FaceColor',[.2 1 .2],'FaceAlpha', 0.35);
+hold on
+end
+
+if numel(NHTxyz) > 12
+NHTriTip = delaunayTriangulation(NHTxyz);
+[NHFBtri,NHFBpoints] = freeBoundary(NHTriTip);
+
+trimesh(NHFBtri,NHFBpoints(:,1),NHFBpoints(:,2),NHFBpoints(:,3), ...
+       'FaceColor',[.2 1 .2],'FaceAlpha', 0.3);
+hold on
+end
+
+scatter3(AOTxyz(:,1),AOTxyz(:,2),AOTxyz(:,3),20,'fill','r')
+TriLim = [0 600 0 600 0 1200];
+axis(TriLim); axis vis3d;
+view(azel+rot)
+grid off
+hold off
+
+end
+%==================================================%
+%{
+%==================================================%
+%					LIVE PLOT
+%--------------------------------------------------%
+function TriPlot(Fh,nT,Actin,inPSD,rot,azel,AxLims,SPYhZN,SPYhZS,SPYnXY,SPYhXY)
+%==================================================%
+Ori_xyz = [Actin(:,3) Actin(:,6) Actin(:,9)];
+Tip_xyz = [Actin(:,4) Actin(:,7) Actin(:,10)];
+ATPxyz = [Ori_xyz; Tip_xyz];
+
+% radial distance to spine shaft membrane
+XYtipLoc = sqrt(ATPxyz(:,1).^2 + ATPxyz(:,2).^2);
+
+ZtipInHead = (ATPxyz(:,3) <= SPYhZN) & (ATPxyz(:,3) >= SPYhZS);
+ZtipInNeck = ATPxyz(:,3) < SPYhZS;
+
+XYneckOut = XYtipLoc > SPYnXY;	% Logical array of filaments beyond SPYnXY
+XYheadOut = XYtipLoc > SPYhXY;  % Logical array of filaments beyond SPYhXY
+ZtopOut = ATPxyz(:,3) > SPYhZN;	% Logical array of filaments above SPYhZN
+ZbotOut = ATPxyz(:,3) < 0;		% Logical array of filaments below zero
+
+TipOut = ((XYneckOut & ZtipInNeck) + (XYheadOut & ZtipInHead) + ZtopOut + ZbotOut)>0;
+
+ATPxyz(TipOut,:) = [];
+
+ATPxyz(end:end+4,:) = 0;
+
+szATP = size(ATPxyz,1);
+
+ATPxyz(szATP+1,:) = [SPYnXY/2 SPYnXY/2 0];
+ATPxyz(szATP+2,:) = [-SPYnXY/2 SPYnXY/2 0];
+ATPxyz(szATP+3,:) = [SPYnXY/2 -SPYnXY/2 0];
+ATPxyz(szATP+4,:) = [-SPYnXY/2 -SPYnXY/2 0];
+
+%==================================================%
+AOTxyz = ATPxyz;
+minAOT = -min(AOTxyz); 
+AOTxyz(:,1) = AOTxyz(:,1) + minAOT(1);
+AOTxyz(:,2) = AOTxyz(:,2) + minAOT(2);
+AOTxyz(:,3) = AOTxyz(:,3);
+
+AOTxyzU = unique(AOTxyz,'rows');
+
+Uxyz = AOTxyzU;
+
+TinH = Uxyz(:,3) >= (SPYhZS);
+HTxyz = Uxyz(TinH,:);
+
+TinN = Uxyz(:,3) < (SPYhZS);
+NTxyz = Uxyz(TinN,:);
+
+TinNH = (Uxyz(:,3) >= (SPYhZS-80)) & (Uxyz(:,3) <= (SPYhZS+50));
+NHTxyz = Uxyz(TinNH,:);
+
+
+figure(Fh)
+subplot('Position',[.7 .05 .28 .48]),
+
+
+if numel(HTxyz) > 9
+DTriTip = delaunayTriangulation(HTxyz);
+[FBtri,FBpoints] = freeBoundary(DTriTip);
+
+trimesh(FBtri,FBpoints(:,1),FBpoints(:,2),FBpoints(:,3), ...
+       'FaceColor',[.2 1 .2],'FaceAlpha', 0.35);
+hold on
+end
+
+if numel(NTxyz) > 9
+NTriTip = delaunayTriangulation(NTxyz);
+[NFBtri,NFBpoints] = freeBoundary(NTriTip);
+
+trimesh(NFBtri,NFBpoints(:,1),NFBpoints(:,2),NFBpoints(:,3), ...
+       'FaceColor',[.2 1 .2],'FaceAlpha', 0.35);
+hold on
+end
+
+if numel(NHTxyz) > 9
+NHTriTip = delaunayTriangulation(NHTxyz);
+[NHFBtri,NHFBpoints] = freeBoundary(NHTriTip);
+
+trimesh(NHFBtri,NHFBpoints(:,1),NHFBpoints(:,2),NHFBpoints(:,3), ...
+       'FaceColor',[.2 1 .2],'FaceAlpha', 0.3);
+hold on
+end
+
+scatter3(AOTxyz(:,1),AOTxyz(:,2),AOTxyz(:,3),20,'fill','r')
+TriLim = [0 600 0 600 0 1200];
+axis(TriLim); %axis vis3d;
+view(azel+rot)
+grid off
+hold off
+
+end
+%==================================================%
+%}
+
+
+
+
+%==================================================%
+%					LIVE PLOT
+%--------------------------------------------------%
+function LiveAPlot(Ph,nT,Ac,PT,ST,rot,azel,Fh)
+
+%Ac34 = [Ac(:,3) Ac(:,4)]';
+%Ac67 = [Ac(:,6) Ac(:,7)]';
+%Ac91 = [Ac(:,9) Ac(:,10)]';
+
+%set(get(gca))
+
+
+
+%for nPh = 1:numel(Ph{1})
+%set(Ph{1}(nPh),'XData',Ac34(:,nPh),'YData',Ac67(:,nPh),'ZData',Ac91(:,nPh));
+%end
+
+set(Ph{4},'XData',ST(:,1)','YData',ST(:,2)','ZData',ST(:,3)');
+set(Ph{5},'XData',PT(:,1)','YData',PT(:,2)','ZData',PT(:,3)');
+view([0 90])
+%set(gca,'XTickLabel', sprintf('%.1f|',nT),'FontSize',10)
+
+set(Ph{2},'XData',ST(:,1)','YData',ST(:,2)','ZData',ST(:,3)');
+set(Ph{3},'XData',PT(:,1)','YData',PT(:,2)','ZData',PT(:,3)');
+view(azel+rot)
+drawnow
+ph11c = plot3([Ac(:,3) Ac(:,4)]', [Ac(:,6) Ac(:,7)]', [Ac(:,9) Ac(:,10)]');
+set(ph11c,'LineStyle','-','Color',[.7 .7 .7],'LineWidth',.1);
+
+
+
+end
+%==================================================%
 
 
 
