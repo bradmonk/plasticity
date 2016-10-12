@@ -21,16 +21,16 @@ Documentation for this project ('plasticity') can be found at: <a href="http://b
 
 <img src="http://i.imgur.com/JqoM6rr.png" alt="alphaShape" width="600" border="10" />
 
-<a href="http://youtu.be/9ipFHrxqLWc" target="_blank"><img src="http://i.imgur.com/g01X2Br.png" 
-alt="3d actin network" width="300" border="10" /></a> <a href="http://youtu.be/QBx8F_5_y0g" target="_blank"><img src="http://i.imgur.com/g01X2Br.png" alt="3d actin network" width="300" border="10" /></a>
+<a href="http://youtu.be/9ipFHrxqLWc" target="_blank"><img src="http://bradleymonk.com/media/github/git1.png" 
+alt="3d actin network" width="300" border="10" /></a> <a href="http://youtu.be/QBx8F_5_y0g" target="_blank"><img src="http://bradleymonk.com/media/github/git2.png" alt="3d actin network" width="300" border="10" /></a>
 
 
-<a href="http://youtu.be/JH-hGjzhEFQ" target="_blank"><img src="http://i.imgur.com/g01X2Br.png" 
-alt="3d actin network" width="300" border="10" /></a> <a href="http://youtu.be/t9Vzcvne40w" target="_blank"><img src="http://i.imgur.com/g01X2Br.png" alt="3d actin network" width="300" border="10" /></a> 
+<a href="http://youtu.be/JH-hGjzhEFQ" target="_blank"><img src="http://bradleymonk.com/media/github/git3.png" 
+alt="3d actin network" width="300" border="10" /></a> <a href="http://youtu.be/t9Vzcvne40w" target="_blank"><img src="http://bradleymonk.com/media/github/git4.png" alt="3d actin network" width="300" border="10" /></a> 
 
 
-<a href="https://youtu.be/TGG_1ypuA4I" target="_blank"><img src="http://i.imgur.com/g01X2Br.png" 
-alt="3d Diffusion Animation in matlab" width="300" border="10" /></a> <a href="https://youtu.be/tDKUU0SqbSA" target="_blank"><img src="http://i.imgur.com/g01X2Br.png" 
+<a href="https://youtu.be/TGG_1ypuA4I" target="_blank"><img src="http://bradleymonk.com/media/github/git5.png" 
+alt="3d Diffusion Animation in matlab" width="300" border="10" /></a> <a href="https://youtu.be/tDKUU0SqbSA" target="_blank"><img src="http://bradleymonk.com/media/github/git6.png" 
 alt="Dendritic surface diffusion" width="300" border="10" /></a>
 
 
