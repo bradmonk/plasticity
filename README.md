@@ -26,7 +26,7 @@ alt="3d actin network" width="300" border="10" /></a> <a href="http://youtu.be/Q
 
 
 <a href="http://youtu.be/JH-hGjzhEFQ" target="_blank"><img src="http://bradleymonk.com/media/github/git3.png" 
-alt="3d actin network" width="300" border="10" /></a> <a href="https://www.youtube.com/embed/6ZNnBGgea0Y" target="_blank"><img src="http://bradleymonk.com/media/github/git4.png" alt="3d actin network" width="300" border="10" /></a> 
+alt="3d actin network" width="300" border="10" /></a> <a href="https://www.youtube.com/embed/6ZNnBGgea0Y" target="_blank"><img src="http://bradleymonk.com/media/github/git4.png" alt="S3D Full Model" width="300" border="10" /></a> 
 
 
 <a href="https://youtu.be/TGG_1ypuA4I" target="_blank"><img src="http://bradleymonk.com/media/github/git5.png" 
