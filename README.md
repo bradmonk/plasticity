@@ -9,7 +9,7 @@ Dynamic changes to the signaling efficacy between neurons is thought to underlie
 
 ## Documentation Wiki
 
-Documentation for this project ('plasticity') can be found on the github <a href="https://github.com/subroutines/plasticity/wiki" target="_blank">wiki</a>
+Further documentation can be found on the <a href="https://github.com/subroutines/plasticity/wiki" target="_blank">github wiki</a>
 
 
 
@@ -17,6 +17,7 @@ Documentation for this project ('plasticity') can be found on the github <a href
 ## Graphical Abstract
 <a href="http://neuralnet.work" target="_blank">
 <img src="https://bradleymonk.com/github/FIG1_ABC.png" width="600" border="10" /></a>
+
 * Overview of modeling environment. (A) Membrane diffusion of AMPAR was simulated on a 3D surface-mesh representing a short dendritic segment with several spines. Geometric values for surface components included dendrite segment length and diameter, density and distance between spines, and dimensions of spine head and neck. AMPAR diffused laterally along these surfaces with Brownian motion; rates were matched to empirical values. (B) Actin scaffolding dynamics were simulated inside the spine-protrusions. Components of the scaffold and their interactin with surface receptors is illustrated in (C).
 
 
@@ -38,7 +39,7 @@ alt="3d Diffusion Animation in matlab" width="300" border="10" /></a> <a href="h
 alt="Dendritic surface diffusion" width="300" border="10" /></a>
 
 
-## Resources
+## Further Reading
 * [djhbrm github.io site](http://subroutines.github.io/djhbrm/)
 * [neuroml.org - neuron model/mesh library](http://www.neuroml.org/tool_support.php)
 * [mcell.psc.edu - mcell diffusion software](http://www.mcell.psc.edu/tutorials/ficks_laws.html)
