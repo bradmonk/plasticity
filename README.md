@@ -40,9 +40,9 @@ alt="Dendritic surface diffusion" width="300" border="10" /></a>
 
 
 ## Further Reading
-* [djhbrm github.io site](http://subroutines.github.io/djhbrm/)
+* [DistMesh - A Simple Mesh Generator in MATLAB](http://persson.berkeley.edu/distmesh/)
 * [neuroml.org - neuron model/mesh library](http://www.neuroml.org/tool_support.php)
-* [mcell.psc.edu - mcell diffusion software](http://www.mcell.psc.edu/tutorials/ficks_laws.html)
+* [djhbrm github.io site](http://subroutines.github.io/djhbrm/)
 * [mcell on github](https://github.com/mcellteam/cellblender_tutorials)
 * [mmbios.org - National Center for Multiscale Modeling of Biological Systems](http://mmbios.org/index.php/software)
 * [ppm.org - particle mesh library](http://www.ppm-library.org/)
