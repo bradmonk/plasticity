@@ -11,7 +11,7 @@ Documentation for this project ('plasticity') can be found at: <a href="http://b
 
 ## Graphical Abstract
 <a href="http://neuralnet.work" target="_blank">
-<img src="http://neuralnet.work/s/FIG1_ABC.png" width="600" border="10" /></a>
+<img src="https://bradleymonk.com/github/FIG1_ABC.png" width="600" border="10" /></a>
 * Overview of modeling environment. (A) Membrane diffusion of AMPAR was simulated on a 3D surface-mesh representing a short dendritic segment with several spines. Geometric values for surface components included dendrite segment length and diameter, density and distance between spines, and dimensions of spine head and neck. AMPAR diffused laterally along these surfaces with Brownian motion; rates were matched to empirical values. (B) Actin scaffolding dynamics were simulated inside the spine-protrusions. Components of the scaffold and their interactin with surface receptors is illustrated in (C).
 
 
@@ -20,16 +20,16 @@ Documentation for this project ('plasticity') can be found at: <a href="http://b
 
 <img src="http://i.imgur.com/JqoM6rr.png" alt="alphaShape" width="600" border="10" />
 
-<a href="https://www.youtube.com/watch?v=w8yt6XDgLMU" target="_blank"><img src="http://neuralnet.work/s/Fenics_Dolphin_3D_Mesh_Building.png" 
-alt="3d actin network" width="300" border="10" /></a> <a href="https://www.youtube.com/watch?v=tDKUU0SqbSA&feature=youtu.be" target="_blank"><img src="http://neuralnet.work/s/Python_Dendritic_Mesh_Building.png" alt="3d actin network" width="300" border="10" /></a>
+<a href="https://www.youtube.com/watch?v=w8yt6XDgLMU" target="_blank"><img src="https://bradleymonk.com/github/Fenics_Dolphin_3D_Mesh_Building.png" 
+alt="3d actin network" width="300" border="10" /></a> <a href="https://www.youtube.com/watch?v=tDKUU0SqbSA&feature=youtu.be" target="_blank"><img src="https://bradleymonk.com/github/Python_Dendritic_Mesh_Building.png" alt="3d actin network" width="300" border="10" /></a>
 
 
-<a href="https://www.youtube.com/watch?v=TGG_1ypuA4I&feature=youtu.be" target="_blank"><img src="http://neuralnet.work/s/3D_Model_Surface_Diffusion.png" 
-alt="3d actin network" width="300" border="10" /></a> <a href="https://www.youtube.com/embed/6ZNnBGgea0Y" target="_blank"><img src="http://neuralnet.work/s/S3D_Model_Full.png" alt="S3D Full Model" width="300" border="10" /></a> 
+<a href="https://www.youtube.com/watch?v=TGG_1ypuA4I&feature=youtu.be" target="_blank"><img src="https://bradleymonk.com/github/3D_Model_Surface_Diffusion.png" 
+alt="3d actin network" width="300" border="10" /></a> <a href="https://www.youtube.com/embed/6ZNnBGgea0Y" target="_blank"><img src="https://bradleymonk.com/github/S3D_Model_Full.png" alt="S3D Full Model" width="300" border="10" /></a> 
 
 
-<a href="https://www.youtube.com/watch?v=JH-hGjzhEFQ&feature=youtu.be" target="_blank"><img src="http://neuralnet.work/s/Actin_Dynamics_Spine_Membrane.png" 
-alt="3d Diffusion Animation in matlab" width="300" border="10" /></a> <a href="https://www.youtube.com/watch?v=QBx8F_5_y0g&feature=youtu.be" target="_blank"><img src="http://neuralnet.work/s/Live_Actin_Filament_Branching.png" 
+<a href="https://www.youtube.com/watch?v=JH-hGjzhEFQ&feature=youtu.be" target="_blank"><img src="https://bradleymonk.com/github/Actin_Dynamics_Spine_Membrane.png" 
+alt="3d Diffusion Animation in matlab" width="300" border="10" /></a> <a href="https://www.youtube.com/watch?v=QBx8F_5_y0g&feature=youtu.be" target="_blank"><img src="https://bradleymonk.com/github/Live_Actin_Filament_Branching.png" 
 alt="Dendritic surface diffusion" width="300" border="10" /></a>
 
 
