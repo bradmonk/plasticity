@@ -1,58 +1,351 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plasticity — Multiplex Computational Model of Neural Dynamics</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    :root {
+      --bg:       #0d1117;
+      --surface:  #161b22;
+      --border:   #30363d;
+      --accent:   #58a6ff;
+      --text:     #c9d1d9;
+      --muted:    #8b949e;
+      --heading:  #f0f6fc;
+    }
 
-    <title>Neuron Modeling by subroutines</title>
-  </head>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
 
-  <body>
-    <header>
-      <div class="inner">
-        <h1>Neuron Modeling</h1>
-        <h2>science</h2>
-        <a href="https://github.com/subroutines/djhbrm" class="button"><small>View project on</small>GitHub</a>
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d2136 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 3.5rem 1.5rem 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(88,166,255,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .badge-row {
+      display: flex; flex-wrap: wrap; gap: .5rem;
+      justify-content: center; margin-bottom: 1.25rem;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .25rem .7rem;
+      border-radius: 999px;
+      font-size: .75rem; font-weight: 600;
+      border: 1px solid;
+    }
+    .badge-blue   { background: rgba(88,166,255,.12); color: #79c0ff; border-color: rgba(88,166,255,.3); }
+    .badge-green  { background: rgba(63,185,80,.12);  color: #56d364; border-color: rgba(63,185,80,.3); }
+    .badge-purple { background: rgba(188,140,255,.12);color: #d2a8ff; border-color: rgba(188,140,255,.3); }
+    .badge-orange { background: rgba(210,153,34,.12); color: #e3b341; border-color: rgba(210,153,34,.3); }
+
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: var(--heading);
+      letter-spacing: -.5px;
+      margin-bottom: .6rem;
+    }
+    header p.tagline {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+    }
+    .header-btns { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .55rem 1.2rem;
+      border-radius: 6px;
+      font-size: .9rem; font-weight: 600;
+      transition: opacity .15s;
+    }
+    .btn:hover { opacity: .85; text-decoration: none; }
+    .btn-primary { background: var(--accent); color: #0d1117; }
+    .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 0 1.25rem 4rem; }
+
+    section { margin-top: 3.5rem; }
+    section h2 {
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--heading);
+      padding-bottom: .5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem 1.5rem;
+    }
+    .card h3 { font-size: 1rem; font-weight: 700; color: var(--heading); margin-bottom: .5rem; }
+    .card p, .card ul { font-size: .9rem; color: var(--text); }
+    .card ul { padding-left: 1.2rem; }
+    .card ul li { margin-bottom: .25rem; }
+    .card code { font-size: .82rem; background: rgba(255,255,255,.06); padding: .1em .35em; border-radius: 4px; }
+
+    .components-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.1rem;
+    }
+    .comp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      transition: border-color .2s;
+    }
+    .comp-card:hover { border-color: var(--accent); }
+    .comp-icon { font-size: 1.6rem; margin-bottom: .5rem; }
+    .comp-card h3 { font-size: .95rem; font-weight: 700; color: var(--heading); margin-bottom: .4rem; }
+    .comp-card p { font-size: .84rem; color: var(--muted); line-height: 1.5; }
+    .comp-card code { font-size: .8rem; background: rgba(255,255,255,.06); padding: .1em .35em; border-radius: 4px; }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .gallery-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .gallery-item img {
+      width: 100%; display: block;
+      aspect-ratio: 4/3; object-fit: contain;
+      background: #0d1117;
+      padding: .5rem;
+    }
+    .gallery-item figcaption {
+      padding: .6rem .9rem;
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    .tech-row { display: flex; flex-wrap: wrap; gap: .75rem; }
+    .tech-pill {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: .35rem .9rem;
+      font-size: .85rem;
+      color: var(--text);
+    }
+    .tech-pill .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    .dir-table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+    .dir-table th, .dir-table td {
+      text-align: left; padding: .65rem .85rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .dir-table th { color: var(--muted); font-weight: 600; background: var(--surface); }
+    .dir-table td:first-child { font-family: monospace; color: var(--accent); }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      font-size: .85rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge-row">
+    <span class="badge badge-blue">MATLAB</span>
+    <span class="badge badge-green">Python / Cython</span>
+    <span class="badge badge-purple">Computational Neuroscience</span>
+    <span class="badge badge-orange">Synaptic Plasticity</span>
+  </div>
+  <h1>Plasticity</h1>
+  <p class="tagline">Multiplex Computational Model of Neural Dynamics — AMPAR trafficking, dendritic-surface diffusion &amp; actin/scaffold dynamics.</p>
+  <div class="header-btns">
+    <a class="btn btn-primary" href="https://github.com/bradmonk/plasticity">⭐ View on GitHub</a>
+    <a class="btn btn-secondary" href="https://github.com/bradmonk/plasticity/tree/master/MATmodel">📂 MATmodel</a>
+    <a class="btn btn-secondary" href="https://github.com/bradmonk/plasticity/tree/master/PyDiffusion">🐍 PyDiffusion</a>
+  </div>
+</header>
+
+<main>
+
+  <section id="overview">
+    <h2>Project Overview</h2>
+    <div class="two-col">
+      <div class="card">
+        <h3>What is Plasticity?</h3>
+        <p>
+          <strong>Plasticity</strong> is a research codebase for simulating the molecular and biophysical
+          events underlying synaptic plasticity in neurons. It integrates stochastic models of
+          AMPA-receptor (AMPAR) trafficking, actin/scaffold dynamics, and surface diffusion on
+          realistic dendritic meshes to explain how synapses strengthen or weaken in response to activity.
+        </p>
       </div>
-    </header>
-
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h3>
-<a name="neuron-modeling-slides" class="anchor" href="#neuron-modeling-slides"><span class="octicon octicon-link"></span></a>Neuron Modeling Slides</h3>
-
-<ul>
-<li><a href="https://speakerdeck.com/subroutines/neuron-modeling">https://speakerdeck.com/subroutines/neuron-modeling</a></li>
-</ul>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/subroutines/djhbrm/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/subroutines/djhbrm/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/subroutines/djhbrm"></a> is maintained by <a href="https://github.com/subroutines">subroutines</a>.</p>
-
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
+      <div class="card">
+        <h3>Key Capabilities</h3>
+        <ul>
+          <li>Multiplex ODEs for receptor, actin, and scaffold state transitions</li>
+          <li>Mesh-based particle diffusion on dendritic-spine surfaces</li>
+          <li>Interactive MATLAB GUIs (STARShiP, ActinMultiplex)</li>
+          <li>Python/Cython extension for high-performance diffusion stepping</li>
+          <li>FEniCS/DOLFIN XML mesh import pipeline</li>
+          <li>MSD analysis, alpha-shape surfaces, trajectory tracking</li>
+        </ul>
       </div>
     </div>
+  </section>
 
-  
-  </body>
+  <section id="components">
+    <h2>Model Components</h2>
+    <div class="components-grid">
+      <div class="comp-card">
+        <div class="comp-icon">🔬</div>
+        <h3>AMPAR Trafficking — STARShiP</h3>
+        <p>Stochastic simulation of AMPA-receptor insertion, removal, and lateral mobility at the postsynaptic density. Implemented in <code>STARShiP.m</code> with an interactive GUI (<code>STARShiPGUI.m</code>).</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-icon">🕸️</div>
+        <h3>Actin &amp; Scaffold Dynamics</h3>
+        <p>Multiplex ODE network (<code>ActinMultiplex.m</code>) models actin polymerization and depolymerization coupled to scaffold protein state, driving spine morphology changes.</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-icon">🌊</div>
+        <h3>Dendritic-Surface Diffusion</h3>
+        <p>Triangulated mesh representation of dendritic surfaces with particle random-walk diffusion via <code>DendriteMeshDiffusion.m</code> and a Cython MEX-style extension.</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-icon">📐</div>
+        <h3>Mesh Import Pipeline</h3>
+        <p>DOLFIN/FEniCS XML meshes are parsed by <code>dolfinXML.m</code>, triangulated with <code>TriMeshBuilder.m</code>, and passed to MATLAB or Python solvers.</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-icon">⚡</div>
+        <h3>Python / Cython Extension</h3>
+        <p><code>PyDiffusion/advance_one_step_mex/</code> provides a compiled Cython module (<code>_cython_interface.pyx</code>) exposing a fast per-step diffusion kernel callable from Python and MATLAB.</p>
+      </div>
+      <div class="comp-card">
+        <div class="comp-icon">📊</div>
+        <h3>Analysis &amp; Visualization</h3>
+        <p>MSD analyzer, robust alpha-shape surface fitting, trajectory tracking (<code>TRACKDOT.m</code>), spine-exit detection, and publication-quality figure export routines.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <h2>Visuals</h2>
+    <div class="gallery">
+      <figure class="gallery-item">
+        <img src="images/DENDRITE.png" alt="Dendritic spine morphology" />
+        <figcaption>Dendritic morphology — simulation domain</figcaption>
+      </figure>
+      <figure class="gallery-item">
+        <img src="images/alphaShape.png" alt="Alpha-shape triangulated mesh" />
+        <figcaption>Alpha-shape triangulated mesh for surface diffusion</figcaption>
+      </figure>
+      <figure class="gallery-item">
+        <img src="images/STARShiP0.png" alt="STARShiP simulation output" />
+        <figcaption>STARShiP — AMPAR stochastic simulation output</figcaption>
+      </figure>
+      <figure class="gallery-item">
+        <img src="images/STARShiP1.png" alt="STARShiP receptor time series" />
+        <figcaption>STARShiP — receptor population time series</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="tech">
+    <h2>Tools &amp; Tech Stack</h2>
+    <div class="tech-row">
+      <span class="tech-pill"><span class="dot" style="background:#e07400;"></span>MATLAB</span>
+      <span class="tech-pill"><span class="dot" style="background:#3572A5;"></span>Python 3</span>
+      <span class="tech-pill"><span class="dot" style="background:#fedf5b;"></span>Cython</span>
+      <span class="tech-pill"><span class="dot" style="background:#555;"></span>C / MEX</span>
+      <span class="tech-pill"><span class="dot" style="background:#3fb950;"></span>FEniCS / DOLFIN</span>
+      <span class="tech-pill"><span class="dot" style="background:#58a6ff;"></span>NumPy / SciPy</span>
+      <span class="tech-pill"><span class="dot" style="background:#d2a8ff;"></span>Matplotlib</span>
+      <span class="tech-pill"><span class="dot" style="background:#e3b341;"></span>GNU Make</span>
+    </div>
+  </section>
+
+  <section id="structure">
+    <h2>Repository Structure</h2>
+    <table class="dir-table">
+      <thead><tr><th>Path</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>MATmodel/mainfunctions/</td><td>Core MATLAB scripts — STARShiP, ActinMultiplex solvers &amp; GUIs</td></tr>
+        <tr><td>MATmodel/matpydiffusion/</td><td>MATLAB wrappers for the Python diffusion kernel and DOLFIN mesh import</td></tr>
+        <tr><td>MATmodel/MatlabMeshDiffusion/</td><td>Pure-MATLAB triangular mesh diffusion solver</td></tr>
+        <tr><td>MATmodel/mainfigures/</td><td>Reference figures &amp; GUI layout files (<code>.fig</code>)</td></tr>
+        <tr><td>MATmodel/outputfigs/</td><td>Simulation output figures (STARShiP runs)</td></tr>
+        <tr><td>MATmodel/miscfunctions/</td><td>Utility toolbox — MSD analyzer, actin ORM, Izhikevich model, etc.</td></tr>
+        <tr><td>PyDiffusion/advance_one_step_mex/</td><td>Cython/C extension for fast diffusion stepping, with Makefile</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="links">
+    <h2>Links &amp; Resources</h2>
+    <div class="two-col">
+      <div class="card">
+        <h3>🔗 GitHub Repository</h3>
+        <p>Browse source code, open issues, or fork the project.</p>
+        <p style="margin-top:.75rem;"><a href="https://github.com/bradmonk/plasticity">github.com/bradmonk/plasticity</a></p>
+      </div>
+      <div class="card">
+        <h3>📦 Get Started</h3>
+        <ul>
+          <li>Clone: <code>git clone https://github.com/bradmonk/plasticity.git</code></li>
+          <li>Open <code>MATmodel/mainfunctions/STARShiP.m</code> in MATLAB</li>
+          <li>Build extension: <code>cd PyDiffusion/advance_one_step_mex &amp;&amp; make</code></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    <a href="https://github.com/bradmonk/plasticity">bradmonk/plasticity</a> &nbsp;&middot;&nbsp;
+    Multiplex Computational Model of Neural Dynamics &nbsp;&middot;&nbsp;
+    Built with GitHub Pages
+  </p>
+</footer>
+
+</body>
 </html>
